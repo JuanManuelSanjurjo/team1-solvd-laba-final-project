@@ -41,9 +41,9 @@ jobs:
 
       - name: Enforce 75% test coverage
         run: |
-          COVERAGE=$(npx jest --coverage --coverageReporters=json-summary --silent --json | grep -Po '"statements":{"total":[0-9]+,"covered":[0-9]+,"skipped":[0-9]+,"pct":\K[0-9]+')
+          COVERAGE=$(node -pe "require('./coverage/coverage-summary.json').total.statements.pct")
           echo "Total coverage: $COVERAGE%"
-          if [ "$COVERAGE" -lt 75 ]; then
-            echo "Coverage is below 75%!"
+          if [ \"$COVERAGE\" -lt 75 ]; then
+            echo \"Coverage is below 75%!\"
             exit 1
           fi
