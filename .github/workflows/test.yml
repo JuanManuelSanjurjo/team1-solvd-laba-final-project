@@ -1,0 +1,49 @@
+name: Run Lint, Build, Tests and Enforce Coverage
+
+on:
+  push:
+    branches: 
+      - '**'
+  pull_request:
+    branches: 
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' 
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: npm run lint -- --max-warnings=0
+      
+      - name: Build app
+        run: npm run build
+
+      - name: Run tests with coverage
+        run: npm test -- --coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/
+
+      - name: Enforce 75% test coverage
+        run: |
+          COVERAGE=$(npx jest --coverage --coverageReporters=json-summary --silent --json | grep -Po '"statements":{"total":[0-9]+,"covered":[0-9]+,"skipped":[0-9]+,"pct":\K[0-9]+')
+          echo "Total coverage: $COVERAGE%"
+          if [ "$COVERAGE" -lt 75 ]; then
+            echo "Coverage is below 75%!"
+            exit 1
+          fi
