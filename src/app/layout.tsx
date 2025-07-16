@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Work_Sans } from "next/font/google";
 import ReactQueryProvider from "../utils/providers/ReactQueryProvider";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import "./globals.css";
+import theme from "@/utils/theme";
+import { ThemeProvider } from "@mui/material/styles";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const workSans = Work_Sans({
+  variable: "--font-work-sans",
   subsets: ["latin"],
 });
 
@@ -25,9 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={workSans.variable}>
         <ReactQueryProvider>
-          <main>{children}</main>
+          <AppRouterCacheProvider>
+            <ThemeProvider theme={theme}>
+              <main>{children}</main>
+            </ThemeProvider>
+          </AppRouterCacheProvider>
         </ReactQueryProvider>
       </body>
     </html>
