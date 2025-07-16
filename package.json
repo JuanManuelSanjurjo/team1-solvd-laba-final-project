@@ -11,9 +11,11 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.2.0",
+    "@mui/material-nextjs": "^7.2.0",
     "@tanstack/react-query": "^5.83.0",
     "iconsax-react": "^0.0.8",
     "next": "15.3.5",
