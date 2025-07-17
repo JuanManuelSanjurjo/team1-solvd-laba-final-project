@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import ReactQueryProvider from "../utils/providers/ReactQueryProvider";
 import "./globals.css";
 import {worksans, nunito} from './fonts'
+import { ThemeProvider } from '@mui/material';
+import theme from "./lib/theme";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${nunito.variable} ${worksans.variable}`}>
         <ReactQueryProvider>
-          <main>{children}</main>
+          <ThemeProvider theme={theme}>
+              <main>{children}</main>
+          </ThemeProvider>
         </ReactQueryProvider>
       </body>
     </html>

@@ -93,3 +93,5 @@ const theme = createTheme({
 //#fafafa is used as a background for some cards
 //Cart elements are the only ones that have nunito font so we should make a custom typo for those components only
 //Thank you page needs custom as well
+
+export default theme;
