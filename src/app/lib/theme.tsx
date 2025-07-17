@@ -21,7 +21,7 @@ const theme = createTheme({
         },
         background: {
             default: "#ffffff",
-            paper: "#fafafa //#fafafa is used as a background for some cards
+            paper: "#fafafa" //#fafafa is used as a background for some cards
         },
         text: {
             primary: "#000000", //Sometimes #1E2832 is the primary and sometimes #000000 is.
