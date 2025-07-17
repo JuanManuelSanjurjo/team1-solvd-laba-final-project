@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export const worksans = Work_Sans ({
     subsets: ['latin'], //Load only latin characters
-    variable: '--font-work', //Define CDD variable
+    variable: '--font-worksans', //Define CDD variable
     display: 'swap', //Will need to discuss this 
     // weight: 
 });
