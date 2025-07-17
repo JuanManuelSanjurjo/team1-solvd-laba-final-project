@@ -67,16 +67,16 @@ const theme = createTheme({
             fontSize: 18
         },
         body1: {
-             fontFamily: worksansFont,
+            fontFamily: worksansFont,
             fontSize: 16
         },
         /* Input label, placeholder, option button, */
         body2: {
-             fontFamily: worksansFont,
+            fontFamily: worksansFont,
             fontSize: 15
         },
         button: {
-             fontFamily: worksansFont,
+            fontFamily: worksansFont,
             fontSize: 19 //For some buttons 16px, for AI button 12px
         },
         caption: {

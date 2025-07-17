@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import ReactQueryProvider from "../utils/providers/ReactQueryProvider";
 import "./globals.css";
 import {worksans, nunito} from './fonts'
