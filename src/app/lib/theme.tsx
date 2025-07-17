@@ -6,27 +6,27 @@ const theme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: #FE645E,
-            light: #FE645E, //It is the same but will put it here for maintanance purposes,
-            contrastText: #ffffff,
-            dark: #CD3C37,
+            main: "#FE645E",
+            light: "#FE645E", //It is the same but will put it here for maintanance purposes,
+            contrastText: "#ffffff",
+            dark: "#CD3C37,"
         },
         secondary: {
-            main: #0A1047,
-            light: #141E7A
+            main: "#0A1047",
+            light: "#141E7A"
         },
         error: {
-            main: #FE645E,
+            main: "#FE645E",
             
         },
         background: {
-            default: #ffffff,
-            paper: #fafafa //#fafafa is used as a background for some cards
+            default: "#ffffff",
+            paper: "#fafafa //#fafafa is used as a background for some cards
         },
         text: {
-            primary: #000000, //Sometimes #1E2832 is the primary and sometimes #000000 is.
-            secondary: #5C5C5C,
-            disabled: #8C9196
+            primary: "#000000", //Sometimes #1E2832 is the primary and sometimes #000000 is.
+            secondary: "#5C5C5C",
+            disabled: "#8C9196"
             
         }
     },
@@ -47,19 +47,19 @@ const theme = createTheme({
             fontSize: 25 
         },
         h4: {
-             fontFamily: worksansFont,
+            fontFamily: worksansFont,
             fontSize: 24
         },
         h5:{
-             fontFamily: worksansFont,
+            fontFamily: worksansFont,
             fontSize: 23
         },
         h6: {
-             fontFamily: worksansFont,
+            fontFamily: worksansFont,
             fontSize: 22
         },
         subtitle1: {
-             fontFamily: worksansFont,
+            fontFamily: worksansFont,
             fontSize: 20
         },
         subtitle2: {
