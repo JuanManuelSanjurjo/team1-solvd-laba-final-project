@@ -1,7 +1,7 @@
 "use client"
 import {createTheme} from '@mui/material/styles';
 
-const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
+const worksansFont = 'var(--font-work), "Segoe UI", sans-serif';
 
 const theme = createTheme({
     palette: {
