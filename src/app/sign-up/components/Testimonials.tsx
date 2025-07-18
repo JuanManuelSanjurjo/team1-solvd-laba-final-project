@@ -2,6 +2,10 @@ import { Box, Paper, Rating, Typography } from "@mui/material";
 import TestimonialNavigation from "./TestimonialNavigation";
 
 export default function Testimonials() {
+  const quote = `"Lorem Ipsum is a really great company because the team is
+  passionate about the projects they produce, the people they work
+  with, the quality of the work they do."`;
+
   return (
     <Box
       sx={{
@@ -28,11 +32,7 @@ export default function Testimonials() {
         }}
       >
         <Box sx={{ display: "flex" }}>
-          <Typography sx={{ fontSize: "25px" }}>
-            "Lorem Ipsum is a really great company because the team is
-            passionate about the projects they produce, the people they work
-            with, the quality of the work they do."{" "}
-          </Typography>
+          <Typography sx={{ fontSize: "25px" }}>{quote}</Typography>
           <TestimonialNavigation />
         </Box>
         <Box
