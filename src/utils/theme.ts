@@ -1,90 +1,99 @@
-"use client"
-import {createTheme} from '@mui/material/styles';
+"use client";
+
+import { createTheme } from "@mui/material/styles";
 
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
 
 const theme = createTheme({
-    palette: {
-        mode: 'light',
-        primary: {
-            main: "#FE645E",
-            light: "#FE645E", //It is the same but will put it here for maintanance purposes,
-            contrastText: "#ffffff",
-            dark: "#CD3C37,"
-        },
-        secondary: {
-            main: "#0A1047",
-            light: "#141E7A"
-        },
-        error: {
-            main: "#FE645E",
-            
-        },
-        background: {
-            default: "#ffffff",
-            paper: "#fafafa" //#fafafa is used as a background for some cards
-        },
-        text: {
-            primary: "#000000", //Sometimes #1E2832 is the primary and sometimes #000000 is.
-            secondary: "#5C5C5C",
-            disabled: "#8C9196"
-            
-        }
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#FE645E",
+      light: "#FE645E", //It is the same but will put it here for maintanance purposes,
+      contrastText: "#ffffff",
+      dark: "#CD3C37,",
     },
-
-    typography: {
-        fontFamily: worksansFont,
-        
-        h1: {
-            fontFamily: worksansFont,
-            fontSize: 53
+    secondary: {
+      main: "#0A1047",
+      light: "#141E7A",
+    },
+    error: {
+      main: "#FE645E",
+    },
+    background: {
+      default: "#ffffff",
+      paper: "#fafafa", //#fafafa is used as a background for some cards
+    },
+    text: {
+      primary: "#000000", //Sometimes #1E2832 is the primary and sometimes #000000 is.
+      secondary: "#5C5C5C",
+      disabled: "#8C9196",
+    },
+  },
+  components: {
+    MuiRating: {
+      styleOverrides: {
+        iconFilled: ({ theme }) => ({
+          color: theme.palette.primary.main,
+        }),
+        icon: {
+          marginRight: "12px",
         },
-        h2: {
-            fontFamily: worksansFont,
-            fontSize: 45
-        },
-        h3: {
-            fontFamily: worksansFont,
-            fontSize: 25 
-        },
-        h4: {
-            fontFamily: worksansFont,
-            fontSize: 24
-        },
-        h5:{
-            fontFamily: worksansFont,
-            fontSize: 23
-        },
-        h6: {
-            fontFamily: worksansFont,
-            fontSize: 22
-        },
-        subtitle1: {
-            fontFamily: worksansFont,
-            fontSize: 20
-        },
-        subtitle2: {
-            fontFamily: worksansFont,
-            fontSize: 18
-        },
-        body1: {
-            fontFamily: worksansFont,
-            fontSize: 16
-        },
-        /* Input label, placeholder, option button, */
-        body2: {
-            fontFamily: worksansFont,
-            fontSize: 15
-        },
-        button: {
-            fontFamily: worksansFont,
-            fontSize: 19 //For some buttons 16px, for AI button 12px
-        },
-        caption: {
-            fontFamily: worksansFont,
-            fontSize: 12
-        },
-    }
+      },
+    },
+  },
+  typography: {
+    fontFamily: worksansFont,
+    h1: {
+      fontFamily: worksansFont,
+      fontSize: 53,
+    },
+    h2: {
+      fontFamily: worksansFont,
+      fontSize: 45,
+    },
+    h3: {
+      fontFamily: worksansFont,
+      fontSize: 25,
+    },
+    h4: {
+      fontFamily: worksansFont,
+      fontSize: 24,
+    },
+    h5: {
+      fontFamily: worksansFont,
+      fontSize: 23,
+    },
+    h6: {
+      fontFamily: worksansFont,
+      fontSize: 22,
+    },
+    subtitle1: {
+      fontFamily: worksansFont,
+      fontSize: 20,
+    },
+    subtitle2: {
+      fontFamily: worksansFont,
+      fontSize: 18,
+    },
+    body1: {
+      fontFamily: worksansFont,
+      fontSize: 16,
+    },
+    /* Input label, placeholder, option button, */
+    body2: {
+      fontFamily: worksansFont,
+      fontSize: 15,
+    },
+    button: {
+      fontFamily: worksansFont,
+      fontSize: 19, //For some buttons 16px, for AI button 12px
+    },
+    caption: {
+      fontFamily: worksansFont,
+      fontSize: 12,
+    },
+  },
 });
 
 //#292D32 another color used for some icons
