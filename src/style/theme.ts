@@ -11,7 +11,7 @@ const theme = createTheme({
       main: "#FE645E",
       light: "#FE645E", //It is the same but will put it here for maintanance purposes,
       contrastText: "#ffffff",
-      dark: "#CD3C37,",
+      dark: "#CD3C37",
     },
     secondary: {
       main: "#0A1047",
@@ -38,6 +38,48 @@ const theme = createTheme({
         }),
         icon: {
           marginRight: "12px",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          borderRadius: "8px",
+          fontWeight: "500",
+        },
+        outlined: ({ theme }) => ({
+          border: `1px solid ${theme.palette.primary.main}`,
+        }),
+        contained: {
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: "none",
+          },
+        },
+      },
+      variants: [
+        {
+          props: { size: "extraLarge" },
+          style: {
+            height: "61px",
+          },
+        },
+      ],
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          boxShadow: "none",
+        },
+      },
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#f3f3f3ce",
+          backdropFilter: "blur(2px)",
+          boxShadow: "none",
         },
       },
     },
