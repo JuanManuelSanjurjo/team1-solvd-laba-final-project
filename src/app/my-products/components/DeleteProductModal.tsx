@@ -11,9 +11,23 @@ import {
   Typography,
 } from "@mui/material";
 import { Add } from "iconsax-react";
-import { useState } from "react";
+import { JSX, useState } from "react";
 
-export default function DeleteProductModal() {
+/**
+ * DeleteProductModal is a confirmation dialog used to confirm the deletion
+ * of a product image.
+ *
+ * The modal contains a title, description text, a close icon, and two action buttons:
+ * "Cancel" and "Delete". It is currently hardcoded to always be closed by default.
+ *
+ * @component
+ * @returns {JSX.Element}
+ *
+ * @example
+ * <DeleteProductModal />
+ *
+ */
+export default function DeleteProductModal(): JSX.Element {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {

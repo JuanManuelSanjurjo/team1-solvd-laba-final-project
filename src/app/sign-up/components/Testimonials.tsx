@@ -2,12 +2,26 @@ import { Box, Paper, Rating, Typography } from "@mui/material";
 import NavigationArrows, {
   ArrowsVariantType,
 } from "@/components/NavigationArrows";
+import { JSX } from "react";
 
+/**
+ * Testimonials component displays a user testimonial with rating and navigation arrows.
+ *
+ * It is styled with a frosted glass effect and is centered in its container.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {ArrowsVariantType} [props.variant] - Optional variant type for navigation arrows
+ * @returns {JSX.Element}
+ *
+ * @example
+ * <Testimonials variant="rounded" />
+ */
 export default function Testimonials({
   variant,
 }: {
   variant?: ArrowsVariantType;
-}) {
+}): JSX.Element {
   const quote = `"Lorem Ipsum is a really great company because the team is
   passionate about the projects they produce, the people they work
   with, the quality of the work they do."`;
