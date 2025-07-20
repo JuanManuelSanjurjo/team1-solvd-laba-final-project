@@ -1,7 +1,13 @@
 import { Box, Paper, Rating, Typography } from "@mui/material";
-import TestimonialNavigation from "./TestimonialNavigation";
+import NavigationArrows, {
+  ArrowsVariantType,
+} from "@/components/NavigationArrows";
 
-export default function Testimonials() {
+export default function Testimonials({
+  variant,
+}: {
+  variant?: ArrowsVariantType;
+}) {
   const quote = `"Lorem Ipsum is a really great company because the team is
   passionate about the projects they produce, the people they work
   with, the quality of the work they do."`;
@@ -33,7 +39,7 @@ export default function Testimonials() {
       >
         <Box sx={{ display: "flex" }}>
           <Typography sx={{ fontSize: "25px" }}>{quote}</Typography>
-          <TestimonialNavigation />
+          <NavigationArrows variant={variant} />
         </Box>
         <Box
           sx={{
