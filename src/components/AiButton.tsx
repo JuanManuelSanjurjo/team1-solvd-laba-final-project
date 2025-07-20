@@ -3,15 +3,12 @@
 import { useState } from "react";
 import Button from "./Button";
 import { ButtonProps as MuiButtonProps } from "@mui/material";
+import Image from "next/image";
 
-interface AiButtonProps extends MuiButtonProps {
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-export default function AiButton({ onClick, ...props }: AiButtonProps) {
+export default function AiButton({ ...props }: MuiButtonProps) {
   const [isLoading, setIsLoading] = useState(false); // probably this state will be outside the component in the parent component
 
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
@@ -32,32 +29,16 @@ export default function AiButton({ onClick, ...props }: AiButtonProps) {
         padding: "6px 12px",
         height: "45.25px",
         animation: isLoading ? "pulse 1s infinite alternate" : "none",
-        "@keyframes pulse": {
-          from: {
-            backgroundColor: "#F7635E1A",
-          },
-          to: {
-            backgroundColor: "#f7635e3a",
-          },
-        },
       }}
       endIcon={
         isLoading ? null : (
-          <img
-            src="/logo.svg"
-            alt="Logo"
-            style={{ width: 22, height: "auto" }}
-          />
+          <Image src="/logo.svg" alt="Logo" width={22} height={22} />
         )
       }
       {...props}
     >
       {isLoading ? (
-        <img
-          src="/logo-orange.svg"
-          alt="Logo"
-          style={{ width: 22, height: "auto" }}
-        />
+        <Image src="/logo-orange.svg" alt="Logo" width={22} height={22} />
       ) : (
         "Use AI suggestion"
       )}

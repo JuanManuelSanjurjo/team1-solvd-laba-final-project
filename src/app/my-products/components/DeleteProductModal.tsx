@@ -16,10 +16,6 @@ import { useState } from "react";
 export default function DeleteProductModal() {
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -39,13 +35,13 @@ export default function DeleteProductModal() {
       <IconButton
         aria-label="close"
         onClick={handleClose}
-        sx={(theme) => ({
+        sx={{
           position: "absolute",
           right: 24,
           top: 24,
           zIndex: 50,
           rotate: 45,
-        })}
+        }}
       >
         <Add color="#2F2E2D" size={32} style={{ transform: "rotate(45deg)" }} />
       </IconButton>
