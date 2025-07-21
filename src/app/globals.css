@@ -3,10 +3,19 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+  }
+}
+
+@keyframes pulse {
+  from {
+    background-color: #f7635e1a;
+  }
+  to {
+    background-color: #f7635e3a;
   }
 }
 
@@ -19,7 +28,7 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-work-sans);
+  font-family: var(--font-worksans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -35,8 +44,8 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 }
