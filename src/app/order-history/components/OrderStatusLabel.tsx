@@ -42,15 +42,6 @@ const Container = styled(Box)({
   cursor: "pointer",
 });
 
-const Text = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== "$color",
-})<{ $color: string }>(({ $color }) => ({
-  fontSize: "14px",
-  color: $color,
-  display: "flex",
-  alignItems: "center",
-}));
-
 /**
  * Renders the visual status of an order with its corresponding icon and color.
  * Displays one of the following statuses: `shipped`, `cancelled`, or `received`.
