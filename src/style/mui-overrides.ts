@@ -8,6 +8,24 @@ declare module "@mui/material/Button" {
 }
 
 declare module "@mui/material/styles" {
+  interface Palette {
+    cartTextColor: {
+      primary: string;
+      secondary: string;
+      error: string;
+    };
+  }
+
+  interface PaletteOptions {
+    cartTextColor?: {
+      primary: string;
+      secondary: string;
+      error: string;
+    };
+  }
+}
+
+declare module "@mui/material/styles" {
   interface TypographyVariants {
     cartText: React.CSSProperties;
   }
