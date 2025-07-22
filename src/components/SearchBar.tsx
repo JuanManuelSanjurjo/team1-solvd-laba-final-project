@@ -2,12 +2,34 @@ import React from 'react';
 import { Box, InputBase } from '@mui/material';
 import { SearchNormal } from 'iconsax-react';
 
+/**
+ * SearchBar component renders a customizable search input with an icon,
+ * supporting multiple predefined sizes and optional full-width behavior.
+ *
+ * It uses MUI's `Box` and `InputBase`, and includes a `SearchNormal` icon from iconsax-react.
+ * The size prop controls the height, font size, icon size, padding, and width of the search bar.
+ *
+ * @component
+ * @example
+ *
+ * <SearchBar size="medium" placeholder="Search" fullWidth />
+ *
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.placeholder='Search'] - Placeholder text shown inside the input field.
+ * @param {'large' | 'medium' | 'small' | 'xsmall'} [props.size='large'] - Controls the visual size of the search bar.
+ * @param {boolean} [props.fullWidth=false] - If true, the search bar will stretch to 100% of its container's width.
+ *
+ * @returns {JSX.Element} A styled search input with an accompanying icon.
+ */
+
 type SearchBarSize = 'large' | 'medium' | 'small' | 'xsmall';
 
 interface SearchBarProps {
   placeholder?: string;
   size?: SearchBarSize;
   fullWidth?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const sizeStyles = {
@@ -45,6 +67,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = 'Search',
   size = 'large',
   fullWidth = false,
+  onChange,
 }) => {
   const style = sizeStyles[size];
 
@@ -63,6 +86,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       <SearchNormal style={{ width: style.iconSize, marginRight: 12 }} color="#494949" />
       <InputBase
         placeholder={placeholder}
+        onChange={onChange}
         sx={{
           flex: 1,
           fontSize: style.fontSize,
