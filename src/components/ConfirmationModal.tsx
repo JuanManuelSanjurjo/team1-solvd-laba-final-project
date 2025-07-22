@@ -1,4 +1,16 @@
-import { Modal, Box, Typography, Button, Divider } from "@mui/material";
+"use client";
+import Button from "@/components/Button";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
+  Typography,
+  Box,
+} from "@mui/material";
+import { Add } from "iconsax-react";
 import { JSX } from "react";
 
 type ConfirmationModalProps = {
@@ -14,6 +26,7 @@ type ConfirmationModalProps = {
  * ConfirmationModal
  *
  * This component is a modal that displays a confirmation message with two buttons.
+ * both buttons are currently hardcoded to always be closed by default until we implement the functionality.
  *
  * @param showModal - A boolean indicating whether the modal should be displayed.
  * @param onClose - A function to be called when the modal is closed.
@@ -33,61 +46,86 @@ export default function ConfirmationModal({
   primaryBtn,
 }: ConfirmationModalProps): JSX.Element {
   return (
-    <Modal
-      open={showModal}
+    <Dialog
+      disableScrollLock
       onClose={onClose}
+      aria-labelledby="customized-dialog-title"
+      open={showModal}
+      maxWidth={false}
       sx={{
-        "& .MuiBackdrop-root": {
-          backgroundColor: "rgba(255, 255, 255, 0.5)",
+        "& .MuiPaper-root": {
+          margin: 0,
         },
       }}
-      disableScrollLock
     >
       <Box
         sx={{
-          position: "absolute",
-          display: "grid",
-          color: "#292D32",
-          gap: 5,
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          bgcolor: "white",
-          outline: "none",
-          borderRadius: 1,
-          boxShadow: 24,
-          p: 4,
           width: {
-            sx: 320,
+            xs: 320,
             md: 656,
           },
         }}
       >
-        <Typography variant="h2" component="h2">
-          {title}
-        </Typography>
-        <Typography sx={{ mt: 2 }}>{text}</Typography>
-
-        <Divider />
-        <Box
+        <DialogTitle
           sx={{
-            mt: 3,
-            display: "flex",
-            justifyContent: "space-between",
-            gap: {
-              xs: 1,
-              md: 3.75,
+            m: 0,
+            p: "32px 32px 0 32px",
+            textWrap: {
+              xs: "balance",
+              md: "wrap",
             },
+            fontSize: { xs: 30, md: 45 },
+            fontWeight: "500",
+          }}
+          id="customized-dialog-title"
+        >
+          {title || "Are you sure to delete product image"}
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 24,
+            top: 24,
+            zIndex: 50,
+            rotate: 45,
           }}
         >
-          <Button variant="outlined" onClick={onClose} sx={{ width: "100%" }}>
-            {secondaryBtn}
+          <Add
+            color="#2F2E2D"
+            size={32}
+            style={{ transform: "rotate(45deg)" }}
+          />
+        </IconButton>
+        <DialogContent sx={{ px: "32px", py: "56px" }}>
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            {text ||
+              "Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."}
+          </Typography>
+          <Divider sx={{ pt: "56px" }} />
+        </DialogContent>
+        <DialogActions
+          sx={{
+            px: "32px",
+            pb: "32px",
+            pt: "0",
+            width: "100%",
+          }}
+        >
+          <Button
+            onClick={onClose}
+            fullWidth
+            variant="outlined"
+            size="extraLarge"
+          >
+            {secondaryBtn || "Cancel"}
           </Button>
-          <Button variant="contained" sx={{ width: "100%" }}>
-            {primaryBtn}
+          <Button fullWidth variant="contained" size="extraLarge">
+            {primaryBtn || "Delete"}
           </Button>
-        </Box>
+        </DialogActions>
       </Box>
-    </Modal>
+    </Dialog>
   );
 }

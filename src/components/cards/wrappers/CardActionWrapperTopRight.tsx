@@ -6,15 +6,15 @@ type CardTopRightActionProps = {
 };
 
 /**
- * CardTopRightAction
+ * CardActionWrapperTopRight
  *
- * This component is a container for an action on the top right corner of the card.
+ * This component is a wrapper that displays overlay with an action button on the top right corner of the card.
  *
  * @param action - The JSX element to be displayed on the top right corner of the card.
  * @returns {JSX.Element} with the card top right action component.
  */
 
-export default function CardTopRightAction({
+export default function CardActionWrapperTopRight({
   action,
 }: CardTopRightActionProps): JSX.Element {
   return (

@@ -2,8 +2,8 @@
 import Fade from "@mui/material/Fade";
 import { useState, useRef, useEffect, JSX } from "react";
 import { Box } from "@mui/material";
-import ImageGalleryStack from "./ImageGalleryStack";
-import ArrowButtons from "@/components/ArrowButtons";
+import GalleryImageStack from "./GalleryImageStack";
+import NavigationArrows from "@/components/NavigationArrows";
 
 type GalleryProps = {
   images: string[];
@@ -12,8 +12,8 @@ type GalleryProps = {
 /**
  * Gallery
  *
- * This component is a gallery of images. It uses the ImageGalleryStack component to display the images in a stack layout.
- * It also uses the ArrowButtons component to display the previous and next buttons.
+ * This component is a gallery of images. It uses the GalleryImageStack component to display the images in a stack layout (queue in mobile).
+ * Also uses the NavigationArrows component to display the previous and next buttons.
  *
  * @param images - An array of image URLs.
  * @returns {JSX.Element} with the gallery component.
@@ -24,46 +24,21 @@ export default function Gallery({ images }: GalleryProps): JSX.Element {
   const thumbnailRefs = useRef<HTMLDivElement[] | []>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const handlePrev = () => {
+  function handlePrev() {
     setCurrent((prev) => (prev - 1 + images.length) % images.length);
-  };
+  }
 
-  const handleNext = () => {
+  function handleNext() {
     setCurrent((prev) => (prev + 1) % images.length);
-  };
+  }
 
   useEffect(() => {
-    if (!thumbnailRefs.current[current] || !containerRef.current) return;
-
     const thumbnail = thumbnailRefs.current[current];
-    const container = containerRef.current;
-    const isMobile = window.innerWidth < 900;
-
-    if (isMobile) {
-      const scrollLeftRaw =
-        thumbnail.offsetLeft -
-        container.clientWidth / 2 +
-        thumbnail.offsetWidth / 2;
-
-      const maxScrollLeft = container.scrollWidth - container.clientWidth;
-      const scrollLeft = Math.max(0, Math.min(scrollLeftRaw, maxScrollLeft));
-
-      container.scrollTo({
-        left: scrollLeft,
+    if (thumbnail) {
+      thumbnail.scrollIntoView({
         behavior: "smooth",
-      });
-    } else {
-      const scrollTopRaw =
-        thumbnail.offsetTop -
-        container.clientHeight / 2 +
-        thumbnail.offsetHeight / 2;
-
-      const maxScrollTop = container.scrollHeight - container.clientHeight;
-      const scrollTop = Math.max(0, Math.min(scrollTopRaw, maxScrollTop));
-
-      container.scrollTo({
-        top: scrollTop,
-        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
       });
     }
   }, [current]);
@@ -85,7 +60,7 @@ export default function Gallery({ images }: GalleryProps): JSX.Element {
           gap: 1,
         }}
       >
-        <ImageGalleryStack
+        <GalleryImageStack
           images={images}
           current={current}
           setCurrent={setCurrent}
@@ -110,8 +85,11 @@ export default function Gallery({ images }: GalleryProps): JSX.Element {
               }}
             />
           </Fade>
-
-          <ArrowButtons handleNext={handleNext} handlePrev={handlePrev} />
+          <NavigationArrows
+            variant="product_card"
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+          />
         </Box>
       </Box>
     </Box>

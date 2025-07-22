@@ -6,15 +6,15 @@ type CardImageOverlayProps = {
 };
 
 /**
- * CardImageOverlay
+ * CardActionWrapperCenter
  *
- * This component is an overlay that displays an action on the center of the image.
+ * This component is a wrapper that displays overlay with an action button on the center of the image.
  *
  * @param action - The JSX element to be displayed on the center of the image.
  * @returns {JSX.Element} with the card image overlay component.
  */
 
-export default function CardImageOverlay({
+export default function CardActionWrapperCenter({
   action,
 }: CardImageOverlayProps): JSX.Element {
   return (

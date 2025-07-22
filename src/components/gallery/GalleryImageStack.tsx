@@ -5,14 +5,16 @@ type ImageGalleryStackProps = {
   images: string[];
   setCurrent: (index: number) => void;
   current: number;
-  containerRef: React.RefObject<HTMLDivElement>;
-  thumbnailRefs: React.RefObject<HTMLDivElement[]>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  thumbnailRefs: React.RefObject<HTMLDivElement[] | []>;
 };
 
 /**
- * ImageGalleryStack
+ * GalleryImageStack
  *
- * This component is a stack of thumbnails that display images. It uses the Box component to create each thumbnail and the Stack component to arrange them in a stack layout.
+ * This component is a stack of thumbnails that display images.
+ * It uses the Box component to create each thumbnail and the Stack component to arrange them in a stack layout.
+ * Mobile version changes to a queue layout.
  *
  * @param images - An array of image URLs.
  * @param setCurrent - A function to set the current index of the gallery.
@@ -22,7 +24,7 @@ type ImageGalleryStackProps = {
  * @returns {JSX.Element} with the image gallery stack component.
  */
 
-function ImageGalleryStack({
+export default function GalleryImageStack({
   images,
   setCurrent,
   current,
@@ -43,10 +45,13 @@ function ImageGalleryStack({
           xs: "8px 0",
           md: "0 8px",
         },
-        overflow: "hidden",
+        overflow: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
         gap: 1,
-        justifyContent: "center",
-        alignItems: "center",
         flexDirection: {
           xs: "row",
           md: "column",
@@ -56,9 +61,7 @@ function ImageGalleryStack({
       {images.map((src, index) => (
         <Box
           key={index}
-          ref={(el: HTMLDivElement) => {
-            if (el) thumbnailRefs.current[index] = el;
-          }}
+          ref={(el: HTMLDivElement) => (thumbnailRefs.current[index] = el)}
           onClick={() => setCurrent(index)}
           sx={{
             position: "relative",
@@ -67,7 +70,7 @@ function ImageGalleryStack({
             height: 75,
             aspectRatio: "1/1",
             border:
-              index === current ? "1px solid #fe645e" : "2px solid transparent",
+              index === current ? "2px solid #fe645e" : "2px solid transparent",
             boxShadow: index === current ? 2 : 0,
             transition: "border 0.3s",
             "&::after":
@@ -84,6 +87,7 @@ function ImageGalleryStack({
                 : null,
             "&:hover": {
               opacity: 0.5,
+              transition: "opacity 0.2s",
             },
           }}
         >
@@ -102,4 +106,3 @@ function ImageGalleryStack({
     </Stack>
   );
 }
-export default ImageGalleryStack;

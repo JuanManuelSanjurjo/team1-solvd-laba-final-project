@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import CardImage from "./CardImage";
-import CardTopRightAction from "./CardTopRightAction";
-import CardImageOverlay from "./CardImageOverlay";
+import CardActionWrapperTopRight from "./wrappers/CardActionWrapperTopRight";
+import CardActionWrapperCenter from "./wrappers/CardActionWrapperCenter";
 import { JSX } from "react";
 
 type CardProps = {
@@ -15,12 +15,13 @@ type CardProps = {
  * Card
  *
  * This component is a card that displays an image, an optional action, and optional text.
+ * The action is passed to a wrapper component to be rendered on the top right or in the center of the image.
  * It can be used as a standalone card or as part of a gallery.
  *
  * @param image - The URL of the image to display in the card.
- * @param action - An optional JSX element to display on the right side of the card.
- * @param overlay - A boolean indicating whether to display an overlay on the image.
- * @param showText - A boolean indicating whether to display the text on the card.
+ * @param action - An optional JSX element to display on top of the card.
+ * @param overlay - An optional boolean indicating whether the action should use the overlay wrapper instead of the top right wrapper.
+ * @param showText - An optional boolean indicating whether to display the text on the card.
  * @returns {JSX.Element} with the card component.
  */
 
@@ -48,8 +49,8 @@ export default function Card({
     >
       <CardImage image={image}>
         <>
-          {action && !overlay && <CardTopRightAction action={action} />}
-          {action && overlay && <CardImageOverlay action={action} />}
+          {action && !overlay && <CardActionWrapperTopRight action={action} />}
+          {action && overlay && <CardActionWrapperCenter action={action} />}
         </>
       </CardImage>
       {showText && (

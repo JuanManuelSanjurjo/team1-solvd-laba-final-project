@@ -5,15 +5,16 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState, JSX } from "react";
 
 /**
- * CardAddToCart
+ * CardOverlayAddToCart
  *
  * This component is a button that, when clicked,
- * opens a confirmation modal with a message asking the user to confirm adding the item to the cart.
+ * Is passed to the Card component to be rendered on top of the image.
+ * Opens a confirmation modal with a message asking the user to confirm adding the item to the cart.
  *
  * @returns {JSX.Element} with the card add to cart component.
  */
 
-export default function CardAddToCart(): JSX.Element {
+export default function CardOverlayAddToCart(): JSX.Element {
   const [showModal, setShowModal] = useState(false);
 
   return (

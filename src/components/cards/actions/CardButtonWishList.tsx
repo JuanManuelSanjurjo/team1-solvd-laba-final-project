@@ -3,14 +3,15 @@ import { HeartSlash } from "iconsax-react";
 import { JSX } from "react";
 
 /**
- * CardWhishListButton
+ * CardButtonWishList
  *
  * This component is a button that, when clicked, adds the item to the wishlist.
+ * Is passed to the Card component to be rendered on top of the image.
  *
  * @returns {JSX.Element} with the card whish list button component.
  */
 
-export default function CardWhishListButton(): JSX.Element {
+export default function CardButtonWishList(): JSX.Element {
   return (
     <Box
       sx={{

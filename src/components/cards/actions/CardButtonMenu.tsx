@@ -6,23 +6,24 @@ import { useState, JSX, MouseEvent } from "react";
 import { Box } from "@mui/material";
 
 /**
- * CardMenu
+ * CardButtonMenu
  *
  * This component is a menu button that displays a dropdown menu when clicked.
+ * Is passed to the Card component to be rendered on top of the image.
  *
  * @returns {JSX.Element} with the card menu component.
  */
 
-export default function CardMenu(): JSX.Element {
+export default function CardButtonMenu(): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open: boolean = Boolean(anchorEl);
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+  function handleClick(event: MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
+  }
+  function handleClose() {
     setAnchorEl(null);
-  };
+  }
 
   return (
     <Box>
@@ -41,7 +42,6 @@ export default function CardMenu(): JSX.Element {
         onClick={handleClick}
       />
       <Menu
-        m={0}
         id="popup-menu"
         anchorEl={anchorEl}
         open={open}
@@ -56,6 +56,14 @@ export default function CardMenu(): JSX.Element {
         }}
         disableAutoFocusItem
         disableScrollLock
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: "initial",
+              backdropFilter: "initial",
+            },
+          },
+        }}
       >
         <MenuItem onClick={handleClose}>View</MenuItem>
         <MenuItem onClick={handleClose}>Edit</MenuItem>

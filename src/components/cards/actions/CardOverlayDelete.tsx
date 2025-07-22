@@ -5,15 +5,16 @@ import { useState, JSX } from "react";
 import ConfirmationModal from "@/components/ConfirmationModal";
 
 /**
- * CardDeleteOverlay
+ * CardOverlayDelete
  *
  * This component is an overlay that, when clicked,
- * opens a confirmation modal with a message asking the user to confirm deleting the item.
+ * Is passed to the Card component to be rendered on top of the image.
+ * Opens a confirmation modal with a message asking the user to confirm deleting the item.
  *
  * @returns {JSX.Element} with the card delete overlay component.
  */
 
-export default function CardDeleteOverlay(): JSX.Element {
+export default function CardOverlayDelete(): JSX.Element {
   const [showModal, setShowModal] = useState(false);
 
   return (

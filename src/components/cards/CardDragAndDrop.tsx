@@ -4,48 +4,48 @@ import { Box, Typography, Link } from "@mui/material";
 import { Gallery } from "iconsax-react";
 
 /**
- * ImageDragAndDrop
+ * CardDragAndDrop
  *
  * This component is a drag and drop area for images. It displays a gallery icon and a text indicating whether to drop the image or click to browse.
  *
  * @returns {JSX.Element} with the image drag and drop component.
  */
 
-export default function ImageDragAndDrop(): JSX.Element {
+export default function CardDragAndDrop(): JSX.Element {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleClick = () => {
+  function handleClick() {
     inputRef.current?.click();
-  };
+  }
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (file) processFile(file);
-  };
+  }
 
-  // Process file
-  const processFile = (file: File) => {
+  function processFile(file: File) {
+    // Process file
     console.log("placeholder for actual feature", file);
-  };
+  }
 
-  const handleDragOver = (e: DragEvent) => {
+  function handleDragOver(e: DragEvent) {
     e.preventDefault();
     setIsDragging(true);
-  };
+  }
 
-  const handleDragLeave = () => {
+  function handleDragLeave() {
     setIsDragging(false);
-  };
+  }
 
-  const handleDrop = (e: DragEvent) => {
+  function handleDrop(e: DragEvent) {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files?.[0];
     if (file && file.type.startsWith("image/")) {
       processFile(file);
     }
-  };
+  }
 
   return (
     <Box

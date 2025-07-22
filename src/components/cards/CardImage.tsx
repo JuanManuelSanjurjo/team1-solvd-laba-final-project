@@ -10,6 +10,7 @@ type CardImageProps = {
  * CardImage
  *
  * This component is a container for an image and its children.
+ * used in the Card component
  *
  * @param image - The URL of the image to display.
  * @param children - The JSX elements to be displayed inside the image container.
