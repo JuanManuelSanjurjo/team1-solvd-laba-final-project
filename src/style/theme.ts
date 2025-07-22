@@ -89,7 +89,41 @@ const theme = createTheme({
         },
       },
     },
+    MuiOutlinedInput:{
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+        },
+        notchedOutline: {
+          borderColor: "#494949",
+        },
+        input: {
+          padding: '15px 16px',
+          '&.MuiFocused' :{
+            borderColor: "#000000",
+          }
+        },
+        error: ({theme})=> ({
+          borderColor: theme.palette.error.main,
+          color: theme.palette.error.main
+        })
+      }
+    },
+    MuiFormHelperText: {
+      styleOverrides:{
+        root:{
+        display: "flex",
+        alignItems: "center",
+        gap: 4,
+        padding: 0,
+        marginInline: 0,
+        marginTop: 8
+      }
+      }
+      
+    }
   },
+
   typography: {
     fontFamily: worksansFont,
     h1: {
