@@ -61,7 +61,9 @@ export default function GalleryImageStack({
       {images.map((src, index) => (
         <Box
           key={index}
-          ref={(el: HTMLDivElement) => (thumbnailRefs.current[index] = el)}
+          ref={(el: HTMLDivElement | null) => {
+            if (el) thumbnailRefs.current[index] = el;
+          }}
           onClick={() => setCurrent(index)}
           sx={{
             position: "relative",

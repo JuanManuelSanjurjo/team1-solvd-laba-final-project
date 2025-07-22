@@ -5,9 +5,9 @@ import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
 import { JSX } from "react";
 
 export type NavigationArrowsProps = {
-  variant: "product_card" | "testimonials";
-  handleNext: () => void;
-  handlePrev: () => void;
+  variant?: "product_card" | "testimonials";
+  handleNext?: () => void;
+  handlePrev?: () => void;
 };
 
 /**
@@ -16,11 +16,7 @@ export type NavigationArrowsProps = {
  * The styling changes based on the `variant` provided.
  */
 const StyledBox = styled(Box)(
-  ({
-    variant = "product_card",
-  }: {
-    variant?: NavigationArrowsProps["variant"];
-  }) => ({
+  ({ variant = "product_card" }: Pick<NavigationArrowsProps, "variant">) => ({
     width: variant === "product_card" ? "24px" : "38px",
     height: variant === "product_card" ? "24px" : "38px",
     border:

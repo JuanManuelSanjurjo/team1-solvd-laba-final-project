@@ -28,6 +28,7 @@ export default function CardButtonMenu(): JSX.Element {
   return (
     <Box>
       <MoreHorizRoundedIcon
+        component="button"
         id="basic-button"
         sx={{
           cursor: "pointer",

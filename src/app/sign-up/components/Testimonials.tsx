@@ -11,7 +11,7 @@ import { JSX } from "react";
  *
  * @component
  * @param {Object} props - Component props
- * @param {ArrowsVariantType} [props.variant] - Optional variant type for navigation arrows
+ * @param {NavigationArrowsProps["variant"]} [props.variant] - Optional variant type for navigation arrows
  * @returns {JSX.Element}
  *
  * @example
@@ -19,9 +19,7 @@ import { JSX } from "react";
  */
 export default function Testimonials({
   variant,
-}: {
-  variant?: NavigationArrowsProps["variant"];
-}): JSX.Element {
+}: Pick<NavigationArrowsProps, "variant">): JSX.Element {
   const quote = `"Lorem Ipsum is a really great company because the team is
   passionate about the projects they produce, the people they work
   with, the quality of the work they do."`;
