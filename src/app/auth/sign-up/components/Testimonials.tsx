@@ -50,7 +50,9 @@ export default function Testimonials({
         }}
       >
         <Box sx={{ display: "flex" }}>
-          <Typography sx={{ fontSize: "25px" }}>{quote}</Typography>
+          <Typography sx={{ fontSize: { sm: "16px", md: "20px", lg: "25px" } }}>
+            {quote}
+          </Typography>
           <NavigationArrows variant={variant} />
         </Box>
         <Box

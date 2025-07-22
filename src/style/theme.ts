@@ -192,6 +192,7 @@ const theme = createTheme({
     body2: {
       fontFamily: worksansFont,
       fontSize: 15,
+      fontWeight: 300,
     },
     button: {
       fontFamily: worksansFont,
