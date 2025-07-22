@@ -3,17 +3,33 @@ import { JSX } from "react";
 import { Danger } from "iconsax-react";
 
 /**
- * A wrapper around MUI's input comoponent
+ * A reusable input field built on top of MUI's OutlinedInput.
+ * It includes label rendering, required marker, and error display with an icon.
  * 
  * @component
- * @param {MuiInputProps} props - All props supported by MUI's Input Component
+ * @param {MuiInputProps} props - Props for the input component.
+ * @param {string} props.label - The visible label above the input.
+ * @param {boolean} [props.required] - Whether the field is required. If true, an asterisk is shown.
+ * @param {string} props.errorMessage - Error message shown below the input (if present).
+ * @param {string} [props.placeholder] - Placeholder text for the input.
+ * @returns {JSX.Element} The styled input component.
  * 
+ * @example 
+ *  <Input
+    *   name="email"
+    *   label="Email Address"
+    *   required
+    *   placeholder="Enter your email"
+    *   errorMessage={formErrors.email}
+    *   value={formData.email}
+    *   onChange={handleChange}
+ *  />
  */
 
 type MuiInputProps = {
-  name: string
-  label: string
-  required?: boolean,
+    name: string
+    label: string
+    required?: boolean,
     errorMessage: string
 } & Omit<OutlinedInputProps, 'error'> 
 
@@ -30,10 +46,9 @@ export default function Input (
                 { required && <Box component="span" sx={{color: "primary.main"}}> *</Box>} 
             </Typography>
 
-            <OutlinedInput id={`${name}`} placeholder={placeholder} required={required} {...props}/>
+            <OutlinedInput error={hasError} id={`${name}`} placeholder={placeholder} required={required} {...props}/>
 
             {hasError && <FormHelperText sx={{}}><Danger color="#FE645E" size="16" />{errorMessage}</FormHelperText>}
-            
         </FormControl>
     )
 }

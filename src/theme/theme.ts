@@ -4,6 +4,7 @@ import { createTheme } from "@mui/material/styles";
 
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
 
+
 const theme = createTheme({
   palette: {
     mode: "light",
@@ -29,6 +30,9 @@ const theme = createTheme({
       secondary: "#5C5C5C",
       disabled: "#8C9196",
     },
+    custom: {
+      darkGrey: "#494949"
+    }
   },
   components: {
     MuiRating: {
@@ -91,22 +95,32 @@ const theme = createTheme({
     },
     MuiOutlinedInput:{
       styleOverrides: {
-        root: {
+        root: ({theme})=> ({
           borderRadius: 8,
-        },
+          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.error.main,
+          },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: theme.palette.error.main,
+            },
+              '&.Mui-error input': {
+              color: theme.palette.error.main,
+              fontWeight: 500,
+            }
+           
+        }),
         notchedOutline: {
           borderColor: "#494949",
         },
-        input: {
+        input:{
           padding: '15px 16px',
-          '&.MuiFocused' :{
-            borderColor: "#000000",
-          }
+          fontWeight: 300,
         },
-        error: ({theme})=> ({
-          borderColor: theme.palette.error.main,
-          color: theme.palette.error.main
-        })
+        /* error: ({theme})=> ({
+          // borderColor: theme.palette.error.main,
+          color: theme.palette.error.main,
+          fontWeight: 500
+        }) */
       }
     },
     MuiFormHelperText: {
@@ -117,10 +131,23 @@ const theme = createTheme({
         gap: 4,
         padding: 0,
         marginInline: 0,
-        marginTop: 8
+        marginTop: 8,
+        fontWeight: 400
       }
       }
-      
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          '&.Mui-focused':{
+            borderColor: "#494949"
+          }
+        },
+         filled: ({theme}) => ({
+          borderColor: "#494949",
+      })
+      }
+     
     }
   },
 
