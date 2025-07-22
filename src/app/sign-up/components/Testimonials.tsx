@@ -1,6 +1,6 @@
 import { Box, Paper, Rating, Typography } from "@mui/material";
 import NavigationArrows, {
-  ArrowsVariantType,
+  NavigationArrowsProps,
 } from "@/components/NavigationArrows";
 import { JSX } from "react";
 
@@ -20,7 +20,7 @@ import { JSX } from "react";
 export default function Testimonials({
   variant,
 }: {
-  variant?: ArrowsVariantType;
+  variant?: NavigationArrowsProps["variant"];
 }): JSX.Element {
   const quote = `"Lorem Ipsum is a really great company because the team is
   passionate about the projects they produce, the people they work
