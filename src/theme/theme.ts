@@ -5,6 +5,7 @@ import { createTheme } from "@mui/material/styles";
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
 const nunitosansFont = 'var(--font-nunitosans), "Segoe UI", sans-serif';
 
+
 const theme = createTheme({
   palette: {
     mode: "light",
