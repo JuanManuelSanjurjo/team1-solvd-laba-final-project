@@ -1,6 +1,7 @@
 'use client';
 
 import { createTheme } from '@mui/material/styles';
+import { Margarine } from 'next/font/google';
 
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
 
@@ -93,6 +94,33 @@ const theme = createTheme({
             '& svg': {
               fontSize: 15,
             },
+          },
+        },
+      },
+    },
+    MuiSlider: {
+      styleOverrides: {
+        root: {
+          padding: '6px 0',
+        },
+        rail: {
+          backgroundColor: '#EAECF0',
+        },
+        thumb: {
+          width: 16,
+          height: 16,
+          '&::before': {
+            content: '""',
+            margin: 0,
+            width: 12,
+            height: 12,
+            backgroundColor: '#fff',
+            borderRadius: '50%',
+            top: 8,
+            transform: 'translateY(-50%)',
+          },
+          '&:hover, &.Mui-focusVisible, &.Mui-active': {
+            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.15)', // same as base shadow
           },
         },
       },
