@@ -61,13 +61,12 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
       >
         {isSearching ? (
           <>
-            {/* Left logo when searching */}
             {!isMobile && (
               <Box position="absolute" left={isMobile ? 24 : 40}>
                 <LogoBlackSvg />
               </Box>
             )}
-            {/* Center search bar */}
+
             <SearchBar size={searchBarSize} fullWidth={isMobile ? true : false} />
             <Box
               position={isMobile ? 'relative' : 'absolute'}
@@ -86,7 +85,6 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
           </>
         ) : (
           <>
-            {/* .... */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: itemGap, position: 'relative' }}>
               <LogoBlackSvg />
               {isDesktop && (
@@ -95,7 +93,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                 </Typography>
               )}
             </Box>
-            {/* Right side: Buttons and icons */}
+
             <Box sx={{ display: 'flex', alignItems: 'center', gap: itemGap }}>
               {!isAuthenticated && (
                 <Button
