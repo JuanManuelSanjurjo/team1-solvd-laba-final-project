@@ -3,7 +3,7 @@
 import { createTheme } from "@mui/material/styles";
 
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
-
+const nunitosansFont = 'var(--font-nunitosans), "Segoe UI", sans-serif';
 
 const theme = createTheme({
   palette: {
@@ -29,7 +29,12 @@ const theme = createTheme({
       primary: "#000000", //Sometimes #1E2832 is the primary and sometimes #000000 is.
       secondary: "#5C5C5C",
       disabled: "#8C9196",
-    }
+    },
+    cartTextColor: {
+      primary: "#1E2832",
+      secondary: "#8C9196",
+      error: "#EB5656",
+    },
   },
   components: {
     MuiRating: {
@@ -81,34 +86,35 @@ const theme = createTheme({
         },
       },
     },
-   /*  MuiBackdrop: {
+    MuiBackdrop: {
       styleOverrides: {
         root: {
-         
+          backgroundColor: "#f3f3f3ce",
+          backdropFilter: "blur(2px)",
+          boxShadow: "none",
         },
       },
-    }, */
-    MuiOutlinedInput:{
+    },
+    MuiOutlinedInput: {
       styleOverrides: {
-        root: ({theme})=> ({
+        root: ({ theme }) => ({
           borderRadius: 8,
-          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
             borderColor: theme.palette.error.main,
           },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: theme.palette.error.main,
-            },
-              '&.Mui-error input': {
-              color: theme.palette.error.main,
-              fontWeight: 500,
-            }
-           
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: theme.palette.error.main,
+          },
+          "&.Mui-error input": {
+            color: theme.palette.error.main,
+            fontWeight: 500,
+          },
         }),
         notchedOutline: {
           borderColor: "#494949",
         },
-        input:{
-          padding: '15px 16px',
+        input: {
+          padding: "15px 16px",
           fontWeight: 300,
         },
         /* error: ({theme})=> ({
@@ -116,33 +122,33 @@ const theme = createTheme({
           color: theme.palette.error.main,
           fontWeight: 500
         }) */
-      }
+      },
     },
     MuiFormHelperText: {
-      styleOverrides:{
-        root:{
-        display: "flex",
-        alignItems: "center",
-        gap: 4,
-        padding: 0,
-        marginInline: 0,
-        marginTop: 8,
-        fontWeight: 400
-      }
-      }
+      styleOverrides: {
+        root: {
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
+          padding: 0,
+          marginInline: 0,
+          marginTop: 8,
+          fontWeight: 400,
+        },
+      },
     },
     MuiSelect: {
       styleOverrides: {
         root: {
-          '&.Mui-focused':{
-            borderColor: "#494949"
-          }
+          "&.Mui-focused": {
+            borderColor: "#494949",
+          },
         },
-         filled: {
+        filled: {
           borderColor: "#494949",
-        }
-      }
-    }
+        },
+      },
+    },
   },
   typography: {
     fontFamily: worksansFont,
@@ -194,6 +200,12 @@ const theme = createTheme({
     caption: {
       fontFamily: worksansFont,
       fontSize: 12,
+    },
+    cartText: {
+      fontFamily: nunitosansFont,
+      fontSize: 14,
+      fontWeight: 700,
+      lineHeight: "24px",
     },
   },
 });
