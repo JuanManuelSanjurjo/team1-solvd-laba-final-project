@@ -1,7 +1,6 @@
 'use client';
 
 import { createTheme } from '@mui/material/styles';
-import { Margarine } from 'next/font/google';
 
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
 
