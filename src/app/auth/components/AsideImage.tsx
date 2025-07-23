@@ -14,10 +14,7 @@ export default function AsideImage({
   return (
     <Box
       sx={{
-        display: "none", // default hidden
-        [((theme: Theme) => theme.breakpoints.up("lg")) as unknown as string]: {
-          display: "block",
-        },
+        display: "block", // default hidden
         position: "relative",
         flex: "0 0 50%",
         height: "100%",

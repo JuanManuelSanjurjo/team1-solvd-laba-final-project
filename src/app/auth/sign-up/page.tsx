@@ -4,6 +4,9 @@ import AuthHeader from "../components/AuthHeader";
 import MainContainer from "../components/MainContainer";
 import LeftBoxFormContainer from "../components/LeftBoxFormContainer";
 import AuthLogo from "../components/AuthLogo";
+import { Box, Typography } from "@mui/material";
+import Link from "next/link";
+import SignUpForm from "./components/SignUpForm";
 
 export default function SignUp() {
   return (
@@ -14,6 +17,32 @@ export default function SignUp() {
           title="Create an account"
           subtitle="Create an account to get an easy access to your dream shopping"
         />
+        <SignUpForm />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 500, textAlign: "center" }}
+          >
+            Already have an account?{" "}
+            <Link href="/auth/sign-in" passHref>
+              <Typography
+                component="span"
+                sx={{
+                  fontWeight: 600,
+                  color: "primary.main",
+                  textDecoration: "none",
+                }}
+              >
+                Log in
+              </Typography>
+            </Link>
+          </Typography>
+        </Box>
       </LeftBoxFormContainer>
       <AsideImage imageUrl="/assets/images/auth-aside.jpg" alt="Sneakers image">
         <Testimonials variant="testimonials" />

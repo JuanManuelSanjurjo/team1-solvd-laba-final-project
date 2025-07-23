@@ -22,11 +22,11 @@ const StyledBox = styled(Box)(
     border:
       variant === "product_card"
         ? "unset"
-        : "2px solid rgba(228, 228, 228, 0.78)",
+        : "2px solid rgba(255, 255, 255, 0.4)",
     backgroundColor: variant === "product_card" ? "#fff" : "unset",
     borderRadius: "100%",
     cursor: "pointer",
-  }),
+  })
 );
 
 /**
@@ -56,7 +56,6 @@ export default function NavigationArrows({
       justifyContent="flex-end"
       p={1}
       gap={2}
-      position="absolute"
       bottom={variant === "product_card" ? 24 : "66%"} // for testimonials check when used
       right={variant === "product_card" ? 32 : 45}
     >
