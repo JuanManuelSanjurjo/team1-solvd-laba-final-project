@@ -47,6 +47,15 @@ export default function ConfirmationModal({
 }: ConfirmationModalProps): JSX.Element {
   return (
     <Dialog
+      slotProps={{
+        backdrop: {
+          sx:{
+            backgroundColor: 'rgba(0, 0, 0, 0.2)', // lighter backdrop
+            backdropFilter: 'blur(3px)', // blur effect
+          }
+        }
+        
+      }}
       disableScrollLock
       onClose={onClose}
       aria-labelledby="customized-dialog-title"

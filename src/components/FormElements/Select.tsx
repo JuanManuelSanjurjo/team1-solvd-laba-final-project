@@ -27,8 +27,7 @@ return (
                 {label}
                 { required && <Box component="span" sx={{color: "primary.main"}}> *</Box>} 
             </Typography>
-        <MuiSelect 
-         variant="outlined" {...props}>
+        <MuiSelect variant="outlined" {...props}>
              <MenuItem disabled value="">
             {placeholder}
           </MenuItem>

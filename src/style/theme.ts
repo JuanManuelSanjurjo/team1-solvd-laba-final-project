@@ -81,15 +81,13 @@ const theme = createTheme({
         },
       },
     },
-    MuiBackdrop: {
+   /*  MuiBackdrop: {
       styleOverrides: {
         root: {
-          backgroundColor: "#f3f3f3ce",
-          backdropFilter: "blur(2px)",
-          boxShadow: "none",
+         
         },
       },
-    },
+    }, */
     MuiOutlinedInput:{
       styleOverrides: {
         root: ({theme})=> ({
