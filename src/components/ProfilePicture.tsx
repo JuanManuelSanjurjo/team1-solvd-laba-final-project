@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Avatar } from '@mui/material';
 
@@ -9,13 +10,13 @@ import { Avatar } from '@mui/material';
  *
  * @component
  * @example
- * ```tsx
+ *
  * <ProfilePicture
  *   src="www.coolavatarbystrapi.com/images/upload/1.jpg"
  *   alt="User avatar"
  *   width={40}
  * />
- * ```
+ *
  *
  * @param {Object} props - Component props
  * @param {string} props.src - The URL of the image to display inside the avatar.

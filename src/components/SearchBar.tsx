@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Box, InputBase } from '@mui/material';
 import { SearchNormal } from 'iconsax-react';
@@ -91,6 +92,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           flex: 1,
           fontSize: style.fontSize,
           color: 'text.secondary',
+          '& input::placeholder': {
+            color: 'text.secondary',
+            opacity: 1,
+          },
         }}
       />
     </Box>
