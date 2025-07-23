@@ -1,11 +1,19 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { AppBar, Box, Toolbar, Typography, Button, useMediaQuery, useTheme } from '@mui/material';
-import { Bag, CloseCircle, HambergerMenu, SearchNormal } from 'iconsax-react';
-import { SearchBar } from './SearchBar';
-import { ProfilePicture } from './ProfilePicture';
-import { LogoBlackSvg } from './LogoBlackSvg';
+import React, { useState } from "react";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { Bag, CloseCircle, HambergerMenu, SearchNormal } from "iconsax-react";
+import { SearchBar } from "./SearchBar";
+import { ProfilePicture } from "./ProfilePicture";
+import { LogoBlackSvg } from "./LogoBlackSvg";
 
 /**
  * Header component displays a responsive top navigation bar with different layouts
@@ -35,9 +43,9 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // <600px
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md')); // 600–900px
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md')); // >900px
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // <600px
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md")); // 600–900px
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md")); // >900px
 
   const [isSearching, setIsSearching] = useState(false);
   const toggleSearch = () => setIsSearching(!isSearching);
@@ -45,18 +53,18 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const toolbarHeight = isMobile ? 60 : isTablet ? 90 : 120;
   const itemGap = isMobile ? 2.5 : 5;
   const bagIconSize = isMobile ? 20 : 24;
-  const searchBarSize = isMobile ? 'xsmall' : isTablet ? 'medium' : 'large';
+  const searchBarSize = isMobile ? "xsmall" : isTablet ? "medium" : "large";
 
   return (
     <AppBar position="static" color="transparent" elevation={0}>
       <Toolbar
         disableGutters
         sx={{
-          justifyContent: isSearching ? 'center' : 'space-between',
-          pl: isMobile ? '24px' : '40px',
-          pr: isMobile ? '24px' : '60px',
+          justifyContent: isSearching ? "center" : "space-between",
+          pl: isMobile ? "24px" : "40px",
+          pr: isMobile ? "24px" : "60px",
           height: toolbarHeight,
-          backgroundColor: 'white',
+          backgroundColor: "white",
         }}
       >
         {isSearching ? (
@@ -67,45 +75,71 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
               </Box>
             )}
 
-            <SearchBar size={searchBarSize} fullWidth={isMobile ? true : false} />
+            <SearchBar
+              size={searchBarSize}
+              fullWidth={isMobile ? true : false}
+            />
             <Box
-              position={isMobile ? 'relative' : 'absolute'}
+              position={isMobile ? "relative" : "absolute"}
               right={isMobile ? 0 : 40}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
+                display: "flex",
+                alignItems: "center",
               }}
               onClick={toggleSearch}
             >
               <CloseCircle
-                style={{ width: isMobile ? 15 : 27, marginLeft: isMobile ? 20 : 0 }}
+                style={{
+                  width: isMobile ? 15 : 27,
+                  marginLeft: isMobile ? 20 : 0,
+                }}
                 color="#292d32"
               />
             </Box>
           </>
         ) : (
           <>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: itemGap, position: 'relative' }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: itemGap,
+                position: "relative",
+              }}
+            >
               <LogoBlackSvg />
               {isDesktop && (
-                <Typography variant="body1" color="text.primary" fontWeight={600}>
+                <Typography
+                  variant="body1"
+                  color="text.primary"
+                  fontWeight={600}
+                >
                   Products
                 </Typography>
               )}
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: itemGap }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: itemGap }}>
               {!isAuthenticated && (
                 <Button
                   variant="outlined"
                   size="small"
-                  sx={{ padding: isMobile ? '8px 28px' : isTablet ? '12px 40px' : '16px 52px' }}
+                  sx={{
+                    padding: isMobile
+                      ? "8px 28px"
+                      : isTablet
+                      ? "12px 40px"
+                      : "16px 52px",
+                  }}
                 >
                   Sign in
                 </Button>
               )}
 
-              <Box onClick={toggleSearch} sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box
+                onClick={toggleSearch}
+                sx={{ display: "flex", alignItems: "center" }}
+              >
                 {isDesktop ? (
                   <SearchBar size="medium" />
                 ) : (
@@ -113,7 +147,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                 )}
               </Box>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <Bag style={{ width: bagIconSize }} color="#292d32" />
                 {isAuthenticated && isDesktop && (
                   <ProfilePicture
@@ -122,7 +156,9 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                   />
                 )}
               </Box>
-              {!isDesktop && <HambergerMenu style={{ width: 24 }} color="#292d32" />}
+              {!isDesktop && (
+                <HambergerMenu style={{ width: 24 }} color="#292d32" />
+              )}
             </Box>
           </>
         )}

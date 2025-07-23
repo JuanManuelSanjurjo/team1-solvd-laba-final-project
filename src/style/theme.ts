@@ -1,33 +1,33 @@
-'use client';
+"use client";
 
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
 
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#FE645E',
-      light: '#FE645E', //It is the same but will put it here for maintanance purposes,
-      contrastText: '#ffffff',
-      dark: '#CD3C37',
+      main: "#FE645E",
+      light: "#FE645E", //It is the same but will put it here for maintanance purposes,
+      contrastText: "#ffffff",
+      dark: "#CD3C37",
     },
     secondary: {
-      main: '#0A1047',
-      light: '#141E7A',
+      main: "#0A1047",
+      light: "#141E7A",
     },
     error: {
-      main: '#FE645E',
+      main: "#FE645E",
     },
     background: {
-      default: '#ffffff',
-      paper: '#fafafa', //#fafafa is used as a background for some cards
+      default: "#ffffff",
+      paper: "#fafafa", //#fafafa is used as a background for some cards
     },
     text: {
-      primary: '#000000', //Sometimes #1E2832 is the primary and sometimes #000000 is.
-      secondary: '#5C5C5C',
-      disabled: '#8C9196',
+      primary: "#000000", //Sometimes #1E2832 is the primary and sometimes #000000 is.
+      secondary: "#5C5C5C",
+      disabled: "#8C9196",
     },
   },
   components: {
@@ -37,32 +37,32 @@ const theme = createTheme({
           color: theme.palette.primary.main,
         }),
         icon: {
-          marginRight: '12px',
+          marginRight: "12px",
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none',
-          borderRadius: '8px',
-          fontWeight: '500',
+          textTransform: "none",
+          borderRadius: "8px",
+          fontWeight: "500",
         },
         outlined: ({ theme }) => ({
           border: `1px solid ${theme.palette.primary.main}`,
         }),
         contained: {
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: 'none',
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: "none",
           },
         },
       },
       variants: [
         {
-          props: { size: 'extraLarge' },
+          props: { size: "extraLarge" },
           style: {
-            height: '61px',
+            height: "61px",
           },
         },
       ],
@@ -70,16 +70,16 @@ const theme = createTheme({
     MuiDialog: {
       styleOverrides: {
         paper: {
-          boxShadow: 'none',
+          boxShadow: "none",
         },
       },
     },
     MuiBackdrop: {
       styleOverrides: {
         root: {
-          backgroundColor: '#f3f3f3ce',
-          backdropFilter: 'blur(2px)',
-          boxShadow: 'none',
+          backgroundColor: "#f3f3f3ce",
+          backdropFilter: "blur(2px)",
+          boxShadow: "none",
         },
       },
     },
@@ -87,10 +87,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           padding: 0,
-          '&.MuiCheckbox-sizeMedium': {
+          "&.MuiCheckbox-sizeMedium": {
             width: 15,
             height: 15,
-            '& svg': {
+            "& svg": {
               fontSize: 15,
             },
           },
@@ -100,26 +100,26 @@ const theme = createTheme({
     MuiSlider: {
       styleOverrides: {
         root: {
-          padding: '6px 0',
+          padding: "6px 0",
         },
         rail: {
-          backgroundColor: '#EAECF0',
+          backgroundColor: "#EAECF0",
         },
         thumb: {
           width: 16,
           height: 16,
-          '&::before': {
+          "&::before": {
             content: '""',
             margin: 0,
             width: 12,
             height: 12,
-            backgroundColor: '#fff',
-            borderRadius: '50%',
+            backgroundColor: "#fff",
+            borderRadius: "50%",
             top: 8,
-            transform: 'translateY(-50%)',
+            transform: "translateY(-50%)",
           },
-          '&:hover, &.Mui-focusVisible, &.Mui-active': {
-            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.15)', // same as base shadow
+          "&:hover, &.Mui-focusVisible, &.Mui-active": {
+            boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.15)", // same as base shadow
           },
         },
       },

@@ -1,7 +1,7 @@
-'use client';
-import React from 'react';
-import { Box, InputBase } from '@mui/material';
-import { SearchNormal } from 'iconsax-react';
+"use client";
+import React from "react";
+import { Box, InputBase } from "@mui/material";
+import { SearchNormal } from "iconsax-react";
 
 /**
  * SearchBar component renders a customizable search input with an icon,
@@ -24,7 +24,7 @@ import { SearchNormal } from 'iconsax-react';
  * @returns {JSX.Element} A styled search input with an accompanying icon.
  */
 
-type SearchBarSize = 'large' | 'medium' | 'small' | 'xsmall';
+type SearchBarSize = "large" | "medium" | "small" | "xsmall";
 
 interface SearchBarProps {
   placeholder?: string;
@@ -39,7 +39,7 @@ const sizeStyles = {
     fontSize: 24,
     iconSize: 27,
     paddingX: 4,
-    width: '60%',
+    width: "60%",
   },
   medium: {
     height: 48,
@@ -65,8 +65,8 @@ const sizeStyles = {
 };
 
 export const SearchBar: React.FC<SearchBarProps> = ({
-  placeholder = 'Search',
-  size = 'large',
+  placeholder = "Search",
+  size = "large",
   fullWidth = false,
   onChange,
 }) => {
@@ -75,25 +75,28 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <Box
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        width: fullWidth ? '100%' : style.width,
+        display: "flex",
+        alignItems: "center",
+        width: fullWidth ? "100%" : style.width,
         height: style.height,
-        borderRadius: '999px',
-        border: '1px solid #494949',
+        borderRadius: "999px",
+        border: "1px solid #494949",
         px: style.paddingX,
       }}
     >
-      <SearchNormal style={{ width: style.iconSize, marginRight: 12 }} color="#494949" />
+      <SearchNormal
+        style={{ width: style.iconSize, marginRight: 12 }}
+        color="#494949"
+      />
       <InputBase
         placeholder={placeholder}
         onChange={onChange}
         sx={{
           flex: 1,
           fontSize: style.fontSize,
-          color: 'text.secondary',
-          '& input::placeholder': {
-            color: 'text.secondary',
+          color: "text.secondary",
+          "& input::placeholder": {
+            color: "text.secondary",
             opacity: 1,
           },
         }}

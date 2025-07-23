@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Checkbox, Typography, Box } from '@mui/material';
+import React from "react";
+import { Checkbox, Typography, Box } from "@mui/material";
 
 /**
  * FilterCheckbox component renders a checkbox with a label and an optional count.
@@ -36,22 +36,30 @@ interface FilterCheckboxProps {
   count?: number;
 }
 
-const FilterCheckbox: React.FC<FilterCheckboxProps> = ({ label, checked, onChange, count }) => {
+const FilterCheckbox: React.FC<FilterCheckboxProps> = ({
+  label,
+  checked,
+  onChange,
+  count,
+}) => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ display: "flex", alignItems: "center" }}>
       <Checkbox checked={checked} onChange={onChange} />
       <Typography
         variant="body1"
         sx={{
-          ml: '12px',
-          color: '#494949',
+          ml: "12px",
+          color: "#494949",
         }}
       >
         {label}
         {count !== undefined && (
           <>
-            {' '}
-            <Typography component="span" sx={{ fontWeight: 300, color: '#6e7278' }}>
+            {" "}
+            <Typography
+              component="span"
+              sx={{ fontWeight: 300, color: "#6e7278" }}
+            >
               (+{count})
             </Typography>
           </>

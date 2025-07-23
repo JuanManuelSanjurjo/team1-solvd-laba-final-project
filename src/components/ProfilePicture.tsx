@@ -1,6 +1,6 @@
-'use client';
-import React from 'react';
-import { Avatar } from '@mui/material';
+"use client";
+import React from "react";
+import { Avatar } from "@mui/material";
 
 /**
  * ProfilePicture component renders a circular avatar using the given image source.
@@ -34,7 +34,7 @@ interface ProfilePictureProps {
 
 export const ProfilePicture: React.FC<ProfilePictureProps> = ({
   src,
-  alt = 'Profile picture',
+  alt = "Profile picture",
   width,
 }) => {
   return (

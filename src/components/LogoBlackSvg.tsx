@@ -2,7 +2,10 @@ interface LogoBlackSvgProps {
   width?: number;
   height?: number;
 }
-export const LogoBlackSvg: React.FC<LogoBlackSvgProps> = ({ width = 41, height = 31 }) => {
+export const LogoBlackSvg: React.FC<LogoBlackSvgProps> = ({
+  width = 41,
+  height = 31,
+}) => {
   return (
     <svg
       width={width}
