@@ -43,11 +43,17 @@ const theme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           textTransform: "none",
           borderRadius: "8px",
           fontWeight: "500",
-        },
+          [theme.breakpoints.down("md")]: {
+            height: 40,
+          },
+          [theme.breakpoints.up("md")]: {
+            height: 61,
+          },
+        }),
         outlined: ({ theme }) => ({
           border: `1px solid ${theme.palette.primary.main}`,
         }),
