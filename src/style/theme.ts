@@ -4,6 +4,7 @@ import { createTheme } from "@mui/material/styles";
 
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
 
+
 const theme = createTheme({
   palette: {
     mode: "light",
@@ -28,7 +29,7 @@ const theme = createTheme({
       primary: "#000000", //Sometimes #1E2832 is the primary and sometimes #000000 is.
       secondary: "#5C5C5C",
       disabled: "#8C9196",
-    },
+    }
   },
   components: {
     MuiRating: {
@@ -80,15 +81,68 @@ const theme = createTheme({
         },
       },
     },
-    MuiBackdrop: {
+   /*  MuiBackdrop: {
       styleOverrides: {
         root: {
-          backgroundColor: "#f3f3f3ce",
-          backdropFilter: "blur(2px)",
-          boxShadow: "none",
+         
         },
       },
+    }, */
+    MuiOutlinedInput:{
+      styleOverrides: {
+        root: ({theme})=> ({
+          borderRadius: 8,
+          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.error.main,
+          },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: theme.palette.error.main,
+            },
+              '&.Mui-error input': {
+              color: theme.palette.error.main,
+              fontWeight: 500,
+            }
+           
+        }),
+        notchedOutline: {
+          borderColor: "#494949",
+        },
+        input:{
+          padding: '15px 16px',
+          fontWeight: 300,
+        },
+        /* error: ({theme})=> ({
+          // borderColor: theme.palette.error.main,
+          color: theme.palette.error.main,
+          fontWeight: 500
+        }) */
+      }
     },
+    MuiFormHelperText: {
+      styleOverrides:{
+        root:{
+        display: "flex",
+        alignItems: "center",
+        gap: 4,
+        padding: 0,
+        marginInline: 0,
+        marginTop: 8,
+        fontWeight: 400
+      }
+      }
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          '&.Mui-focused':{
+            borderColor: "#494949"
+          }
+        },
+         filled: {
+          borderColor: "#494949",
+        }
+      }
+    }
   },
   typography: {
     fontFamily: worksansFont,
