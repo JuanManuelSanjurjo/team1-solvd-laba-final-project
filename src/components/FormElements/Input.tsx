@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   OutlinedInput,
   FormControl,
@@ -7,6 +8,10 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { forwardRef, JSX } from "react";
+=======
+import {OutlinedInput, FormControl, OutlinedInputProps, Typography, Box, FormHelperText } from "@mui/material";
+import { JSX } from "react";
+>>>>>>> c7b0d28 (Finished checkbox component for sizes)
 import { Danger } from "iconsax-react";
 
 /**
