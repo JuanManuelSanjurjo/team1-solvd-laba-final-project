@@ -5,6 +5,7 @@ import "./globals.css";
 import theme from "@/style/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { worksans } from "@/style/fonts";
+import { CssBaseline } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={worksans.variable}>
         <ReactQueryProvider>
+          <CssBaseline/>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
               <main>{children}</main>

@@ -4,6 +4,7 @@ import { createTheme } from "@mui/material/styles";
 
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
 
+
 const theme = createTheme({
   palette: {
     mode: "light",
@@ -28,7 +29,7 @@ const theme = createTheme({
       primary: "#000000", //Sometimes #1E2832 is the primary and sometimes #000000 is.
       secondary: "#5C5C5C",
       disabled: "#8C9196",
-    },
+    }
   },
   components: {
     MuiRating: {
@@ -43,11 +44,17 @@ const theme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           textTransform: "none",
           borderRadius: "8px",
           fontWeight: "500",
-        },
+          [theme.breakpoints.down("md")]: {
+            height: 40,
+          },
+          [theme.breakpoints.up("md")]: {
+            height: 61,
+          },
+        }),
         outlined: ({ theme }) => ({
           border: `1px solid ${theme.palette.primary.main}`,
         }),
@@ -74,56 +81,68 @@ const theme = createTheme({
         },
       },
     },
-    MuiBackdrop: {
+   /*  MuiBackdrop: {
       styleOverrides: {
         root: {
-          backgroundColor: "#f3f3f3ce",
-          backdropFilter: "blur(2px)",
-          boxShadow: "none",
+         
         },
       },
-    },
-    MuiCheckbox: {
+    }, */
+    MuiOutlinedInput:{
       styleOverrides: {
-        root: {
-          padding: 0,
-          "&.MuiCheckbox-sizeMedium": {
-            width: 15,
-            height: 15,
-            "& svg": {
-              fontSize: 15,
+        root: ({theme})=> ({
+          borderRadius: 8,
+          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.error.main,
+          },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: theme.palette.error.main,
             },
-          },
+              '&.Mui-error input': {
+              color: theme.palette.error.main,
+              fontWeight: 500,
+            }
+           
+        }),
+        notchedOutline: {
+          borderColor: "#494949",
         },
-      },
+        input:{
+          padding: '15px 16px',
+          fontWeight: 300,
+        },
+        /* error: ({theme})=> ({
+          // borderColor: theme.palette.error.main,
+          color: theme.palette.error.main,
+          fontWeight: 500
+        }) */
+      }
     },
-    MuiSlider: {
+    MuiFormHelperText: {
+      styleOverrides:{
+        root:{
+        display: "flex",
+        alignItems: "center",
+        gap: 4,
+        padding: 0,
+        marginInline: 0,
+        marginTop: 8,
+        fontWeight: 400
+      }
+      }
+    },
+    MuiSelect: {
       styleOverrides: {
         root: {
-          padding: "6px 0",
+          '&.Mui-focused':{
+            borderColor: "#494949"
+          }
         },
-        rail: {
-          backgroundColor: "#EAECF0",
-        },
-        thumb: {
-          width: 16,
-          height: 16,
-          "&::before": {
-            content: '""',
-            margin: 0,
-            width: 12,
-            height: 12,
-            backgroundColor: "#fff",
-            borderRadius: "50%",
-            top: 8,
-            transform: "translateY(-50%)",
-          },
-          "&:hover, &.Mui-focusVisible, &.Mui-active": {
-            boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.15)", // same as base shadow
-          },
-        },
-      },
-    },
+         filled: {
+          borderColor: "#494949",
+        }
+      }
+    }
   },
   typography: {
     fontFamily: worksansFont,
