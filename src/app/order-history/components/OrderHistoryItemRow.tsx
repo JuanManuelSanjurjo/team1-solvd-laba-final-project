@@ -40,67 +40,113 @@ function OrderHistoryItemRow({
   const theme = useTheme();
 
   return (
-    <Box
+    <Box //main box
       sx={{
-        display: "flex",
-        flexDirection: "row",
-        width: "1480px",
-        heigth: "56px",
-        p: "16px 24px",
+        display: "grid",
+        width: "100%",
+        p: { xs: "16px", sm: "16px 24px" },
         boxSizing: "border-box",
         backgroundColor: "#FAFAFA",
         borderBottom: "1px solid #e0e0e0",
+        gap: { xs: 2, sm: 3, md: 4 },
+        gridTemplateColumns: "1fr auto",
+        fontSize: { xs: "12px", sm: "14px" },
+        alignItems: { xs: "flex-start", sm: "center" },
       }}
     >
-      <Box
+      <Box // OrderDate. Products and summary box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          width: "1268px",
-          alignItems: "center",
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: {
+            xs: "flex-start",
+            sm: "space-between",
+          },
+          alignItems: { xs: "flex-start", sm: "center" },
+          flexGrow: 1,
+          gap: { xs: 1, sm: 2 },
         }}
       >
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+        <Box // box for order number-date
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            flexWrap: "wrap",
+            gap: { xs: 0.5, sm: 1 },
+            alignItems: { xs: "flex-start", sm: "center" },
+            justifySelf: "flex-start",
+          }}
+        >
           <Typography
             variant="cartText"
-            sx={{ color: theme.palette.cartTextColor.primary }}
+            sx={{
+              color: theme.palette.cartTextColor.primary,
+              wordBreak: "break-word",
+            }}
           >
             {orderNumber}
           </Typography>
           <Typography
             variant="cartText"
-            sx={{ color: theme.palette.cartTextColor.secondary }}
+            sx={{
+              color: theme.palette.cartTextColor.secondary,
+            }}
           >
             {orderDate}
           </Typography>
         </Box>
 
-        <Box sx={{ display: "flex", gap: 1 }}>
+        <Box //box product count
+          sx={{
+            display: { xs: "none", sm: "flex" },
+            flexDirection: "column",
+            gap: 0.5,
+            alignItems: "center",
+          }}
+        >
           <Typography
             variant="cartText"
-            sx={{ color: theme.palette.cartTextColor.secondary }}
+            sx={{
+              color: theme.palette.cartTextColor.secondary,
+              wordBreak: "break-word",
+            }}
           >
             Products{" "}
             <Typography
               component="span"
               variant="cartText"
-              sx={{ color: theme.palette.cartTextColor.primary }}
+              sx={{
+                color: theme.palette.cartTextColor.primary,
+              }}
             >
               {productCount}
             </Typography>
           </Typography>
         </Box>
 
-        <Box>
+        <Box //box total
+          sx={{
+            display: { xs: "none", sm: "flex" },
+            flexDirection: "column",
+            gap: 0.5,
+            alignItems: "flex-end",
+            justifySelf: "flex-end",
+          }}
+        >
           <Typography
             variant="cartText"
-            sx={{ color: theme.palette.cartTextColor.secondary }}
+            sx={{
+              color: theme.palette.cartTextColor.secondary,
+              wordBreak: "break-word",
+            }}
           >
             Summary:{" "}
             <Typography
               component="span"
               variant="cartText"
-              sx={{ color: theme.palette.cartTextColor.secondary }}
+              sx={{
+                color: theme.palette.cartTextColor.primary,
+              }}
             >
               {totalAmount}
             </Typography>
@@ -108,7 +154,14 @@ function OrderHistoryItemRow({
         </Box>
       </Box>
 
-      <Box>
+      <Box //box order status
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: { xs: "flex-end", md: "flex-end" },
+          justifySelf: "flex-end",
+        }}
+      >
         <OrderStatusLabel status={status} isOpen={isOpen} />
       </Box>
     </Box>

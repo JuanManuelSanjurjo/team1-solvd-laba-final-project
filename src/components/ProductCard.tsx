@@ -35,11 +35,13 @@ function ProductCard({
     <Card
       sx={{
         display: "flex",
-        width: "550px",
+        width: "100%",
+        maxWidth: { xs: "100%", sm: "550px" },
         height: "104px",
         p: 1,
         bgcolor: backgroundColor,
         boxShadow: "none",
+        alignItems: "center",
       }}
     >
       <CardMedia
@@ -49,34 +51,49 @@ function ProductCard({
           height: "104px",
           objectFit: "cover",
           borderRadius: 1,
+          flexShrink: 0,
         }}
         image={imageUrl}
         alt={name}
       />
       <CardContent
         sx={{
-          width: "476px",
-          height: "75px",
           flex: 1,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          my: "14.5px",
+          py: 0,
+          px: 2,
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: 500, lineHeight: "24px" }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 500,
+            lineHeight: "24px",
+            fontSize: { xs: "16px", sm: "24px", md: "24px" },
+          }}
+        >
           {name}
         </Typography>
         <Typography
           variant="body1"
           color="text.secondary"
-          sx={{ fontWeight: 500, lineHeight: "24px" }}
+          sx={{
+            fontWeight: 500,
+            lineHeight: "24px",
+            fontSize: { xs: "14px", sm: "16px", md: "16px" },
+          }}
         >
           {description}
         </Typography>
         <Typography
           variant="cartText"
-          sx={{ fontWeight: 700, lineHeight: "20px" }}
+          sx={{
+            fontWeight: 700,
+            lineHeight: "20px",
+            fontSize: { xs: "12px", sm: "14px", md: "14px" },
+          }}
         >
           <strong>Size: {size}</strong>
         </Typography>

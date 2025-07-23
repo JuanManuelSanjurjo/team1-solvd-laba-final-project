@@ -203,7 +203,7 @@ const theme = createTheme({
     },
     cartText: {
       fontFamily: nunitosansFont,
-      fontSize: 14,
+      // fontSize: 14,
       fontWeight: 700,
       lineHeight: "24px",
     },

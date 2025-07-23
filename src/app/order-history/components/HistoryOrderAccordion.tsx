@@ -47,6 +47,9 @@ const HistoryOrderAccordion = ({
   const [expanded, setExpanded] = useState(false);
   const theme = useTheme();
 
+  const sectionHorizontalPadding = { xs: "16px", sm: "24px" };
+  const sectionVerticalPadding = "16px";
+
   const handleChange = (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded);
   };
@@ -55,77 +58,202 @@ const HistoryOrderAccordion = ({
     <Accordion
       expanded={expanded}
       onChange={handleChange}
-      sx={{ width: "1480px", backgroundColor: "#FAFAFA" }}
+      sx={{
+        backgroundColor: "#FAFAFA",
+        boxShadow: "none",
+        margin: 0,
+        fontSize: { xs: "12px", sm: "14px" },
+        "&.Mui-expanded": {
+          minHeight: "unset",
+          margin: "0",
+          borderRadius: 0,
+          "& .MuiAccordionSummary-root": {
+            borderBottom: "none",
+            minHeight: "unset",
+          },
+        },
+        // Styling when NOT expanded (collapsed)
+        "&:not(.Mui-expanded)": {
+          borderRadius: 0,
+        },
+      }}
     >
-      <AccordionSummary sx={{ height: "56px" }}>
+      <AccordionSummary
+        sx={{
+          minHeight: { xs: "unset", sm: "56px" },
+          width: "100%",
+          p: 0,
+          display: "flex",
+          alignItems: "center",
+          "&.Mui-expanded": {
+            margin: 0,
+            width: "100%",
+          },
+          "& .MuiAccordionSummary-content": {
+            margin: 0,
+            padding: 0,
+          },
+        }}
+        expandIcon={null}
+      >
         <OrderHistoryItemRow {...orderInfo} isOpen={expanded} />
       </AccordionSummary>
 
-      <AccordionDetails>
-        <Box
+      <AccordionDetails
+        sx={{
+          display: "grid",
+          p: 0,
+          width: "100%",
+          fontSize: { xs: "12px", sm: "14px" },
+        }}
+      >
+        <Box // box delivery contacts and payment
           sx={{
             display: "flex",
-            gap: 2,
-            justifyContent: "center",
+            flexWrap: "wrap",
+            justifyContent: {
+              xs: "flex-start",
+              sm: "center",
+              md: "center",
+            },
             alignItems: "center",
-            borderBottom: "1px solid #e0e0e0",
-            p: "16px 24px",
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            p: `${sectionVerticalPadding} ${sectionHorizontalPadding.xs}`,
+            [theme.breakpoints.up("sm")]: {
+              p: `${sectionVerticalPadding} ${sectionHorizontalPadding.sm}`,
+            },
+            gap: "8px",
+            width: "100%",
+            "& > div": {
+              flexGrow: 1,
+              flexShrink: 1,
+            },
           }}
         >
-          <Typography
-            variant="cartText"
-            sx={{ color: theme.palette.cartTextColor.secondary }}
-          >
-            Delivery:{" "}
-            <Typography
-              component="span"
-              variant="cartText"
-              sx={{ color: theme.palette.cartTextColor.primary }}
-            >
-              {details.delivery}
-            </Typography>{" "}
-          </Typography>
-          <Typography
-            variant="cartText"
-            sx={{ color: theme.palette.cartTextColor.secondary }}
-          >
-            Contacts:{" "}
-            <Typography
-              variant="cartText"
-              sx={{ color: theme.palette.cartTextColor.primary }}
-            >
-              {details.contacts}
-            </Typography>
-          </Typography>
-          <Typography
-            variant="cartText"
-            sx={{ color: theme.palette.cartTextColor.secondary }}
-          >
-            Payment:{" "}
-            <Typography
-              variant="cartText"
-              sx={{ color: theme.palette.cartTextColor.primary }}
-            >
-              {details.payment}
-            </Typography>
-          </Typography>
-        </Box>
-        {products.map((product, index) => (
-          <Box
-            key={index}
+          <Box //delivery box
             sx={{
-              display: "flex",
-              gap: 1,
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderBottom: "1px solid #e0e0e0",
-              p: "16px 24px",
+              flexShrink: 0,
+              textAlign: {
+                sm: "right",
+                md: "right",
+              },
             }}
           >
-            <ProductCard {...product} />
             <Typography
               variant="cartText"
               sx={{ color: theme.palette.cartTextColor.secondary }}
+            >
+              Delivery:{" "}
+              <Typography
+                component="span"
+                variant="cartText"
+                sx={{ color: theme.palette.cartTextColor.primary }}
+              >
+                {details.delivery}
+              </Typography>{" "}
+            </Typography>
+          </Box>
+
+          <Box //contacts box
+            sx={{
+              flexShrink: 0,
+              minWidth: { xs: "100%", sm: "120px", md: "unset" },
+              textAlign: {
+                sm: "center",
+                md: "center",
+              },
+            }}
+          >
+            <Typography
+              variant="cartText"
+              sx={{
+                color: theme.palette.cartTextColor.secondary,
+                whiteSpace: {
+                  xs: "normal",
+                  sm: "normal",
+                  md: "nowrap",
+                },
+              }}
+            >
+              Contacts:{" "}
+              <Typography
+                variant="cartText"
+                sx={{ color: theme.palette.cartTextColor.primary }}
+              >
+                {details.contacts}
+              </Typography>
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              flexShrink: 0,
+              minWidth: { xs: "100%", sm: "120px", md: "unset" },
+              textAlign: {
+                sm: "left",
+                md: "left",
+              },
+            }}
+          >
+            <Typography
+              variant="cartText"
+              sx={{ color: theme.palette.cartTextColor.secondary }}
+            >
+              Payment:{" "}
+              <Typography
+                variant="cartText"
+                sx={{ color: theme.palette.cartTextColor.primary }}
+              >
+                {details.payment}
+              </Typography>
+            </Typography>
+          </Box>
+        </Box>
+        {products.map((product, index) => (
+          <Box //box productcard quantity an price row2
+            key={index}
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr", //
+                sm: "minmax(120px, 1.5fr) 1fr 1fr",
+                md: "minmax(150px, 1.5fr) 1fr 1fr",
+              },
+              gap: { xs: 1, sm: 2 },
+              alignItems: "center",
+              borderBottom: `1px solid ${theme.palette.divider}`,
+              p: `${sectionVerticalPadding} ${sectionHorizontalPadding.xs}`,
+              [theme.breakpoints.up("sm")]: {
+                p: `${sectionVerticalPadding} ${sectionHorizontalPadding.sm}`,
+              },
+            }}
+          >
+            <Box // box product card
+              sx={{
+                justifySelf: {
+                  xs: "center",
+                  sm: "flex-start",
+                  md: "flex-start",
+                },
+                width: "100%",
+                display: "flex",
+                justifyContent: { xs: "center", sm: "flex-start" },
+              }}
+            >
+              <ProductCard {...product} />
+            </Box>
+
+            <Typography //quantity
+              variant="cartText"
+              sx={{
+                color: theme.palette.cartTextColor.secondary,
+                justifySelf: { xs: "center", sm: "flex-end", md: "flex-end" },
+                mt: { xs: 1, sm: 0 },
+                textAlign: {
+                  sm: "right",
+                  md: "right",
+                },
+              }}
             >
               Quantity:{" "}
               <Typography
@@ -136,9 +264,14 @@ const HistoryOrderAccordion = ({
                 {product.quantity}
               </Typography>
             </Typography>
-            <Typography
+
+            <Typography //price
               variant="cartText"
-              sx={{ color: theme.palette.cartTextColor.secondary }}
+              sx={{
+                color: theme.palette.cartTextColor.secondary,
+                justifySelf: { xs: "center", sm: "flex-end", md: "flex-end" },
+                mt: { xs: 0.5, sm: 0 },
+              }}
             >
               Price:{" "}
               <Typography
@@ -151,13 +284,21 @@ const HistoryOrderAccordion = ({
             </Typography>
           </Box>
         ))}
-        <Box
+        <Box // box pdf invoice discount
           sx={{
             display: "flex",
-            gap: 1,
-            justifyContent: "space-between",
-            borderBottom: "1px solid #e0e0e0",
-            p: "16px 24px",
+            flexDirection: { xs: "column", sm: "row", md: "row" },
+            alignItems: { xs: "center", sm: "center" },
+            justifyContent: {
+              xs: "center",
+              sm: "space-between",
+              md: "space-between",
+            },
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            p: `${sectionVerticalPadding} ${sectionHorizontalPadding.xs}`,
+            [theme.breakpoints.up("sm")]: {
+              p: `${sectionVerticalPadding} ${sectionHorizontalPadding.sm}`,
+            },
           }}
         >
           <IconWithDownloadLink></IconWithDownloadLink>
@@ -169,7 +310,7 @@ const HistoryOrderAccordion = ({
             <Typography
               component="span"
               variant="cartText"
-              sx={{ color: theme.palette.cartTextColor }}
+              sx={{ color: theme.palette.cartTextColor.primary }}
             >
               18$
             </Typography>
