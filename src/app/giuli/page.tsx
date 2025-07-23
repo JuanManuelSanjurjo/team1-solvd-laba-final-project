@@ -1,8 +1,8 @@
 
-import Select from "@/components/Select";
+import Select from "@/components/FormElements/Select";
 import PaymentMethodOption from "@/components/PaymentMethodOption";
 import { Card } from "iconsax-react";
-import Input from "@/components/Input";
+import Input from "@/components/FormElements/Input";
 import { Box } from "@mui/material";
 import ShoeSizeOption from "@/components/ShowSizeOption";
 
@@ -25,8 +25,8 @@ export default function SignIn() {
 
     </Box>
 
-    <ShoeSizeOption size="EU-40"/>
-    
+    <ShoeSizeOption size={40}/>
+
     </div>
   );
 }

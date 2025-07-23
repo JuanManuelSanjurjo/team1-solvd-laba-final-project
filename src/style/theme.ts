@@ -29,9 +29,6 @@ const theme = createTheme({
       primary: "#000000", //Sometimes #1E2832 is the primary and sometimes #000000 is.
       secondary: "#5C5C5C",
       disabled: "#8C9196",
-    },
-    custom: {
-      darkGrey: "#494949"
     }
   },
   components: {
@@ -143,14 +140,12 @@ const theme = createTheme({
             borderColor: "#494949"
           }
         },
-         filled: ({theme}) => ({
+         filled: {
           borderColor: "#494949",
-      })
+        }
       }
-     
     }
   },
-
   typography: {
     fontFamily: worksansFont,
     h1: {
