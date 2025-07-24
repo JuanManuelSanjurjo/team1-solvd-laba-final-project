@@ -1,13 +1,12 @@
-"use client";
+'use client';
 
-import { Typography } from "@mui/material";
+import { Typography } from '@mui/material';
+import { FilterSideBar } from './_components/FiltersSideBar';
 
 export default function Home() {
   return (
     <div>
-      <Typography variant="h1" color="secondary">
-        Home Page
-      </Typography>
+      <FilterSideBar />
     </div>
   );
 }
