@@ -44,13 +44,23 @@ export default function AiButton({ ...props }: MuiButtonProps): JSX.Element {
       }}
       endIcon={
         isLoading ? null : (
-          <Image src="/logo.svg" alt="Logo" width={22} height={22} />
+          <Image
+            src="/assets/logo/logo.svg"
+            alt="Logo"
+            width={22}
+            height={22}
+          />
         )
       }
       {...props}
     >
       {isLoading ? (
-        <Image src="/logo-orange.svg" alt="Logo" width={22} height={22} />
+        <Image
+          src="/assets/logo/logo-orange.svg"
+          alt="Logo"
+          width={22}
+          height={22}
+        />
       ) : (
         "Use AI suggestion"
       )}

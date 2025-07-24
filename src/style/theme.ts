@@ -57,8 +57,9 @@ const theme = createTheme({
             height: 40,
           },
           [theme.breakpoints.up("md")]: {
-            height: 61,
+            height: 54,
           },
+          fontSize: "15px",
         }),
         outlined: ({ theme }) => ({
           border: `1px solid ${theme.palette.primary.main}`,
@@ -86,15 +87,6 @@ const theme = createTheme({
         },
       },
     },
-    MuiBackdrop: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "#f3f3f3ce",
-          backdropFilter: "blur(2px)",
-          boxShadow: "none",
-        },
-      },
-    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: ({ theme }) => ({
@@ -117,11 +109,6 @@ const theme = createTheme({
           padding: "15px 16px",
           fontWeight: 300,
         },
-        /* error: ({theme})=> ({
-          // borderColor: theme.palette.error.main,
-          color: theme.palette.error.main,
-          fontWeight: 500
-        }) */
       },
     },
     MuiFormHelperText: {
@@ -192,6 +179,7 @@ const theme = createTheme({
     body2: {
       fontFamily: worksansFont,
       fontSize: 15,
+      fontWeight: 300,
     },
     button: {
       fontFamily: worksansFont,
