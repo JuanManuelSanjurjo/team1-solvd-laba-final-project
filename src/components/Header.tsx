@@ -129,8 +129,8 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                     padding: isMobile
                       ? "8px 28px"
                       : isTablet
-                      ? "12px 40px"
-                      : "16px 52px",
+                        ? "12px 40px"
+                        : "16px 52px",
                   }}
                 >
                   Sign in

@@ -1,11 +1,7 @@
 import Gallery from "@/components/gallery/Gallery";
 import CardContainer from "@/components/cards/CardContainer";
-<<<<<<< Updated upstream:src/app/[product-id]/page.tsx
-import Testimonials from "../auth/sign-up/components/Testimonials";
-=======
-import Testimonials from "@/app/(no-layout)/sign-up/components/Testimonials";
->>>>>>> Stashed changes:src/app/(with-layout)/products/[product-id]/page.tsx
 
+import { products } from "@/mocks/products";
 // Can delete evereything below, just for testing porpuses
 
 const imagesArr = [
@@ -27,10 +23,7 @@ export default function SingleProduct() {
   return (
     <div style={{ marginBlock: "100px" }}>
       <Gallery images={imagesArr} />
-      <CardContainer images={imagesArr} />
-      <div style={{ position: "relative", paddingBlock: "100px" }}>
-        <Testimonials variant="testimonials" />
-      </div>
+      <CardContainer images={products} />
     </div>
   );
 }

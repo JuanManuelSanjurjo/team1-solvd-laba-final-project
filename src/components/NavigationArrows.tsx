@@ -26,7 +26,7 @@ const StyledBox = styled(Box)(
     backgroundColor: variant === "product_card" ? "#fff" : "unset",
     borderRadius: "100%",
     cursor: "pointer",
-  })
+  }),
 );
 
 /**
@@ -56,6 +56,7 @@ export default function NavigationArrows({
       justifyContent="flex-end"
       p={1}
       gap={2}
+      position={variant === "product_card" ? "absolute" : "relative"}
       bottom={variant === "product_card" ? 24 : "66%"} // for testimonials check when used
       right={variant === "product_card" ? 32 : 45}
     >

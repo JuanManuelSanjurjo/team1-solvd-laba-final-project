@@ -7,8 +7,15 @@ import CardOverlayDelete from "./actions/CardOverlayDelete";
 import CardDragAndDrop from "./CardDragAndDrop";
 import { JSX } from "react";
 
+type ImageProps = {
+  img: string;
+  name: string;
+  price: number;
+  category: string;
+};
+
 type CardContainerProps = {
-  images: string[];
+  images: ImageProps[];
 };
 
 /**
