@@ -6,14 +6,6 @@ import NavigationArrows, {
 } from "@/components/NavigationArrows";
 import { JSX, useEffect, useState } from "react";
 import { testimonials } from "@/mocks/testimonials";
-
-type TestimonialType = {
-  clientName: string;
-  stars: number;
-  countryCity: string;
-  testimonial: string;
-};
-
 /**
  * Testimonials component displays a user testimonial with rating and navigation arrows.
  *

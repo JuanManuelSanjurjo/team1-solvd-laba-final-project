@@ -1,6 +1,6 @@
 import Gallery from "@/components/gallery/Gallery";
 import CardContainer from "@/components/cards/CardContainer";
-import Testimonials from "../sign-up/components/Testimonials";
+import Testimonials from "../auth/sign-up/components/Testimonials";
 
 // Can delete evereything below, just for testing porpuses
 
