@@ -1,6 +1,12 @@
 "use client";
 import FilterCheckbox from "@/components/FilterCheckBox";
-import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Slider,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { SearchBar } from "@/components/SearchBar";
 import CloseIcon from "@mui/icons-material/Close";
 import { FiltersSection } from "./FiltersSection";
@@ -11,7 +17,7 @@ interface FilterSideBarProps {
 
 export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("sm")); // sm = 600px+
+  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
     <>
@@ -80,6 +86,18 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
           <FilterCheckbox label="Nike" checked={false} onChange={() => {}} />
           <FilterCheckbox label="Puma" checked={false} onChange={() => {}} />
           <FilterCheckbox label="Reebok" checked={false} onChange={() => {}} />
+        </FiltersSection>
+        <FiltersSection label="Price">
+          <Slider />
+        </FiltersSection>
+        <FiltersSection label="Color">
+          <FilterCheckbox label="White" checked={false} onChange={() => {}} />
+          <FilterCheckbox label="Black" checked={false} onChange={() => {}} />
+          <FilterCheckbox label="Gray" checked={false} onChange={() => {}} />
+          <FilterCheckbox label="Red" checked={false} onChange={() => {}} />
+          <FilterCheckbox label="Blue" checked={false} onChange={() => {}} />
+          <FilterCheckbox label="Yellow" checked={false} onChange={() => {}} />
+          <FilterCheckbox label="Green" checked={false} onChange={() => {}} />
         </FiltersSection>
       </Box>
     </>

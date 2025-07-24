@@ -186,9 +186,9 @@ export default function Home() {
                   <Typography
                     sx={{
                       typography: {
-                        xs: "body2", // tablet (600-899px)
-                        sm: "body2", // tablet (600-899px)
-                        md: "h4", // extra large (1536px+)
+                        xs: "body2",
+                        sm: "body2",
+                        md: "h4",
                       },
                     }}
                     color="text.secondary"
