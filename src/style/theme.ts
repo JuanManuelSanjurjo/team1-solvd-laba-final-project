@@ -88,22 +88,9 @@ const theme = createTheme({
         },
       },
     },
-<<<<<<< HEAD
     MuiOutlinedInput: {
       styleOverrides: {
         root: ({ theme }) => ({
-=======
-   /*  MuiBackdrop: {
-      styleOverrides: {
-        root: {
-         
-        },
-      },
-    }, */
-    MuiOutlinedInput:{
-      styleOverrides: {
-        root: ({theme})=> ({
->>>>>>> 9eed4d1 (Fixed ESLINT errors)
           borderRadius: 8,
           "&.Mui-error .MuiOutlinedInput-notchedOutline": {
             borderColor: theme.palette.error.main,
