@@ -44,7 +44,7 @@ export default function Testimonials({
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [testimonials.length]);
+  }, []);
 
   return (
     <Box
