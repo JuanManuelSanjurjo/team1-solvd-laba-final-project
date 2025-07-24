@@ -43,7 +43,17 @@ const FilterCheckbox: React.FC<FilterCheckboxProps> = ({
   count,
 }) => {
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        height: "19px",
+        marginBottom: "19px",
+        "&:last-of-type": {
+          marginBottom: 0,
+        },
+      }}
+    >
       <Checkbox checked={checked} onChange={onChange} />
       <Typography
         variant="body1"

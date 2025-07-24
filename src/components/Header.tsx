@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const searchBarSize = isMobile ? "xsmall" : isTablet ? "medium" : "large";
 
   return (
-    <AppBar position="static" color="transparent" elevation={0}>
+    <AppBar position="fixed" color="transparent" elevation={0}>
       <Toolbar
         disableGutters
         sx={{
@@ -65,6 +65,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
           pr: isMobile ? "24px" : "60px",
           height: toolbarHeight,
           backgroundColor: "white",
+          borderBottom: "1px solid #eaecf0",
         }}
       >
         {isSearching ? (
