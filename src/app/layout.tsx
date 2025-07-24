@@ -20,10 +20,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${worksans.variable} ${nunitosans.variable}`}>
         <ReactQueryProvider>
-<<<<<<< Updated upstream
-=======
-          <CssBaseline />
->>>>>>> Stashed changes
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
               <main>{children}</main>
