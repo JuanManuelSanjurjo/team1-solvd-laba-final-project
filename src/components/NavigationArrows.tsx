@@ -56,7 +56,7 @@ export default function NavigationArrows({
       justifyContent="flex-end"
       p={1}
       gap={2}
-      position={variant === "product_card" ? "absolute" : "relative"}
+      position={variant === "product_card" ? "absolute" : "static"}
       bottom={variant === "product_card" ? 24 : "66%"} // for testimonials check when used
       right={variant === "product_card" ? 32 : 45}
     >

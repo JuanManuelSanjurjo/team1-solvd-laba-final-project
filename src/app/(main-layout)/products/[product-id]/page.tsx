@@ -1,5 +1,8 @@
 import Gallery from "@/components/gallery/Gallery";
 import CardContainer from "@/components/cards/CardContainer";
+import { Box, Container } from "@mui/material";
+import ProductPageDetails from "./components/ProductPageDetails";
+import Testimonials from "@/app/auth/sign-up/components/Testimonials";
 
 import { products } from "@/mocks/products";
 // Can delete evereything below, just for testing porpuses
@@ -21,9 +24,43 @@ const imagesArr = [
 
 export default function SingleProduct() {
   return (
-    <div style={{ marginBlock: "100px" }}>
-      <Gallery images={imagesArr} />
-      <CardContainer images={products} />
-    </div>
+    <Box marginBlock="100px" paddingInline={{ xs: 4, xl: 0 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Container
+          disableGutters
+          sx={{
+            maxWidth: { xs: "95%", md: 1300 },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: {
+              xs: "center",
+              md: "flex-start",
+            },
+            flexDirection: {
+              xs: "column",
+              md: "row",
+            },
+            gap: "100px",
+          }}
+        >
+          <Box width="100%">
+            <Gallery images={imagesArr} />
+          </Box>
+          <ProductPageDetails />
+        </Container>
+      </Box>
+      <Box mt={4}>
+        <CardContainer images={products} />
+      </Box>
+      <Box position="relative" height="500px">
+        <Testimonials variant="testimonials" />
+      </Box>
+    </Box>
   );
 }

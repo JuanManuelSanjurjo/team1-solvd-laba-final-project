@@ -49,12 +49,11 @@ export default function ConfirmationModal({
     <Dialog
       slotProps={{
         backdrop: {
-          sx:{
-            backgroundColor: 'rgba(0, 0, 0, 0.2)', // lighter backdrop
-            backdropFilter: 'blur(3px)', // blur effect
-          }
-        }
-        
+          sx: {
+            backgroundColor: "rgba(255, 255, 255, 0.5)", // lighter backdrop
+            backdropFilter: "blur(3px)", // blur effect
+          },
+        },
       }}
       disableScrollLock
       onClose={onClose}

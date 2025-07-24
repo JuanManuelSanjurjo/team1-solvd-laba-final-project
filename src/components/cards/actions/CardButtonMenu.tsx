@@ -34,7 +34,7 @@ export default function CardButtonMenu(): JSX.Element {
           cursor: "pointer",
           color: "#292D32",
           transition: "0.1s",
-          padding: 0.5,
+          padding: 0,
           borderRadius: 2,
           "&:hover": {
             backgroundColor: "rgba(255,255,255,0.75)",

@@ -74,14 +74,18 @@ export default function Card({
           >
             <Typography
               variant="subtitle1"
-              title={"name of the product"}
+              title={image.name}
               noWrap
               fontWeight={500}
               sx={{ fontSize: "inherit" }}
             >
               {image.name}
             </Typography>
-            <Typography variant="subtitle1" fontWeight={500}>
+            <Typography
+              variant="subtitle1"
+              fontWeight={500}
+              fontSize={"inherit"}
+            >
               ${image.price}
             </Typography>
           </Box>

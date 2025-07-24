@@ -7,7 +7,7 @@ import {
   ArrowDown2,
   ArrowUp2,
 } from "iconsax-react";
-import { OrderStatus } from "@/app/order-history/types/order";
+import { OrderStatus } from "../types/order";
 
 type OrderStatusLabelProps = {
   status: OrderStatus;

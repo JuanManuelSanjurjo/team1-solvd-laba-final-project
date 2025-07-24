@@ -8,12 +8,12 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import OrderHistoryItemRow from "@/app/order-history/components/OrderHistoryItemRow";
+import OrderHistoryItemRow from "./OrderHistoryItemRow";
 import ProductCard from "@/components/ProductCard";
 import IconWithDownloadLink from "@/components/IconWithDownloadLink";
-import { OrderProduct } from "@/app/order-history/types/order";
-import { OrderDetails } from "@/app/order-history/types/order";
-import { OrderInfo } from "@/app/order-history/types/order";
+import { OrderProduct } from "../types/order";
+import { OrderDetails } from "../types/order";
+import { OrderInfo } from "../types/order";
 import { useTheme } from "@mui/material/styles";
 
 type HistoryOrderAccordionProps = {

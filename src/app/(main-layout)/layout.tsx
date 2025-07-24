@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar/Navbar";
+import { Header } from "@/components/Header";
 
 export default function BaseLayout({
   children,
@@ -7,7 +7,7 @@ export default function BaseLayout({
 }) {
   return (
     <div>
-      <Navbar />
+      <Header isAuthenticated={true} />
       {children}
     </div>
   );

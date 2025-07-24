@@ -3,7 +3,7 @@ import ReactQueryProvider from "../utils/providers/ReactQueryProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import "./globals.css";
 import theme from "@/style/theme";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, CssBaseline } from "@mui/material";
 import { worksans, nunitosans } from "@/style/fonts";
 
 export const metadata: Metadata = {
@@ -22,6 +22,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
+              <CssBaseline />
               <main>{children}</main>
             </ThemeProvider>
           </AppRouterCacheProvider>
