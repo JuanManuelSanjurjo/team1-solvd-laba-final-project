@@ -99,6 +99,7 @@ export default function Home() {
           }}
         >
           <Typography
+            component="h1"
             sx={{
               typography: {
                 xs: "h2",
