@@ -1,6 +1,7 @@
 "use client";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useState, JSX, MouseEvent } from "react";
 import { Box } from "@mui/material";
@@ -27,21 +28,23 @@ export default function CardButtonMenu(): JSX.Element {
 
   return (
     <Box>
-      <MoreHorizRoundedIcon
-        component="button"
+      <IconButton
         id="basic-button"
         sx={{
           cursor: "pointer",
           color: "#292D32",
           transition: "0.1s",
-
+          padding: 0.5,
           borderRadius: 2,
           "&:hover": {
             backgroundColor: "rgba(255,255,255,0.75)",
           },
         }}
         onClick={handleClick}
-      />
+      >
+        <MoreHorizRoundedIcon />
+      </IconButton>
+
       <Menu
         id="popup-menu"
         anchorEl={anchorEl}
