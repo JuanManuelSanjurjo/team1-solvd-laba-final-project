@@ -2,7 +2,6 @@ import Gallery from "@/components/gallery/Gallery";
 import CardContainer from "@/components/cards/CardContainer";
 import { Box, Container } from "@mui/material";
 import ProductPageDetails from "./components/ProductPageDetails";
-import Testimonials from "@/app/auth/sign-up/components/Testimonials";
 
 // Can delete evereything below, just for testing porpuses
 
