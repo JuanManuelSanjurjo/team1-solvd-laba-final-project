@@ -114,7 +114,6 @@ export default function Testimonials({
           {testimonials[testimonialIndex].countryCity}
         </Typography>
       </Paper>
-      //
     </Box>
   );
 }
