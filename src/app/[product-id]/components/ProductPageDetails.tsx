@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import ShowSizeOption from "@/components/ShowSizeOption";
+import ShoeSizeOption from "@/components/ShoeSizeOption";
 import ProductPageButtons from "./ProductPageButtons";
 
 import { products } from "@/mocks/products";
@@ -76,7 +76,7 @@ export default function ProductPageDetails() {
         }}
       >
         {[36, 37, 38, 39, 40, 41, 42, 43, 44, 45].map((size) => (
-          <ShowSizeOption size={size} key={size} disabled={false} />
+          <ShoeSizeOption size={size} key={size} disabled={false} />
         ))}
       </Box>
       <ProductPageButtons />

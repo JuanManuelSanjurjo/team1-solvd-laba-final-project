@@ -62,9 +62,6 @@ export default function SingleProduct() {
       <Box mt={4}>
         <CardContainer images={imagesArr} />
       </Box>
-      <Box position="relative" height="500px">
-        <Testimonials variant="testimonials" />
-      </Box>
     </Box>
   );
 }
