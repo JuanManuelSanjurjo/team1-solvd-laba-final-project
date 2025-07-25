@@ -29,13 +29,13 @@ export default function CardContainer({
       sx={{
         paddingBlock: 4.5,
         display: "grid",
-        justifyContent: "center",
+        justifyContent: "space-around",
         justifyItems: "center",
         gridTemplateColumns: {
           xs: "repeat(2, 1fr)",
-          md: "repeat(auto-fit, minmax(240px, 320px))",
+          md: "repeat(auto-fit, minmax(240px, 300px))",
         },
-        gap: { xs: "16px", md: "70px" },
+        gap: { xs: "16px", md: "67px" },
       }}
     >
       {images.slice(0, 2).map((item, i) => (
