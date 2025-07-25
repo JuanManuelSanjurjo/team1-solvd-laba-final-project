@@ -18,6 +18,7 @@ import { LogoBlackSvg } from "./LogoBlackSvg";
 import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import MobileDrawer from "./Navbar/MobileDrawer";
+import { usePathname } from "next/navigation";
 
 /**
  * Header component displays a responsive top navigation bar with different layouts
@@ -45,7 +46,10 @@ interface HeaderProps {
   isAuthenticated: boolean;
 }
 
+const excludedPaths = ["/auth/sign-in", "/auth/sign-up"];
+
 export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
+  const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // <600px
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md")); // 600–900px
@@ -67,6 +71,9 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const itemGap = isMobile ? 2.5 : 5;
   const bagIconSize = isMobile ? 20 : 24;
   const searchBarSize = isMobile ? "xsmall" : isTablet ? "medium" : "large";
+
+  const isExcluded = excludedPaths.includes(pathname);
+  if (isExcluded) return null;
 
   return (
     <AppBar position="fixed" color="transparent" elevation={0}>
