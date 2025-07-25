@@ -173,7 +173,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
               </Box>
 
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Link href="/cart">
+                <Link href="/cart" style={{ display: "flex" }}>
                   <Bag style={{ width: bagIconSize }} color="#292d32" />
                 </Link>
                 {isAuthenticated && isDesktop && (
