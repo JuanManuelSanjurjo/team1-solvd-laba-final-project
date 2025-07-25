@@ -52,68 +52,6 @@ export default function Playground() {
         }}
       >
         <Typography variant="h1">Playground</Typography>
-        {/* <Typography variant="h3">Navigation Arrows</Typography>
-        <Box display="flex" alignItems="flex-start">
-          <NavigationArrows variant="testimonials"></NavigationArrows>
-          <NavigationArrows variant="product_card"></NavigationArrows>
-        </Box>
-        <Divider
-          sx={{
-            width: "100%",
-            borderBottomWidth: "5px",
-            paddingBottom: 3,
-          }}
-        />
-        <Typography variant="h3" sx={{ padding: 2 }}>
-          Testimonials
-        </Typography>
-        <Box
-          sx={{
-            position: "relative",
-            transform: "translate(10%, 5%)",
-            width: "50%",
-          }}
-        >
-          <Testimonials variant="testimonials"></Testimonials>
-        </Box>
-        <Box
-          sx={{
-            position: "relative",
-            transform: "translate(10%, 5%)",
-            width: "50%",
-          }}
-        >
-          <Testimonials variant="product_card"></Testimonials>
-        </Box>
-        <Divider
-          sx={{
-            width: "100%",
-            borderBottomWidth: "5px",
-            paddingBottom: 3,
-          }}
-        />
-        <Typography variant="h3" sx={{ padding: 2 }}>
-          Gallery
-        </Typography>
-        <Gallery images={imagesArr}></Gallery>
-        <Divider
-          sx={{
-            width: "100%",
-            borderBottomWidth: "5px",
-            paddingBottom: 3,
-          }}
-        />
-        <Typography variant="h3" sx={{ padding: 2 }}>
-          Card Container
-        </Typography>
-        <CardContainer images={imagesArr}></CardContainer>
-        <Divider
-          sx={{
-            width: "100%",
-            borderBottomWidth: "5px",
-            paddingBottom: 3,
-          }}
-        /> */}
         <Typography variant="h3" sx={{ padding: 2 }}>
           Buttons
         </Typography>
@@ -276,7 +214,6 @@ export default function Playground() {
           totalAmount="220$"
           status="cancelled"
         ></OrderHistoryItemRow>
-        *{" "}
         <OrderHistoryItemRow
           orderNumber="N°987655"
           orderDate="19.07.2025"
@@ -284,7 +221,6 @@ export default function Playground() {
           totalAmount="100$"
           status="shipped"
         ></OrderHistoryItemRow>
-        *{" "}
         <OrderHistoryItemRow
           orderNumber="N°987656"
           orderDate="19.07.2025"

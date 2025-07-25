@@ -47,73 +47,74 @@ export default function Testimonials({
   }, []);
 
   return (
-    //<Box
-    // sx={{
-    //   position: "absolute",
-    //   top: "60%",
-    //   left: "50%",
-    //   transform: "translate(-50%, -50%)",
-    //   width: "75%",
-    // }}
-    //>
-    <Paper
-      elevation={0}
+    <Box
       sx={{
-        border: "2px solid rgba(255, 255, 255, 0.83)",
-        //padding: "3em",
-        background: `radial-gradient(
+        position: "absolute",
+        top: "60%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "75%",
+      }}
+    >
+      <Paper
+        elevation={0}
+        sx={{
+          border: "2px solid rgba(255, 255, 255, 0.83)",
+          padding: "3em",
+          background: `radial-gradient(
             64.9% 185.04% at 19.81% 27.89%,
             rgba(255, 255, 255, 0.42) 0%,
             rgba(255, 255, 255, 0.06) 100%
           )`,
-        backdropFilter: "blur(24px)",
-        borderRadius: "32px",
-        color: "#0D0D0D",
-      }}
-    >
-      <Box sx={{ display: "flex" }}>
-        <Typography
-          sx={{
-            fontSize: { sm: "16px", md: "20px", lg: "22px", xl: "25px" },
-          }}
-        >
-          {testimonials[testimonialIndex].testimonial}
-        </Typography>
-        <NavigationArrows
-          handleNext={handleNext}
-          handlePrev={handlePrev}
-          variant={variant}
-        />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          flexWrap: "wrap",
-          margin: "16px 0 0 0",
+          backdropFilter: "blur(24px)",
+          borderRadius: "32px",
+          color: "#0D0D0D",
         }}
       >
-        <Typography
-          variant="h3"
+        <Box sx={{ display: "flex" }}>
+          <Typography
+            sx={{
+              fontSize: { sm: "16px", md: "20px", lg: "22px", xl: "25px" },
+            }}
+          >
+            {testimonials[testimonialIndex].testimonial}
+          </Typography>
+          <NavigationArrows
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+            variant={variant}
+          />
+        </Box>
+        <Box
           sx={{
-            fontWeight: "600",
-            display: "inline",
-            marginRight: "10px",
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            margin: "16px 0 0 0",
           }}
         >
-          {testimonials[testimonialIndex].clientName}
+          <Typography
+            variant="h3"
+            sx={{
+              fontWeight: "600",
+              display: "inline",
+              marginRight: "10px",
+            }}
+          >
+            {testimonials[testimonialIndex].clientName}
+          </Typography>
+          <Rating
+            name="read-only"
+            size="small"
+            value={testimonials[testimonialIndex].stars}
+            readOnly
+          />
+        </Box>
+        <Typography sx={{ display: "block", color: "#797979" }}>
+          {testimonials[testimonialIndex].countryCity}
         </Typography>
-        <Rating
-          name="read-only"
-          size="small"
-          value={testimonials[testimonialIndex].stars}
-          readOnly
-        />
-      </Box>
-      <Typography sx={{ display: "block", color: "#797979" }}>
-        {testimonials[testimonialIndex].countryCity}
-      </Typography>
-    </Paper>
-    //</Box>
+      </Paper>
+      //
+    </Box>
   );
 }
