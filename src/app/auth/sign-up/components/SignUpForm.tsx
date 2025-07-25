@@ -3,13 +3,22 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Box } from "@mui/material";
+import {
+  Alert,
+  AlertProps,
+  Box,
+  Snackbar,
+  SnackbarCloseReason,
+} from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
+import SignUp from "@/actions/sign-up";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 
 const schema = z
   .object({
-    name: z.string().min(5, "Name must be at least 5 characters"),
+    username: z.string().min(5, "Name must be at least 5 characters"),
     email: z.email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
@@ -22,6 +31,23 @@ const schema = z
 type FormData = z.infer<typeof schema>;
 
 export default function SignUpForm() {
+  const [open, setOpen] = useState(false);
+  const [toastContent, setToastContent] = useState({
+    severity: "",
+    message: "",
+  });
+
+  const handleClose = (
+    _: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const {
     register,
     handleSubmit,
@@ -30,12 +56,45 @@ export default function SignUpForm() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data);
+  const { mutate, isPending } = useMutation({
+    mutationFn: SignUp,
+    onSuccess: () => {
+      setToastContent({
+        severity: "success",
+        message: "Success! Please confirm your account in your e-mail",
+      });
+      setOpen(true);
+    },
+    onError: (error: Error) => {
+      setOpen(true);
+      setToastContent({
+        severity: "error",
+        message: error.message,
+      });
+    },
+  });
+
+  const onSubmit = (data: Omit<FormData, "confirmPassword">) => {
+    mutate(data);
   };
 
   return (
     <>
+      <Snackbar
+        open={open}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={5000}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={toastContent.severity as AlertProps["severity"]}
+          variant="filled"
+          sx={{ width: "100%", color: "primary.contrastText" }}
+        >
+          {toastContent.message}
+        </Alert>
+      </Snackbar>
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -46,11 +105,11 @@ export default function SignUpForm() {
         }}
       >
         <Input
-          {...register("name")}
+          {...register("username")}
           label="Name"
-          name="name"
+          name="username"
           required
-          errorMessage={errors.name?.message ?? ""}
+          errorMessage={errors.username?.message ?? ""}
         />
         <Input
           {...register("email")}
@@ -74,14 +133,13 @@ export default function SignUpForm() {
           name="confirmPassword"
           required
           errorMessage={errors.confirmPassword?.message ?? ""}
-          sx={{
-            mb: "90px",
-          }}
         />
         <Button
           type="submit"
           variant="contained"
+          disabled={isPending}
           sx={{
+            mt: "90px",
             mb: "16px",
           }}
         >

@@ -26,7 +26,11 @@ export default function SignUp() {
         >
           <Typography
             variant="body2"
-            sx={{ fontWeight: 500, textAlign: "center" }}
+            sx={{
+              fontWeight: 500,
+              textAlign: "center",
+              color: "text.secondary",
+            }}
           >
             Already have an account?{" "}
             <Link href="/auth/sign-in" passHref>
