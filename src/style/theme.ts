@@ -5,12 +5,13 @@ import { createTheme } from "@mui/material/styles";
 const worksansFont = 'var(--font-worksans), "Segoe UI", sans-serif';
 const nunitosansFont = 'var(--font-nunitosans), "Segoe UI", sans-serif';
 
+
 const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
       main: "#FE645E",
-      light: "#FE645E", //It is the same but will put it here for maintanance purposes,
+      light: "#FFD7D6", 
       contrastText: "#ffffff",
       dark: "#CD3C37",
     },
@@ -188,10 +189,12 @@ const theme = createTheme({
     h2: {
       fontFamily: worksansFont,
       fontSize: 45,
+      fontWeight: 500
     },
     h3: {
       fontFamily: worksansFont,
-      fontSize: 25,
+      fontSize: 30,
+      fontWeight: 500
     },
     h4: {
       fontFamily: worksansFont,
