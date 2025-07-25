@@ -33,7 +33,7 @@ export default function Error(): JSX.Element {
           height: "100%",
           background: "white",
           overflow: "hidden",
-          backgroundImage: `url(/404-page-bg.png)`,
+          backgroundImage: `url(/assets/images/404-page-bg.png)`,
           backgroundSize: "cover",
           backgroundPosition: {
             xs: "70% center",
@@ -66,7 +66,7 @@ function FloatingContent(): JSX.Element {
       position="absolute"
       left={{
         xs: "50%",
-        md: 25,
+        md: "8%",
       }}
       height="100%"
       padding="40px 16px"

@@ -31,7 +31,7 @@ export default function NotFound(): JSX.Element {
           overflow: "hidden",
           "&::after": {
             content: '""',
-            backgroundImage: `url(/500-page-bg.jpg)`,
+            backgroundImage: `url(/assets/images/500-page-bg.jpg)`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "absolute",
@@ -64,7 +64,7 @@ function FloatingContent(): JSX.Element {
       position="absolute"
       left={{
         xs: "50%",
-        md: 25,
+        md: "8%",
       }}
       height="100%"
       padding="40px 16px"
