@@ -29,6 +29,11 @@ export default function SingleProduct() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          paddingTop: {
+            xs: "60px",
+            sm: "90px",
+            md: "120px",
+          },
         }}
       >
         <Container
