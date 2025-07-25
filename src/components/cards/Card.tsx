@@ -65,18 +65,18 @@ export default function Card({
                 sx: 10,
                 md: 22,
               },
-              fontWeight: 500,
             }}
           >
             <Typography
               variant="subtitle1"
               title={"name of the product"}
               noWrap
+              fontWeight={500}
               sx={{ fontSize: "inherit" }}
             >
               Long shoe Card Subtitle to try elipsis
             </Typography>
-            <Typography variant="subtitle1" sx={{ fontSize: "inherit" }}>
+            <Typography variant="subtitle1" fontWeight={500}>
               $160
             </Typography>
           </Box>
@@ -85,6 +85,7 @@ export default function Card({
             variant="body1"
             align="left"
             color={"#5C5C5C"}
+            fontWeight={500}
             sx={{
               maxWidth: "100%",
               wrap: "no-wrap",

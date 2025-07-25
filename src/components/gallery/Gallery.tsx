@@ -48,7 +48,7 @@ export default function Gallery({ images }: GalleryProps): JSX.Element {
       <Box
         m={0}
         display="flex"
-        maxWidth={680}
+        maxWidth={{ xs: "100%", md: 680 }}
         maxHeight={630}
         boxShadow={0}
         sx={{

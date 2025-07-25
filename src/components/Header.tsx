@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   AppBar,
   Box,
@@ -10,10 +11,14 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Bag, CloseCircle, HambergerMenu, SearchNormal } from "iconsax-react";
+import { Bag, CloseCircle, SearchNormal } from "iconsax-react";
 import { SearchBar } from "./SearchBar";
 import { ProfilePicture } from "./ProfilePicture";
 import { LogoBlackSvg } from "./LogoBlackSvg";
+import { IconButton } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import MobileDrawer from "./Navbar/MobileDrawer";
+import { usePathname } from "next/navigation";
 
 /**
  * Header component displays a responsive top navigation bar with different layouts
@@ -41,7 +46,10 @@ interface HeaderProps {
   isAuthenticated: boolean;
 }
 
+const excludedPaths = ["/auth/sign-in", "/auth/sign-up"];
+
 export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
+  const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // <600px
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md")); // 600–900px
@@ -50,10 +58,22 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const [isSearching, setIsSearching] = useState(false);
   const toggleSearch = () => setIsSearching(!isSearching);
 
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   const toolbarHeight = isMobile ? 60 : isTablet ? 90 : 120;
   const itemGap = isMobile ? 2.5 : 5;
   const bagIconSize = isMobile ? 20 : 24;
   const searchBarSize = isMobile ? "xsmall" : isTablet ? "medium" : "large";
+
+  const isExcluded = excludedPaths.includes(pathname);
+  if (isExcluded) return null;
 
   return (
     <AppBar position="fixed" color="transparent" elevation={0}>
@@ -72,7 +92,9 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
           <>
             {!isMobile && (
               <Box position="absolute" left={isMobile ? 24 : 40}>
-                <LogoBlackSvg />
+                <Link href="/products">
+                  <LogoBlackSvg />
+                </Link>
               </Box>
             )}
 
@@ -108,7 +130,9 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                 position: "relative",
               }}
             >
-              <LogoBlackSvg />
+              <Link href="/products">
+                <LogoBlackSvg />
+              </Link>
               {isDesktop && (
                 <Typography
                   variant="body1"
@@ -129,8 +153,8 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                     padding: isMobile
                       ? "8px 28px"
                       : isTablet
-                      ? "12px 40px"
-                      : "16px 52px",
+                        ? "12px 40px"
+                        : "16px 52px",
                   }}
                 >
                   Sign in
@@ -149,21 +173,37 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
               </Box>
 
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Bag style={{ width: bagIconSize }} color="#292d32" />
+                <Link href="/cart" style={{ display: "flex" }}>
+                  <Bag style={{ width: bagIconSize }} color="#292d32" />
+                </Link>
                 {isAuthenticated && isDesktop && (
-                  <ProfilePicture
-                    width={24}
-                    src="https://www.shareicon.net/data/128x128/2016/07/26/802043_man_512x512.png" //Should be change on NextAuth implementation
-                  />
+                  <Link href="/update-profile">
+                    <ProfilePicture
+                      width={24}
+                      src="https://www.shareicon.net/data/128x128/2016/07/26/802043_man_512x512.png" //Should be change on NextAuth implementation
+                    />
+                  </Link>
                 )}
               </Box>
               {!isDesktop && (
-                <HambergerMenu style={{ width: 24 }} color="#292d32" />
+                <Box sx={{ display: { xs: "flex", md: "none" } }}>
+                  <IconButton
+                    size="large"
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleDrawerOpen}
+                    color="inherit"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </Box>
               )}
             </Box>
           </>
         )}
       </Toolbar>
+      <MobileDrawer open={open} handleDrawerClose={handleDrawerClose} />
     </AppBar>
   );
 };

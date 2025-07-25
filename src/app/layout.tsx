@@ -6,6 +6,7 @@ import theme from "@/style/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { worksans, nunitosans } from "@/style/fonts";
 import { CssBaseline } from "@mui/material";
+import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,8 +24,11 @@ export default function RootLayout({
         <ReactQueryProvider>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
-                <CssBaseline />            
-              <main>{children}</main>
+              <CssBaseline />
+              <main>
+                <Header isAuthenticated={true} />
+                {children}
+              </main>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </ReactQueryProvider>
