@@ -12,9 +12,49 @@ import { Header } from "@/components/Header";
 import { useState } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import { FilterRemove, FilterSearch } from "iconsax-react";
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import { getFiltersFromSearchParams } from "@/lib/getFiltersFromSearchParams";
+import { fetchProducts } from "@/lib/fetchProducts";
+
+interface Product {
+  id: number;
+  attributes: {
+    name: string;
+    price: number;
+    images: {
+      data:
+        | {
+            attributes: {
+              url: string;
+            };
+          }[]
+        | null;
+    };
+    gender: {
+      data: {
+        attributes: {
+          name: string;
+        };
+      };
+    };
+  };
+}
 
 export default function Home() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
+
+  const searchParams = useSearchParams();
+  const filters = getFiltersFromSearchParams(searchParams);
+
+  const {
+    data: products,
+    isLoading,
+    error,
+  } = useQuery<Product[], Error>({
+    queryKey: ["products", searchParams.toString()], // re-run on param change
+    queryFn: () => fetchProducts(filters),
+  });
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -23,17 +63,6 @@ export default function Home() {
   const drawerWidth = isDesktop ? 320 : 240;
   const drawerVariant = isMobile ? "temporary" : "persistent";
   const drawerAnchor = isMobile ? "right" : "left";
-
-  const images = [
-    "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
-    "https://static.vecteezy.com/system/resources/previews/050/511/817/non_2x/blue-yellow-and-white-running-shoe-in-motion-use-for-athletic-product-banners-sporty-sneaker-posts-and-stylish-covers-isolated-on-transparent-background-png.png",
-    "https://www.boafit.com/sites/boafit/files/styles/products_slideshow_275_x_275/public/2025-05/Screenshot%202025-04-24%20at%201.01.36%E2%80%AFPM.png?itok=8kLwUWhU",
-    "https://sendaathletics.com/cdn/shop/files/Ushuaia_Pro_2.0_-_Purple_1.png?v=1752293415&width=533",
-    "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
-    "https://static.vecteezy.com/system/resources/previews/050/511/817/non_2x/blue-yellow-and-white-running-shoe-in-motion-use-for-athletic-product-banners-sporty-sneaker-posts-and-stylish-covers-isolated-on-transparent-background-png.png",
-    "https://www.boafit.com/sites/boafit/files/styles/products_slideshow_275_x_275/public/2025-05/Screenshot%202025-04-24%20at%201.01.36%E2%80%AFPM.png?itok=8kLwUWhU",
-    "https://sendaathletics.com/cdn/shop/files/Ushuaia_Pro_2.0_-_Purple_1.png?v=1752293415&width=533",
-  ];
 
   return (
     <div>
@@ -216,7 +245,7 @@ export default function Home() {
             },
           }}
         >
-          <CardContainer images={images} />
+          <CardContainer products={products || []} />
         </Box>
       </Box>
     </div>

@@ -7,8 +7,40 @@ import CardOverlayDelete from "./actions/CardOverlayDelete";
 import CardDragAndDrop from "./CardDragAndDrop";
 import { JSX } from "react";
 
+interface Product {
+  id: number;
+  attributes: {
+    name: string;
+    price: number;
+    images: {
+      data:
+        | {
+            attributes: {
+              url: string;
+            };
+          }[]
+        | null;
+    };
+    gender: {
+      data: {
+        attributes: {
+          name: string;
+        };
+      };
+    };
+  };
+}
+
+interface CardProduct {
+  id: number;
+  image: string;
+  name: string;
+  price: number;
+  gender: string;
+}
+
 type CardContainerProps = {
-  images: string[];
+  products: Product[];
 };
 
 /**
@@ -22,8 +54,18 @@ type CardContainerProps = {
  */
 
 export default function CardContainer({
-  images,
+  products,
 }: CardContainerProps): JSX.Element {
+  const cardProducts: CardProduct[] = products.map((product) => ({
+    id: product.id,
+    image:
+      product.attributes.images.data?.[0]?.attributes.url ||
+      "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
+    name: product.attributes.name,
+    price: product.attributes.price,
+    gender: product.attributes.gender?.data?.attributes?.name ?? "No gender",
+  }));
+
   return (
     <Box
       sx={{
@@ -38,6 +80,10 @@ export default function CardContainer({
         gap: { xs: "16px", md: "67px" },
       }}
     >
+      {cardProducts.map((product, index) => (
+        <Card product={product} action={<CardButtonMenu />} key={index} />
+      ))}
+      {/*
       {images.slice(0, 2).map((item, i) => (
         <Card image={item} action={<CardButtonMenu />} key={i} />
       ))}
@@ -60,7 +106,7 @@ export default function CardContainer({
           overlay={true}
           key={i}
         />
-      ))}
+      ))}*/}
       <CardDragAndDrop />
     </Box>
   );

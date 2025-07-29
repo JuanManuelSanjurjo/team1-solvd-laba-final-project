@@ -10,6 +10,8 @@ import {
 import { SearchBar } from "@/components/SearchBar";
 import CloseIcon from "@mui/icons-material/Close";
 import { FiltersSection } from "./FiltersSection";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 interface FilterSideBarProps {
   hideDrawer: () => void;
@@ -18,6 +20,53 @@ interface FilterSideBarProps {
 export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const minPrice = Number(searchParams.get("priceMin")) || 0;
+  const maxPrice = Number(searchParams.get("priceMax")) || 500;
+
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    minPrice,
+    maxPrice,
+  ]);
+
+  const handleFilterChange = (filterType: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const existingValues = params.getAll(filterType);
+    const isSelected = existingValues.includes(value);
+
+    if (isSelected) {
+      const newValues = existingValues.filter((v) => v !== value);
+      params.delete(filterType);
+      newValues.forEach((v) => params.append(filterType, v));
+    } else {
+      params.append(filterType, value);
+    }
+
+    router.replace(`?${params.toString()}`);
+  };
+
+  const handlePriceChange = (_: Event, newValue: number | number[]) => {
+    if (Array.isArray(newValue)) {
+      setPriceRange(newValue as [number, number]);
+    }
+  };
+
+  const handlePriceCommit = (
+    _: Event | React.SyntheticEvent,
+    newValue: number | number[]
+  ) => {
+    if (!Array.isArray(newValue)) return;
+
+    const [min, max] = newValue;
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("priceMin", min.toString());
+    params.set("priceMax", max.toString());
+
+    router.replace(`?${params.toString()}`);
+  };
 
   return (
     <>
@@ -64,13 +113,31 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
           </Box>
         )}
 
-        <FiltersSection label="Genre">
-          <FilterCheckbox label="Men" checked={false} onChange={() => {}} />
-          <FilterCheckbox label="Woman" checked={false} onChange={() => {}} />
+        <FiltersSection label="Gender">
+          <FilterCheckbox
+            label="Women"
+            checked={searchParams.getAll("gender").includes("Women")}
+            onChange={() => handleFilterChange("gender", "Women")}
+          />
+          <FilterCheckbox
+            label="Men"
+            checked={searchParams.getAll("genre").includes("Men")}
+            onChange={() => handleFilterChange("genre", "Men")}
+          />
         </FiltersSection>
         <FiltersSection label="Kids">
           <FilterCheckbox label="Boys" checked={true} onChange={() => {}} />
           <FilterCheckbox label="Girls" checked={false} onChange={() => {}} />
+        </FiltersSection>
+        <FiltersSection label="Size">
+          {[38, 39, 40, 41, 42, 43, 44].map((size) => (
+            <FilterCheckbox
+              key={size}
+              label={size.toString()}
+              checked={searchParams.getAll("size").includes(size.toString())}
+              onChange={() => handleFilterChange("size", size.toString())}
+            />
+          ))}
         </FiltersSection>
         <FiltersSection label="Brand">
           <Box sx={{ paddingRight: { xs: "30px" }, marginBottom: "36px" }}>
@@ -83,21 +150,45 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
             checked={false}
             onChange={() => {}}
           />
-          <FilterCheckbox label="Nike" checked={false} onChange={() => {}} />
-          <FilterCheckbox label="Puma" checked={false} onChange={() => {}} />
+          <FilterCheckbox
+            label="Nike"
+            checked={searchParams.getAll("brand").includes("Nike")}
+            onChange={() => handleFilterChange("brand", "Nike")}
+          />
+          <FilterCheckbox
+            label="Puma"
+            checked={searchParams.getAll("brand").includes("Puma")}
+            onChange={() => handleFilterChange("brand", "Puma")}
+          />
           <FilterCheckbox label="Reebok" checked={false} onChange={() => {}} />
         </FiltersSection>
         <FiltersSection label="Price">
-          <Slider />
+          <Slider
+            value={priceRange}
+            onChange={handlePriceChange}
+            onChangeCommitted={handlePriceCommit}
+            valueLabelDisplay="auto"
+            min={0}
+            max={500}
+            step={10}
+          />
         </FiltersSection>
         <FiltersSection label="Color">
-          <FilterCheckbox label="White" checked={false} onChange={() => {}} />
-          <FilterCheckbox label="Black" checked={false} onChange={() => {}} />
-          <FilterCheckbox label="Gray" checked={false} onChange={() => {}} />
-          <FilterCheckbox label="Red" checked={false} onChange={() => {}} />
-          <FilterCheckbox label="Blue" checked={false} onChange={() => {}} />
-          <FilterCheckbox label="Yellow" checked={false} onChange={() => {}} />
-          <FilterCheckbox label="Green" checked={false} onChange={() => {}} />
+          <FilterCheckbox
+            label="Black"
+            checked={searchParams.getAll("color").includes("Black")}
+            onChange={() => handleFilterChange("color", "Black")}
+          />
+          <FilterCheckbox
+            label="Gray"
+            checked={searchParams.getAll("color").includes("Gray")}
+            onChange={() => handleFilterChange("color", "Gray")}
+          />
+          <FilterCheckbox
+            label="White"
+            checked={searchParams.getAll("color").includes("White")}
+            onChange={() => handleFilterChange("color", "White")}
+          />
         </FiltersSection>
       </Box>
     </>
