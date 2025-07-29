@@ -2,25 +2,17 @@ import { Box, Typography } from "@mui/material";
 import ShoeSizeOption from "@/components/ShoeSizeOption";
 import ProductPageButtons from "./ProductPageButtons";
 import { JSX } from "react";
-
-type ProductDetails = {
-  id: number;
-  name: string;
-  price: number;
-  color: string;
-  description: string;
-  sizes: object[];
-  images: object[];
-};
+import { ProductAttributes } from "../types/types";
 
 export default function ProductPageDetails({
   product,
 }: {
-  product: ProductDetails;
+  product: ProductAttributes;
 }): JSX.Element {
-  const sizes = product.sizes?.data?.map(
-    (size: object) => size.attributes.value,
-  );
+  const sizes = product.sizes?.data?.map((size) => ({
+    value: size.attributes.value,
+    id: size.id,
+  }));
 
   return (
     <Box
@@ -92,8 +84,8 @@ export default function ProductPageDetails({
           },
         }}
       >
-        {sizes?.map((size: number) => (
-          <ShoeSizeOption size={size} key={size} disabled={false} />
+        {sizes?.map(({ value, id }) => (
+          <ShoeSizeOption size={value} key={id} disabled={false} />
         ))}
       </Box>
       <ProductPageButtons />
