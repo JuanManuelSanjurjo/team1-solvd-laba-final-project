@@ -1,10 +1,27 @@
 import { Box, Typography } from "@mui/material";
 import ShoeSizeOption from "@/components/ShoeSizeOption";
 import ProductPageButtons from "./ProductPageButtons";
+import { JSX } from "react";
 
-import { products } from "@/mocks/products";
+type ProductDetails = {
+  id: number;
+  name: string;
+  price: number;
+  color: string;
+  description: string;
+  sizes: object[];
+  images: object[];
+};
 
-export default function ProductPageDetails() {
+export default function ProductPageDetails({
+  product,
+}: {
+  product: ProductDetails;
+}): JSX.Element {
+  const sizes = product.sizes?.data?.map(
+    (size: object) => size.attributes.value,
+  );
+
   return (
     <Box
       maxWidth={"520px"}
@@ -36,7 +53,7 @@ export default function ProductPageDetails() {
               fontWeight: 500,
             }}
           >
-            {products[0].name}
+            {product?.name}
           </Typography>
           <Typography
             variant="h4"
@@ -46,7 +63,7 @@ export default function ProductPageDetails() {
               lineHeight: "3rem",
             }}
           >
-            $ {products[0].price}
+            $ {product?.price}
           </Typography>
         </Box>
         <Typography
@@ -57,7 +74,7 @@ export default function ProductPageDetails() {
             lineHeight: "24px",
           }}
         >
-          {products[0].color}
+          {product?.color?.data?.attributes?.name}
         </Typography>
       </Box>
       <Typography variant="subtitle1" color="#494949" sx={{ fontWeight: 500 }}>
@@ -75,7 +92,7 @@ export default function ProductPageDetails() {
           },
         }}
       >
-        {[36, 37, 38, 39, 40, 41, 42, 43, 44, 45].map((size) => (
+        {sizes?.map((size: number) => (
           <ShoeSizeOption size={size} key={size} disabled={false} />
         ))}
       </Box>
@@ -91,7 +108,7 @@ export default function ProductPageDetails() {
           fontSize: { xs: "14px", sm: "16px", md: "16px" },
         }}
       >
-        {products[0].description}
+        {product?.description}
       </Typography>
     </Box>
   );

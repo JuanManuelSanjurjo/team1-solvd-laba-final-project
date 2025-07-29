@@ -2,11 +2,16 @@ import { Box, Stack } from "@mui/material";
 import { JSX } from "react";
 
 type ImageGalleryStackProps = {
-  images: string[];
+  images: GalleryStackImage[];
   setCurrent: (index: number) => void;
   current: number;
   containerRef: React.RefObject<HTMLDivElement | null>;
   thumbnailRefs: React.RefObject<HTMLDivElement[] | []>;
+};
+
+type GalleryStackImage = {
+  url: string;
+  alt: string;
 };
 
 /**
@@ -58,7 +63,7 @@ export default function GalleryImageStack({
         },
       }}
     >
-      {images.map((src, index) => (
+      {images.map(({ url, alt }, index) => (
         <Box
           key={index}
           ref={(el: HTMLDivElement | null) => {
@@ -95,8 +100,8 @@ export default function GalleryImageStack({
         >
           <Box
             component="img"
-            src={src}
-            alt={`img-${index}`}
+            src={url}
+            alt={alt}
             sx={{
               width: "100%",
               height: "100%",
