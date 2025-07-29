@@ -19,6 +19,8 @@ import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import MobileDrawer from "./Navbar/MobileDrawer";
 import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductsBySearch } from "@/lib/fetchProductsBySearch";
 
 /**
  * Header component displays a responsive top navigation bar with different layouts
@@ -45,7 +47,6 @@ import { usePathname } from "next/navigation";
 interface HeaderProps {
   isAuthenticated: boolean;
 }
-
 const excludedPaths = ["/auth/sign-in", "/auth/sign-up"];
 
 export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
@@ -55,8 +56,29 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md")); // 600–900px
   const isDesktop = useMediaQuery(theme.breakpoints.up("md")); // >900px
 
+  const [searchInput, setSearchInput] = useState("");
+
   const [isSearching, setIsSearching] = useState(false);
   const toggleSearch = () => setIsSearching(!isSearching);
+
+  const {
+    data: searchResults = [],
+    isLoading: searchLoading,
+    isError: searchError,
+  } = useQuery({
+    queryKey: ["products", searchInput],
+    queryFn: () =>
+      fetchProductsBySearch(
+        searchInput,
+        ["name", "color.name", "gender.name"],
+        ["color.name"]
+      ),
+    enabled: isSearching && searchInput.length > 1,
+  });
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
 
   const [open, setOpen] = useState(false);
 
@@ -99,6 +121,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
             )}
 
             <SearchBar
+              onChange={handleSearchInputChange}
               size={searchBarSize}
               fullWidth={isMobile ? true : false}
             />
@@ -153,8 +176,8 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                     padding: isMobile
                       ? "8px 28px"
                       : isTablet
-                        ? "12px 40px"
-                        : "16px 52px",
+                      ? "12px 40px"
+                      : "16px 52px",
                   }}
                 >
                   Sign in
@@ -207,3 +230,4 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
     </AppBar>
   );
 };
+// https://shoes-shop-strapi.herokuapp.com/api/products?filters[$or][0][name][$containsi]=We're testing&filters[$or][1][color][name][$containsi]=We're testing&filters[$or][2][gender][name][$containsi]=We're testing&populate=*
