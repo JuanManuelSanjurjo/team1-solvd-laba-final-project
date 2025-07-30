@@ -1,5 +1,4 @@
 import Gallery from "@/components/gallery/Gallery";
-import CardContainer from "@/components/cards/CardContainer";
 import { Box, Container } from "@mui/material";
 import ProductPageDetails from "./components/ProductPageDetails";
 
@@ -58,9 +57,7 @@ export default function SingleProduct() {
           <ProductPageDetails />
         </Container>
       </Box>
-      <Box mt={4}>
-        <CardContainer images={imagesArr} />
-      </Box>
+      <Box mt={4}></Box>
     </Box>
   );
 }
