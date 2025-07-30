@@ -19,7 +19,6 @@ import { fetchProducts } from "@/lib/fetchProducts";
 import { hasActiveFilters } from "@/lib/filterUtils";
 import { Product } from "@/types/product";
 import Card from "@/components/cards/Card";
-import CardActionWrapperCenter from "@/components/cards/wrappers/CardActionWrapperCenter";
 import CardOverlayAddToCart from "@/components/cards/actions/CardOverlayAddToCart";
 import { normalizeProductCard } from "@/lib/normalizeProductCard";
 
@@ -29,11 +28,7 @@ export default function Home() {
   const searchParams = useSearchParams();
   const filters = getFiltersFromSearchParams(searchParams);
 
-  const {
-    data: products,
-    isLoading,
-    error,
-  } = useQuery<Product[], Error>({
+  const { data: products } = useQuery<Product[], Error>({
     queryKey: ["products", searchParams.toString()],
     queryFn: () => fetchProducts(filters),
   });

@@ -65,11 +65,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const [isSearching, setIsSearching] = useState(false);
   const toggleSearch = () => setIsSearching(!isSearching);
 
-  const {
-    data: searchResults = [],
-    isLoading: searchLoading,
-    isError: searchError,
-  } = useQuery({
+  const { data: searchResults = [] } = useQuery({
     queryKey: ["products", searchInput],
     queryFn: () =>
       fetchProductsBySearch(
