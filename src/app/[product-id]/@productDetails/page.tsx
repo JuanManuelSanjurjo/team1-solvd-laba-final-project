@@ -23,7 +23,7 @@ async function getProductDetails(id: string) {
       { cache: "no-store" },
     );
     const responseData = await response.json();
-    return responseData;
+    return responseData || { data: null };
   } catch (error) {
     console.log(error); // placeholder for error handling
   }

@@ -73,19 +73,20 @@ export function normalizeProduct(
 ): NormalizedProduct {
   return {
     id: product.id,
-    name: product.attributes.name,
-    description: product.attributes.description,
-    price: product.attributes.price,
+    name: product.attributes.name || "No name",
+    description: product.attributes?.description || "No description",
+    price: product.attributes?.price || 0,
     images: product.attributes.images?.data?.map((img) => ({
       id: img.id,
-      url: img.attributes.url,
+      url: img.attributes.url || "https://placehold.co/400",
       alt: img.attributes.name || `Product ${img.id} image`,
     })),
-    sizes: product.attributes.sizes.data.map((size) => ({
-      id: size.id,
-      value: size.attributes.value,
-    })),
-    color: product.attributes.color.data.attributes.name,
+    sizes:
+      product.attributes?.sizes?.data.map((size) => ({
+        id: size.id,
+        value: size.attributes.value,
+      })) || [],
+    color: product.attributes.color?.data?.attributes?.name || "Not disclosed",
   };
 }
 /**
