@@ -12,6 +12,7 @@ import { Header } from "@/components/Header";
 import { useState } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import { FilterRemove, FilterSearch } from "iconsax-react";
+import Card from "@/components/cards/Card";
 
 export default function Home() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
@@ -23,6 +24,73 @@ export default function Home() {
   const drawerWidth = isDesktop ? 320 : 240;
   const drawerVariant = isMobile ? "temporary" : "persistent";
   const drawerAnchor = isMobile ? "right" : "left";
+
+  const products = [
+    {
+      id: 1,
+      image:
+        "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
+      name: "Nike Air Max 97",
+      description: "Men's shoes",
+      price: "$160",
+    },
+    {
+      id: 2,
+      image:
+        "https://static.vecteezy.com/system/resources/previews/050/511/817/non_2x/blue-yellow-and-white-running-shoe-in-motion-use-for-athletic-product-banners-sporty-sneaker-posts-and-stylish-covers-isolated-on-transparent-background-png.png",
+      name: "Nike Pegasus",
+      description: "Men's shoes",
+      price: "$140",
+    },
+    {
+      id: 3,
+      image:
+        "https://www.boafit.com/sites/boafit/files/styles/products_slideshow_275_x_275/public/2025-05/Screenshot%202025-04-24%20at%201.01.36%E2%80%AFPM.png?itok=8kLwUWhU",
+      name: "Nike Revolution 7",
+      description: "Men's shoes",
+      price: "$180",
+    },
+    {
+      id: 4,
+      image:
+        "https://sendaathletics.com/cdn/shop/files/Ushuaia_Pro_2.0_-_Purple_1.png?v=1752293415&width=533",
+      name: "Nike Court Vision",
+      description: "Women's shoes",
+      price: "$160",
+    },
+    {
+      id: 5,
+      image:
+        "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
+      name: "Nike Air Max 97",
+      description: "Men's shoes",
+      price: "$160",
+    },
+    {
+      id: 6,
+      image:
+        "https://static.vecteezy.com/system/resources/previews/050/511/817/non_2x/blue-yellow-and-white-running-shoe-in-motion-use-for-athletic-product-banners-sporty-sneaker-posts-and-stylish-covers-isolated-on-transparent-background-png.png",
+      name: "Nike Pegasus",
+      description: "Men's shoes",
+      price: "$140",
+    },
+    {
+      id: 7,
+      image:
+        "https://www.boafit.com/sites/boafit/files/styles/products_slideshow_275_x_275/public/2025-05/Screenshot%202025-04-24%20at%201.01.36%E2%80%AFPM.png?itok=8kLwUWhU",
+      name: "Nike Revolution 7",
+      description: "Men's shoes",
+      price: "$180",
+    },
+    {
+      id: 8,
+      image:
+        "https://sendaathletics.com/cdn/shop/files/Ushuaia_Pro_2.0_-_Purple_1.png?v=1752293415&width=533",
+      name: "Nike Court Vision",
+      description: "Women's shoes",
+      price: "$160",
+    },
+  ];
 
   const images = [
     "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
@@ -216,7 +284,35 @@ export default function Home() {
             },
           }}
         >
-          <CardContainer images={images} />
+          <CardContainer
+            products={products}
+            topAction="cardButtonMenu"
+            overlayAction="CardOverlayAddToCard"
+          />
+
+          <CardContainer
+            products={products}
+            topAction="cardButtonWishList"
+            isDragAndDropEnable
+          />
+        </Box>
+
+        <Box
+          sx={{
+            paddingBlock: 4.5,
+            display: "grid",
+            justifyContent: "space-around",
+            justifyItems: "center",
+            gridTemplateColumns: {
+              xs: "repeat(2, 1fr)",
+              md: "repeat(auto-fit, minmax(240px, 300px))",
+            },
+            gap: { xs: "16px", md: "67px" },
+          }}
+        >
+          {images.map((image) => (
+            <Card image={image} overlayAction="CardOverlayDeleteToCard"></Card>
+          ))}
         </Box>
       </Box>
     </div>

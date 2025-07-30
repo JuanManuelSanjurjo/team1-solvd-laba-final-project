@@ -3,10 +3,18 @@ import CardImage from "./CardImage";
 import CardActionWrapperTopRight from "./wrappers/CardActionWrapperTopRight";
 import CardActionWrapperCenter from "./wrappers/CardActionWrapperCenter";
 import { JSX } from "react";
+import { Product } from "@/types/product";
+import { Car } from "iconsax-react";
+import CardButtonMenu from "./actions/CardButtonMenu";
+import CardButtonWishList from "./actions/CardButtonWishList";
+import CardOverlayAddToCart from "./actions/CardOverlayAddToCart";
+import CardOverlayDelete from "./actions/CardOverlayDelete";
 
 type CardProps = {
-  image: string;
-  action?: JSX.Element;
+  product?: Product;
+  image?: string;
+  topAction?: string;
+  overlayAction?: string;
   overlay?: boolean;
   showText?: boolean;
 };
@@ -14,23 +22,27 @@ type CardProps = {
 /**
  * Card
  *
- * This component is a card that displays an image, an optional action, and optional text.
- * The action is passed to a wrapper component to be rendered on the top right or in the center of the image.
- * It can be used as a standalone card or as part of a gallery.
+ * This component displays either a product (with optional text and actions)
+ * or a standalone image. It supports top-right and overlay actions.
  *
- * @param image - The URL of the image to display in the card.
- * @param action - An optional JSX element to display on top of the card.
- * @param overlay - An optional boolean indicating whether the action should use the overlay wrapper instead of the top right wrapper.
- * @param showText - An optional boolean indicating whether to display the text on the card.
- * @returns {JSX.Element} with the card component.
+ * @param product - Optional product to display with name, price, and description.
+ * @param image - Optional image to show if no product is provided.
+ * @param topAction - Action to show on top-right corner (e.g., "cardButtonMenu").
+ * @param overlayAction - Action to show in the center overlay (e.g., "CardOverlayAddToCard").
+ * @param overlay - Currently unused (reserved for future positioning logic).
+ * @param showText - Whether to show text details if a product is passed.
+ * @returns {JSX.Element}
  */
 
 export default function Card({
+  product,
   image,
-  action = undefined,
-  overlay = false,
+  topAction = undefined,
+  overlayAction = undefined,
   showText = true,
 }: CardProps): JSX.Element {
+  const displayImage = product?.image || image;
+
   return (
     <Box
       sx={{
@@ -39,26 +51,53 @@ export default function Card({
           opacity: 1,
         },
         height: { xs: 210, md: 445 },
+        // width: {
+        //   xs: 152,
+        //   md: 320,
+        // },
         width: {
-          xs: 152,
-          md: 320,
+          xs: "calc(50% - 8px)", // 2 por fila con 16px gap
+          sm: "calc(33.33% - 16px)", // 3 por fila
+          md: "calc(25% - 18px)", // 4 por fila
         },
         display: "flex",
         flexDirection: "column",
       }}
     >
-      <CardImage image={image}>
+      <CardImage image={displayImage!!}>
         <>
-          {action && !overlay && <CardActionWrapperTopRight action={action} />}
-          {action && overlay && <CardActionWrapperCenter action={action} />}
+          {topAction && (
+            <CardActionWrapperTopRight
+              action={
+                topAction === "cardButtonMenu" ? (
+                  <CardButtonMenu product={product!} />
+                ) : (
+                  <CardButtonWishList product={product!} />
+                )
+              }
+            />
+          )}
+
+          {overlayAction && (
+            <CardActionWrapperCenter
+              action={
+                overlayAction === "CardOverlayAddToCard" ? (
+                  <CardOverlayAddToCart />
+                ) : (
+                  <CardOverlayDelete />
+                )
+              }
+            />
+          )}
         </>
       </CardImage>
-      {showText && (
-        <Box>
+      {product && showText && (
+        <Box sx={{ mt: 1, flexGrow: 1 }}>
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              alignItems: "center",
               maxWidth: "100%",
               textOverflow: "ellipsis",
               fontSize: {
@@ -74,10 +113,10 @@ export default function Card({
               fontWeight={500}
               sx={{ fontSize: "inherit" }}
             >
-              Long shoe Card Subtitle to try elipsis
+              {product.name}
             </Typography>
             <Typography variant="subtitle1" fontWeight={500}>
-              $160
+              {product.price}
             </Typography>
           </Box>
 
@@ -96,7 +135,7 @@ export default function Card({
               },
             }}
           >
-            Man{"'"}s shoes
+            {product.description}
           </Typography>
         </Box>
       )}
