@@ -9,7 +9,9 @@
  * @returns {boolean} - Returns `true` if at least one filter is active, otherwise `false`.
  */
 
-export const hasActiveFilters = (filters: Record<string, any>): boolean => {
+export const hasActiveFilters = (
+  filters: Record<string, string | {} | []>
+): boolean => {
   return Object.values(filters).some((value) =>
     Array.isArray(value) ? value.length > 0 : !!value
   );
