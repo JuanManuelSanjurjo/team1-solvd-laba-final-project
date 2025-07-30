@@ -79,22 +79,43 @@ export default function ProductPageDetails({
       <Typography variant="subtitle1" color="#494949" sx={{ fontWeight: 500 }}>
         Select Size
       </Typography>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, 82px)",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: {
-            xs: 1,
-            md: 3,
-          },
-        }}
-      >
-        {product.sizes?.map(({ value, id }) => (
-          <ShoeSizeOption size={value} key={id} disabled={false} />
-        ))}
-      </Box>
+      {product.sizes?.length > 0 ? (
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, 82px)",
+            justifyContent: "space-around",
+            alignItems: "center",
+            gap: {
+              xs: 1,
+              md: 3,
+            },
+          }}
+        >
+          {product.sizes?.map(({ value, id }) => (
+            <ShoeSizeOption size={value} key={id} disabled={false} />
+          ))}
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#dddddd",
+            borderRadius: 2,
+            padding: 4,
+          }}
+        >
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{ fontWeight: 500 }}
+          >
+            No sizes available
+          </Typography>
+        </Box>
+      )}
       <ProductPageButtons />
       <Typography variant="subtitle1" color="#494949" sx={{ fontWeight: 500 }}>
         Description
