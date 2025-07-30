@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import ShoeSizeOption from "@/components/ShoeSizeOption";
+import ShoeSizeOption from "./ShoeSizeOption";
 import ProductPageButtons from "./ProductPageButtons";
 import { JSX } from "react";
 import { ProductAttributes } from "../types/types";
