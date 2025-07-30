@@ -3,7 +3,7 @@ import {
   NormalizedProduct,
   ImageData,
   NormalizedImage,
-} from "@/types/productType";
+} from "@/types/product-types";
 
 /**
  * Normalize the product data from the API response.

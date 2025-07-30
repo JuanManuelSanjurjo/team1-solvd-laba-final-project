@@ -1,7 +1,7 @@
 "use client";
 import { Box, Stack } from "@mui/material";
 import { JSX } from "react";
-import { NormalizedImage } from "../../types/types";
+import { NormalizedImage } from "@/types/product-types";
 
 type ImageGalleryStackProps = {
   images: NormalizedImage[];
