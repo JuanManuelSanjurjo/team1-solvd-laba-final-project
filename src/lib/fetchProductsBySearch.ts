@@ -3,6 +3,8 @@ export const fetchProductsBySearch = async (
   searchFields: string[] = ["name"],
   populateFields: string[] = []
 ) => {
+  if (!query.trim()) return [];
+
   const encoded = encodeURIComponent(query);
 
   const filters = searchFields

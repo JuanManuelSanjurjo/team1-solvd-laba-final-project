@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useDeferredValue, useState } from "react";
 import Link from "next/link";
 import {
   AppBar,
@@ -21,6 +21,10 @@ import MobileDrawer from "./Navbar/MobileDrawer";
 import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductsBySearch } from "@/lib/fetchProductsBySearch";
+import CardContainer from "./cards/CardContainer";
+import { normalizeProductCard } from "@/lib/normalizeProductCard";
+import Card from "./cards/Card";
+import CardOverlayAddToCart from "./cards/actions/CardOverlayAddToCart";
 
 /**
  * Header component displays a responsive top navigation bar with different layouts
@@ -57,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up("md")); // >900px
 
   const [searchInput, setSearchInput] = useState("");
-
+  const deferredSearchInput = useDeferredValue(searchInput);
   const [isSearching, setIsSearching] = useState(false);
   const toggleSearch = () => setIsSearching(!isSearching);
 
@@ -69,15 +73,16 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
     queryKey: ["products", searchInput],
     queryFn: () =>
       fetchProductsBySearch(
-        searchInput,
+        deferredSearchInput,
         ["name", "color.name", "gender.name"],
-        ["color.name"]
+        ["color.name", "gender.name", "images.url"]
       ),
-    enabled: isSearching && searchInput.length > 1,
+    enabled: isSearching && deferredSearchInput.length > 1,
   });
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
+    console.log(searchResults);
   };
 
   const [open, setOpen] = useState(false);
@@ -98,7 +103,12 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   if (isExcluded) return null;
 
   return (
-    <AppBar position="fixed" color="transparent" elevation={0}>
+    <AppBar
+      position="fixed"
+      color="transparent"
+      elevation={0}
+      sx={{ zIndex: isSearching ? 1205 : 1200 }}
+    >
       <Toolbar
         disableGutters
         sx={{
@@ -119,7 +129,6 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                 </Link>
               </Box>
             )}
-
             <SearchBar
               onChange={handleSearchInputChange}
               size={searchBarSize}
@@ -203,7 +212,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                   <Link href="/update-profile">
                     <ProfilePicture
                       width={24}
-                      src="https://www.shareicon.net/data/128x128/2016/07/26/802043_man_512x512.png" //Should be change on NextAuth implementation
+                      src="https://www.shareicon.net/data/128x128/2016/07/26/802043_man_512x512.png"
                     />
                   </Link>
                 )}
@@ -226,8 +235,35 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
           </>
         )}
       </Toolbar>
+      {isSearching && (
+        <Box
+          sx={{
+            width: "100%",
+            backgroundColor: "white",
+            position: "absolute",
+            top: isMobile ? 60 : isDesktop ? 120 : 90,
+            height: `calc(100vh - ${isMobile ? 60 : isDesktop ? 120 : 90}px)`,
+            overflowY: "auto",
+          }}
+        >
+          {isSearching && (
+            <CardContainer>
+              {normalizeProductCard(searchResults || []).map(
+                (product, index) => (
+                  <Card
+                    product={product}
+                    action={<CardOverlayAddToCart />}
+                    key={index}
+                    overlay={true}
+                  />
+                )
+              )}
+            </CardContainer>
+          )}
+        </Box>
+      )}
+
       <MobileDrawer open={open} handleDrawerClose={handleDrawerClose} />
     </AppBar>
   );
 };
-// https://shoes-shop-strapi.herokuapp.com/api/products?filters[$or][0][name][$containsi]=We're testing&filters[$or][1][color][name][$containsi]=We're testing&filters[$or][2][gender][name][$containsi]=We're testing&populate=*

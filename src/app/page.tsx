@@ -16,30 +16,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getFiltersFromSearchParams } from "@/lib/getFiltersFromSearchParams";
 import { fetchProducts } from "@/lib/fetchProducts";
-
-interface Product {
-  id: number;
-  attributes: {
-    name: string;
-    price: number;
-    images: {
-      data:
-        | {
-            attributes: {
-              url: string;
-            };
-          }[]
-        | null;
-    };
-    gender: {
-      data: {
-        attributes: {
-          name: string;
-        };
-      };
-    };
-  };
-}
+import { hasActiveFilters } from "@/lib/filterUtils";
+import { Product } from "@/types/product";
+import Card from "@/components/cards/Card";
+import CardActionWrapperCenter from "@/components/cards/wrappers/CardActionWrapperCenter";
+import CardOverlayAddToCart from "@/components/cards/actions/CardOverlayAddToCart";
+import { normalizeProductCard } from "@/lib/normalizeProductCard";
 
 export default function Home() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
@@ -52,13 +34,13 @@ export default function Home() {
     isLoading,
     error,
   } = useQuery<Product[], Error>({
-    queryKey: ["products", searchParams.toString()], // re-run on param change
+    queryKey: ["products", searchParams.toString()],
     queryFn: () => fetchProducts(filters),
   });
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md")); // >900px
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const drawerWidth = isDesktop ? 320 : 240;
   const drawerVariant = isMobile ? "temporary" : "persistent";
@@ -153,7 +135,7 @@ export default function Home() {
             }}
             color="text.primary"
           >
-            Search results
+            {hasActiveFilters(filters) ? "Search results" : " Products List"}
           </Typography>
           <Box
             sx={{
@@ -245,7 +227,16 @@ export default function Home() {
             },
           }}
         >
-          <CardContainer products={products || []} />
+          <CardContainer>
+            {normalizeProductCard(products || []).map((product, index) => (
+              <Card
+                product={product}
+                action={<CardOverlayAddToCart />}
+                key={index}
+                overlay={true}
+              />
+            ))}
+          </CardContainer>
         </Box>
       </Box>
     </div>
