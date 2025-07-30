@@ -27,7 +27,7 @@ const CartCard = ({
 }: CartCardProps): JSX.Element => {
   return (
     <Box sx={{ display: "flex", gap: "46px", paddingBlock: "60px" }}>
-      <Image width={223} height={214} alt={productTitle} src="" />
+      <Image width={223} height={214} alt={productTitle} src="/" />
       <Grid container spacing={2} sx={{ width: "694px" }}>
         <Grid size={10}>
           <Typography variant="h3">{productTitle}</Typography>

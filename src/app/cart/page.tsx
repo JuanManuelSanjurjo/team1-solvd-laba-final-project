@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import CartCard from "../cart/components/CartCard";
 import { Typography, Divider, Box } from "@mui/material";
+import CheckoutSummary from "@/components/checkout/CheckoutSummary";
 
 export default function Checkout() {
   function addItem() {
@@ -30,27 +31,45 @@ export default function Checkout() {
       gender: "Men",
       stock: true,
     },
-  ]); //Will have to figure out how to load this from the API
+  ]); //Will have to figure out how to load this from the API. This should be a server side component?
 
   return (
-    <Box sx={{ marginLeft: "196px", marginTop: "80px" }}>
-      <Typography variant="h2">Cart</Typography>
+    <Box
+      sx={{
+        display: "flex",
+        marginTop: "80px",
+        justifyContent: "space-around",
+      }}
+    >
+      <Box sx={{ marginTop: "80px" }}>
+        <Typography variant="h2">Cart</Typography>
 
-      {cartItems.map((item) => (
-        <>
-          <CartCard
-            price={item.price}
-            stock={item.stock}
-            gender={item.gender}
-            key={item.id}
-            quantity={item.quantity}
-            handleAdd={addItem}
-            handleRest={restItem}
-            productTitle={item.title}
-          />
-          <Divider />
-        </>
-      ))}
+        {cartItems.map((item) => (
+          <>
+            <CartCard
+              price={item.price}
+              stock={item.stock}
+              gender={item.gender}
+              key={item.id}
+              quantity={item.quantity}
+              handleAdd={addItem}
+              handleRest={restItem}
+              productTitle={item.title}
+            />
+            <Divider />
+          </>
+        ))}
+      </Box>
+
+      <Box sx={{ marginTop: "80px" }}>
+        <CheckoutSummary
+          subtotal={140}
+          total={140}
+          tax={0}
+          shipping={0}
+          buttonText="Checkout"
+        />
+      </Box>
     </Box>
   );
 }
