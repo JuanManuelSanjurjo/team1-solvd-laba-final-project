@@ -1,4 +1,11 @@
 import { Box, Skeleton } from "@mui/material";
+/**
+ * SkeletonGallery
+ *
+ * This component is a skeleton gallery that displays a thumbnail stack and a main image.
+ *
+ * @returns {JSX.Element} with the skeleton gallery component.
+ */
 
 export default function SkeletonGallery() {
   return (

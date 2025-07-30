@@ -1,8 +1,21 @@
 import ProductPageDetails from "../components/ProductPageDetails";
 import { normalizeProduct } from "../types/types";
+
 type Params = {
   "product-id": string;
 };
+
+/**
+ * getProductDetails
+ *
+ * This function fetches the product details from the Strapi API (not images).
+ *
+ * @param {string} id - The product ID.
+ * @returns {Promise<ProductApiResponse>} The product details.
+ *
+ * @example
+ * const product = await getProductDetails(params["product-id"]);
+ */
 async function getProductDetails(id: string) {
   try {
     const response = await fetch(
@@ -15,6 +28,15 @@ async function getProductDetails(id: string) {
     console.log(error); // placeholder for error handling
   }
 }
+
+/**
+ * SingleProduct
+ *
+ * This function fetches the product details and normalizes the data.
+ *
+ * @param {Params} params - The URL parameters.
+ * @returns {JSX.Element} The product details component.
+ */
 async function SingleProduct({ params }: { params: Params }) {
   const { data } = await getProductDetails(params["product-id"]);
   const normalizedProduct = normalizeProduct(data);

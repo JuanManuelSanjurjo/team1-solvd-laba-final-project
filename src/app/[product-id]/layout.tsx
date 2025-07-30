@@ -7,6 +7,19 @@ interface ProductLayoutProps {
   gallery: ReactNode;
 }
 
+/**
+ * ProductLayout
+ *
+ * This component is a layout for a product page. It displays the product details and gallery.
+ *
+ * @param {ReactNode} props.children - The children components to be rendered in this case the page.tsx file which we don't want.
+ * @param {ReactNode} props.productDetails - The product details component.
+ * @param {ReactNode} props.gallery - The gallery component.
+ * @returns {JSX.Element} The product layout component.
+ *
+ * @example
+ * <ProductLayout productDetails={<ProductPageDetails product={product} />} gallery={<ProductPageGallery images={images} />} />
+ */
 export default function ProductLayout({
   productDetails,
   gallery,

@@ -2,6 +2,14 @@ import { Box, Container } from "@mui/material";
 import SkeletonGallery from "./SkeletonGallery";
 import SkeletonProductDetails from "./SkeletonProductDetails";
 
+/**
+ * ProductPageSkeleton
+ *
+ * This component is a skeleton product page that displays a gallery and product details.
+ *
+ * @returns {JSX.Element} with the skeleton product page component.
+ */
+
 export default function ProductPageSkeleton() {
   return (
     <Box marginBlock="100px" paddingInline={{ xs: 4, xl: 0 }}>

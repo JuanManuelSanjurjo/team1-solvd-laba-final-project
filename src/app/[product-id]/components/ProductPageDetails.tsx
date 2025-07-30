@@ -4,6 +4,18 @@ import ProductPageButtons from "./ProductPageButtons";
 import { JSX } from "react";
 import { NormalizedProduct } from "../types/types";
 
+/**
+ * ProductPageDetails
+ *
+ * This component is a detailed view of a product. It displays the product's name, description, price, and sizes.
+ *
+ * @param {NormalizedProduct} props.product - The product data to be displayed.
+ * @returns {JSX.Element} The product details component.
+ *
+ * @example
+ * <ProductPageDetails product={product} />
+ */
+
 export default function ProductPageDetails({
   product,
 }: {

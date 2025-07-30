@@ -88,6 +88,11 @@ export function normalizeProduct(
     color: product.attributes.color.data.attributes.name,
   };
 }
+/**
+ * Normalize only the images data from the API response.
+ * @param images - The images data from the API response.
+ * @returns {NormalizedImage[]} The normalized images data.
+ */
 export function normalizeImages(images: ImageData[]): NormalizedImage[] {
   return images.map((img) => ({
     id: img.id,

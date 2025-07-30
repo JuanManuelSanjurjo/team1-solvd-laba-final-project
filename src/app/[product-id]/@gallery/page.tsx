@@ -5,6 +5,17 @@ type Params = {
   "product-id": string;
 };
 
+/**
+ * getProductImages
+ *
+ * This function fetches only the product images corresponding to the product ID from the Strapi API.
+ *
+ * @param {string} id - The product ID.
+ * @returns {Promise<ImageData[]>} The product images.
+ *
+ * @example
+ * const images = await getProductImages(params["product-id"]);
+ */
 async function getProductImages(id: string) {
   try {
     const response = await fetch(
@@ -18,6 +29,14 @@ async function getProductImages(id: string) {
   }
 }
 
+/**
+ * GalleryPage
+ *
+ * This function fetches the product images and normalizes the data.
+ *
+ * @param {Params} params - The URL parameters.
+ * @returns {JSX.Element} The gallery component.
+ */
 export default async function GalleryPage({ params }: { params: Params }) {
   const { data } = await getProductImages(params["product-id"]);
   const images = normalizeImages(data);
