@@ -1,6 +1,6 @@
 import ProductPageDetails from "../components/ProductPageDetails";
-import { normalizeProduct } from "@/lib/normalizers/productNormalizers";
-import { getProductDetails } from "@/lib/strapi/getProductDetails";
+import { normalizeProduct } from "@/lib/normalizers/product-normalizers";
+import { getProductDetails } from "@/lib/strapi/get-product-details";
 
 type Params = {
   "product-id": string;

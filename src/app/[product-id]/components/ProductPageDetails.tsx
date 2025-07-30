@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import ShoeSizeOption from "./ShoeSizeOption";
 import ProductPageButtons from "./ProductPageButtons";
 import { JSX } from "react";
-import { NormalizedProduct } from "../types/types";
+import { NormalizedProduct } from "@/types/product-types";
 
 /**
  * ProductPageDetails

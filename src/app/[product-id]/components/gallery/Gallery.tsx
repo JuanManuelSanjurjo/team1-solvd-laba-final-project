@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, JSX } from "react";
 import { Box } from "@mui/material";
 import GalleryImageStack from "./GalleryImageStack";
 import NavigationArrows from "@/components/NavigationArrows";
-import { NormalizedImage } from "../../types/types";
+import { NormalizedImage } from "@/types/product-types";
 
 /**
  * Gallery

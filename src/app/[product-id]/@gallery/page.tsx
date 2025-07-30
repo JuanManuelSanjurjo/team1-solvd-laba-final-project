@@ -1,6 +1,6 @@
 import Gallery from "../components/gallery/Gallery";
-import { normalizeImages } from "@/lib/normalizers/productNormalizers";
-import { getProductImages } from "@/lib/strapi/getProductImages";
+import { normalizeImages } from "@/lib/normalizers/product-normalizers";
+import { getProductImages } from "@/lib/strapi/get-product-images";
 
 type Params = {
   "product-id": string;
