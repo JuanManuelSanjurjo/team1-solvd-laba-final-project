@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Shoes Shop",
   description: "Shoes Shop",
   icons: {
-    icon: "/assets/logo/logo-black.svg",
+    icon: "/assets/logo/logo-orange.svg",
   },
 };
 
