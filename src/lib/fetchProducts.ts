@@ -1,3 +1,7 @@
+/**
+ * Represents the available filters
+ */
+
 export type ProductFilters = {
   brands?: string[];
   sizes?: string[];
@@ -8,6 +12,21 @@ export type ProductFilters = {
   priceMax?: number;
 };
 
+/**
+ * Fetches products from the Strapi API based on provided filter criteria.
+ *
+ * Constructs a query string with the given filters and sends a GET request
+ * to the `/api/products` endpoint. Each filter is appended according to Strapi's
+ * filtering conventions.
+ *
+ * Supported filters:
+ * - `brands`, `sizes`, `genders`, `colors`, `categories`: Filter by matching names or values.
+ * - `priceMin` and `priceMax`: Filters products whose price falls within the specified range.
+ *
+ * @param {ProductFilters} filters - An object containing optional product filter criteria.
+ * @returns {Promise<any[]>} - A promise that resolves to an array of filtered product data from the API.
+ * @throws {Error} - Throws an error if the network response is not OK.
+ */
 export async function fetchProducts(filters: ProductFilters) {
   const baseUrl = new URL(
     "https://shoes-shop-strapi.herokuapp.com/api/products"
