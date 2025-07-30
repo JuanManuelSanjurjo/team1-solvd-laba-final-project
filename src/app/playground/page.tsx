@@ -1,12 +1,8 @@
 // Page only for testing components
 
 "use client";
-// import NavigationArrows from "@/components/NavigationArrows";
 import HistoryOrderAccordion from "../order-history/components/HistoryOrderAccordion";
 import { Box, Divider, Stack, Typography } from "@mui/material";
-// import Testimonials from "../auth/sign-up/components/Testimonials";
-// import Gallery from "@/components/gallery/Gallery";
-// import CardContainer from "@/components/cards/CardContainer";
 import Button from "@/components/Button";
 import AiButton from "@/components/AiButton";
 import { SearchBar } from "@/components/SearchBar";
@@ -14,7 +10,7 @@ import { Header } from "@/components/Header";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import FilterCheckbox from "@/components/FilterCheckBox";
 import OrderHistoryItemRow from "../order-history/components/OrderHistoryItemRow";
-import ShoeSizeOption from "@/components/ShoeSizeOption";
+import ShoeSizeOption from "@/app/[product-id]/components/ShoeSizeOption";
 import Icon from "@/components/Icon";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import PaymentMethodOption from "@/components/PaymentMethodOption";
