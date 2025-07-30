@@ -1,7 +1,7 @@
 import ProductPageDetails from "../components/ProductPageDetails";
-
+import { normalizeProduct } from "../types/types";
 type Params = {
-  ["product-id"]: string;
+  "product-id": string;
 };
 async function getProductDetails(id: string) {
   try {
@@ -10,15 +10,16 @@ async function getProductDetails(id: string) {
       { cache: "no-store" },
     );
     const responseData = await response.json();
-    return responseData.data;
+    return responseData;
   } catch (error) {
     console.log(error); // placeholder for error handling
   }
 }
 async function SingleProduct({ params }: { params: Params }) {
-  const { attributes: product } = await getProductDetails(params["product-id"]);
+  const { data } = await getProductDetails(params["product-id"]);
+  const normalizedProduct = normalizeProduct(data);
 
-  return <ProductPageDetails product={product} />;
+  return <ProductPageDetails product={normalizedProduct} />;
 }
 
 export default SingleProduct;

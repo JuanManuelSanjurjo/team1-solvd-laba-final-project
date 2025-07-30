@@ -4,11 +4,7 @@ import { useState, useRef, useEffect, JSX } from "react";
 import { Box } from "@mui/material";
 import GalleryImageStack from "./GalleryImageStack";
 import NavigationArrows from "@/components/NavigationArrows";
-
-type GalleryProps = {
-  url: string;
-  alt: string;
-};
+import { NormalizedImage } from "../../types/types";
 
 /**
  * Gallery
@@ -23,7 +19,7 @@ type GalleryProps = {
 export default function Gallery({
   images,
 }: {
-  images: GalleryProps[];
+  images: NormalizedImage[];
 }): JSX.Element {
   const [current, setCurrent] = useState(0);
   const thumbnailRefs = useRef<HTMLDivElement[] | []>([]);

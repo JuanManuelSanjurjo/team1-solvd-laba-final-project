@@ -24,7 +24,7 @@ export interface ProductAttributes {
   name: string;
   description: string;
   price: number;
-  images: {
+  images?: {
     data: ImageData[];
   };
   color: {
@@ -35,14 +35,9 @@ export interface ProductAttributes {
   };
 }
 
-export interface ProductData {
+export interface ProductApiResponse {
   id: number;
   attributes: ProductAttributes;
-}
-
-export interface ProductApiResponse {
-  data: ProductData;
-  meta: unknown;
 }
 
 export interface NormalizedProduct {
@@ -62,23 +57,41 @@ export interface NormalizedProduct {
   color: string;
 }
 
+export interface NormalizedImage {
+  id: number;
+  url: string;
+  alt: string;
+}
+
+/**
+ * Normalize the product data from the API response.
+ * @param product - The product data from the API response.
+ * @returns {NormalizedProduct} The normalized product data.
+ */
 export function normalizeProduct(
   product: ProductApiResponse,
 ): NormalizedProduct {
   return {
-    id: product.data.id,
-    name: product.data.attributes.name,
-    description: product.data.attributes.description,
-    price: product.data.attributes.price,
-    // images: product.data.attributes.images.data.map((img) => ({
-    //   id: img.id,
-    //   url: img.attributes.url,
-    //   alt: img.attributes.name,
-    // })),
-    sizes: product.data.attributes.sizes.data.map((size) => ({
+    id: product.id,
+    name: product.attributes.name,
+    description: product.attributes.description,
+    price: product.attributes.price,
+    images: product.attributes.images?.data?.map((img) => ({
+      id: img.id,
+      url: img.attributes.url,
+      alt: img.attributes.name || `Product ${img.id} image`,
+    })),
+    sizes: product.attributes.sizes.data.map((size) => ({
       id: size.id,
       value: size.attributes.value,
     })),
-    color: product.data.attributes.color.data.attributes.name,
+    color: product.attributes.color.data.attributes.name,
   };
+}
+export function normalizeImages(images: ImageData[]): NormalizedImage[] {
+  return images.map((img) => ({
+    id: img.id,
+    url: img.attributes.url,
+    alt: img.attributes.name,
+  }));
 }

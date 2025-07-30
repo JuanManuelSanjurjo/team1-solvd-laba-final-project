@@ -1,18 +1,14 @@
 "use client";
 import { Box, Stack } from "@mui/material";
 import { JSX } from "react";
+import { NormalizedImage } from "../../types/types";
 
 type ImageGalleryStackProps = {
-  images: GalleryStackImage[];
+  images: NormalizedImage[];
   setCurrent: (index: number) => void;
   current: number;
   containerRef: React.RefObject<HTMLDivElement | null>;
   thumbnailRefs: React.RefObject<HTMLDivElement[] | []>;
-};
-
-type GalleryStackImage = {
-  url: string;
-  alt: string;
 };
 
 /**
@@ -64,9 +60,9 @@ export default function GalleryImageStack({
         },
       }}
     >
-      {images.map(({ url, alt }, index) => (
+      {images.map(({ url, alt, id }, index) => (
         <Box
-          key={index}
+          key={id}
           ref={(el: HTMLDivElement | null) => {
             if (el) thumbnailRefs.current[index] = el;
           }}

@@ -2,18 +2,13 @@ import { Box, Typography } from "@mui/material";
 import ShoeSizeOption from "./ShoeSizeOption";
 import ProductPageButtons from "./ProductPageButtons";
 import { JSX } from "react";
-import { ProductAttributes } from "../types/types";
+import { NormalizedProduct } from "../types/types";
 
 export default function ProductPageDetails({
   product,
 }: {
-  product: ProductAttributes;
+  product: NormalizedProduct;
 }): JSX.Element {
-  const sizes = product.sizes?.data?.map((size) => ({
-    value: size.attributes.value,
-    id: size.id,
-  }));
-
   return (
     <Box
       maxWidth={"520px"}
@@ -66,7 +61,7 @@ export default function ProductPageDetails({
             lineHeight: "24px",
           }}
         >
-          {product?.color?.data?.attributes?.name}
+          {product?.color}
         </Typography>
       </Box>
       <Typography variant="subtitle1" color="#494949" sx={{ fontWeight: 500 }}>
@@ -84,7 +79,7 @@ export default function ProductPageDetails({
           },
         }}
       >
-        {sizes?.map(({ value, id }) => (
+        {product.sizes?.map(({ value, id }) => (
           <ShoeSizeOption size={value} key={id} disabled={false} />
         ))}
       </Box>

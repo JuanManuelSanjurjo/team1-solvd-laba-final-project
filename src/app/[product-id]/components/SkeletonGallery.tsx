@@ -10,7 +10,7 @@ export default function SkeletonGallery() {
         sx={{
           aspectRatio: "1/0.9",
           flexDirection: {
-            xs: "column",
+            xs: "column-reverse",
             md: "row",
           },
           gap: 1,
