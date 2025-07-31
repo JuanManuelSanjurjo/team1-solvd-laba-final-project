@@ -80,7 +80,7 @@ export default function Card({
           {overlayAction && (
             <CardActionWrapperCenter
               action={
-                overlayAction === "CardOverlayAddToCard" ? (
+                overlayAction === "cardOverlayAddToCard" ? (
                   <CardOverlayAddToCart />
                 ) : (
                   <CardOverlayDelete />
