@@ -1,6 +1,5 @@
 "use client";
 
-//import { Product } from "@/types/product";
 import cardProduct from "./types/cardProduct";
 import { Box } from "@mui/material";
 import { HeartSlash } from "iconsax-react";

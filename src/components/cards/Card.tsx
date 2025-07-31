@@ -50,10 +50,14 @@ export default function Card({
           opacity: 1,
         },
         height: { xs: 210, md: 445 },
+        // width: {
+        //   xs: "calc(50% - 8px)",
+        //   sm: "calc(33.33% - 16px)",
+        //   md: "calc(25% - 18px)",
+        // },
         width: {
-          xs: "calc(50% - 8px)",
-          sm: "calc(33.33% - 16px)",
-          md: "calc(25% - 18px)",
+          xs: 152,
+          md: 320,
         },
         display: "flex",
         flexDirection: "column",

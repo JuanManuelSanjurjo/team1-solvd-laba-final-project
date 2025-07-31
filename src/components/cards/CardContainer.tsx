@@ -23,9 +23,14 @@ export default function CardContainer({
     <Box
       sx={{
         paddingBlock: 4.5,
-        display: "flex",
-        flexWrap: "wrap",
-        gap: { xs: "16px", md: "67px" },
+        display: "grid",
+        justifyContent: "space-around",
+        justifyItems: "center",
+        gridTemplateColumns: {
+          xs: "repeat(2, 1fr)",
+          md: "repeat(auto-fit, minmax(240px, 300px))",
+        },
+        gap: { xs: "32px", md: "67px" },
       }}
     >
       {children}
