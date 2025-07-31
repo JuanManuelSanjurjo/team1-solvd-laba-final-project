@@ -111,7 +111,7 @@ export default function Card({
               {product.name}
             </Typography>
             <Typography variant="subtitle1" fontWeight={500}>
-              {product.price}
+              ${product.price}
             </Typography>
           </Box>
 
@@ -131,6 +131,7 @@ export default function Card({
             }}
           >
             {product.gender}
+            {"'"}s shoes
           </Typography>
         </Box>
       )}
