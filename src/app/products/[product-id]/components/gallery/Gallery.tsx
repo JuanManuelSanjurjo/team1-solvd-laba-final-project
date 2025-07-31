@@ -4,10 +4,7 @@ import { useState, useRef, useEffect, JSX } from "react";
 import { Box } from "@mui/material";
 import GalleryImageStack from "./GalleryImageStack";
 import NavigationArrows from "@/components/NavigationArrows";
-
-type GalleryProps = {
-  images: string[];
-};
+import { NormalizedImage } from "@/types/product-types";
 
 /**
  * Gallery
@@ -19,7 +16,11 @@ type GalleryProps = {
  * @returns {JSX.Element} with the gallery component.
  */
 
-export default function Gallery({ images }: GalleryProps): JSX.Element {
+export default function Gallery({
+  images,
+}: {
+  images: NormalizedImage[];
+}): JSX.Element {
   const [current, setCurrent] = useState(0);
   const thumbnailRefs = useRef<HTMLDivElement[] | []>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -69,17 +70,23 @@ export default function Gallery({ images }: GalleryProps): JSX.Element {
         />
 
         <Box flex={1} position="relative" display="flex" flexDirection="column">
-          <Fade in={true} key={images[current]} timeout={500}>
+          <Fade in={true} key={images[current].url} timeout={500}>
             <Box
               component="img"
-              src={images[current]}
+              src={images[current].url}
               alt={`main-img-${current}`}
               sx={{
                 aspectRatio: {
                   xs: "4/3",
                 },
-                height: "100%",
-                width: "100%",
+                height: {
+                  xs: "100%",
+                  lg: "630px",
+                },
+                width: {
+                  xs: "100%",
+                  lg: "588px",
+                },
                 objectFit: "cover",
                 borderRadius: 0,
               }}
