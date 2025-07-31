@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import MyProductsBanner from "./components/MyProductsBanner";
 import MyProductsMainContent from "./components/MyProductsMainContent";
-import PlaceHolderSidebar from "./components/PlaceHolderSidebar";
+import AuthenticatedSidebar from "@/components/AuthenticatedSidebar";
 
 export default function MyProducts() {
   return (
@@ -13,9 +13,22 @@ export default function MyProducts() {
         marginInline: { lg: "40px" },
       }}
     >
-      {/* ********** PLACEHOLDER FOR SIDEBAR ********** */}
-      <PlaceHolderSidebar />
-      {/* ********** END OF PLACEHOLDER FOR SIDEBAR ********** */}
+      <Box
+        sx={{
+          display: {
+            xs: "none",
+            sm: "none",
+            md: "block",
+          },
+          marginTop: {
+            xs: "60px",
+            sm: "90px",
+            md: "120px",
+          },
+        }}
+      >
+        <AuthenticatedSidebar />
+      </Box>
 
       <Box
         sx={{
