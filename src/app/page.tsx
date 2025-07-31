@@ -92,17 +92,6 @@ export default function Home() {
     },
   ];
 
-  const images = [
-    "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
-    "https://static.vecteezy.com/system/resources/previews/050/511/817/non_2x/blue-yellow-and-white-running-shoe-in-motion-use-for-athletic-product-banners-sporty-sneaker-posts-and-stylish-covers-isolated-on-transparent-background-png.png",
-    "https://www.boafit.com/sites/boafit/files/styles/products_slideshow_275_x_275/public/2025-05/Screenshot%202025-04-24%20at%201.01.36%E2%80%AFPM.png?itok=8kLwUWhU",
-    "https://sendaathletics.com/cdn/shop/files/Ushuaia_Pro_2.0_-_Purple_1.png?v=1752293415&width=533",
-    "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
-    "https://static.vecteezy.com/system/resources/previews/050/511/817/non_2x/blue-yellow-and-white-running-shoe-in-motion-use-for-athletic-product-banners-sporty-sneaker-posts-and-stylish-covers-isolated-on-transparent-background-png.png",
-    "https://www.boafit.com/sites/boafit/files/styles/products_slideshow_275_x_275/public/2025-05/Screenshot%202025-04-24%20at%201.01.36%E2%80%AFPM.png?itok=8kLwUWhU",
-    "https://sendaathletics.com/cdn/shop/files/Ushuaia_Pro_2.0_-_Purple_1.png?v=1752293415&width=533",
-  ];
-
   return (
     <div>
       <Header isAuthenticated />
