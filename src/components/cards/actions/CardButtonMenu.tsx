@@ -1,21 +1,30 @@
 "use client";
+
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useState, JSX, MouseEvent } from "react";
 import { Box } from "@mui/material";
+import cardProduct from "./types/cardProduct";
+import { useWishlistStore } from "@/store/wishlist";
+
+type CardButtonMenuProps = {
+  product: cardProduct;
+};
 
 /**
  * CardButtonMenu
  *
  * This component is a menu button that displays a dropdown menu when clicked.
  * Is passed to the Card component to be rendered on top of the image.
- *
+ *@param product - The product in wich the actions should be performed.
  * @returns {JSX.Element} with the card menu component.
  */
 
-export default function CardButtonMenu(): JSX.Element {
+export default function CardButtonMenu({
+  product,
+}: CardButtonMenuProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open: boolean = Boolean(anchorEl);
 
@@ -25,6 +34,8 @@ export default function CardButtonMenu(): JSX.Element {
   function handleClose() {
     setAnchorEl(null);
   }
+
+  const addToWishList = useWishlistStore((state) => state.addToWishList);
 
   return (
     <Box>
@@ -73,6 +84,7 @@ export default function CardButtonMenu(): JSX.Element {
         <MenuItem onClick={handleClose}>Edit</MenuItem>
         <MenuItem onClick={handleClose}>Duplicate</MenuItem>
         <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={() => addToWishList(product)}>WishList</MenuItem>
       </Menu>
     </Box>
   );
