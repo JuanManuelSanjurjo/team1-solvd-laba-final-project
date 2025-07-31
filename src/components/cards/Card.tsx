@@ -4,8 +4,16 @@ import CardActionWrapperTopRight from "./wrappers/CardActionWrapperTopRight";
 import CardActionWrapperCenter from "./wrappers/CardActionWrapperCenter";
 import { JSX } from "react";
 
-type CardProps = {
+interface CardProduct {
+  id: number;
   image: string;
+  name: string;
+  price: number;
+  gender: string;
+}
+
+type CardProps = {
+  product: CardProduct;
   action?: JSX.Element;
   overlay?: boolean;
   showText?: boolean;
@@ -26,7 +34,7 @@ type CardProps = {
  */
 
 export default function Card({
-  image,
+  product,
   action = undefined,
   overlay = false,
   showText = true,
@@ -47,7 +55,7 @@ export default function Card({
         flexDirection: "column",
       }}
     >
-      <CardImage image={image}>
+      <CardImage image={product.image}>
         <>
           {action && !overlay && <CardActionWrapperTopRight action={action} />}
           {action && overlay && <CardActionWrapperCenter action={action} />}
@@ -74,10 +82,10 @@ export default function Card({
               fontWeight={500}
               sx={{ fontSize: "inherit" }}
             >
-              Long shoe Card Subtitle to try elipsis
+              {product.name}
             </Typography>
             <Typography variant="subtitle1" fontWeight={500}>
-              $160
+              ${product.price}
             </Typography>
           </Box>
 
@@ -96,7 +104,8 @@ export default function Card({
               },
             }}
           >
-            Man{"'"}s shoes
+            {product.gender}
+            {"'"}s shoes
           </Typography>
         </Box>
       )}
