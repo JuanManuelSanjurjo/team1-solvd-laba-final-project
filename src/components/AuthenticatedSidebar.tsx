@@ -7,75 +7,154 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Avatar,
+  Divider,
   Typography,
+  ListItemButton,
 } from "@mui/material";
 import {
-  FavoriteBorder,
-  ShoppingCart,
-  History,
-  Settings,
+  BagTick,
+  MenuBoard,
+  HeartSearch,
+  Eye,
+  Setting2,
   Logout,
-} from "@mui/icons-material";
+} from "iconsax-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTheme } from "@mui/material/styles";
+import SidebarIcon from "./SideBarIcon";
+import WelcomeComponent from "./WelcomeComponent";
 
-const AuthenticatedSidebar = (): JSX.Element => {
-  const drawerWidth = 240;
+const navItems = [
+  {
+    label: "My Products",
+    href: "/my-products",
+    Icon: BagTick,
+  },
+  {
+    label: "Order History",
+    href: "/order-history",
+    Icon: MenuBoard,
+  },
+  {
+    label: "My Wishlist",
+    href: "/my-wishlist",
+    Icon: HeartSearch,
+  },
+  {
+    label: "Recently viewed",
+    href: "/recently-viewed",
+    Icon: Eye,
+  },
+  {
+    label: "Settings",
+    href: "/update-profile",
+    Icon: Setting2,
+  },
+  {
+    label: "Log out",
+    href: "/logout",
+    Icon: Logout,
+  },
+];
+
+type AuthenticatedSidebarProps = {
+  showProfileComponent?: boolean;
+  anchor?: "left" | "right";
+  backgroundColor?: string;
+  width?: number | string;
+};
+
+const AuthenticatedSidebar = ({
+  showProfileComponent = true,
+  anchor = "left",
+  backgroundColor,
+  width,
+}: AuthenticatedSidebarProps): JSX.Element => {
+  const theme = useTheme();
+  const pathname = usePathname();
+  const background = backgroundColor || theme.palette.background.default;
+
+  const drawerWidth = {
+    md: 240,
+    lg: 320,
+  };
+
+  const sidebarWidth = width || drawerWidth;
 
   return (
     <Drawer
       variant="permanent"
-      anchor="left"
+      anchor={anchor}
       sx={{
-        width: drawerWidth,
+        width: sidebarWidth,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: drawerWidth,
+          width: sidebarWidth,
           boxSizing: "border-box",
-          padding: 2,
+          top: {
+            xs: "60px",
+            md: "120px",
+          },
+          backgroundColor: background,
+          borderRight: "none",
         },
       }}
     >
       <Box display="flex" flexDirection="column" height="100%">
-        <Box display="flex" alignItems="center" gap={1} mb={2}>
-          <Avatar src="/user-avatar.jpg" />
-          <Typography variant="subtitle1">Jane Meldrum</Typography>
-        </Box>
+        {showProfileComponent && (
+          <>
+            {/* TODO change hardcoded src and name for user data*/}
+            <WelcomeComponent
+              src="www.coolavatarbystrapi.com/images/upload/1.jpg"
+              name="Jane Meldrum"
+            />
+            <Divider />
+          </>
+        )}
 
-        <List>
-          <ListItem disablePadding>
-            <ListItemIcon>
-              <ShoppingCart />
-            </ListItemIcon>
-            <ListItemText primary="My products" />
-          </ListItem>
+        <List
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+            ml: { xs: 2, md: 5 },
+            mt: { xs: 2, md: 3 },
+            "& .MuiListItemText-primary": {
+              typography: "body1",
+              fontWeight: 500,
+              lineHeight: "100%",
+            },
+          }}
+        >
+          {navItems.map(({ label, href, Icon }) => {
+            const isActive = pathname === href;
 
-          <ListItem disablePadding>
-            <ListItemIcon>
-              <History />
-            </ListItemIcon>
-            <ListItemText primary="Order history" />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemIcon>
-              <FavoriteBorder />
-            </ListItemIcon>
-            <ListItemText primary="My Wishlist" />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemIcon>
-              <Logout />
-            </ListItemIcon>
-            <ListItemText primary="Log out" />
-          </ListItem>
+            return (
+              <ListItem key={label} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  href={href}
+                  sx={{
+                    "& .MuiListItemText-primary": {
+                      color: isActive ? "#FE645E" : "#6E7378",
+                      fontWeight: isActive ? 600 : 400,
+                      fontSize: { xs: "0.9rem", md: "1rem" },
+                      lineHeight: "100%",
+                    },
+                    "& .MuiListItemIcon-root": {
+                      minWidth: 32,
+                    },
+                  }}
+                >
+                  <ListItemIcon>
+                    <SidebarIcon Icon={Icon} active={isActive} />
+                  </ListItemIcon>
+                  <ListItemText primary={label} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
       </Box>
     </Drawer>

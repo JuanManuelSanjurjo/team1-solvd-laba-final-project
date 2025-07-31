@@ -22,7 +22,7 @@ type CardContainerProps = {
  * @returns {JSX.Element} with the card container component.
  */
 
-export default function CardContainer({
+export default function CardContainerImage({
   images,
   overlayAction,
   isDragAndDropEnable = false,

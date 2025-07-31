@@ -2,14 +2,11 @@ import { JSX } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import { Heart, HeartSlash, Add } from "iconsax-react";
-import List from "@mui/material/List";
+import { Add } from "iconsax-react";
 import IconButton from "@mui/material/IconButton";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Backdrop from "@mui/material/Backdrop";
+import AuthenticatedSidebar from "../AuthenticatedSidebar";
+import theme from "@/style/theme";
 
 interface AppBarProps {
   open: boolean;
@@ -60,22 +57,12 @@ export default function MobileDrawer({
               <Add size="24" color="#494949" />
             </IconButton>
           </DrawerHeader>
-          <List>
-            {["My products", "Settings", "log out"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? (
-                      <Heart size="22" color="#FE645E" />
-                    ) : (
-                      <HeartSlash size="22" color="#FE645E" />
-                    )}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+          <AuthenticatedSidebar
+            showProfileComponent={false}
+            anchor="right"
+            backgroundColor={theme.palette.background.paper}
+            width={240}
+          ></AuthenticatedSidebar>
         </Drawer>
       </Backdrop>
     </Box>

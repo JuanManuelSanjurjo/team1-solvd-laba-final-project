@@ -13,6 +13,8 @@ import { useState } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import { FilterRemove, FilterSearch } from "iconsax-react";
 import Card from "@/components/cards/Card";
+import CardImage from "@/components/cards/CardImage";
+import CardContainerImage from "@/components/cards/CardContainerImage";
 
 export default function Home() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
@@ -297,23 +299,11 @@ export default function Home() {
           />
         </Box>
 
-        <Box
-          sx={{
-            paddingBlock: 4.5,
-            display: "grid",
-            justifyContent: "space-around",
-            justifyItems: "center",
-            gridTemplateColumns: {
-              xs: "repeat(2, 1fr)",
-              md: "repeat(auto-fit, minmax(240px, 300px))",
-            },
-            gap: { xs: "16px", md: "67px" },
-          }}
-        >
-          {images.map((image) => (
-            <Card image={image} overlayAction="CardOverlayDeleteToCard"></Card>
-          ))}
-        </Box>
+        {/* <CardContainerImage
+          images={images}
+          overlayAction="CardOverlayDelete"
+          isDragAndDropEnable
+        ></CardContainerImage> */}
       </Box>
     </div>
   );

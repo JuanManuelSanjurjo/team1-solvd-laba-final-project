@@ -11,7 +11,22 @@ export default function MyWishlist() {
   return (
     <div>
       <Header isAuthenticated />
-      <AuthenticatedSidebar />
+      <Box
+        sx={{
+          display: {
+            xs: "none",
+            sm: "none",
+            md: "block",
+          },
+          marginTop: {
+            xs: "60px",
+            sm: "90px",
+            md: "120px",
+          },
+        }}
+      >
+        <AuthenticatedSidebar />
+      </Box>
       <Box
         sx={{
           marginTop: {
