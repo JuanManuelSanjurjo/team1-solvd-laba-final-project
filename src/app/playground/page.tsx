@@ -10,7 +10,7 @@ import { Header } from "@/components/Header";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import FilterCheckbox from "@/components/FilterCheckBox";
 import OrderHistoryItemRow from "../order-history/components/OrderHistoryItemRow";
-import ShoeSizeOption from "@/app/[product-id]/components/ShoeSizeOption";
+import ShoeSizeOption from "@/app/products/[product-id]/components/ShoeSizeOption";
 import Icon from "@/components/Icon";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import PaymentMethodOption from "@/components/PaymentMethodOption";
