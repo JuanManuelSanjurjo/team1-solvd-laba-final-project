@@ -1,5 +1,4 @@
 import Gallery from "@/components/gallery/Gallery";
-import CardContainerImage from "@/components/cards/CardContainerImage";
 import { Box, Container } from "@mui/material";
 import ProductPageDetails from "./components/ProductPageDetails";
 
@@ -58,12 +57,7 @@ export default function SingleProduct() {
           <ProductPageDetails />
         </Container>
       </Box>
-      <Box mt={4}>
-        <CardContainerImage
-          images={imagesArr}
-          overlayAction="CardOverlayDelete"
-        />
-      </Box>
+      <Box mt={4}></Box>
     </Box>
   );
 }
