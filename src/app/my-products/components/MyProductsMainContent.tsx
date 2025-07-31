@@ -4,6 +4,16 @@ import { Box } from "@mui/material";
 import MyProductsEmptyState from "./MyProductsEmptyState";
 import MyProductsHeader from "./MyPorductsHeader";
 
+/**
+ * MyProductsMainContent
+ *
+ * This component renders the main content of the My Products page.
+ * It includes a header, a list of products, and an empty state.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} The main content of the My Products page.
+ */
 export default function MyProductsMainContent() {
   const [products] = useState([]);
 

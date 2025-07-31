@@ -1,6 +1,16 @@
 import { Bag } from "iconsax-react";
 import { Box, Typography, Button } from "@mui/material";
 
+/**
+ * MyProductsEmptyState
+ *
+ * This component renders an empty state for the My Products page.
+ * It displays a bag icon, a message, and a button to add a product.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} An empty state for the My Products page.
+ */
 export default function MyProductsEmptyState() {
   return (
     <Box

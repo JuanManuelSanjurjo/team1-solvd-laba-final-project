@@ -1,7 +1,17 @@
 import { Box, Typography } from "@mui/material";
 import { ProfilePicture } from "@/components/ProfilePicture";
 
-export default function ProfileCard() {
+/**
+ * BannerProfileCard
+ *
+ * This component renders a banner with a profile picture and a name.
+ * It uses the ProfilePicture component to display the user's avatar.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} A banner with a profile picture and name.
+ */
+export default function BannerProfileCard() {
   const profilePic = "www.coolavatarbystrapi.com/images/upload/1.jpg";
   return (
     <Box

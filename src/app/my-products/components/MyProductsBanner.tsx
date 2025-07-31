@@ -1,7 +1,17 @@
 import { Box } from "@mui/material";
 import BannerProfileCard from "./BannerProfileCard";
 
-export default function Banner() {
+/**
+ * Banner
+ *
+ * This component renders a banner with a profile picture and a name.
+ * It uses the BannerProfileCard component to display the user's avatar.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} A banner with a profile picture and name.
+ */
+export default function MyProductsBanner() {
   return (
     <Box
       sx={{
