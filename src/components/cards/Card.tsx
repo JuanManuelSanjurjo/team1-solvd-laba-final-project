@@ -59,7 +59,7 @@ export default function Card({
         flexDirection: "column",
       }}
     >
-      <CardImage image={displayImage!!}>
+      <CardImage image={displayImage || "No image available"}>
         <>
           {topAction && (
             <CardActionWrapperTopRight
