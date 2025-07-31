@@ -3,15 +3,14 @@ import CardImage from "./CardImage";
 import CardActionWrapperTopRight from "./wrappers/CardActionWrapperTopRight";
 import CardActionWrapperCenter from "./wrappers/CardActionWrapperCenter";
 import { JSX } from "react";
-import { Product } from "@/types/product";
-import { Car } from "iconsax-react";
+import cardProduct from "./actions/types/cardProduct";
 import CardButtonMenu from "./actions/CardButtonMenu";
 import CardButtonWishList from "./actions/CardButtonWishList";
 import CardOverlayAddToCart from "./actions/CardOverlayAddToCart";
 import CardOverlayDelete from "./actions/CardOverlayDelete";
 
 type CardProps = {
-  product?: Product;
+  product?: cardProduct;
   image?: string;
   topAction?: string;
   overlayAction?: string;
@@ -51,14 +50,10 @@ export default function Card({
           opacity: 1,
         },
         height: { xs: 210, md: 445 },
-        // width: {
-        //   xs: 152,
-        //   md: 320,
-        // },
         width: {
-          xs: "calc(50% - 8px)", // 2 por fila con 16px gap
-          sm: "calc(33.33% - 16px)", // 3 por fila
-          md: "calc(25% - 18px)", // 4 por fila
+          xs: "calc(50% - 8px)",
+          sm: "calc(33.33% - 16px)",
+          md: "calc(25% - 18px)",
         },
         display: "flex",
         flexDirection: "column",
@@ -135,7 +130,7 @@ export default function Card({
               },
             }}
           >
-            {product.description}
+            {product.gender}
           </Typography>
         </Box>
       )}

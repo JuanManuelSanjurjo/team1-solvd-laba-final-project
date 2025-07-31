@@ -1,13 +1,14 @@
 "use client";
 
-import { Product } from "@/types/product";
+//import { Product } from "@/types/product";
+import cardProduct from "./types/cardProduct";
 import { Box } from "@mui/material";
 import { HeartSlash } from "iconsax-react";
 import { JSX } from "react";
 import { useWishlistStore } from "@/store/wishlist";
 
 type CardButtonWishListProps = {
-  product: Product;
+  product: cardProduct;
 };
 
 /**

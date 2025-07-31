@@ -1,7 +1,8 @@
 "use client";
 import CardContainer from "@/components/cards/CardContainer";
+import Card from "@/components/cards/Card";
 import { Header } from "@/components/Header";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useWishlistStore } from "@/store/wishlist";
 import AuthenticatedSidebar from "@/components/AuthenticatedSidebar";
 
@@ -34,9 +35,34 @@ export default function MyWishlist() {
             sm: "90px",
             md: "120px",
           },
+          marginLeft: {
+            xs: "0",
+            sm: "0",
+            md: "300px",
+            lg: "380px",
+          },
+          textAlign: "left",
         }}
       >
-        <CardContainer products={wishList} topAction="cardButtonWishList" />
+        <Box display="flex" alignItems="center">
+          <Typography
+            variant="h2"
+            sx={{
+              marginTop: "40px",
+            }}
+          >
+            My Wishlist
+          </Typography>
+        </Box>
+        <CardContainer>
+          {wishList.map((product, index) => (
+            <Card
+              product={product}
+              key={index}
+              topAction="cardButtonWishList"
+            />
+          ))}
+        </CardContainer>
       </Box>
     </div>
   );

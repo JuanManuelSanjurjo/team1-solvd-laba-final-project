@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Product } from "@/types/product";
+import cardProduct from "@/components/cards/actions/types/cardProduct";
 
 type RecentlyViewedStore = {
-  recentlyViewed: Product[];
-  addToRecentlyViewed: (product: Product) => void;
+  recentlyViewed: cardProduct[];
+  addToRecentlyViewed: (product: cardProduct) => void;
   clearRecentlyViewed: () => void;
 };
 

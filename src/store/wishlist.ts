@@ -1,10 +1,11 @@
-import { Product } from "@/types/product";
+//import { Product } from "@/types/product";
+import cardProduct from "@/components/cards/actions/types/cardProduct";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type WishlistStore = {
-  wishList: Product[];
-  addToWishList: (product: Product) => void;
+  wishList: cardProduct[];
+  addToWishList: (product: cardProduct) => void;
   removeFromWishList: (productId: number) => void;
   clearWishList: () => void;
 };
@@ -23,6 +24,7 @@ export const useWishlistStore = create<WishlistStore>()(
             wishList: [...state.wishList, product],
           }));
         }
+        console.log("Added to wishlist performn");
       },
 
       removeFromWishList: (id) => {
