@@ -64,6 +64,32 @@ type AuthenticatedSidebarProps = {
   width?: number | string;
 };
 
+/**
+ * AuthenticatedSidebar
+ *
+ * Renders a permanent sidebar navigation drawer for authenticated users.
+ * It includes navigation links, icons, and an optional profile section.
+ * The sidebar is responsive and styled according to the current MUI theme.
+ *
+ * @component
+ *
+ * @param {Object} props - Props for the sidebar component.
+ * @param {boolean} [props.showProfileComponent=true] - Whether to display the profile section at the top.
+ * @param {"left" | "right"} [props.anchor="left"] - The side from which the drawer appears.
+ * @param {string} [props.backgroundColor] - Custom background color for the sidebar.
+ * @param {number | string} [props.width] - Custom width for the sidebar. Defaults to 240px on md screens, and 320px on lg.
+ *
+ * @returns {JSX.Element} A styled permanent sidebar with navigation items and optional user info.
+ *
+ * @example
+ * <AuthenticatedSidebar
+ *   showProfileComponent={true}
+ *   anchor="left"
+ *   backgroundColor="#f5f5f5"
+ *   width={280}
+ * />
+ */
+
 const AuthenticatedSidebar = ({
   showProfileComponent = true,
   anchor = "left",

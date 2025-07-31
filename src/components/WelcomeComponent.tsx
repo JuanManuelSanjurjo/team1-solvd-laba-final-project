@@ -6,6 +6,27 @@ type WelcomeComponentProps = {
   name: string;
 };
 
+/**
+ * WelcomeComponent
+ *
+ * Renders a small welcome section with a user profile picture and greeting text.
+ * Typically used in sidebars or headers to personalize the interface for the user.
+ *
+ * @component
+ *
+ * @param {Object} props - Component props.
+ * @param {string} props.src - The URL of the user's profile picture.
+ * @param {string} props.name - The name of the user to display in the greeting.
+ *
+ * @returns {JSX.Element} A greeting box with profile picture and user's name.
+ *
+ * @example
+ * <WelcomeComponent
+ *   src="https://example.com/avatar.jpg"
+ *   name="John Doe"
+ * />
+ */
+
 const WelcomeComponent = ({ src, name }: WelcomeComponentProps) => {
   return (
     <Box
