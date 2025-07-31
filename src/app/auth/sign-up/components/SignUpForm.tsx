@@ -106,7 +106,7 @@ export default function SignUpForm() {
       >
         <Input
           {...register("username")}
-          label="Name"
+          label="Username"
           name="username"
           required
           errorMessage={errors.username?.message ?? ""}

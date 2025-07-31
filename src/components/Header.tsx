@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useDeferredValue, useState } from "react";
+import React, { JSX, useDeferredValue, useState } from "react";
 import Link from "next/link";
 import {
   AppBar,
@@ -19,11 +19,19 @@ import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import MobileDrawer from "./Navbar/MobileDrawer";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductsBySearch } from "@/lib/fetchProductsBySearch";
 import CardContainer from "./cards/CardContainer";
 import { normalizeProductCard } from "@/lib/normalizeProductCard";
 import Card from "./cards/Card";
+
+const excludedPaths = [
+  "/auth/sign-in",
+  "/auth/sign-up",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+];
 
 /**
  * Header component displays a responsive top navigation bar with different layouts
@@ -38,21 +46,17 @@ import Card from "./cards/Card";
  * @component
  * @example
  *
- * <Header isAuthenticated={true} />
+ * <Header />
  *
  *
  * @param {Object} props - Component props
- * @param {boolean} props.isAuthenticated - Whether the user is logged in; determines if profile picture is shown or "Sign in" button.
  *
  * @returns {JSX.Element} The responsive header component.
  */
 
-interface HeaderProps {
-  isAuthenticated: boolean;
-}
-const excludedPaths = ["/auth/sign-in", "/auth/sign-up"];
-
-export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
+export const Header = (): JSX.Element | null => {
+  const { data: session } = useSession();
+  const isAuthenticated = Boolean(session?.user);
   const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // <600px
@@ -173,19 +177,21 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
 
             <Box sx={{ display: "flex", alignItems: "center", gap: itemGap }}>
               {!isAuthenticated && (
-                <Button
-                  variant="outlined"
-                  size="small"
-                  sx={{
-                    padding: isMobile
-                      ? "8px 28px"
-                      : isTablet
-                      ? "12px 40px"
-                      : "16px 52px",
-                  }}
-                >
-                  Sign in
-                </Button>
+                <Link href="/auth/sign-in">
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      padding: isMobile
+                        ? "8px 28px"
+                        : isTablet
+                        ? "12px 40px"
+                        : "16px 52px",
+                    }}
+                  >
+                    Sign in
+                  </Button>
+                </Link>
               )}
 
               <Box
@@ -204,12 +210,10 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                   <Bag style={{ width: bagIconSize }} color="#292d32" />
                 </Link>
                 {isAuthenticated && isDesktop && (
-                  <Link href="/update-profile">
-                    <ProfilePicture
-                      width={24}
-                      src="https://www.shareicon.net/data/128x128/2016/07/26/802043_man_512x512.png"
-                    />
-                  </Link>
+                  <ProfilePicture
+                    width={24}
+                    src="https://www.shareicon.net/data/128x128/2016/07/26/802043_man_512x512.png" //Should be change on NextAuth implementation
+                  />
                 )}
               </Box>
               {!isDesktop && (

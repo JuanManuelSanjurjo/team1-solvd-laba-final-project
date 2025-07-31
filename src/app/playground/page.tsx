@@ -79,10 +79,10 @@ export default function Playground() {
           Headers
         </Typography>
         <Box>
-          <Header isAuthenticated={true} />
+          <Header />
         </Box>
         <Box>
-          <Header isAuthenticated={false} />
+          <Header />
         </Box>
         <Divider
           sx={{

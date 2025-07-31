@@ -10,7 +10,7 @@ export default function ThankYou() {
   const theme = useTheme();
   return (
     <>
-      <Header isAuthenticated></Header>
+      <Header></Header>
       <Stack
         direction={{ xs: "column", md: "row" }}
         spacing={{ xs: 4, md: 13 }}
