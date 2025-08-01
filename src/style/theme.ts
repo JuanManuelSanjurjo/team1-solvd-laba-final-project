@@ -75,6 +75,12 @@ const theme = createTheme({
             height: "61px",
           },
         },
+        {
+          props: { size: "medium" },
+          style: {
+            height: "40px",
+          },
+        },
       ],
     },
     MuiDialog: {
