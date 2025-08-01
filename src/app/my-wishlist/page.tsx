@@ -11,7 +11,7 @@ export default function MyWishlist() {
 
   return (
     <div>
-      <Header isAuthenticated />
+      <Header />
       <Box
         sx={{
           display: {
