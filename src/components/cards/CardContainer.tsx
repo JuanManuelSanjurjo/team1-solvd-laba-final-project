@@ -9,7 +9,8 @@ type CardContainerProps = {
  * CardContainer
  *
  * This component is a container for a grid of cards. It uses the Card component to display each card in a grid layout.
- * currrent content is hardcoded for testing purposes
+
+  @component
  *
  * @param {React.ReactNode} children
  * @returns {JSX.Element} with the card container component.
@@ -29,7 +30,7 @@ export default function CardContainer({
           xs: "repeat(2, 1fr)",
           md: "repeat(auto-fit, minmax(240px, 300px))",
         },
-        gap: { xs: "16px", md: "67px" },
+        gap: { xs: "32px", md: "67px" },
       }}
     >
       {children}

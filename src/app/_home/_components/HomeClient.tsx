@@ -18,7 +18,6 @@ import { fetchProducts } from "@/lib/fetchProducts";
 import { hasActiveFilters } from "@/lib/filterUtils";
 import { Product } from "@/types/product";
 import Card from "@/components/cards/Card";
-import CardOverlayAddToCart from "@/components/cards/actions/CardOverlayAddToCart";
 import { normalizeProductCard } from "@/lib/normalizeProductCard";
 import { FilterSideBar } from "./FiltersSideBar";
 
@@ -226,7 +225,8 @@ export default function HomeClient() {
             {normalizeProductCard(products || []).map((product, index) => (
               <Card
                 product={product}
-                action={<CardOverlayAddToCart />}
+                topAction="cardButtonMenu"
+                overlayAction="cardOverlayAddToCard"
                 key={index}
                 overlay={true}
               />

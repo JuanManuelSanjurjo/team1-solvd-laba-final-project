@@ -3,18 +3,17 @@ import CardImage from "./CardImage";
 import CardActionWrapperTopRight from "./wrappers/CardActionWrapperTopRight";
 import CardActionWrapperCenter from "./wrappers/CardActionWrapperCenter";
 import { JSX } from "react";
-
-interface CardProduct {
-  id: number;
-  image: string;
-  name: string;
-  price: number;
-  gender: string;
-}
+import cardProduct from "./actions/types/cardProduct";
+import CardButtonMenu from "./actions/CardButtonMenu";
+import CardButtonWishList from "./actions/CardButtonWishList";
+import CardOverlayAddToCart from "./actions/CardOverlayAddToCart";
+import CardOverlayDelete from "./actions/CardOverlayDelete";
 
 type CardProps = {
-  product: CardProduct;
-  action?: JSX.Element;
+  product?: cardProduct;
+  image?: string;
+  topAction?: string;
+  overlayAction?: string;
   overlay?: boolean;
   showText?: boolean;
 };
@@ -22,23 +21,27 @@ type CardProps = {
 /**
  * Card
  *
- * This component is a card that displays an image, an optional action, and optional text.
- * The action is passed to a wrapper component to be rendered on the top right or in the center of the image.
- * It can be used as a standalone card or as part of a gallery.
+ * This component displays either a product (with optional text and actions)
+ * or a standalone image. It supports top-right and overlay actions.
  *
- * @param image - The URL of the image to display in the card.
- * @param action - An optional JSX element to display on top of the card.
- * @param overlay - An optional boolean indicating whether the action should use the overlay wrapper instead of the top right wrapper.
- * @param showText - An optional boolean indicating whether to display the text on the card.
- * @returns {JSX.Element} with the card component.
+ * @param product - Optional product to display with name, price, and description.
+ * @param image - Optional image to show if no product is provided.
+ * @param topAction - Action to show on top-right corner (e.g., "cardButtonMenu").
+ * @param overlayAction - Action to show in the center overlay (e.g., "CardOverlayAddToCard").
+ * @param overlay - Currently unused (reserved for future positioning logic).
+ * @param showText - Whether to show text details if a product is passed.
+ * @returns {JSX.Element}
  */
 
 export default function Card({
   product,
-  action = undefined,
-  overlay = false,
+  image,
+  topAction = undefined,
+  overlayAction = undefined,
   showText = true,
 }: CardProps): JSX.Element {
+  const displayImage = product?.image || image;
+
   return (
     <Box
       sx={{
@@ -47,6 +50,11 @@ export default function Card({
           opacity: 1,
         },
         height: { xs: 210, md: 445 },
+        // width: {
+        //   xs: "calc(50% - 8px)",
+        //   sm: "calc(33.33% - 16px)",
+        //   md: "calc(25% - 18px)",
+        // },
         width: {
           xs: 152,
           md: 320,
@@ -55,18 +63,40 @@ export default function Card({
         flexDirection: "column",
       }}
     >
-      <CardImage image={product.image}>
+      <CardImage image={displayImage || "No image available"}>
         <>
-          {action && !overlay && <CardActionWrapperTopRight action={action} />}
-          {action && overlay && <CardActionWrapperCenter action={action} />}
+          {topAction && (
+            <CardActionWrapperTopRight
+              action={
+                topAction === "cardButtonMenu" ? (
+                  <CardButtonMenu product={product!} />
+                ) : (
+                  <CardButtonWishList product={product!} />
+                )
+              }
+            />
+          )}
+
+          {overlayAction && (
+            <CardActionWrapperCenter
+              action={
+                overlayAction === "cardOverlayAddToCard" ? (
+                  <CardOverlayAddToCart />
+                ) : (
+                  <CardOverlayDelete />
+                )
+              }
+            />
+          )}
         </>
       </CardImage>
-      {showText && (
-        <Box>
+      {product && showText && (
+        <Box sx={{ mt: 1, flexGrow: 1 }}>
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              alignItems: "center",
               maxWidth: "100%",
               textOverflow: "ellipsis",
               fontSize: {

@@ -1,10 +1,26 @@
 import { Box, Typography } from "@mui/material";
-import ShoeSizeOption from "@/components/ShoeSizeOption";
+import ShoeSizeOption from "./ShoeSizeOption";
 import ProductPageButtons from "./ProductPageButtons";
+import { JSX } from "react";
+import { NormalizedProduct } from "@/types/product-types";
 
-import { products } from "@/mocks/products";
+/**
+ * ProductPageDetails
+ *
+ * This component is a detailed view of a product. It displays the product's name, description, price, and sizes.
+ *
+ * @param {NormalizedProduct} props.product - The product data to be displayed.
+ * @returns {JSX.Element} The product details component.
+ *
+ * @example
+ * <ProductPageDetails product={product} />
+ */
 
-export default function ProductPageDetails() {
+export default function ProductPageDetails({
+  product,
+}: {
+  product: NormalizedProduct;
+}): JSX.Element {
   return (
     <Box
       maxWidth={"520px"}
@@ -36,7 +52,7 @@ export default function ProductPageDetails() {
               fontWeight: 500,
             }}
           >
-            {products[0].name}
+            {product?.name}
           </Typography>
           <Typography
             variant="h4"
@@ -46,7 +62,7 @@ export default function ProductPageDetails() {
               lineHeight: "3rem",
             }}
           >
-            $ {products[0].price}
+            $ {product?.price}
           </Typography>
         </Box>
         <Typography
@@ -57,28 +73,49 @@ export default function ProductPageDetails() {
             lineHeight: "24px",
           }}
         >
-          {products[0].color}
+          {product?.color}
         </Typography>
       </Box>
       <Typography variant="subtitle1" color="#494949" sx={{ fontWeight: 500 }}>
         Select Size
       </Typography>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, 82px)",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: {
-            xs: 1,
-            md: 3,
-          },
-        }}
-      >
-        {[36, 37, 38, 39, 40, 41, 42, 43, 44, 45].map((size) => (
-          <ShoeSizeOption size={size} key={size} disabled={false} />
-        ))}
-      </Box>
+      {product.sizes?.length > 0 ? (
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, 82px)",
+            justifyContent: "space-around",
+            alignItems: "center",
+            gap: {
+              xs: 1,
+              md: 3,
+            },
+          }}
+        >
+          {product.sizes?.map(({ value, id }) => (
+            <ShoeSizeOption size={value} key={id} disabled={false} />
+          ))}
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#dddddd",
+            borderRadius: 2,
+            padding: 4,
+          }}
+        >
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{ fontWeight: 500 }}
+          >
+            No sizes available
+          </Typography>
+        </Box>
+      )}
       <ProductPageButtons />
       <Typography variant="subtitle1" color="#494949" sx={{ fontWeight: 500 }}>
         Description
@@ -91,7 +128,7 @@ export default function ProductPageDetails() {
           fontSize: { xs: "14px", sm: "16px", md: "16px" },
         }}
       >
-        {products[0].description}
+        {product?.description}
       </Typography>
     </Box>
   );

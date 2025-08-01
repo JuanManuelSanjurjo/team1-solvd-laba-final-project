@@ -28,6 +28,10 @@ export default function CardActionWrapperCenter({
         alignItems: "center",
         justifyContent: "center",
         zIndex: 1,
+        pointerEvents: "none",
+        "& > *": {
+          pointerEvents: "auto",
+        },
       }}
     >
       {action}

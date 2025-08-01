@@ -24,7 +24,6 @@ import { fetchProductsBySearch } from "@/lib/fetchProductsBySearch";
 import CardContainer from "./cards/CardContainer";
 import { normalizeProductCard } from "@/lib/normalizeProductCard";
 import Card from "./cards/Card";
-import CardOverlayAddToCart from "./cards/actions/CardOverlayAddToCart";
 
 /**
  * Header component displays a responsive top navigation bar with different layouts
@@ -248,7 +247,7 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
                 (product, index) => (
                   <Card
                     product={product}
-                    action={<CardOverlayAddToCart />}
+                    overlayAction="cardOverlayAddToCart"
                     key={index}
                     overlay={true}
                   />
