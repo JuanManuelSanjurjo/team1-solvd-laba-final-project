@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import OrderStatusLabel from "@/app/order-history/components/OrderStatusLabel";
-import { OrderStatus } from "@/app/order-history/types/order";
+import OrderStatusLabel from "./OrderStatusLabel";
+import { OrderStatus } from "@/app/(side-bar)/order-history/types/order";
 import { useTheme } from "@mui/material/styles";
 
 type OrderHistoryItemRowProps = {
