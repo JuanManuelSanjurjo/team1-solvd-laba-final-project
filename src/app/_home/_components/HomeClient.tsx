@@ -42,7 +42,7 @@ export default function HomeClient() {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Header isAuthenticated />
+      <Header />
       <Drawer
         variant={drawerVariant}
         anchor={drawerAnchor}

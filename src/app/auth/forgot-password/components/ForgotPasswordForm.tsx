@@ -3,9 +3,18 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Box } from "@mui/material";
+import {
+  Alert,
+  AlertProps,
+  Box,
+  Snackbar,
+  SnackbarCloseReason,
+} from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
+import ForgotPassword from "@/actions/forgot-password";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -14,6 +23,23 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function ForgotPasswordForm() {
+  const [open, setOpen] = useState(false);
+  const [toastContent, setToastContent] = useState({
+    severity: "",
+    message: "",
+  });
+
+  const handleClose = (
+    _: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const {
     register,
     handleSubmit,
@@ -22,12 +48,45 @@ export default function ForgotPasswordForm() {
     resolver: zodResolver(schema),
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: ForgotPassword,
+    onSuccess: () => {
+      setToastContent({
+        severity: "success",
+        message: "Success! Please check your email for password reset instructions",
+      });
+      setOpen(true);
+    },
+    onError: (error: Error) => {
+      setOpen(true);
+      setToastContent({
+        severity: "error",
+        message: error.message,
+      });
+    },
+  });
+
   const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data);
+    mutate(data);
   };
 
   return (
     <>
+      <Snackbar
+        open={open}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={5000}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={toastContent.severity as AlertProps["severity"]}
+          variant="filled"
+          sx={{ width: "100%", color: "primary.contrastText" }}
+        >
+          {toastContent.message}
+        </Alert>
+      </Snackbar>
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -43,14 +102,19 @@ export default function ForgotPasswordForm() {
           name="email"
           required
           errorMessage={errors.email?.message ?? ""}
+        />
+        <Button 
+          type="submit" 
+          variant="contained"
+          disabled={isPending}
           sx={{
+            mt: "24px",
             mb: "16px",
           }}
-        />
+        >
+          Reset password
+        </Button>
       </Box>
-      <Button type="submit" variant="contained">
-        Reset password
-      </Button>
     </>
   );
 }

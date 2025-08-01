@@ -6,6 +6,15 @@ import AuthLogo from "../components/AuthLogo";
 import { Typography } from "@mui/material";
 import Link from "next/link";
 import ResetPasswordForm from "./components/ResetPasswordForm";
+import { Suspense } from "react";
+
+function ResetPasswordWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
+  );
+}
 
 export default function ResetPassword() {
   return (
@@ -16,7 +25,7 @@ export default function ResetPassword() {
           title="Reset password"
           subtitle="Please create new password here"
         />
-        <ResetPasswordForm />
+        <ResetPasswordWrapper />
         <Link href="/auth/sign-in" passHref>
           <Typography
             component="p"

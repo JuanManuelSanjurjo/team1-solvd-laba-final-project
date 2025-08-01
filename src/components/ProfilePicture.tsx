@@ -1,6 +1,14 @@
 "use client";
-import React from "react";
-import { Avatar } from "@mui/material";
+
+import React, { useState, MouseEvent, JSX } from "react";
+import { Avatar, Menu, MenuItem, Box } from "@mui/material";
+import { signOut } from "next-auth/react";
+
+interface ProfilePictureProps {
+  src: string;
+  alt?: string;
+  width: number;
+}
 
 /**
  * ProfilePicture component renders a circular avatar using the given image source.
@@ -25,26 +33,59 @@ import { Avatar } from "@mui/material";
  *
  * @returns {JSX.Element} A circular avatar displaying the provided image.
  */
-
-interface ProfilePictureProps {
-  src: string;
-  alt?: string;
-  width: number;
-}
-
 export const ProfilePicture: React.FC<ProfilePictureProps> = ({
   src,
   alt = "Profile picture",
   width,
-}) => {
+}: {
+  src: string;
+  alt?: string;
+  width: number;
+}): JSX.Element => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    signOut();
+    handleClose();
+  };
+
   return (
-    <Avatar
-      src={src}
-      alt={alt}
-      sx={{
-        width,
-        height: width,
-      }}
-    />
+    <Box>
+      <Avatar
+        src={src}
+        alt={alt}
+        onClick={handleClick}
+        sx={{
+          width,
+          height: width,
+          cursor: "pointer",
+        }}
+      />
+      <Menu
+        id="profile-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <MenuItem onClick={handleLogout}>Log out</MenuItem>
+      </Menu>
+    </Box>
   );
 };
