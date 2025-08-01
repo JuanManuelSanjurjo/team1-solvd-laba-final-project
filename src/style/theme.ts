@@ -56,9 +56,6 @@ const theme = createTheme({
           [theme.breakpoints.down("md")]: {
             height: 40,
           },
-          [theme.breakpoints.up("md")]: {
-            height: 54,
-          },
           fontSize: "15px",
         }),
         outlined: ({ theme }) => ({

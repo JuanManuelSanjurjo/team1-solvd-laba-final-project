@@ -1,9 +1,16 @@
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 
 import { ArrowDown2 } from "iconsax-react";
+import Input from "@/components/FormElements/Input";
+import Button from "@/components/Button";
 
-import Input from "../FormElements/Input";
-import Button from "../Button";
+/**
+ * Accordion component for entering and applying a promocode.
+ * Displays a collapsible section with an input field and apply button.
+ *
+ * @component
+ * @returns {JSX.Element} A styled accordion section for promocode input.
+ */
 
 const PromocodeAccordion = () => {
   return (
@@ -12,13 +19,16 @@ const PromocodeAccordion = () => {
         sx={{
           boxShadow: "none",
           background: "none",
-          width: "fit-content",
+          width: { xs: "100%", md: "fit-content" },
           marginBottom: "1rem",
         }}
       >
         <AccordionSummary
           sx={{
-            fontSize: "20px",
+            fontSize: {
+              sm: "16px",
+              lg: "20px",
+            },
             display: "flex",
             gap: "6px",
             padding: "0",
@@ -30,18 +40,25 @@ const PromocodeAccordion = () => {
         <AccordionDetails
           sx={{
             display: "flex",
+            width: { xs: "100%" },
+            flexDirection: {
+              sm: "column",
+              lg: "row",
+            },
             alignItems: "end",
+            justifyContent: "flex",
             gap: "1rem",
             padding: "0",
           }}
         >
           <Input
+            fullWidth
             name="promocode"
             placeholder="CODE123"
             errorMessage=""
             label="Promocode"
           />{" "}
-          <Button variant="contained">Apply</Button>
+          <Button variant="outlined">Apply</Button>
         </AccordionDetails>
       </Accordion>
     </>
