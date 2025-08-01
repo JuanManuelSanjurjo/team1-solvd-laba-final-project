@@ -1,14 +1,8 @@
 "use client";
 
-import React, { useState, MouseEvent, JSX } from "react";
+import React, { useState, MouseEvent } from "react";
 import { Avatar, Menu, MenuItem, Box } from "@mui/material";
 import { signOut } from "next-auth/react";
-
-interface ProfilePictureProps {
-  src: string;
-  alt?: string;
-  width: number;
-}
 
 /**
  * ProfilePicture component renders a circular avatar using the given image source.
@@ -33,15 +27,20 @@ interface ProfilePictureProps {
  *
  * @returns {JSX.Element} A circular avatar displaying the provided image.
  */
-export const ProfilePicture: React.FC<ProfilePictureProps> = ({
-  src,
-  alt = "Profile picture",
-  width,
-}: {
+
+interface ProfilePictureProps {
+  border?: boolean;
   src: string;
   alt?: string;
   width: number;
-}): JSX.Element => {
+}
+
+export const ProfilePicture: React.FC<ProfilePictureProps> = ({
+  border = false,
+  src,
+  alt = "Profile picture",
+  width,
+}: ProfilePictureProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -68,6 +67,7 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
           width,
           height: width,
           cursor: "pointer",
+          border: border ? "5px solid white" : "none",
         }}
       />
       <Menu
