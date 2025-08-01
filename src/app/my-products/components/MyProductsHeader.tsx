@@ -13,7 +13,7 @@ import { JSX } from "react";
  *
  * @returns {JSX.Element} The header section of the My Products page.
  */
-export default function MyPorductsHeader({
+export default function MyProductsHeader({
   isEmpty,
 }: {
   isEmpty: boolean;

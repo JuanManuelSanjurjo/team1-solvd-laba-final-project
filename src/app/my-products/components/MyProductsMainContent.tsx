@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
 import MyProductsEmptyState from "./MyProductsEmptyState";
-import MyProductsHeader from "./MyPorductsHeader";
+import MyProductsHeader from "./MyProductsHeader";
 
 /**
  * MyProductsMainContent
