@@ -19,15 +19,15 @@ const PromocodeAccordion = () => {
         sx={{
           boxShadow: "none",
           background: "none",
-          width: { xs: "100%", md: "fit-content" },
+          width: { xs: "100%", sm: "fit-content" },
           marginBottom: "1rem",
         }}
       >
         <AccordionSummary
           sx={{
             fontSize: {
-              sm: "16px",
-              lg: "20px",
+              xs: "16px",
+              sm: "20px",
             },
             display: "flex",
             gap: "6px",
@@ -42,8 +42,8 @@ const PromocodeAccordion = () => {
             display: "flex",
             width: { xs: "100%" },
             flexDirection: {
-              sm: "column",
-              lg: "row",
+              xs: "column",
+              sm: "row",
             },
             alignItems: "end",
             justifyContent: "flex",

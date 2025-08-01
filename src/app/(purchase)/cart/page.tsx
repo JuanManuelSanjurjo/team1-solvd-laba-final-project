@@ -2,7 +2,13 @@
 
 import React from "react";
 import { useState } from "react";
-import { Typography, Divider, Box } from "@mui/material";
+import {
+  Typography,
+  Divider,
+  Box,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import CartCard from "./components/CartCard";
 import Button from "@/components/Button";
 
@@ -38,6 +44,9 @@ export default function Checkout() {
     },
   ]);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <>
       <Box sx={{ marginTop: "80px" }}>
@@ -56,7 +65,7 @@ export default function Checkout() {
                 productTitle={item.title}
                 image={item.image}
               />
-              <Divider />
+              {!isMobile && <Divider />}
             </React.Fragment>
           ))
         ) : (

@@ -45,7 +45,7 @@ const CheckoutSummary = ({
 
   const infoStyles = {
     fontWeight: "400",
-    fontSize: { xs: "20px", md: "30px" },
+    fontSize: { xs: "20px", sm: "30px" },
   };
 
   /* Calculate total price */
@@ -59,11 +59,12 @@ const CheckoutSummary = ({
         display: "flex",
         flexDirection: "column",
         width: { xs: "100%", lg: "400px" },
+        paddingBottom: "4rem",
       }}
     >
       <Typography
         variant="h2"
-        sx={{ marginBottom: "69px", fontSize: { xs: "30px", md: "45px" } }}
+        sx={{ marginBottom: "69px", fontSize: { xs: "30px", sm: "45px" } }}
       >
         Summary
       </Typography>
@@ -113,13 +114,13 @@ const CheckoutSummary = ({
       >
         <Typography
           variant="h3"
-          sx={{ fontWeight: "600", fontSize: { xs: "20px", md: "30px" } }}
+          sx={{ fontWeight: "600", fontSize: { xs: "20px", sm: "30px" } }}
         >
           Total
         </Typography>
         <Typography
           variant="h3"
-          sx={{ fontWeight: "600", fontSize: { xs: "20px", md: "30px" } }}
+          sx={{ fontWeight: "600", fontSize: { xs: "20px", sm: "30px" } }}
         >
           ${total}
         </Typography>

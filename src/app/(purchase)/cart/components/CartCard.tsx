@@ -44,8 +44,11 @@ const CartCard = ({
       {...moreProps}
       sx={{
         display: "flex",
-        paddingBlock: "60px",
+        paddingBlock: { xs: "15px", sm: "60px" },
         justifyContent: "space-around",
+        maxWidth: "963px",
+        width: { lg: "65vw", md: "100%" },
+        paddingRight: "2rem",
       }}
     >
       <Box
@@ -65,7 +68,7 @@ const CartCard = ({
 
       <Grid container spacing={2} sx={{ width: "694px" }}>
         <Grid size={10}>
-          <Typography variant="h3" sx={{ fontSize: { xs: 12, md: 30 } }}>
+          <Typography variant="h3" sx={{ fontSize: { xs: 12, sm: 30 } }}>
             {productTitle}
           </Typography>
           <Typography
@@ -80,7 +83,7 @@ const CartCard = ({
 
           <Typography
             sx={(theme) => ({
-              display: { xs: "none", md: "block" },
+              display: { xs: "none", sm: "block" },
               fontSize: 25,
               fontWeight: 600,
               color: theme.palette.primary.main,
@@ -92,7 +95,7 @@ const CartCard = ({
         </Grid>
 
         <Grid size={2}>
-          <Typography variant="h3" sx={{ fontSize: { xs: 12, md: 30 } }}>
+          <Typography variant="h3" sx={{ fontSize: { xs: 12, sm: 30 } }}>
             ${price}
           </Typography>
         </Grid>
@@ -113,7 +116,7 @@ const CartCard = ({
             <Button
               sx={{
                 color: "#8B8E93",
-                fontSize: { xs: 12, md: 24 },
+                fontSize: { xs: 12, sm: 24 },
                 paddingLeft: "17px",
                 borderRadius: 0,
               }}
