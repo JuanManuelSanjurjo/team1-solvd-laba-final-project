@@ -8,16 +8,27 @@ export default function MyWishlist() {
   const wishList = useWishlistStore((state) => state.wishList);
 
   return (
-    <>
+    <Box
+      sx={{
+        marginTop: {
+          xs: "60px",
+          sm: "90px",
+          md: "120px",
+        },
+        marginLeft: {
+          xs: "0",
+          sm: "0",
+          md: "300px",
+          lg: "380px",
+        },
+        textAlign: "left",
+      }}
+    >
       <Box display="flex" alignItems="center">
         <Typography
           variant="h2"
           sx={{
             marginTop: "40px",
-            marginLeft: {
-              xs: "24px",
-              lg: 0,
-            },
           }}
         >
           My Wishlist
@@ -28,6 +39,6 @@ export default function MyWishlist() {
           <Card product={product} key={index} topAction="cardButtonWishList" />
         ))}
       </CardContainer>
-    </>
+    </Box>
   );
 }
