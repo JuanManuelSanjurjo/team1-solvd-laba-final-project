@@ -5,8 +5,16 @@ import CardContainer from "@/components/cards/CardContainer";
 import CardDragAndDrop from "@/components/cards/CardDragAndDrop";
 import CardImage from "@/components/cards/CardImage";
 import Card from "@/components/cards/Card";
+import { fetchBrands } from "@/lib/strapi/fetchBrands";
+import { fetchColors } from "@/lib/strapi/fetchColors";
+import { fetchSizes } from "@/lib/strapi/fetchSizes";
 
-export default function AddProduct() {
+export default async function AddProduct() {
+  const [brandOptions, colorOptions, sizeOptions] = await Promise.all([
+    fetchBrands(),
+    fetchColors(),
+    fetchSizes(),
+  ]);
   return (
     <Box sx={{ margin: "0 20px" }}>
       <Typography variant="h2" sx={{ marginBottom: "36px" }}>
@@ -30,7 +38,11 @@ export default function AddProduct() {
           flexDirection: { xs: "column", sm: "column", md: "row" },
         }}
       >
-        <AddProductForm />
+        <AddProductForm
+          colorOptions={colorOptions}
+          brandOptions={brandOptions}
+          sizeOptions={sizeOptions}
+        />
         <Box sx={{ flex: 1 }}>
           <Typography
             component="label"

@@ -22,10 +22,10 @@ import MobileDrawer from "./Navbar/MobileDrawer";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProductsBySearch } from "@/lib/fetchProductsBySearch";
 import CardContainer from "./cards/CardContainer";
 import { normalizeProductCard } from "@/lib/normalizers/normalizeProductCard";
 import Card from "./cards/Card";
+import { fetchProductsBySearch } from "@/lib/strapi/fetchProductsBySearch";
 
 const excludedPaths = [
   "/auth/sign-in",

@@ -14,12 +14,12 @@ import { FilterRemove, FilterSearch } from "iconsax-react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getFiltersFromSearchParams } from "@/lib/getFiltersFromSearchParams";
-import { fetchProducts } from "@/lib/fetchProducts";
 import { hasActiveFilters } from "@/lib/filterUtils";
 import { Product } from "@/types/product";
 import Card from "@/components/cards/Card";
 import { normalizeProductCard } from "@/lib/normalizers/normalizeProductCard";
 import { FilterSideBar } from "./FiltersSideBar";
+import { fetchProducts } from "@/lib/strapi/fetchProducts";
 
 export default function HomeClient() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);

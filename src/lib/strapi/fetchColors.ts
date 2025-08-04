@@ -5,7 +5,7 @@ interface Color {
   };
 }
 
-export async function fetchBrands() {
+export async function fetchColors() {
   const res = await fetch(
     "https://shoes-shop-strapi.herokuapp.com/api/colors",
     {
@@ -13,12 +13,12 @@ export async function fetchBrands() {
     }
   );
 
-  if (!res.ok) throw new Error("Failed to fetch brands");
+  if (!res.ok) throw new Error("Failed to fetch colors");
 
   const json = await res.json();
 
-  return json.data.map((brand: Color) => ({
-    label: brand.attributes.name,
-    value: brand.id,
+  return json.data.map((color: Color) => ({
+    label: color.attributes.name,
+    value: color.id,
   }));
 }

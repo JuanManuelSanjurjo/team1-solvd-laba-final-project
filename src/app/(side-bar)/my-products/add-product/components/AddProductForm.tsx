@@ -11,29 +11,50 @@ import { z } from "zod";
 
 const productSchema = z.object({
   name: z.string().min(1, "Product name is required"),
-  color: z.string().min(1, "Color is required"),
-  gender: z.string().min(1, "Gender is required"),
-  brand: z.string().min(1, "Brand is required"),
+  color: z.number().refine((val) => typeof val === "number", {
+    message: "Color is required",
+  }),
+  gender: z.number().refine((val) => typeof val === "number", {
+    message: "Gender is required",
+  }),
+  brand: z.number().refine((val) => typeof val === "number", {
+    message: "Brand is required",
+  }),
   description: z.string().min(1, "Description is required"),
+  price: z
+    .number()
+    .refine((val) => typeof val === "number", {
+      message: "Brand is required",
+    })
+    .positive("Price must be greater than 0"),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
 
-export const AddProductForm: React.FC = () => {
+interface AddProductFormProps {
+  brandOptions: [{ value: number; label: string }];
+  colorOptions: [{ value: number; label: string }];
+  sizeOptions: [{ value: number; label: number }];
+}
+
+export const AddProductForm: React.FC<AddProductFormProps> = ({
+  brandOptions,
+  colorOptions,
+  sizeOptions,
+}) => {
   const {
     register,
     handleSubmit,
-    setValue,
     control,
-    watch,
     formState: { errors },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: "",
-      color: "",
-      gender: "",
-      brand: "",
+      color: 0,
+      gender: 0,
+      brand: 0,
+      price: 0,
       description: "",
     },
   });
@@ -78,6 +99,16 @@ export const AddProductForm: React.FC = () => {
         required
         errorMessage={""}
       />
+
+      <Input
+        {...register("price", { valueAsNumber: true })}
+        label="Price"
+        name="price"
+        type="number"
+        required
+        errorMessage=""
+      />
+
       <Controller
         name="color"
         control={control}
@@ -86,7 +117,7 @@ export const AddProductForm: React.FC = () => {
             {...field}
             label="Color"
             name="color"
-            options={[{ label: "Black", value: "black" }]}
+            options={colorOptions}
             placeholder=""
             required
           />
@@ -117,18 +148,7 @@ export const AddProductForm: React.FC = () => {
               {...field}
               label="Brand"
               name="brand"
-              options={[
-                { label: "Nike", value: 9 },
-                { label: "Adidas", value: 10 },
-                { label: "Asics", value: 11 },
-                { label: "Puma", value: 12 },
-                { label: "New Balance", value: 13 },
-                { label: "Skechers", value: 14 },
-                { label: "Lowa", value: 15 },
-                { label: "Salomon", value: 16 },
-                { label: "Reebok", value: 17 },
-                { label: "UNder Armour", value: 18 },
-              ]}
+              options={brandOptions}
               placeholder=""
             />
           )}
@@ -144,7 +164,6 @@ export const AddProductForm: React.FC = () => {
         fullWidth
         sx={{ height: "320px", alignItems: "flex-start" }}
       />
-
       <Box
         sx={{
           display: "flex",
@@ -153,8 +172,8 @@ export const AddProductForm: React.FC = () => {
           gap: "8px",
         }}
       >
-        {[36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48].map((size) => (
-          <ShoeSizeOption key={size} size={size} disabled={false} />
+        {sizeOptions.map((size) => (
+          <ShoeSizeOption key={size.value} size={size.label} disabled={false} />
         ))}
       </Box>
       <Button type="submit">Save changes</Button>
