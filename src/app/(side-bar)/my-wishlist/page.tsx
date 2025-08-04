@@ -8,7 +8,12 @@ export default function MyWishlist() {
   const wishList = useWishlistStore((state) => state.wishList);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        marginInline: { xs: "20px", lg: 0 },
+        textAlign: "left",
+      }}
+    >
       <Box display="flex" alignItems="center">
         <Typography
           variant="h2"
