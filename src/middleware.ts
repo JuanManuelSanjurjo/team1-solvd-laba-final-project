@@ -1,25 +1,37 @@
-import { withAuth } from "next-auth/middleware";
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 
-export default withAuth({
-  callbacks: {
-    authorized: ({ token }) => {
-      return Boolean(token);
-    },
-  },
-  pages: {
-    signIn: "/auth/sign-in",
-  },
+const publicRoutes = [
+  "/auth/sign-up",
+  "/auth/sign-in",
+  "/auth/reset-password",
+  "/auth/forgot-password",
+  "/products",
+  "/",
+];
+
+export default auth((req) => {
+  const token = req.auth;
+  const { pathname, origin } = req.nextUrl;
+  const isPublicRoute = publicRoutes.includes(pathname);
+
+  if (!token && !isPublicRoute) {
+    return NextResponse.redirect(new URL("/auth/sign-in", origin));
+  }
+
+  if (token && pathname === "/") {
+    return NextResponse.rewrite(new URL("/products", origin));
+  }
+
+  if (token && isPublicRoute) {
+    return NextResponse.redirect(new URL("/products", origin));
+  }
+
+  return NextResponse.next();
 });
 
 export const config = {
   matcher: [
-    "/my-products/:path*",
-    "/cart/:path*",
-    "/checkout/:path*",
-    "/my-wishlist/:path*",
-    "/order-history/:path*",
-    "/recently-viewed/:path*",
-    "/thank-you/:path*",
-    "/update-profile/:path*",
+    "/((?!api|_next/static|_next/image|favicon.ico|images|icons|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.webp|.*\\.gif|.*\\.ico).*)",
   ],
 };
