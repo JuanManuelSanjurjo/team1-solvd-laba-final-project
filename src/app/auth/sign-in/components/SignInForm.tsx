@@ -17,8 +17,8 @@ import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import signInAction from "@/actions/sign-in";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -27,6 +27,10 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
+
+function cleanUpError(error: string) {
+  return error.replace(/Read more at.*/, "").trim();
+}
 
 export default function SignInForm() {
   const router = useRouter();
@@ -49,18 +53,7 @@ export default function SignInForm() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: FormData) => {
-      const result = await signIn("credentials", {
-        identifier: data.email,
-        password: data.password,
-        rememberMe: data.rememberMe,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        throw new Error(result.error);
-      }
-
-      return result;
+      return await signInAction(data);
     },
     onSuccess: () => {
       setOpen(true);
@@ -69,16 +62,14 @@ export default function SignInForm() {
         message: "Login successful! Redirecting...",
       });
 
-      setTimeout(() => {
-        router.push("/");
-        router.refresh();
-      }, 1000);
+      router.push("/products");
+      router.refresh();
     },
     onError: (error: Error) => {
       setOpen(true);
       setToastContent({
         severity: "error",
-        message: error.message,
+        message: cleanUpError(error.message),
       });
     },
   });

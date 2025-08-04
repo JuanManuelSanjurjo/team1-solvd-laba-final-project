@@ -1,5 +1,5 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import type { NextAuthConfig } from "next-auth";
+import { CredentialsSignin, type NextAuthConfig } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
 const REMEMBER_ME_DURATION = 30 * 24 * 60 * 60; // 30 days in seconds
 const DEFAULT_SESSION_DURATION = 24 * 60 * 60; // 24 hours in seconds
@@ -27,7 +27,7 @@ interface ErrorResponse {
 
 export const authOptions = {
   providers: [
-    CredentialsProvider({
+    Credentials({
       name: "Credentials",
       credentials: {
         identifier: { label: "Email", type: "email" },
@@ -36,7 +36,7 @@ export const authOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.identifier || !credentials?.password) {
-          throw new Error("Email and password are required");
+          return null;
         }
 
         try {
@@ -55,7 +55,7 @@ export const authOptions = {
 
           if (!response.ok) {
             const errorData = data as ErrorResponse;
-            throw new Error(errorData.error.message || "Authentication failed");
+            throw new CredentialsSignin(errorData.error.message);
           }
 
           const signInData = data as SignInResponse;
@@ -66,9 +66,9 @@ export const authOptions = {
             jwt: signInData.jwt,
             rememberMe: credentials.rememberMe === "true",
           };
-        } catch (error) {
-          console.error("Authentication error:", error);
-          throw error;
+        } catch (err) {
+          if (err instanceof CredentialsSignin) throw err;
+          throw new CredentialsSignin("Internal server error");
         }
       },
     }),
