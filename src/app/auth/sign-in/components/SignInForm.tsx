@@ -143,9 +143,11 @@ export default function SignInForm() {
             }
             label="Remember me"
             sx={{
+              margin: 0,
               "& .MuiFormControlLabel-label": {
                 fontWeight: 500,
                 color: "text.secondary",
+                marginRight: 0,
               },
             }}
           />
