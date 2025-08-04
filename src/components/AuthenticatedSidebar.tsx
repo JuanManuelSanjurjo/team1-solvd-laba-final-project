@@ -9,6 +9,7 @@ import {
   ListItemText,
   Divider,
   ListItemButton,
+  Button,
 } from "@mui/material";
 import {
   BagTick,
@@ -23,37 +24,44 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
 import SidebarIcon from "./SideBarIcon";
 import WelcomeComponent from "./WelcomeComponent";
+import { signOut } from "next-auth/react";
 
 const navItems = [
   {
     label: "My Products",
     href: "/my-products",
     Icon: BagTick,
+    component: Link,
   },
   {
     label: "Order History",
     href: "/order-history",
     Icon: MenuBoard,
+    component: Link,
   },
   {
     label: "My Wishlist",
     href: "/my-wishlist",
     Icon: HeartSearch,
+    component: Link,
   },
   {
     label: "Recently viewed",
     href: "/recently-viewed",
     Icon: Eye,
+    component: Link,
   },
   {
     label: "Settings",
     href: "/update-profile",
     Icon: Setting2,
+    component: Link,
   },
   {
     label: "Log out",
     href: "/logout",
     Icon: Logout,
+    component: Button,
   },
 ];
 
@@ -107,6 +115,9 @@ const AuthenticatedSidebar = ({
 
   const sidebarWidth = width || drawerWidth;
 
+  const handleLogout = () => {
+    signOut();
+  };
   return (
     <Drawer
       variant="permanent"
@@ -152,18 +163,16 @@ const AuthenticatedSidebar = ({
             },
           }}
         >
-          {navItems.map(({ label, href, Icon }) => {
-            const isActive = pathname === href;
-
+          {navItems.map(({ label, href, Icon, component }) => {
             return (
               <ListItem key={label} disablePadding>
                 <ListItemButton
-                  component={Link}
-                  href={href}
+                  component={component}
+                  href={component === Link ? href : undefined}
                   sx={{
                     "& .MuiListItemText-primary": {
-                      color: isActive ? "#FE645E" : "#6E7378",
-                      fontWeight: isActive ? 600 : 400,
+                      color: pathname === href ? "#FE645E" : "#6E7378",
+                      fontWeight: pathname === href ? 600 : 400,
                       fontSize: { xs: "0.9rem", md: "1rem" },
                       lineHeight: "100%",
                     },
@@ -171,9 +180,10 @@ const AuthenticatedSidebar = ({
                       minWidth: 32,
                     },
                   }}
+                  onClick={component === Link ? undefined : handleLogout}
                 >
                   <ListItemIcon>
-                    <SidebarIcon Icon={Icon} active={isActive} />
+                    <SidebarIcon Icon={Icon} active={pathname === href} />
                   </ListItemIcon>
                   <ListItemText primary={label} />
                 </ListItemButton>

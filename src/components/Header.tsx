@@ -74,7 +74,7 @@ export const Header = (): JSX.Element | null => {
       fetchProductsBySearch(
         deferredSearchInput,
         ["name", "color.name", "gender.name"],
-        ["color.name", "gender.name", "images.url"]
+        ["color.name", "gender.name", "images.url"],
       ),
     enabled: isSearching && deferredSearchInput.length > 1,
   });
@@ -86,15 +86,12 @@ export const Header = (): JSX.Element | null => {
 
   const [open, setOpen] = useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const handleToggleDrawer = () => {
+    setOpen(!open);
   };
 
   const toolbarHeight = isMobile ? 60 : isTablet ? 90 : 120;
-  const itemGap = isMobile ? 2.5 : 5;
+  const itemGap = isMobile || !isAuthenticated ? 2 : 5;
   const bagIconSize = isMobile ? 20 : 24;
   const searchBarSize = isMobile ? "xsmall" : isTablet ? "medium" : "large";
 
@@ -161,7 +158,7 @@ export const Header = (): JSX.Element | null => {
                 position: "relative",
               }}
             >
-              <Link href="/products">
+              <Link href="/">
                 <LogoBlackSvg />
               </Link>
               {isDesktop && (
@@ -175,25 +172,13 @@ export const Header = (): JSX.Element | null => {
               )}
             </Box>
 
-            <Box sx={{ display: "flex", alignItems: "center", gap: itemGap }}>
-              {!isAuthenticated && (
-                <Link href="/auth/sign-in">
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    sx={{
-                      padding: isMobile
-                        ? "8px 28px"
-                        : isTablet
-                        ? "12px 40px"
-                        : "16px 52px",
-                    }}
-                  >
-                    Sign in
-                  </Button>
-                </Link>
-              )}
-
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: itemGap,
+              }}
+            >
               <Box
                 onClick={toggleSearch}
                 sx={{ display: "flex", alignItems: "center" }}
@@ -206,9 +191,11 @@ export const Header = (): JSX.Element | null => {
               </Box>
 
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Link href="/cart" style={{ display: "flex" }}>
-                  <Bag style={{ width: bagIconSize }} color="#292d32" />
-                </Link>
+                {isAuthenticated && (
+                  <Link href="/cart" style={{ display: "flex" }}>
+                    <Bag style={{ width: bagIconSize }} color="#292d32" />
+                  </Link>
+                )}
                 {isAuthenticated && isDesktop && (
                   <ProfilePicture
                     width={24}
@@ -216,19 +203,37 @@ export const Header = (): JSX.Element | null => {
                   />
                 )}
               </Box>
-              {!isDesktop && (
+              {!isDesktop && isAuthenticated && (
                 <Box sx={{ display: { xs: "flex", md: "none" } }}>
                   <IconButton
+                    sx={{ padding: 0 }}
                     size="large"
                     aria-label="account of current user"
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
-                    onClick={handleDrawerOpen}
+                    onClick={handleToggleDrawer}
                     color="inherit"
                   >
                     <MenuIcon />
                   </IconButton>
                 </Box>
+              )}
+              {!isAuthenticated && (
+                <Link href="/auth/sign-in">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      padding: "8px 12px ",
+                      fontSize: {
+                        xs: "0.8rem",
+                        md: "1rem",
+                      },
+                    }}
+                  >
+                    Sign in
+                  </Button>
+                </Link>
               )}
             </Box>
           </>
@@ -255,14 +260,14 @@ export const Header = (): JSX.Element | null => {
                     key={index}
                     overlay={true}
                   />
-                )
+                ),
               )}
             </CardContainer>
           )}
         </Box>
       )}
 
-      <MobileDrawer open={open} handleDrawerClose={handleDrawerClose} />
+      <MobileDrawer open={open} handleToggleDrawer={handleToggleDrawer} />
     </AppBar>
   );
 };

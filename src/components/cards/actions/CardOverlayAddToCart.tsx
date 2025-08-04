@@ -17,6 +17,10 @@ import { useState, JSX } from "react";
 export default function CardOverlayAddToCart(): JSX.Element {
   const [showModal, setShowModal] = useState(false);
 
+  function handleClose(event: React.SyntheticEvent) {
+    event.preventDefault();
+    setShowModal(false);
+  }
   return (
     <Box
       sx={{
@@ -39,7 +43,10 @@ export default function CardOverlayAddToCart(): JSX.Element {
           justifyContent: "center",
           aspectRatio: "1/1",
         }}
-        onClick={() => setShowModal(true)}
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+          e.preventDefault();
+          setShowModal(true);
+        }}
       >
         <BagTick size="20" color="#494949" />
         <Typography variant="caption" sx={{ fontSize: 8 }}>
@@ -48,7 +55,7 @@ export default function CardOverlayAddToCart(): JSX.Element {
       </Stack>
       <ConfirmationModal
         showModal={showModal}
-        onClose={() => setShowModal(false)}
+        onClose={handleClose}
         title="Are you sure to add to cart?"
         text="Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."
         primaryBtn="Add"

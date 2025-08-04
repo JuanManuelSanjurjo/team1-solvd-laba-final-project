@@ -10,7 +10,7 @@ import theme from "@/style/theme";
 
 interface AppBarProps {
   open: boolean;
-  handleDrawerClose: () => void;
+  handleToggleDrawer: () => void;
 }
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -24,7 +24,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function MobileDrawer({
   open,
-  handleDrawerClose,
+  handleToggleDrawer,
 }: AppBarProps): JSX.Element {
   return (
     <Box sx={{ display: "flex" }}>
@@ -35,7 +35,7 @@ export default function MobileDrawer({
           backdropFilter: "blur(3px)",
         }}
         open={open}
-        onClick={handleDrawerClose}
+        onClick={handleToggleDrawer}
       >
         <Drawer
           sx={{
@@ -51,7 +51,7 @@ export default function MobileDrawer({
         >
           <DrawerHeader sx={{ display: "flex", justifyContent: "flex-end" }}>
             <IconButton
-              onClick={handleDrawerClose}
+              onClick={handleToggleDrawer}
               sx={{ transform: "rotate(45deg)" }}
             >
               <Add size="24" color="#494949" />

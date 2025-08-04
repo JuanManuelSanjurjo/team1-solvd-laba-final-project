@@ -1,8 +1,6 @@
 "use client";
-
-import React, { useState, MouseEvent } from "react";
-import { Avatar, Menu, MenuItem, Box } from "@mui/material";
-import { signOut } from "next-auth/react";
+import { Avatar, Box } from "@mui/material";
+import Link from "next/link";
 
 /**
  * ProfilePicture component renders a circular avatar using the given image source.
@@ -41,51 +39,20 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
   alt = "Profile picture",
   width,
 }: ProfilePictureProps) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = () => {
-    signOut();
-    handleClose();
-  };
-
   return (
     <Box>
-      <Avatar
-        src={src}
-        alt={alt}
-        onClick={handleClick}
-        sx={{
-          width,
-          height: width,
-          cursor: "pointer",
-          border: border ? "5px solid white" : "none",
-        }}
-      />
-      <Menu
-        id="profile-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <MenuItem onClick={handleLogout}>Log out</MenuItem>
-      </Menu>
+      <Link href="/update-profile">
+        <Avatar
+          src={src}
+          alt={alt}
+          sx={{
+            width,
+            height: width,
+            cursor: "pointer",
+            border: border ? "5px solid white" : "none",
+          }}
+        />
+      </Link>
     </Box>
   );
 };

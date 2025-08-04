@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import Link from "next/link";
 import CardImage from "./CardImage";
 import CardActionWrapperTopRight from "./wrappers/CardActionWrapperTopRight";
 import CardActionWrapperCenter from "./wrappers/CardActionWrapperCenter";
@@ -58,33 +59,34 @@ export default function Card({
         flexDirection: "column",
       }}
     >
-      <CardImage image={displayImage || "No image available"}>
-        <>
-          {topAction && (
-            <CardActionWrapperTopRight
-              action={
-                topAction === "cardButtonMenu" ? (
-                  <CardButtonMenu />
-                ) : (
-                  <CardButtonWishList product={product!} />
-                )
-              }
-            />
-          )}
-
-          {overlayAction && (
-            <CardActionWrapperCenter
-              action={
-                overlayAction === "cardOverlayAddToCard" ? (
-                  <CardOverlayAddToCart />
-                ) : (
-                  <CardOverlayDelete />
-                )
-              }
-            />
-          )}
-        </>
-      </CardImage>
+      <Link href={`/products/${product?.id}`}>
+        <CardImage image={displayImage || "No image available"}>
+          <>
+            {topAction && (
+              <CardActionWrapperTopRight
+                action={
+                  topAction === "cardButtonMenu" ? (
+                    <CardButtonMenu product={product!} />
+                  ) : (
+                    <CardButtonWishList product={product!} />
+                  )
+                }
+              />
+            )}
+            {overlayAction && (
+              <CardActionWrapperCenter
+                action={
+                  overlayAction === "cardOverlayAddToCard" ? (
+                    <CardOverlayAddToCart />
+                  ) : (
+                    <CardOverlayDelete />
+                  )
+                }
+              />
+            )}
+          </>
+        </CardImage>
+      </Link>
       {product && showText && (
         <Box sx={{ mt: 1, flexGrow: 1 }}>
           <Box
