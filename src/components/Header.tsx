@@ -62,7 +62,6 @@ export const Header = (): JSX.Element | null => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // <600px
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md")); // 600–900px
   const isDesktop = useMediaQuery(theme.breakpoints.up("md")); // >900px
-
   const [searchInput, setSearchInput] = useState("");
   const deferredSearchInput = useDeferredValue(searchInput);
   const [isSearching, setIsSearching] = useState(false);
@@ -103,7 +102,7 @@ export const Header = (): JSX.Element | null => {
       position="fixed"
       color="transparent"
       elevation={0}
-      sx={{ zIndex: isSearching ? 1205 : 1200 }}
+      sx={{ overflow: "hidden", zIndex: isSearching ? 1205 : 1200 }}
     >
       <Toolbar
         disableGutters

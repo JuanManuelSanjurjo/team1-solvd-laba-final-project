@@ -100,13 +100,9 @@ type AuthenticatedSidebarProps = {
 
 const AuthenticatedSidebar = ({
   showProfileComponent = true,
-  anchor = "left",
-  backgroundColor,
   width,
 }: AuthenticatedSidebarProps): JSX.Element => {
-  const theme = useTheme();
   const pathname = usePathname();
-  const background = backgroundColor || theme.palette.background.default;
 
   const drawerWidth = {
     md: 240,
@@ -119,22 +115,9 @@ const AuthenticatedSidebar = ({
     signOut();
   };
   return (
-    <Drawer
-      variant="permanent"
-      anchor={anchor}
+    <Box
       sx={{
         width: sidebarWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: sidebarWidth,
-          boxSizing: "border-box",
-          top: {
-            xs: "60px",
-            md: "120px",
-          },
-          backgroundColor: background,
-          borderRight: "none",
-        },
       }}
     >
       <Box display="flex" flexDirection="column" height="100%">
@@ -192,7 +175,7 @@ const AuthenticatedSidebar = ({
           })}
         </List>
       </Box>
-    </Drawer>
+    </Box>
   );
 };
 

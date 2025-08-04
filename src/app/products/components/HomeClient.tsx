@@ -7,7 +7,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Header } from "@/components/Header";
 import { Suspense, useState } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import { FilterRemove, FilterSearch } from "iconsax-react";
@@ -43,7 +42,6 @@ export default function HomeClient() {
 
   return (
     <Suspense fallback={<SkeletonCardContainer />}>
-      <Header />
       <Drawer
         variant={drawerVariant}
         anchor={drawerAnchor}

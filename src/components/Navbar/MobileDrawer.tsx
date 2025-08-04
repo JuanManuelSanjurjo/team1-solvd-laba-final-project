@@ -59,8 +59,6 @@ export default function MobileDrawer({
           </DrawerHeader>
           <AuthenticatedSidebar
             showProfileComponent={false}
-            anchor="right"
-            backgroundColor={theme.palette.background.paper}
             width={240}
           ></AuthenticatedSidebar>
         </Drawer>
