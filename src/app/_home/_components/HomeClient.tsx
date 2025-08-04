@@ -18,7 +18,7 @@ import { fetchProducts } from "@/lib/fetchProducts";
 import { hasActiveFilters } from "@/lib/filterUtils";
 import { Product } from "@/types/product";
 import Card from "@/components/cards/Card";
-import { normalizeProductCard } from "@/lib/normalizeProductCard";
+import { normalizeProductCard } from "@/lib/normalizers/normalizeProductCard";
 import { FilterSideBar } from "./FiltersSideBar";
 
 export default function HomeClient() {

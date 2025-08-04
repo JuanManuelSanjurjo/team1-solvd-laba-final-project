@@ -24,7 +24,7 @@ import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductsBySearch } from "@/lib/fetchProductsBySearch";
 import CardContainer from "./cards/CardContainer";
-import { normalizeProductCard } from "@/lib/normalizeProductCard";
+import { normalizeProductCard } from "@/lib/normalizers/normalizeProductCard";
 import Card from "./cards/Card";
 
 const excludedPaths = [
