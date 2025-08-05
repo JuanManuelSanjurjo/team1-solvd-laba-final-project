@@ -4,6 +4,7 @@ import { Box, Typography, Button } from "@mui/material";
 type MyProductsEmptyStateProps = {
   title: string;
   subtitle: string;
+  buttonText: string;
   onClick: () => void;
 };
 
@@ -13,13 +14,17 @@ type MyProductsEmptyStateProps = {
  * This component renders an empty state for the My Products page.
  * It displays a bag icon, a message, and a button to add a product.
  *
- * @component
+ * @property {string} title - The title of the empty state.
+ * @property {string} subtitle - The subtitle of the empty state.
+ * @property {string} buttonText - The text of the button.
+ * @property {function} onClick - The function to be called when the button is clicked.
  *
  * @returns {JSX.Element} An empty state for the My Products page.
  */
 export default function MyProductsEmptyState({
   title,
   subtitle,
+  buttonText,
   onClick,
 }: MyProductsEmptyStateProps) {
   return (
@@ -55,7 +60,7 @@ export default function MyProductsEmptyState({
         </Typography>
       </Box>
       <Button variant="contained" onClick={onClick}>
-        Add Product
+        {buttonText}
       </Button>
     </Box>
   );
