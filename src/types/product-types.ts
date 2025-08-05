@@ -55,6 +55,7 @@ export interface NormalizedProduct {
     alt: string;
   }[];
   color: string;
+  gender?: string;
 }
 
 export interface NormalizedImage {

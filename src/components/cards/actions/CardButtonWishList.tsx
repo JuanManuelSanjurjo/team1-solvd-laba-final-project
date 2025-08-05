@@ -1,10 +1,10 @@
 "use client";
 
-import cardProduct from "./types/cardProduct";
 import { Box } from "@mui/material";
 import { HeartSlash } from "iconsax-react";
 import { JSX } from "react";
 import { useWishlistStore } from "@/store/wishlist";
+import cardProduct from "./types/cardProduct";
 
 type CardButtonWishListProps = {
   product: cardProduct;
@@ -22,9 +22,18 @@ type CardButtonWishListProps = {
 export default function CardButtonWishList({
   product,
 }: CardButtonWishListProps): JSX.Element {
-  const removeFromWishList = useWishlistStore(
-    (state) => state.removeFromWishList
-  );
+  const { wishList, addToWishList, removeFromWishList } = useWishlistStore();
+
+  const isInWisList = wishList.some((prod) => prod.id === product.id);
+
+  const handleToggle = () => {
+    if (isInWisList) {
+      removeFromWishList(product.id);
+    } else {
+      addToWishList(product);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -47,7 +56,8 @@ export default function CardButtonWishList({
         size="32"
         color="currentColor"
         className="bg"
-        onClick={() => removeFromWishList(product.id)}
+        variant={isInWisList ? "Bold" : "Outline"}
+        onClick={handleToggle}
       />
     </Box>
   );

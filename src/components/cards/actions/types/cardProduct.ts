@@ -1,7 +1,7 @@
 export default interface CardProduct {
   id: number;
-  image: string;
+  image: string | undefined;
   name: string;
   price: number;
-  gender: string;
+  gender?: string;
 }

@@ -1,17 +1,38 @@
+"use client";
 import { Box, Button } from "@mui/material";
+import { useWishlistStore } from "@/store/wishlist";
+import { NormalizedProduct } from "@/types/product-types";
+import cardProduct from "@/components/cards/actions/types/cardProduct";
+import { JSX } from "react";
 
 /**
  * ProductPageButtons
  *
  * This component is a pair of buttons for adding the product to the cart or wishlist.
- *
+ * @param {NormalizadProduct} props.product  - The product to be added to the wishlist or cart.
  * @returns {JSX.Element} The product buttons component.
  *
  * @example
  * <ProductPageButtons />
  */
 
-export default function ProductPageButtons() {
+export default function ProductPageButtons({
+  product,
+}: {
+  product: NormalizedProduct;
+}): JSX.Element {
+  const cardProductInfo: cardProduct = {
+    id: product.id,
+    image: product.images?.[0]?.url,
+    name: product.name,
+    price: product.price,
+    gender: product.gender,
+  };
+
+  const { wishList, addToWishList } = useWishlistStore();
+
+  const isInWisList = wishList.some((prod) => prod.id === product.id);
+
   return (
     <Box
       sx={{
@@ -27,7 +48,14 @@ export default function ProductPageButtons() {
         },
       }}
     >
-      <Button variant="outlined">Add to wishlist</Button>
+      {!isInWisList && cardProductInfo && (
+        <Button
+          variant="outlined"
+          onClick={() => addToWishList(cardProductInfo)}
+        >
+          Add to wishlist
+        </Button>
+      )}
       <Button variant="contained">Add to cart</Button>
     </Box>
   );
