@@ -5,7 +5,7 @@ export default function CardSkeleton(): JSX.Element {
   return (
     <Box
       sx={{
-        height: { xs: 210, md: 300 },
+        height: { xs: 210, md: 375 },
         width: {
           xs: 152,
           md: 320,

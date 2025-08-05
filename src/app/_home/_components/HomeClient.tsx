@@ -20,7 +20,6 @@ import { Product } from "@/types/product";
 import Card from "@/components/cards/Card";
 import { normalizeProductCard } from "@/lib/normalizeProductCard";
 import { FilterSideBar } from "./FiltersSideBar";
-import SkeletonCardContainer from "./SkeletonCardContainer";
 
 export default function HomeClient() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
@@ -42,7 +41,7 @@ export default function HomeClient() {
   const drawerAnchor = isMobile ? "right" : "left";
 
   return (
-    <Suspense fallback={<SkeletonCardContainer />}>
+    <Suspense fallback={"Loading..."}>
       <Header />
       <Drawer
         variant={drawerVariant}

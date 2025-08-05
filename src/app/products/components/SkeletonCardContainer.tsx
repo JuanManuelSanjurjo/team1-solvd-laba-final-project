@@ -5,7 +5,7 @@ export default function SkeletonCardContainer() {
   return (
     <Box
       sx={{
-        paddingBlock: 0,
+        paddingBlock: 5,
         display: "grid",
         justifyContent: "center",
         justifyItems: "center",

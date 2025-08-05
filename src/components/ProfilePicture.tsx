@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, Box } from "@mui/material";
+import { Avatar, Box, Tooltip } from "@mui/material";
 import Link from "next/link";
 
 /**
@@ -30,7 +30,7 @@ interface ProfilePictureProps {
   border?: boolean;
   src: string;
   alt?: string;
-  width: number;
+  width: number | object;
 }
 
 export const ProfilePicture: React.FC<ProfilePictureProps> = ({
@@ -42,16 +42,18 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
   return (
     <Box>
       <Link href="/update-profile">
-        <Avatar
-          src={src}
-          alt={alt}
-          sx={{
-            width,
-            height: width,
-            cursor: "pointer",
-            border: border ? "5px solid white" : "none",
-          }}
-        />
+        <Tooltip title={alt}>
+          <Avatar
+            src={src}
+            alt={alt}
+            sx={{
+              width,
+              height: width,
+              cursor: "pointer",
+              border: border ? "5px solid white" : "none",
+            }}
+          />
+        </Tooltip>
       </Link>
     </Box>
   );

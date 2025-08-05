@@ -6,7 +6,6 @@ import { Add } from "iconsax-react";
 import IconButton from "@mui/material/IconButton";
 import Backdrop from "@mui/material/Backdrop";
 import AuthenticatedSidebar from "../AuthenticatedSidebar";
-import theme from "@/style/theme";
 
 interface AppBarProps {
   open: boolean;

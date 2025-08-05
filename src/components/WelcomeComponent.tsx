@@ -3,7 +3,7 @@ import { ProfilePicture } from "@/components/ProfilePicture";
 
 type WelcomeComponentProps = {
   src: string;
-  name: string;
+  name?: string;
 };
 
 /**
@@ -36,9 +36,9 @@ const WelcomeComponent = ({ src, name }: WelcomeComponentProps) => {
       gap={2}
       mb={2}
       sx={{
-        mt: { xs: 3, md: 4.7 },
+        // mt: { xs: 3, md: 4.7 },
         mb: 4,
-        ml: { xs: 2, md: 5 },
+        ml: { xs: 2, lg: 5 },
       }}
     >
       <ProfilePicture src={src} alt="User avatar" width={64}></ProfilePicture>

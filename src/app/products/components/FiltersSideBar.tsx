@@ -55,7 +55,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
 
   const handlePriceCommit = (
     _: Event | React.SyntheticEvent,
-    newValue: number | number[]
+    newValue: number | number[],
   ) => {
     if (!Array.isArray(newValue)) return;
 
@@ -70,7 +70,13 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
 
   return (
     <>
-      <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
         {isDesktop ? (
           <Box
             sx={{

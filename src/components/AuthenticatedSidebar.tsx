@@ -2,7 +2,6 @@
 import { JSX } from "react";
 import {
   Box,
-  Drawer,
   List,
   ListItem,
   ListItemIcon,
@@ -21,10 +20,10 @@ import {
 } from "iconsax-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTheme } from "@mui/material/styles";
 import SidebarIcon from "./SideBarIcon";
 import WelcomeComponent from "./WelcomeComponent";
 import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const navItems = [
   {
@@ -103,6 +102,7 @@ const AuthenticatedSidebar = ({
   width,
 }: AuthenticatedSidebarProps): JSX.Element => {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   const drawerWidth = {
     md: 240,
@@ -115,18 +115,14 @@ const AuthenticatedSidebar = ({
     signOut();
   };
   return (
-    <Box
-      sx={{
-        width: sidebarWidth,
-      }}
-    >
+    <Box width={sidebarWidth}>
       <Box display="flex" flexDirection="column" height="100%">
         {showProfileComponent && (
           <>
             {/* TODO change hardcoded src and name for user data*/}
             <WelcomeComponent
               src="www.coolavatarbystrapi.com/images/upload/1.jpg"
-              name="Jane Meldrum"
+              name={session?.user?.name}
             />
             <Divider />
           </>
@@ -156,7 +152,7 @@ const AuthenticatedSidebar = ({
                     "& .MuiListItemText-primary": {
                       color: pathname === href ? "#FE645E" : "#6E7378",
                       fontWeight: pathname === href ? 600 : 400,
-                      fontSize: { xs: "0.9rem", md: "1rem" },
+                      fontSize: { xs: "0.9rem", lg: "1rem" },
                       lineHeight: "100%",
                     },
                     "& .MuiListItemIcon-root": {

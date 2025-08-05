@@ -8,6 +8,7 @@ import {
   Toolbar,
   Typography,
   Button,
+  Tooltip,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -55,8 +56,7 @@ const excludedPaths = [
  */
 
 export const Header = (): JSX.Element | null => {
-  const { data: session } = useSession();
-  const isAuthenticated = Boolean(session?.user);
+  const { data: session, status: isAuthenticated } = useSession();
   const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // <600px
@@ -140,6 +140,7 @@ export const Header = (): JSX.Element | null => {
             >
               <CloseCircle
                 style={{
+                  cursor: "pointer",
                   width: isMobile ? 15 : 27,
                   marginLeft: isMobile ? 20 : 0,
                 }}
@@ -191,13 +192,16 @@ export const Header = (): JSX.Element | null => {
 
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 {isAuthenticated && (
-                  <Link href="/cart" style={{ display: "flex" }}>
-                    <Bag style={{ width: bagIconSize }} color="#292d32" />
-                  </Link>
+                  <Tooltip title={"Cart"}>
+                    <Link href="/cart" style={{ display: "flex" }}>
+                      <Bag style={{ width: bagIconSize }} color="#292d32" />
+                    </Link>
+                  </Tooltip>
                 )}
                 {isAuthenticated && isDesktop && (
                   <ProfilePicture
                     width={24}
+                    alt={session?.user?.name}
                     src="https://www.shareicon.net/data/128x128/2016/07/26/802043_man_512x512.png" //Should be change on NextAuth implementation
                   />
                 )}
