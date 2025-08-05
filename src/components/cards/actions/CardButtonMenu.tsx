@@ -7,6 +7,7 @@ import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useState, JSX, MouseEvent } from "react";
 import { Box } from "@mui/material";
 import cardProduct from "./types/cardProduct";
+import Link from "next/link";
 
 type CardButtonMenuProps = {
   product: cardProduct;
@@ -77,7 +78,7 @@ export default function CardButtonMenu(): JSX.Element {
         }}
       >
         <MenuItem component="button" onClick={handleClose}>
-          View
+          <Link href={`/products/${product.id}`}>View</Link>
         </MenuItem>
         <MenuItem component="button" onClick={handleClose}>
           Edit

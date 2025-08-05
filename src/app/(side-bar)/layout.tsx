@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         sx={{
           display: {
             xs: "none",
-            md: "none",
+            md: "block",
             lg: "block",
           },
         }}
