@@ -7,35 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
 import { useState } from "react";
-
-const productSchema = z.object({
-  name: z.string().min(1, "Product name is required"),
-  color: z.number().refine((val) => typeof val === "number", {
-    message: "Color is required",
-  }),
-  gender: z.number().refine((val) => typeof val === "number", {
-    message: "Gender is required",
-  }),
-  brand: z.number().refine((val) => typeof val === "number", {
-    message: "Brand is required",
-  }),
-  description: z.string().min(1, "Description is required"),
-  price: z
-    .number()
-    .refine((val) => typeof val === "number", {
-      message: "Brand is required",
-    })
-    .positive("Price must be greater than 0"),
-  sizes: z.array(z.number()).min(1, "At least one size must be selected"),
-  userId: z.number().refine((val) => typeof val === "number", {
-    message: "Brand is required",
-  }),
-});
-
-type ProductFormData = z.infer<typeof productSchema>;
+import { ProductFormData, productSchema } from "../schema";
+import { useCreateProduct } from "../hooks/useCreateProduct";
 
 interface AddProductFormProps {
   brandOptions: [{ value: number; label: string }];
@@ -50,7 +25,6 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-
   const {
     register,
     handleSubmit,
@@ -71,6 +45,13 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
       userId: 0,
     },
   });
+
+  const {
+    mutateAsync: handleCreateProduct,
+    isPending,
+    error,
+  } = useCreateProduct();
+
   const selectedSizes = watch("sizes");
 
   const toggleSize = (size: number) => {
@@ -81,9 +62,10 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     setValue("sizes", newSizes);
   };
 
-  const onSubmit = (data: ProductFormData) => {
-    (data.userId = parseInt(session?.user.id ?? "0", 10)),
-      console.log("Form submitted", data);
+  const onSubmit = async (data: ProductFormData) => {
+    const userId = parseInt(session?.user.id ?? "0", 10);
+    console.log(data);
+    await handleCreateProduct({ data: { ...data, userId }, imageFiles });
   };
 
   return (
@@ -193,6 +175,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
           {sizeOptions.map((size) => (
             <ShoeSizeOption
               key={size.value}
+              value={size.value}
               size={size.label}
               disabled={false}
               checked={selectedSizes.includes(size.value)}
@@ -200,6 +183,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
             />
           ))}
         </Box>
+        <Button type="submit">Save changes</Button>
       </Box>
       <Box sx={{ flex: 1 }}>
         <Typography
@@ -211,7 +195,6 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
           Product images
         </Typography>
         <ImagePreviewerUploader onFilesChange={setImageFiles} />
-        <Button type="submit">Save changes</Button>
       </Box>
     </Box>
   );
