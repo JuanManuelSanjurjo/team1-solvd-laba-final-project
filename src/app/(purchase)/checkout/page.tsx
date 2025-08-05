@@ -1,6 +1,5 @@
 import { Typography, Box } from "@mui/material";
 import PaymentInfo from "./components/PaymentInfo";
-
 export default function Checkout() {
 
   return (

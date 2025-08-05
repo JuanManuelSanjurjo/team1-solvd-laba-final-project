@@ -13,7 +13,6 @@ import {
   ArrowUp2,
 } from "iconsax-react";
 import { IconButton } from "@mui/material";
-import Input from "@/components/FormElements/Input";
 
 const PaymentInfo = () => {
   const [selectedId] = useState(1);
@@ -87,6 +86,7 @@ const PaymentInfo = () => {
 
       {showPaymentForm && (
         <>
+
           {/* <Input label="Card number" placeholder="1234 1234 1234 1234" /> */}
 
           <Stack direction="row" sx={{ width: "100%" }} spacing="24px">
