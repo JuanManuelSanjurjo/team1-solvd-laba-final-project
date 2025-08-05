@@ -1,4 +1,3 @@
-//import { Product } from "@/types/product";
 import cardProduct from "@/components/cards/actions/types/cardProduct";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";

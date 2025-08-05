@@ -11,7 +11,7 @@ import {
  * @returns {NormalizedProduct} The normalized product data.
  */
 export function normalizeProduct(
-  product: ProductApiResponse,
+  product: ProductApiResponse
 ): NormalizedProduct {
   return {
     id: product.id,
@@ -29,6 +29,7 @@ export function normalizeProduct(
         value: size.attributes.value,
       })) || [],
     color: product.attributes.color?.data?.attributes?.name || "Not disclosed",
+    gender: product.attributes.gender?.data?.attributes.name,
   };
 }
 /**

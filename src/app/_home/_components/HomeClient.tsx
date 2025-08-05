@@ -225,7 +225,7 @@ export default function HomeClient() {
             {normalizeProductCard(products || []).map((product, index) => (
               <Card
                 product={product}
-                topAction="cardButtonMenu"
+                topAction="cardButtonWishList"
                 overlayAction="cardOverlayAddToCard"
                 key={index}
                 overlay={true}
