@@ -20,6 +20,13 @@ export interface ColorData {
   };
 }
 
+export interface GenderData {
+  id: number;
+  attributes: {
+    name: string;
+  };
+}
+
 export interface ProductAttributes {
   name: string;
   description: string;
@@ -32,6 +39,9 @@ export interface ProductAttributes {
   };
   sizes: {
     data: SizeData[];
+  };
+  gender: {
+    data: GenderData;
   };
 }
 
