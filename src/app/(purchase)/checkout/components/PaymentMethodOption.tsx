@@ -20,12 +20,14 @@ interface PaymentMethodOptionProps {
   icon: React.ElementType;
   label: string;
   selected: boolean;
+  onSelect(): void;
 }
 
 export default function PaymentMethodOption({
   icon: Icon,
   label,
   selected,
+  onSelect
 }: PaymentMethodOptionProps) {
   return (
     <Box
@@ -36,10 +38,11 @@ export default function PaymentMethodOption({
       height={"100px"}
       minWidth={"100px"}
       maxWidth={"200px"}
-      width={"170px"}
+      width={"100%"}
       padding={"24px"}
       gap="10px"
-      sx={{ borderColor: selected ? "#FE645E" : "#E1E1E1" }}
+      sx={{ borderColor: selected ? "#FE645E" : "#E1E1E1", cursor:"pointer" }}
+      onClick={onSelect}
     >
       <Icon size="24px" color="#292D32" />
       <span className="text-sm font-medium">{label}</span>

@@ -48,7 +48,7 @@ const Input = forwardRef<HTMLInputElement, MuiInputProps>(
     const hasError = Boolean(errorMessage);
 
     return (
-      <FormControl sx={{ width: { xs: "100%", md: "auto" } }} error={hasError}>
+      <FormControl sx={{ width: { xs: "100%", md: "100%" } }} error={hasError}>
         <Typography
           component="label"
           htmlFor={name}
