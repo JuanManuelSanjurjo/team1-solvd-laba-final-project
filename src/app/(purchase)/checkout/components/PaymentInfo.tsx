@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, JSX } from "react";
 import { Stack, Box, Typography } from "@mui/material";
 import PaymentMethodOption from "./PaymentMethodOption";
 import Input from "@/components/FormElements/Input";
-
 import {
   Card,
   Wallet,
@@ -15,7 +14,19 @@ import {
 } from "iconsax-react";
 import { IconButton } from "@mui/material";
 
-const PaymentInfo = () => {
+/**
+ * PaymentInfo component that allows users to select and fill out payment details.
+ * Supports multiple payment methods such as Card, Google Pay, Cash App Pay, and After Payment.
+ * Only the "Card" method displays an interactive form with input fields for now.
+ * Other methods currently show a "Not available" message for now.
+ *
+ * Includes a toggle button to collapse or expand the payment form section.
+ *
+ * @component
+ * @returns {JSX.Element} A payment method selector with optional input fields.
+ */
+
+const PaymentInfo = (): JSX.Element => {
   const [selectedId, setSelectedId] = useState(1);
   const [showPaymentForm, setShowPaymentForm] = useState(true);
 
@@ -48,8 +59,6 @@ const PaymentInfo = () => {
     },
   ];
 
-  
-
   return (
     <Box
       sx={{
@@ -67,8 +76,8 @@ const PaymentInfo = () => {
             selected={selectedId === method.id}
             icon={method.icon}
             label={method.name}
-            onSelect={()=> {
-              setSelectedId(method.id)
+            onSelect={() => {
+              setSelectedId(method.id);
             }}
           />
         ))}
@@ -90,41 +99,56 @@ const PaymentInfo = () => {
         </IconButton>
       </Stack>
 
-      {showPaymentForm && 
-      <>
-        {selectedId === 1 && (
-          <>
+      {showPaymentForm && (
+        <>
+          {selectedId === 1 && (
+            <>
+              <Input
+                errorMessage=""
+                type="text"
+                name="card-number"
+                label="Card number"
+                placeholder="1234 1234 1234 1234"
+              />
 
-            <Input errorMessage=""  type="text" name="card-number" label="Card number" placeholder="1234 1234 1234 1234" />
+              <Stack direction="row" sx={{ width: "100%" }} spacing="24px">
+                <Input
+                  errorMessage=""
+                  type="text"
+                  name="expiration-date"
+                  label="Expiration date"
+                  placeholder="MM / YY"
+                />
+                <Input
+                  errorMessage=""
+                  type="text"
+                  name="security-code"
+                  label="Security Code"
+                  placeholder="CVC"
+                />
+              </Stack>
+            </>
+          )}
 
-            <Stack direction="row" sx={{ width: "100%" }} spacing="24px">
-              <Input errorMessage=""  type="text" name="expiration-date" label="Expiration date" placeholder="MM / YY" />
-              <Input  errorMessage="" type="text" name="security-code" label="Security Code" placeholder="CVC" />
-            </Stack>
-          </>
-        )}
+          {selectedId === 2 && (
+            <Box>
+              <Typography variant="body1">Not available</Typography>
+            </Box>
+          )}
 
-        {selectedId === 2 && (
-          <Box>
-            <Typography variant="body1">Not available</Typography>
-          </Box>
-        )}
+          {selectedId === 3 && (
+            <Box>
+              <Typography variant="body1">Not available</Typography>
+            </Box>
+          )}
 
-        {selectedId === 3 && (
-          <Box>
-            <Typography variant="body1">Not available</Typography>
-          </Box>
-        )}
-
-        {selectedId === 4 && (
-          <Box>
-            <Typography variant="body1">Not available</Typography>
-          </Box>
-        )}
-      </>
-      
-      
-      }
+          {selectedId === 4 && (
+            <Box>
+              <Typography variant="body1">Not available</Typography>
+            </Box>
+          )}
+        </>
+      )}
     </Box>
   );
 };
