@@ -21,7 +21,9 @@ type CardButtonMenuProps = {
  * @returns {JSX.Element} with the card menu component.
  */
 
-export default function CardButtonMenu(): JSX.Element {
+export default function CardButtonMenu({
+  product,
+}: CardButtonMenuProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open: boolean = Boolean(anchorEl);
 
