@@ -11,41 +11,46 @@ import { Gallery } from "iconsax-react";
  * @returns {JSX.Element} with the image drag and drop component.
  */
 
-export default function CardDragAndDrop(): JSX.Element {
-  const [isDragging, setIsDragging] = useState<boolean>(false);
+interface CardDragAndDropProps {
+  onFileAdd: (file: File) => void;
+}
+
+export default function CardDragAndDrop({
+  onFileAdd,
+}: CardDragAndDropProps): JSX.Element {
+  const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  function handleClick() {
-    inputRef.current?.click();
-  }
+  const handleClick = () => inputRef.current?.click();
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) processFile(file);
-  }
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files?.length) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].type.startsWith("image/")) {
+          onFileAdd(files[i]);
+        }
+      }
+    }
+  };
 
-  function processFile(file: File) {
-    // Process file
-    console.log("placeholder for actual feature", file);
-  }
-
-  function handleDragOver(e: DragEvent) {
+  const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
-  }
+  };
 
-  function handleDragLeave() {
-    setIsDragging(false);
-  }
+  const handleDragLeave = () => setIsDragging(false);
 
-  function handleDrop(e: DragEvent) {
+  const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith("image/")) {
-      processFile(file);
-    }
-  }
+    const dropped = Array.from(e.dataTransfer.files || []);
+    dropped.forEach((file) => {
+      if (file.type.startsWith("image/")) {
+        onFileAdd(file);
+      }
+    });
+  };
 
   return (
     <Box

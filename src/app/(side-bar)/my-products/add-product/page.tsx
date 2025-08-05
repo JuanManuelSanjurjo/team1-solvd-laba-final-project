@@ -1,9 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { AddProductForm } from "./components/AddProductForm";
-import { AddProductHeader } from "./components/AddProductHeader";
 import CardContainer from "@/components/cards/CardContainer";
 import CardDragAndDrop from "@/components/cards/CardDragAndDrop";
-import CardImage from "@/components/cards/CardImage";
 import Card from "@/components/cards/Card";
 import { fetchBrands } from "@/lib/strapi/fetchBrands";
 import { fetchColors } from "@/lib/strapi/fetchColors";
@@ -31,35 +29,12 @@ export default async function AddProduct() {
         scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a
         type specimen book. It usually begins with:
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          gap: "60px",
-          flexDirection: { xs: "column", sm: "column", md: "row" },
-        }}
-      >
-        <AddProductForm
-          colorOptions={colorOptions}
-          brandOptions={brandOptions}
-          sizeOptions={sizeOptions}
-        />
-        <Box sx={{ flex: 1 }}>
-          <Typography
-            component="label"
-            variant="body2"
-            color="#494949"
-            sx={{ marginBottom: "8px" }}
-          >
-            Product images
-          </Typography>
-          <CardContainer>
-            <Card image="https://media.istockphoto.com/id/1306254732/photo/white-sneaker-on-a-orange-and-pink-gradient-background-mens-fashion-sport-shoe-sneakers.jpg?s=1024x1024&w=is&k=20&c=LWqhEyZvLL4Nk61rB1helELau2e7AhnxbhghhQ9f57k=" />
-            <Card image="https://media.istockphoto.com/id/1306254732/photo/white-sneaker-on-a-orange-and-pink-gradient-background-mens-fashion-sport-shoe-sneakers.jpg?s=1024x1024&w=is&k=20&c=LWqhEyZvLL4Nk61rB1helELau2e7AhnxbhghhQ9f57k=" />
-            <Card image="https://media.istockphoto.com/id/1306254732/photo/white-sneaker-on-a-orange-and-pink-gradient-background-mens-fashion-sport-shoe-sneakers.jpg?s=1024x1024&w=is&k=20&c=LWqhEyZvLL4Nk61rB1helELau2e7AhnxbhghhQ9f57k=" />
-            <CardDragAndDrop />
-          </CardContainer>
-        </Box>
-      </Box>
+
+      <AddProductForm
+        colorOptions={colorOptions}
+        brandOptions={brandOptions}
+        sizeOptions={sizeOptions}
+      />
     </Box>
   );
 }

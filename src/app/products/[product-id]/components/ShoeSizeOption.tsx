@@ -18,6 +18,8 @@ import { useState } from "react";
 type ShoeSizeOptionProps = {
   size: number;
   disabled: boolean;
+  checked: boolean;
+  onToggle: (size: number) => void;
 };
 
 const baseStyles = {
@@ -48,9 +50,9 @@ const stateStyles = {
 export default function ShoeSizeOption({
   size,
   disabled,
+  checked,
+  onToggle,
 }: ShoeSizeOptionProps) {
-  const [checked, setChecked] = useState(false);
-
   const getState = () => {
     if (disabled) return "disabled";
     if (checked) return "checked";
@@ -65,7 +67,7 @@ export default function ShoeSizeOption({
         <Checkbox
           sx={{ display: "none" }}
           checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
+          onChange={() => onToggle(size)}
           disabled={disabled}
         />
 
@@ -76,7 +78,7 @@ export default function ShoeSizeOption({
             transition: "all 0.2s ease-in",
           }}
           onClick={() => {
-            if (!disabled) setChecked(!checked);
+            if (!disabled) onToggle(size);
           }}
         >
           EU-{size}
