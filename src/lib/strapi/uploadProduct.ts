@@ -1,5 +1,16 @@
+type ProductFormData = {
+  name: string;
+  color: number;
+  gender: number;
+  brand: number;
+  description: string;
+  price: number;
+  sizes: number[];
+  userId: number;
+};
+
 export async function createProduct(
-  payload: any,
+  payload: ProductFormData,
   token: string
 ): Promise<void> {
   const res = await fetch(

@@ -1,16 +1,22 @@
 "use client";
 import ShoeSizeOption from "@/app/products/[product-id]/components/ShoeSizeOption";
-import Button from "@/components/Button";
 import Input from "@/components/FormElements/Input";
 import Select from "@/components/FormElements/Select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  FormHelperText,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import { useSession } from "next-auth/react";
 import { Controller, useForm } from "react-hook-form";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
 import { useState } from "react";
 import { ProductFormData, productSchema } from "../schema";
 import { useCreateProduct } from "../hooks/useCreateProduct";
+import { Danger } from "iconsax-react";
 
 interface AddProductFormProps {
   brandOptions: [{ value: number; label: string }];
@@ -36,23 +42,29 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: "",
-      color: 8,
+      color: colorOptions[0].value,
       gender: 4,
-      brand: 9,
-      price: 10,
+      brand: brandOptions[0].value,
+      price: 0,
       description: "",
       sizes: [],
       userId: 0,
     },
   });
 
-  const {
-    mutateAsync: handleCreateProduct,
-    isPending,
-    error,
-  } = useCreateProduct();
-
   const selectedSizes = watch("sizes");
+
+  const { mutateAsync: handleCreateProduct } = useCreateProduct();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   const toggleSize = (size: number) => {
     const currentSizes = selectedSizes || [];
@@ -64,8 +76,17 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
 
   const onSubmit = async (data: ProductFormData) => {
     const userId = parseInt(session?.user.id ?? "0", 10);
-    console.log(data);
-    await handleCreateProduct({ data: { ...data, userId }, imageFiles });
+    try {
+      await handleCreateProduct({ data: { ...data, userId }, imageFiles });
+      setSnackbarMessage("Product added successfully!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+    } catch (err) {
+      console.log(err);
+      setSnackbarMessage("Failed to add product.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
   };
 
   return (
@@ -78,6 +99,8 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     >
       <Box
         component="form"
+        id="add-product-form"
+        noValidate
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -183,7 +206,12 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
             />
           ))}
         </Box>
-        <Button type="submit">Save changes</Button>
+        {errors.sizes?.message && (
+          <FormHelperText sx={{ color: "#FE645E" }}>
+            <Danger color="#FE645E" size="16" style={{ marginRight: "6px" }} />
+            {errors.sizes?.message}
+          </FormHelperText>
+        )}
       </Box>
       <Box sx={{ flex: 1 }}>
         <Typography
@@ -196,6 +224,21 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
         </Typography>
         <ImagePreviewerUploader onFilesChange={setImageFiles} />
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -11,6 +11,6 @@ export async function uploadImages(files: File[]): Promise<number[]> {
   );
 
   if (!res.ok) throw new Error("Image upload failed");
-  const body = await res.json();
-  return body.map((img: any) => img.id);
+  const body = (await res.json()) as { id: number }[];
+  return body.map((img) => img.id);
 }

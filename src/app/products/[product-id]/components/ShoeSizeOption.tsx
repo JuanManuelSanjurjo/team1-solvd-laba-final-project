@@ -1,7 +1,6 @@
 "use client";
 
 import { Box, Checkbox, FormControl } from "@mui/material";
-import { useState } from "react";
 
 /**
  * This component represents options of shoe sizes. It is built to be used as a checkbox, with the possibility of choosing more than one option at the same time.
