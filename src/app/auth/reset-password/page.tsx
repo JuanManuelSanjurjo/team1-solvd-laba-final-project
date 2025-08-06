@@ -26,7 +26,7 @@ export default function ResetPassword() {
           subtitle="Please create new password here"
         />
         <ResetPasswordWrapper />
-        <Link href="/auth/sign-in" passHref>
+        <Link href="/auth/sign-in">
           <Typography
             component="p"
             sx={{

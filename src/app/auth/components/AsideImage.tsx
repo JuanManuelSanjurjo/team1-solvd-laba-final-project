@@ -14,7 +14,7 @@ export default function AsideImage({
   return (
     <Box
       sx={{
-        display: "block", // default hidden
+        display: "block",
         position: "relative",
         flex: "0 0 50%",
         height: "100%",
@@ -23,6 +23,7 @@ export default function AsideImage({
       <Image
         style={{ objectFit: "cover" }}
         quality={100}
+        data-testid="aside-image"
         fill
         src={imageUrl}
         alt={alt}

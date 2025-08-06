@@ -78,7 +78,7 @@ const theme = createTheme({
         {
           props: { size: "medium" },
           style: {
-            height: "40px",
+            height: "48px",
           },
         },
       ],

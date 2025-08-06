@@ -77,7 +77,7 @@ const Input = forwardRef<HTMLInputElement, MuiInputProps>(
         />
 
         {hasError && (
-          <FormHelperText>
+          <FormHelperText role="alert">
             <Danger color="#FE645E" size="16" style={{ marginRight: "6px" }} />
             {errorMessage}
           </FormHelperText>

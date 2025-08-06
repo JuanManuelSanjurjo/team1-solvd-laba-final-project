@@ -6,7 +6,6 @@ const publicRoutes = [
   "/auth/sign-in",
   "/auth/reset-password",
   "/auth/forgot-password",
-  "/products",
   "/",
 ];
 
@@ -19,10 +18,6 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/auth/sign-in", origin));
   }
 
-  if (token && pathname === "/") {
-    return NextResponse.rewrite(new URL("/products", origin));
-  }
-
   if (token && isPublicRoute) {
     return NextResponse.redirect(new URL("/products", origin));
   }
@@ -33,5 +28,6 @@ export default auth((req) => {
 export const config = {
   matcher: [
     "/((?!api|_next/static|_next/image|favicon.ico|images|icons|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.webp|.*\\.gif|.*\\.ico).*)",
+    "/products/:path*",
   ],
 };

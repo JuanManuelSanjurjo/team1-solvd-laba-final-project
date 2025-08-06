@@ -30,7 +30,7 @@ interface ResetPasswordErrorResponse {
   };
 }
 
-export default async function ResetPassword(
+export default async function resetPassword(
   body: ResetPasswordPayload
 ): Promise<ResetPasswordSuccessResponse | false> {
   const response = await fetch(`${process.env.API_URL}/auth/reset-password`, {
