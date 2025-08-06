@@ -17,6 +17,15 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 export default function CardOverlayDelete(): JSX.Element {
   const [showModal, setShowModal] = useState(false);
 
+  function handleClose(event: React.SyntheticEvent) {
+    event.preventDefault();
+    setShowModal(false);
+  }
+  function handleDelete(event: React.SyntheticEvent) {
+    event.preventDefault();
+    setShowModal(true);
+  }
+
   return (
     <Box
       className="overlay"
@@ -50,12 +59,12 @@ export default function CardOverlayDelete(): JSX.Element {
           size="20"
           color="#292D32"
           className="bg"
-          onClick={() => setShowModal(true)}
+          onClick={handleDelete}
         />
       </Box>
       <ConfirmationModal
         showModal={showModal}
-        onClose={() => setShowModal(false)}
+        onClose={handleClose}
         title="Are you sure to delete selected item?"
         text="Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."
         primaryBtn="Delete"

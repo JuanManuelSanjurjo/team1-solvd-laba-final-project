@@ -2,13 +2,13 @@
 import { JSX } from "react";
 import {
   Box,
-  Drawer,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Divider,
   ListItemButton,
+  Button,
 } from "@mui/material";
 import {
   BagTick,
@@ -20,40 +20,47 @@ import {
 } from "iconsax-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTheme } from "@mui/material/styles";
 import SidebarIcon from "./SideBarIcon";
 import WelcomeComponent from "./WelcomeComponent";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const navItems = [
   {
     label: "My Products",
     href: "/my-products",
     Icon: BagTick,
+    component: Link,
   },
   {
     label: "Order History",
     href: "/order-history",
     Icon: MenuBoard,
+    component: Link,
   },
   {
     label: "My Wishlist",
     href: "/my-wishlist",
     Icon: HeartSearch,
+    component: Link,
   },
   {
     label: "Recently viewed",
     href: "/recently-viewed",
     Icon: Eye,
+    component: Link,
   },
   {
     label: "Settings",
     href: "/update-profile",
     Icon: Setting2,
+    component: Link,
   },
   {
     label: "Log out",
     href: "/logout",
     Icon: Logout,
+    component: Button,
   },
 ];
 
@@ -92,13 +99,10 @@ type AuthenticatedSidebarProps = {
 
 const AuthenticatedSidebar = ({
   showProfileComponent = true,
-  anchor = "left",
-  backgroundColor,
   width,
 }: AuthenticatedSidebarProps): JSX.Element => {
-  const theme = useTheme();
   const pathname = usePathname();
-  const background = backgroundColor || theme.palette.background.default;
+  const { data: session } = useSession();
 
   const drawerWidth = {
     md: 240,
@@ -107,32 +111,18 @@ const AuthenticatedSidebar = ({
 
   const sidebarWidth = width || drawerWidth;
 
+  const handleLogout = () => {
+    signOut();
+  };
   return (
-    <Drawer
-      variant="permanent"
-      anchor={anchor}
-      sx={{
-        width: sidebarWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: sidebarWidth,
-          boxSizing: "border-box",
-          top: {
-            xs: "60px",
-            md: "120px",
-          },
-          backgroundColor: background,
-          borderRight: "none",
-        },
-      }}
-    >
+    <Box width={sidebarWidth}>
       <Box display="flex" flexDirection="column" height="100%">
         {showProfileComponent && (
           <>
             {/* TODO change hardcoded src and name for user data*/}
             <WelcomeComponent
               src="www.coolavatarbystrapi.com/images/upload/1.jpg"
-              name="Jane Meldrum"
+              name={session?.user?.name}
             />
             <Divider />
           </>
@@ -152,28 +142,27 @@ const AuthenticatedSidebar = ({
             },
           }}
         >
-          {navItems.map(({ label, href, Icon }) => {
-            const isActive = pathname === href;
-
+          {navItems.map(({ label, href, Icon, component }) => {
             return (
               <ListItem key={label} disablePadding>
                 <ListItemButton
-                  component={Link}
-                  href={href}
+                  component={component}
+                  href={component === Link ? href : undefined}
                   sx={{
                     "& .MuiListItemText-primary": {
-                      color: isActive ? "#FE645E" : "#6E7378",
-                      fontWeight: isActive ? 600 : 400,
-                      fontSize: { xs: "0.9rem", md: "1rem" },
+                      color: pathname === href ? "#FE645E" : "#6E7378",
+                      fontWeight: pathname === href ? 600 : 400,
+                      fontSize: { xs: "0.9rem", lg: "1rem" },
                       lineHeight: "100%",
                     },
                     "& .MuiListItemIcon-root": {
                       minWidth: 32,
                     },
                   }}
+                  onClick={component === Link ? undefined : handleLogout}
                 >
                   <ListItemIcon>
-                    <SidebarIcon Icon={Icon} active={isActive} />
+                    <SidebarIcon Icon={Icon} active={pathname === href} />
                   </ListItemIcon>
                   <ListItemText primary={label} />
                 </ListItemButton>
@@ -182,7 +171,7 @@ const AuthenticatedSidebar = ({
           })}
         </List>
       </Box>
-    </Drawer>
+    </Box>
   );
 };
 

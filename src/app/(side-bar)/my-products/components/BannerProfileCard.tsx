@@ -1,5 +1,7 @@
+"use client";
 import { Box, Typography } from "@mui/material";
 import { ProfilePicture } from "@/components/ProfilePicture";
+import { useSession } from "next-auth/react";
 
 /**
  * BannerProfileCard
@@ -13,6 +15,8 @@ import { ProfilePicture } from "@/components/ProfilePicture";
  */
 export default function BannerProfileCard() {
   const profilePic = "www.coolavatarbystrapi.com/images/upload/1.jpg";
+  const { data: session } = useSession();
+
   return (
     <Box
       sx={{
@@ -37,7 +41,7 @@ export default function BannerProfileCard() {
           fontWeight={500}
           sx={{ fontSize: { xs: 14, md: 20 } }}
         >
-          Jane Meldrum
+          {session?.user?.name}
         </Typography>
         <Typography variant="body2" sx={{ fontSize: { xs: 12, md: 15 } }}>
           1235 bonus points

@@ -15,7 +15,7 @@ import { JSX } from "react";
 
 type ConfirmationModalProps = {
   showModal: boolean;
-  onClose: () => void;
+  onClose: (e: React.SyntheticEvent) => void;
   title: string;
   text: string;
   secondaryBtn: string;
@@ -49,12 +49,11 @@ export default function ConfirmationModal({
     <Dialog
       slotProps={{
         backdrop: {
-          sx:{
-            backgroundColor: 'rgba(0, 0, 0, 0.2)', // lighter backdrop
-            backdropFilter: 'blur(3px)', // blur effect
-          }
-        }
-        
+          sx: {
+            backgroundColor: "rgba(0, 0, 0, 0.2)", // lighter backdrop
+            backdropFilter: "blur(3px)", // blur effect
+          },
+        },
       }}
       disableScrollLock
       onClose={onClose}

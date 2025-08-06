@@ -8,6 +8,7 @@ import {
   Toolbar,
   Typography,
   Button,
+  Tooltip,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -55,14 +56,12 @@ const excludedPaths = [
  */
 
 export const Header = (): JSX.Element | null => {
-  const { data: session } = useSession();
-  const isAuthenticated = Boolean(session?.user);
+  const { data: session, status: isAuthenticated } = useSession();
   const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // <600px
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md")); // 600–900px
   const isDesktop = useMediaQuery(theme.breakpoints.up("md")); // >900px
-
   const [searchInput, setSearchInput] = useState("");
   const deferredSearchInput = useDeferredValue(searchInput);
   const [isSearching, setIsSearching] = useState(false);
@@ -74,7 +73,7 @@ export const Header = (): JSX.Element | null => {
       fetchProductsBySearch(
         deferredSearchInput,
         ["name", "color.name", "gender.name"],
-        ["color.name", "gender.name", "images.url"]
+        ["color.name", "gender.name", "images.url"],
       ),
     enabled: isSearching && deferredSearchInput.length > 1,
   });
@@ -86,15 +85,12 @@ export const Header = (): JSX.Element | null => {
 
   const [open, setOpen] = useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const handleToggleDrawer = () => {
+    setOpen(!open);
   };
 
   const toolbarHeight = isMobile ? 60 : isTablet ? 90 : 120;
-  const itemGap = isMobile ? 2.5 : 5;
+  const itemGap = isMobile || !isAuthenticated ? 2 : 5;
   const bagIconSize = isMobile ? 20 : 24;
   const searchBarSize = isMobile ? "xsmall" : isTablet ? "medium" : "large";
 
@@ -106,7 +102,7 @@ export const Header = (): JSX.Element | null => {
       position="fixed"
       color="transparent"
       elevation={0}
-      sx={{ zIndex: isSearching ? 1205 : 1200 }}
+      sx={{ overflow: "hidden", zIndex: isSearching ? 1205 : 1200 }}
     >
       <Toolbar
         disableGutters
@@ -144,6 +140,7 @@ export const Header = (): JSX.Element | null => {
             >
               <CloseCircle
                 style={{
+                  cursor: "pointer",
                   width: isMobile ? 15 : 27,
                   marginLeft: isMobile ? 20 : 0,
                 }}
@@ -161,7 +158,7 @@ export const Header = (): JSX.Element | null => {
                 position: "relative",
               }}
             >
-              <Link href="/products">
+              <Link href="/">
                 <LogoBlackSvg />
               </Link>
               {isDesktop && (
@@ -175,25 +172,13 @@ export const Header = (): JSX.Element | null => {
               )}
             </Box>
 
-            <Box sx={{ display: "flex", alignItems: "center", gap: itemGap }}>
-              {!isAuthenticated && (
-                <Link href="/auth/sign-in">
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    sx={{
-                      padding: isMobile
-                        ? "8px 28px"
-                        : isTablet
-                        ? "12px 40px"
-                        : "16px 52px",
-                    }}
-                  >
-                    Sign in
-                  </Button>
-                </Link>
-              )}
-
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: itemGap,
+              }}
+            >
               <Box
                 onClick={toggleSearch}
                 sx={{ display: "flex", alignItems: "center" }}
@@ -206,29 +191,52 @@ export const Header = (): JSX.Element | null => {
               </Box>
 
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Link href="/cart" style={{ display: "flex" }}>
-                  <Bag style={{ width: bagIconSize }} color="#292d32" />
-                </Link>
+                {isAuthenticated && (
+                  <Tooltip title={"Cart"}>
+                    <Link href="/cart" style={{ display: "flex" }}>
+                      <Bag style={{ width: bagIconSize }} color="#292d32" />
+                    </Link>
+                  </Tooltip>
+                )}
                 {isAuthenticated && isDesktop && (
                   <ProfilePicture
                     width={24}
+                    alt={session?.user?.name}
                     src="https://www.shareicon.net/data/128x128/2016/07/26/802043_man_512x512.png" //Should be change on NextAuth implementation
                   />
                 )}
               </Box>
-              {!isDesktop && (
+              {!isDesktop && isAuthenticated && (
                 <Box sx={{ display: { xs: "flex", md: "none" } }}>
                   <IconButton
+                    sx={{ padding: 0 }}
                     size="large"
                     aria-label="account of current user"
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
-                    onClick={handleDrawerOpen}
+                    onClick={handleToggleDrawer}
                     color="inherit"
                   >
                     <MenuIcon />
                   </IconButton>
                 </Box>
+              )}
+              {!isAuthenticated && (
+                <Link href="/auth/sign-in">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      padding: "8px 12px ",
+                      fontSize: {
+                        xs: "0.8rem",
+                        md: "1rem",
+                      },
+                    }}
+                  >
+                    Sign in
+                  </Button>
+                </Link>
               )}
             </Box>
           </>
@@ -255,14 +263,14 @@ export const Header = (): JSX.Element | null => {
                     key={index}
                     overlay={true}
                   />
-                )
+                ),
               )}
             </CardContainer>
           )}
         </Box>
       )}
 
-      <MobileDrawer open={open} handleDrawerClose={handleDrawerClose} />
+      <MobileDrawer open={open} handleToggleDrawer={handleToggleDrawer} />
     </AppBar>
   );
 };
