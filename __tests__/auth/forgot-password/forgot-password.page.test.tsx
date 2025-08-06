@@ -1,0 +1,212 @@
+import "@testing-library/jest-dom";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "../../utils/test-utils";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ForgotPasswordPage from "@/app/auth/forgot-password/page";
+import forgotPassword from "@/actions/forgot-password";
+
+jest.mock("@/actions/forgot-password");
+const mockForgotPassword = forgotPassword as jest.MockedFunction<
+  typeof forgotPassword
+>;
+
+jest.mock("next/link", () => {
+  return function MockLink({ children, href, ...props }: any) {
+    return (
+      <a href={href} {...props}>
+        {children}
+      </a>
+    );
+  };
+});
+
+describe("Forgot Password Page", () => {
+  let queryClient: QueryClient;
+
+  beforeEach(() => {
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+      },
+    });
+    jest.clearAllMocks();
+  });
+
+  const renderWithQueryClient = (component: React.ReactElement) => {
+    return render(
+      <QueryClientProvider client={queryClient}>
+        {component}
+      </QueryClientProvider>
+    );
+  };
+
+  describe("Rendering", () => {
+    it("renders all page elements correctly", () => {
+      renderWithQueryClient(<ForgotPasswordPage />);
+
+      expect(screen.getByRole("main")).toBeInTheDocument();
+
+      expect(screen.getByText("Forgot password?")).toBeInTheDocument();
+      expect(
+        screen.getByText("Don't worry, we'll send you reset instructions.")
+      ).toBeInTheDocument();
+
+      expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /reset password/i })
+      ).toBeInTheDocument();
+
+      expect(screen.getByText("Back to login")).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: /back to login/i })
+      ).toHaveAttribute("href", "/auth/sign-in");
+
+      expect(screen.getByAltText("Sneakers image")).toBeInTheDocument();
+    });
+
+    it("displays the logo", () => {
+      renderWithQueryClient(<ForgotPasswordPage />);
+
+      expect(
+        screen.getByRole("img", { name: /logo/i }) ||
+          screen.getByTestId("auth-logo")
+      ).toBeInTheDocument();
+    });
+  });
+
+  describe("Form Functionality", () => {
+    it("validates email input", async () => {
+      renderWithQueryClient(<ForgotPasswordPage />);
+
+      const emailInput = screen.getByLabelText(/e-mail/i);
+      const submitButton = screen.getByRole("button", {
+        name: /reset password/i,
+      });
+
+      await act(async () => {
+        fireEvent.change(emailInput, { target: { value: "invalid-email" } });
+        fireEvent.click(submitButton);
+        fireEvent.blur(emailInput);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText("Invalid email address")).toBeInTheDocument();
+      });
+
+      expect(mockForgotPassword).not.toHaveBeenCalled();
+    });
+
+    it("submits form with valid email", async () => {
+      mockForgotPassword.mockResolvedValueOnce(true);
+      renderWithQueryClient(<ForgotPasswordPage />);
+
+      const emailInput = screen.getByLabelText(/e-mail/i);
+      const submitButton = screen.getByRole("button", {
+        name: /reset password/i,
+      });
+
+      await act(async () => {
+        fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+        fireEvent.click(submitButton);
+      });
+
+      await waitFor(() => {
+        expect(mockForgotPassword).toHaveBeenCalledWith({
+          email: "test@example.com",
+        });
+      });
+    });
+
+    it("shows success message on successful submission", async () => {
+      mockForgotPassword.mockResolvedValueOnce(true);
+      renderWithQueryClient(<ForgotPasswordPage />);
+
+      const emailInput = screen.getByLabelText(/e-mail/i);
+      const submitButton = screen.getByRole("button", {
+        name: /reset password/i,
+      });
+
+      await act(async () => {
+        fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+        fireEvent.click(submitButton);
+      });
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(
+            "Success! Please check your email for password reset instructions"
+          )
+        ).toBeInTheDocument();
+      });
+    });
+
+    it("shows error message on failed submission", async () => {
+      const errorMessage = "Email not found";
+      mockForgotPassword.mockRejectedValueOnce(new Error(errorMessage));
+      renderWithQueryClient(<ForgotPasswordPage />);
+
+      const emailInput = screen.getByLabelText(/e-mail/i);
+      const submitButton = screen.getByRole("button", {
+        name: /reset password/i,
+      });
+
+      await act(async () => {
+        fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+        fireEvent.click(submitButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText(errorMessage)).toBeInTheDocument();
+      });
+    });
+
+    it("disables submit button during submission", async () => {
+      let resolvePromise: () => void;
+      const pendingPromise = new Promise<void>((resolve) => {
+        resolvePromise = resolve;
+      });
+      mockForgotPassword.mockReturnValueOnce(pendingPromise.then(() => true));
+
+      renderWithQueryClient(<ForgotPasswordPage />);
+
+      const emailInput = screen.getByLabelText(/e-mail/i);
+      const submitButton = screen.getByRole("button", {
+        name: /reset password/i,
+      });
+
+      await act(async () => {
+        fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+        fireEvent.click(submitButton);
+      });
+
+      await waitFor(() => {
+        expect(submitButton).toBeDisabled();
+      });
+
+      await act(async () => {
+        resolvePromise!();
+      });
+
+      await waitFor(() => {
+        expect(submitButton).not.toBeDisabled();
+      });
+    });
+  });
+
+  describe("Navigation", () => {
+    it("has correct link to sign-in page", () => {
+      renderWithQueryClient(<ForgotPasswordPage />);
+
+      const backToLoginLink = screen.getByRole("link", {
+        name: /back to login/i,
+      });
+      expect(backToLoginLink).toHaveAttribute("href", "/auth/sign-in");
+    });
+  });
+});

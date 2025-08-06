@@ -14,10 +14,10 @@ export default function ForgotPassword() {
       <LeftBoxFormContainer>
         <AuthHeader
           title="Forgot password?"
-          subtitle="Don&rsquo;t worry, we&rsquo;ll send you reset instructions."
+          subtitle="Don't worry, we'll send you reset instructions."
         />
         <ForgotPasswordForm />
-        <Link href="/auth/sign-in" passHref>
+        <Link href="/auth/sign-in">
           <Typography
             component="p"
             sx={{

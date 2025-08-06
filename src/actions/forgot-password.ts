@@ -18,7 +18,7 @@ interface ForgotPasswordErrorResponse {
   };
 }
 
-export default async function ForgotPassword(
+export default async function forgotPassword(
   body: ForgotPasswordPayload
 ): Promise<boolean> {
   const response = await fetch(`${process.env.API_URL}/auth/forgot-password`, {
