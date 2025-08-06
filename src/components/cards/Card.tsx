@@ -86,56 +86,57 @@ export default function Card({
             )}
           </>
         </CardImage>
-      </Link>
-      {product && showText && (
-        <Box sx={{ mt: 1, flexGrow: 1 }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              maxWidth: "100%",
-              textOverflow: "ellipsis",
-              fontSize: {
-                sx: 10,
-                md: 22,
-              },
-            }}
-          >
-            <Typography
-              variant="subtitle1"
-              title={"name of the product"}
-              noWrap
-              fontWeight={500}
-              sx={{ fontSize: "inherit" }}
+
+        {product && showText && (
+          <Box sx={{ mt: 1, flexGrow: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                maxWidth: "100%",
+                textOverflow: "ellipsis",
+                fontSize: {
+                  sx: 10,
+                  md: 22,
+                },
+              }}
             >
-              {product.name}
-            </Typography>
-            <Typography variant="subtitle1" fontWeight={500}>
-              ${product.price}
+              <Typography
+                variant="subtitle1"
+                title={"name of the product"}
+                noWrap
+                fontWeight={500}
+                sx={{ fontSize: "inherit" }}
+              >
+                {product.name}
+              </Typography>
+              <Typography variant="subtitle1" fontWeight={500}>
+                ${product.price}
+              </Typography>
+            </Box>
+
+            <Typography
+              variant="body1"
+              align="left"
+              color={"#5C5C5C"}
+              fontWeight={500}
+              sx={{
+                maxWidth: "100%",
+                wrap: "no-wrap",
+                textOverflow: "ellipsis",
+                fontSize: {
+                  sx: 9,
+                  md: 18,
+                },
+              }}
+            >
+              {product.gender}
+              {"'"}s shoes
             </Typography>
           </Box>
-
-          <Typography
-            variant="body1"
-            align="left"
-            color={"#5C5C5C"}
-            fontWeight={500}
-            sx={{
-              maxWidth: "100%",
-              wrap: "no-wrap",
-              textOverflow: "ellipsis",
-              fontSize: {
-                sx: 9,
-                md: 18,
-              },
-            }}
-          >
-            {product.gender}
-            {"'"}s shoes
-          </Typography>
-        </Box>
-      )}
+        )}
+      </Link>
     </Box>
   );
 }
