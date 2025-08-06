@@ -3,7 +3,7 @@
 import { Box, Typography } from "@mui/material";
 import ShoeSizeOption from "./ShoeSizeOption";
 import ProductPageButtons from "./ProductPageButtons";
-import { JSX, useEffect } from "react";
+import { JSX, useEffect, useMemo } from "react";
 import { NormalizedProduct } from "@/types/product-types";
 import cardProduct from "@/components/cards/actions/types/cardProduct";
 import { useRecentlyViewedStore } from "@/store/recentlyviewed";
@@ -25,13 +25,16 @@ export default function ProductPageDetails({
 }: {
   product: NormalizedProduct;
 }): JSX.Element {
-  const cardProductInfo: cardProduct = {
-    id: product.id,
-    image: product.images?.[0]?.url,
-    name: product.name,
-    price: product.price,
-    gender: product.gender,
-  };
+  const cardProductInfo: cardProduct = useMemo(
+    () => ({
+      id: product.id,
+      image: product.images?.[0]?.url,
+      name: product.name,
+      price: product.price,
+      gender: product.gender,
+    }),
+    [product]
+  );
 
   const addToRecentlyViewed = useRecentlyViewedStore(
     (state) => state.addToRecentlyViewed
