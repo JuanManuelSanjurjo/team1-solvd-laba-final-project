@@ -49,6 +49,7 @@ export default function SignInForm() {
     defaultValues: {
       rememberMe: false,
     },
+    mode: "onBlur",
   });
 
   const { mutate, isPending } = useMutation({
@@ -101,6 +102,7 @@ export default function SignInForm() {
       </Snackbar>
       <Box
         component="form"
+        role="form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
           display: "flex",
@@ -112,6 +114,7 @@ export default function SignInForm() {
           {...register("email")}
           label="E-mail"
           name="email"
+          type="email"
           required
           errorMessage={errors.email?.message ?? ""}
         />

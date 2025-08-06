@@ -31,7 +31,7 @@ export default function SignIn() {
               color: "text.secondary",
             }}
           >
-            Don&rsquo;t have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/auth/sign-up" passHref>
               <Typography
                 component="span"

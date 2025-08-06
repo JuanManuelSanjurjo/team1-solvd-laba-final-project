@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
-import SignUp from "@/actions/sign-up";
+import signUp from "@/actions/sign-up";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 
@@ -20,7 +20,7 @@ const schema = z
   .object({
     username: z
       .string()
-      .min(5, "Name must be at least 5 characters")
+      .min(5, "Username must be at least 5 characters")
       .regex(/^\S*$/, "Username cannot contain spaces"),
     email: z.email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
@@ -57,10 +57,11 @@ export default function SignUpForm() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    mode: "onBlur",
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: SignUp,
+    mutationFn: signUp,
     onSuccess: () => {
       setToastContent({
         severity: "success",
@@ -77,8 +78,13 @@ export default function SignUpForm() {
     },
   });
 
-  const onSubmit = (data: Omit<FormData, "confirmPassword">) => {
-    mutate(data);
+  const onSubmit = (data: FormData) => {
+    const submitData: Omit<FormData, "confirmPassword"> = {
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    };
+    mutate(submitData);
   };
 
   return (
@@ -106,6 +112,7 @@ export default function SignUpForm() {
           flexDirection: "column",
           gap: "24px",
         }}
+        role="form"
       >
         <Input
           {...register("username")}
@@ -118,6 +125,7 @@ export default function SignUpForm() {
           {...register("email")}
           label="E-mail"
           name="email"
+          type="email"
           required
           errorMessage={errors.email?.message ?? ""}
         />
@@ -140,6 +148,7 @@ export default function SignUpForm() {
         <Button
           type="submit"
           variant="contained"
+          data-testid="sign-up-button"
           disabled={isPending}
           sx={{
             mt: "90px",

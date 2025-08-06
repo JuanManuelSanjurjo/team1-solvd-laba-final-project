@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
-import ForgotPassword from "@/actions/forgot-password";
+import forgotPassword from "@/actions/forgot-password";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 
@@ -46,14 +46,16 @@ export default function ForgotPasswordForm() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    mode: "onBlur",
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: ForgotPassword,
+    mutationFn: forgotPassword,
     onSuccess: () => {
       setToastContent({
         severity: "success",
-        message: "Success! Please check your email for password reset instructions",
+        message:
+          "Success! Please check your email for password reset instructions",
       });
       setOpen(true);
     },
@@ -89,6 +91,7 @@ export default function ForgotPasswordForm() {
       </Snackbar>
       <Box
         component="form"
+        role="form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
           display: "flex",
@@ -100,11 +103,12 @@ export default function ForgotPasswordForm() {
           {...register("email")}
           label="E-mail"
           name="email"
+          type="email"
           required
           errorMessage={errors.email?.message ?? ""}
         />
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           variant="contained"
           disabled={isPending}
           sx={{

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
-import ResetPassword from "@/actions/reset-password";
+import resetPassword from "@/actions/reset-password";
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -62,6 +62,7 @@ export default function ResetPasswordForm() {
     defaultValues: {
       code: code || "",
     },
+    mode: "onBlur",
   });
 
   useEffect(() => {
@@ -71,7 +72,7 @@ export default function ResetPasswordForm() {
   }, [code, setValue]);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: ResetPassword,
+    mutationFn: resetPassword,
     onSuccess: () => {
       setToastContent({
         severity: "success",
@@ -131,6 +132,7 @@ export default function ResetPasswordForm() {
       </Snackbar>
       <Box
         component="form"
+        role="form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
           display: "flex",

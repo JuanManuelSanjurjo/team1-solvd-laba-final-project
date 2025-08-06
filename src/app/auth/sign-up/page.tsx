@@ -33,7 +33,7 @@ export default function SignUp() {
             }}
           >
             Already have an account?{" "}
-            <Link href="/auth/sign-in" passHref>
+            <Link href="/auth/sign-in">
               <Typography
                 component="span"
                 sx={{
