@@ -41,7 +41,7 @@ describe("Reset Password Page", () => {
     } as any);
   });
 
-  const render = (component: React.ReactElement) => {
+  const renderWithQueryClient = (component: React.ReactElement) => {
     return render(
       <QueryClientProvider client={queryClient}>
         {component}
@@ -51,7 +51,7 @@ describe("Reset Password Page", () => {
 
   describe("Rendering", () => {
     it("renders all page elements correctly", () => {
-      render(<ResetPasswordPage />);
+      renderWithQueryClient(<ResetPasswordPage />);
 
       expect(screen.getByRole("main")).toBeInTheDocument();
 
@@ -75,7 +75,7 @@ describe("Reset Password Page", () => {
     });
 
     it("displays the logo", () => {
-      render(<ResetPasswordPage />);
+      renderWithQueryClient(<ResetPasswordPage />);
 
       expect(
         screen.getByRole("img", { name: /logo/i }) ||
@@ -88,7 +88,7 @@ describe("Reset Password Page", () => {
         get: jest.fn().mockReturnValue(null),
       } as any);
 
-      render(<ResetPasswordPage />);
+      renderWithQueryClient(<ResetPasswordPage />);
 
       expect(
         screen.getByText(
@@ -100,7 +100,7 @@ describe("Reset Password Page", () => {
 
   describe("Navigation", () => {
     it("has correct link to sign-in page", () => {
-      render(<ResetPasswordPage />);
+      renderWithQueryClient(<ResetPasswordPage />);
 
       const backToLoginLink = screen.getByRole("link", {
         name: /back to login/i,
