@@ -136,7 +136,7 @@ export default function ProductPageDetails({
           </Typography>
         </Box>
       )}
-      <ProductPageButtons product={product} />
+      <ProductPageButtons product={product} cardProductInfo={cardProductInfo} />
       <Typography variant="subtitle1" color="#494949" sx={{ fontWeight: 500 }}>
         Description
       </Typography>
