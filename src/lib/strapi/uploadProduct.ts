@@ -1,14 +1,16 @@
 type ProductFormData = {
-  name: string;
-  color: number;
-  gender: number;
-  brand: number;
-  description: string;
-  price: number;
-  sizes: number[];
-  images: number[];
-  teamName: string;
-  userId: number;
+  data: {
+    name: string;
+    color: number;
+    gender: number;
+    brand: number;
+    description: string;
+    price: number;
+    sizes: number[];
+    images: number[];
+    teamName: string;
+    userId: number;
+  };
 };
 
 /**

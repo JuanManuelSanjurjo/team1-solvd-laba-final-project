@@ -15,11 +15,11 @@ import { Box, Checkbox, FormControl } from "@mui/material";
  */
 
 type ShoeSizeOptionProps = {
-  value: number;
+  value?: number;
   size: number;
   disabled: boolean;
-  checked: boolean;
-  onToggle: (size: number) => void;
+  checked?: boolean;
+  onToggle?: (size: number) => void;
 };
 
 const baseStyles = {
@@ -48,11 +48,11 @@ const stateStyles = {
 };
 
 export default function ShoeSizeOption({
-  value,
+  value = 0,
   size,
   disabled,
-  checked,
-  onToggle,
+  checked = false,
+  onToggle = () => {},
 }: ShoeSizeOptionProps) {
   const getState = () => {
     if (disabled) return "disabled";
