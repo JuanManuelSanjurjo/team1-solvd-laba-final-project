@@ -69,7 +69,7 @@ const PaymentInfo = (): JSX.Element => {
         gap: "15px",
       }}
     >
-      <Stack direction="row" spacing={"12px"}>
+      <Stack direction={{ sm: "row", xs: "column" }} spacing={"12px"}>
         {paymentMethods.map((method: PaymentMethod) => (
           <PaymentMethodOption
             key={method.id}
@@ -86,8 +86,8 @@ const PaymentInfo = (): JSX.Element => {
           sx={{
             border: "1px solid #E1E1E1",
             borderRadius: "12px",
-            paddingInline: "24px",
-            paddingBlock: "38px",
+            paddingInline: {sm: "24px", xs: "10px"},
+            paddingBlock: {sm: "38px", xs: "10px"},
           }}
           onClick={() => setShowPaymentForm(!showPaymentForm)}
         >

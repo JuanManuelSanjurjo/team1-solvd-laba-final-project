@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 /**
  * @component
@@ -27,7 +27,7 @@ export default function PaymentMethodOption({
   icon: Icon,
   label,
   selected,
-  onSelect
+  onSelect,
 }: PaymentMethodOptionProps) {
   return (
     <Box
@@ -35,17 +35,16 @@ export default function PaymentMethodOption({
       flexDirection="column"
       borderRadius={"12px"}
       border="1px solid "
-      height={"100px"}
+      maxHeight={"100px"}
       minWidth={"100px"}
-      maxWidth={"200px"}
       width={"100%"}
-      padding={"24px"}
+      padding={{ md: "24px", xs: "10px" }}
       gap="10px"
-      sx={{ borderColor: selected ? "#FE645E" : "#E1E1E1", cursor:"pointer" }}
+      sx={{ borderColor: selected ? "#FE645E" : "#E1E1E1", cursor: "pointer" }}
       onClick={onSelect}
     >
       <Icon size="24px" color="#292D32" />
-      <span className="text-sm font-medium">{label}</span>
+      <Typography sx={{ sm: "15px", xs: "12px" }}>{label}</Typography>
     </Box>
   );
 }

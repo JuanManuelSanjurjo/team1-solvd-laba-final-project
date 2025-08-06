@@ -119,7 +119,7 @@ export default function Checkout() {
 
         <Grid container spacing={"24px"}>
           {personalInfoInputs.map((input) => (
-            <Grid key={input.name} size={6}>
+            <Grid key={input.name} size={{ xs: 12, sm: 6 }}>
               <Input
                 name={input.name}
                 label={input.label}
@@ -142,7 +142,7 @@ export default function Checkout() {
           {shippingInfoInputs
             .filter((item) => item.name !== "address")
             .map((input) => (
-              <Grid key={input.name} size={3}>
+              <Grid key={input.name} size={{ xs: 12, sm: 3 }}>
                 <Input
                   name={input.name}
                   label={input.label}
