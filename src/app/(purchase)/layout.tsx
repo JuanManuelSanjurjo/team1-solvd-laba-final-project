@@ -24,6 +24,12 @@ const PurchaseLayout = ({
 
   const isCheckoutPage = pathname.includes("/checkout");
   const buttonText = isCheckoutPage ? "Confirm & Pay" : "Checkout";
+  const isCartEmpty = pathname.includes("/cart/empty");
+
+  if (isCartEmpty) {
+    return <>{children}</>;
+  }
+
   const buttonAction = () => {
     if (isCheckoutPage) {
       console.log("Processing Payment");

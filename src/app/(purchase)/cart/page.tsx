@@ -49,10 +49,7 @@ export default function Checkout() {
 
   return (
     <>
-      <Box sx={{ marginTop: "80px" }}>
-        <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
-          Cart
-        </Typography>
+     
 
         {cartItems.length > 0 ? (
           cartItems.map((item) => (
@@ -84,7 +81,7 @@ export default function Checkout() {
             <Button variant="contained">Go back to the store</Button>
           </Box>
         )}
-      </Box>
+      
     </>
   );
 }
