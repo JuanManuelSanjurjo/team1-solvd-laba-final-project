@@ -7,8 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Header } from "@/components/Header";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import { FilterRemove, FilterSearch } from "iconsax-react";
 import { useQuery } from "@tanstack/react-query";
@@ -20,6 +19,7 @@ import { Product } from "@/types/product";
 import Card from "@/components/cards/Card";
 import { normalizeProductCard } from "@/lib/normalizeProductCard";
 import { FilterSideBar } from "./FiltersSideBar";
+import SkeletonCardContainer from "./SkeletonCardContainer";
 
 export default function HomeClient() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
@@ -27,7 +27,7 @@ export default function HomeClient() {
   const searchParams = useSearchParams();
   const filters = getFiltersFromSearchParams(searchParams);
 
-  const { data: products } = useQuery<Product[], Error>({
+  const { data: products, isPending } = useQuery<Product[], Error>({
     queryKey: ["products", searchParams.toString()],
     queryFn: () => fetchProducts(filters),
   });
@@ -41,8 +41,7 @@ export default function HomeClient() {
   const drawerAnchor = isMobile ? "right" : "left";
 
   return (
-    <Suspense fallback={"Loading..."}>
-      <Header />
+    <>
       <Drawer
         variant={drawerVariant}
         anchor={drawerAnchor}
@@ -221,19 +220,23 @@ export default function HomeClient() {
             },
           }}
         >
-          <CardContainer>
-            {normalizeProductCard(products || []).map((product, index) => (
-              <Card
-                product={product}
-                topAction="cardButtonWishList"
-                overlayAction="cardOverlayAddToCard"
-                key={index}
-                overlay={true}
-              />
-            ))}
-          </CardContainer>
+          {isPending ? (
+            <SkeletonCardContainer />
+          ) : (
+            <CardContainer>
+              {normalizeProductCard(products || []).map((product, index) => (
+                <Card
+                  product={product}
+                  topAction="cardButtonWishList"
+                  overlayAction="cardOverlayAddToCard"
+                  key={index}
+                  overlay={true}
+                />
+              ))}
+            </CardContainer>
+          )}
         </Box>
       </Box>
-    </Suspense>
+    </>
   );
 }

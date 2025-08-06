@@ -35,8 +35,10 @@ interface SignUpSuccessResponse {
   };
 }
 
+
 export default async function signUp(
   body: SignUpPayload
+
 ): Promise<SignUpResponse | false> {
   const response = await fetch(`${process.env.API_URL}/auth/local/register`, {
     method: "POST",

@@ -16,7 +16,7 @@ export const useWishlistStore = create<WishlistStore>()(
 
       addToWishList: (product) => {
         const alreadyExists = get().wishList.some(
-          (prod) => prod.id === product.id
+          (prod) => prod.id === product.id,
         );
         if (!alreadyExists) {
           set((state) => ({
@@ -38,6 +38,6 @@ export const useWishlistStore = create<WishlistStore>()(
     }),
     {
       name: "wishlist-storage",
-    }
-  )
+    },
+  ),
 );

@@ -16,20 +16,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         display: "flex",
         gap: 2,
         marginBlock: { xs: 10, md: 18 },
-        marginInline: { lg: "40px" },
+        marginInline: { lg: "0 40px" },
       }}
     >
       <Box
         sx={{
           display: {
             xs: "none",
-            sm: "none",
             md: "block",
-          },
-          marginTop: {
-            xs: "60px",
-            sm: "90px",
-            md: "120px",
+            lg: "block",
           },
         }}
       >

@@ -6,6 +6,12 @@ import IconButton from "@mui/material/IconButton";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useState, JSX, MouseEvent } from "react";
 import { Box } from "@mui/material";
+import cardProduct from "./types/cardProduct";
+import Link from "next/link";
+
+type CardButtonMenuProps = {
+  product: cardProduct;
+};
 
 /**
  * CardButtonMenu
@@ -15,14 +21,18 @@ import { Box } from "@mui/material";
  * @returns {JSX.Element} with the card menu component.
  */
 
-export default function CardButtonMenu(): JSX.Element {
+export default function CardButtonMenu({
+  product,
+}: CardButtonMenuProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open: boolean = Boolean(anchorEl);
 
   function handleClick(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
     setAnchorEl(event.currentTarget);
   }
-  function handleClose() {
+  function handleClose(e: MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
     setAnchorEl(null);
   }
 
@@ -69,10 +79,18 @@ export default function CardButtonMenu(): JSX.Element {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>View</MenuItem>
-        <MenuItem onClick={handleClose}>Edit</MenuItem>
-        <MenuItem onClick={handleClose}>Duplicate</MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem component="button" onClick={handleClose}>
+          <Link href={`/products/${product.id}`}>View</Link>
+        </MenuItem>
+        <MenuItem component="button" onClick={handleClose}>
+          Edit
+        </MenuItem>
+        <MenuItem component="button" onClick={handleClose}>
+          Duplicate
+        </MenuItem>
+        <MenuItem component="button" onClick={handleClose}>
+          Delete
+        </MenuItem>
       </Menu>
     </Box>
   );

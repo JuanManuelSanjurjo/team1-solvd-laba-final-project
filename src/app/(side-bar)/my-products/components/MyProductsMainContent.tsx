@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Box } from "@mui/material";
-import MyProductsEmptyState from "./MyProductsEmptyState";
+import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
 
 /**
@@ -31,7 +31,12 @@ export default function MyProductsMainContent() {
       {products.length > 0 ? (
         <Box m={10}>Actual fetch of my products</Box>
       ) : (
-        <MyProductsEmptyState />
+        <MyProductsEmptyState
+          title="You don't have any products yet"
+          subtitle="Post can contain video, images and text"
+          buttonText="Add Product"
+          onClick={() => console.log("Add Product")}
+        />
       )}
     </Box>
   );
