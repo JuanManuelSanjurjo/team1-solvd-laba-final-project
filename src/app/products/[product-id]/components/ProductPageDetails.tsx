@@ -1,8 +1,12 @@
+"use client";
+
 import { Box, Typography } from "@mui/material";
 import ShoeSizeOption from "./ShoeSizeOption";
 import ProductPageButtons from "./ProductPageButtons";
-import { JSX } from "react";
+import { JSX, useEffect } from "react";
 import { NormalizedProduct } from "@/types/product-types";
+import cardProduct from "@/components/cards/actions/types/cardProduct";
+import { useRecentlyViewedStore } from "@/store/recentlyviewed";
 
 /**
  * ProductPageDetails
@@ -21,6 +25,22 @@ export default function ProductPageDetails({
 }: {
   product: NormalizedProduct;
 }): JSX.Element {
+  const cardProductInfo: cardProduct = {
+    id: product.id,
+    image: product.images?.[0]?.url,
+    name: product.name,
+    price: product.price,
+    gender: product.gender,
+  };
+
+  const addToRecentlyViewed = useRecentlyViewedStore(
+    (state) => state.addToRecentlyViewed
+  );
+
+  useEffect(() => {
+    addToRecentlyViewed(cardProductInfo);
+  }, [addToRecentlyViewed, cardProductInfo]);
+
   return (
     <Box
       maxWidth={"520px"}
