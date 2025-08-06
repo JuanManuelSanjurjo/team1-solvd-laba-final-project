@@ -9,7 +9,8 @@ import { JSX } from "react";
  * ProductPageButtons
  *
  * This component is a pair of buttons for adding the product to the cart or wishlist.
- * @param {NormalizadProduct} props.product  - The product to be added to the wishlist or cart.
+ * @param {NormalizadProduct} props.product  - The product to be added to the cart.
+ * @param {cardProduct} props.cardProductInfo - The product information for the wishlist.
  * @returns {JSX.Element} The product buttons component.
  *
  * @example
@@ -18,17 +19,11 @@ import { JSX } from "react";
 
 export default function ProductPageButtons({
   product,
+  cardProductInfo,
 }: {
   product: NormalizedProduct;
+  cardProductInfo: cardProduct;
 }): JSX.Element {
-  const cardProductInfo: cardProduct = {
-    id: product.id,
-    image: product.images?.[0]?.url,
-    name: product.name,
-    price: product.price,
-    gender: product.gender,
-  };
-
   const { wishList, addToWishList } = useWishlistStore();
 
   const isInWisList = wishList.some((prod) => prod.id === product.id);

@@ -15,7 +15,7 @@ export const useRecentlyViewedStore = create<RecentlyViewedStore>()(
       addToRecentlyViewed: (product) => {
         const current = get().recentlyViewed;
 
-        const filtered = current.filter((p) => p.id !== product.id);
+        const filtered = current.filter((prod) => prod.id !== product.id);
 
         const updated = [product, ...filtered].slice(0, 10);
 
