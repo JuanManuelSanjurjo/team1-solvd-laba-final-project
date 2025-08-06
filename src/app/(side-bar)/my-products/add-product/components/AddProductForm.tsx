@@ -18,11 +18,29 @@ import { ProductFormData, productSchema } from "../schema";
 import { useCreateProduct } from "../hooks/useCreateProduct";
 import { Danger } from "iconsax-react";
 
+/**
+ * Props for AddProductForm component.
+ *
+ * @typedef AddProductFormProps
+ * @property {Array<{ value: number; label: string }>} brandOptions - Options for the Brand select input.
+ * @property {Array<{ value: number; label: string }>} colorOptions - Options for the Color select input.
+ * @property {Array<{ value: number; label: number }>} sizeOptions - Options for the Sizes selection.
+ */
 interface AddProductFormProps {
-  brandOptions: [{ value: number; label: string }];
-  colorOptions: [{ value: number; label: string }];
-  sizeOptions: [{ value: number; label: number }];
+  brandOptions: { value: number; label: string }[];
+  colorOptions: { value: number; label: string }[];
+  sizeOptions: { value: number; label: number }[];
 }
+
+/**
+ * Form component to add a new product.
+ *
+ * Handles user inputs including product details, sizes, images, and submits the data.
+ * Shows success/error notifications.
+ *
+ * @param {AddProductFormProps} props - Props containing options for brand, color, and size inputs.
+ * @returns {JSX.Element} The rendered AddProductForm component.
+ */
 
 export const AddProductForm: React.FC<AddProductFormProps> = ({
   brandOptions,
@@ -189,10 +207,14 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
         />
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "8px",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, 82px)",
+            justifyContent: "space-around",
+            alignItems: "center",
+            gap: {
+              xs: 1,
+              md: 3,
+            },
           }}
         >
           {sizeOptions.map((size) => (
