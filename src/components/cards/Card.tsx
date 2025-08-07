@@ -18,6 +18,7 @@ type CardProps = {
   overlay?: boolean;
   showText?: boolean;
   onEdit?: () => void;
+  onDeletePreview?: () => void;
 };
 
 /**
@@ -42,6 +43,7 @@ export default function Card({
   overlayAction = undefined,
   showText = true,
   onEdit = () => {},
+  onDeletePreview = () => {},
 }: CardProps): JSX.Element {
   const displayImage = product?.image || image;
 
@@ -81,7 +83,7 @@ export default function Card({
                   overlayAction === "cardOverlayAddToCard" ? (
                     <CardOverlayAddToCart product={product!} />
                   ) : (
-                    <CardOverlayDelete />
+                    <CardOverlayDelete onDeletePreview={onDeletePreview!} />
                   )
                 }
               />

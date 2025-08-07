@@ -26,7 +26,9 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const existentImages = product.images.map((image) => image.id);
+  const [existentImages, setExistentImages] = useState<string[]>(
+    product.images.map((image) => image.url)
+  );
   const {
     register,
     handleSubmit,
@@ -72,11 +74,16 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
 
   const onSubmit = async (data: ProductFormData) => {
     const userID = parseInt(session?.user.id ?? "0", 10);
+
+    const remainingExistentImages = product.images
+      .filter((image) => existentImages.includes(image.url))
+      .map((image) => image.id);
+
     try {
       await handleUpdateProduct({
         data: { ...data, userID },
         imageFiles,
-        existentImages,
+        existentImages: remainingExistentImages,
       });
       setSnackbarMessage("Product updated successfully!");
       setSnackbarSeverity("success");
@@ -138,6 +145,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         <ImagePreviewerUploader
           onFilesChange={setImageFiles}
           initialPreviews={product.images.map((image) => image.url)}
+          onPreviewsChange={setExistentImages}
         />
       </Box>
 

@@ -14,13 +14,20 @@ import ConfirmationModal from "@/components/ConfirmationModal";
  * @returns {JSX.Element} with the card delete overlay component.
  */
 
-export default function CardOverlayDelete(): JSX.Element {
+interface CardOverlayDeleteProps {
+  onDeletePreview: () => void;
+}
+
+export default function CardOverlayDelete({
+  onDeletePreview,
+}: CardOverlayDeleteProps): JSX.Element {
   const [showModal, setShowModal] = useState(false);
 
   function handleClose(event: React.SyntheticEvent) {
     event.preventDefault();
     setShowModal(false);
   }
+
   function handleDelete(event: React.SyntheticEvent) {
     event.preventDefault();
     setShowModal(true);
@@ -40,7 +47,6 @@ export default function CardOverlayDelete(): JSX.Element {
         justifyContent: "center",
       }}
     >
-      {" "}
       <Box
         sx={{
           cursor: "pointer",
@@ -59,7 +65,10 @@ export default function CardOverlayDelete(): JSX.Element {
           size="20"
           color="#292D32"
           className="bg"
-          onClick={handleDelete}
+          onClick={(e) => {
+            e.preventDefault();
+            onDeletePreview();
+          }}
         />
       </Box>
       <ConfirmationModal
