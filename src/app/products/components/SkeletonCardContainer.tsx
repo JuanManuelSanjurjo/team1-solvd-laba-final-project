@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import CardSkeleton from "./CardSkeleton";
+import { PRODUCTS_PER_PAGE } from "@/lib/constants/globals";
 
 export default function SkeletonCardContainer() {
   return (
@@ -17,7 +18,7 @@ export default function SkeletonCardContainer() {
         gap: { xs: 0, md: "67px" },
       }}
     >
-      {Array.from({ length: 7 }).map((_, i) => (
+      {Array.from({ length: PRODUCTS_PER_PAGE }).map((_, i) => (
         <CardSkeleton key={i} />
       ))}
     </Box>
