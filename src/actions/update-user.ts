@@ -1,14 +1,9 @@
 "use server";
 
 import { auth } from "@/auth";
+import { UpdateProfileFormData } from "@/app/(side-bar)/update-profile/types";
 
-interface UpdateUserPayload {
-  username?: string | undefined;
-  firstName?: string | undefined;
-  lastName?: string | undefined;
-  email?: string | undefined;
-  phoneNumber?: string | undefined;
-}
+type UpdateUserPayload = UpdateProfileFormData;
 
 export const updateUser = async (data: UpdateUserPayload, userId: string) => {
   const session = await auth();
