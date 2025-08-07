@@ -66,7 +66,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
       price: 0,
       description: "",
       sizes: [],
-      userId: 0,
+      userID: 0,
     },
   });
 
@@ -93,9 +93,9 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
   };
 
   const onSubmit = async (data: ProductFormData) => {
-    const userId = parseInt(session?.user.id ?? "0", 10);
+    const userID = parseInt(session?.user.id ?? "0", 10);
     try {
-      await handleCreateProduct({ data: { ...data, userId }, imageFiles });
+      await handleCreateProduct({ data: { ...data, userID }, imageFiles });
       setSnackbarMessage("Product added successfully!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
