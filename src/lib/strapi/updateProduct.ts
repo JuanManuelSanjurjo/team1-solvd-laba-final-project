@@ -1,5 +1,17 @@
-import { ProductFormData } from "@/app/(side-bar)/my-products/add-product/schema";
-
+type ProductFormData = {
+  data: {
+    name: string;
+    color: number;
+    gender: number;
+    brand: number;
+    description: string;
+    price: number;
+    sizes: number[];
+    images: number[];
+    teamName: string;
+    userID: number;
+  };
+};
 /**
  * Sends a PUT request to update a product in the Strapi API.
  *
@@ -41,9 +53,7 @@ export async function updateProduct(
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        data: updatedFields,
-      }),
+      body: JSON.stringify(updatedFields),
     }
   );
 

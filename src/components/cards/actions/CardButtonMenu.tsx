@@ -11,6 +11,7 @@ import Link from "next/link";
 
 type CardButtonMenuProps = {
   product: cardProduct;
+  onEdit: () => void;
 };
 
 /**
@@ -23,6 +24,7 @@ type CardButtonMenuProps = {
 
 export default function CardButtonMenu({
   product,
+  onEdit,
 }: CardButtonMenuProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open: boolean = Boolean(anchorEl);
@@ -82,7 +84,14 @@ export default function CardButtonMenu({
         <MenuItem component="button" onClick={handleClose}>
           <Link href={`/products/${product.id}`}>View</Link>
         </MenuItem>
-        <MenuItem component="button" onClick={handleClose}>
+        <MenuItem
+          component="button"
+          onClick={(e) => {
+            e.preventDefault();
+            onEdit();
+            handleClose(e);
+          }}
+        >
           Edit
         </MenuItem>
         <MenuItem component="button" onClick={handleClose}>

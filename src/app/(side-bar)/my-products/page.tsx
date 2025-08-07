@@ -1,5 +1,8 @@
+import { fetchBrands } from "@/lib/strapi/fetchBrands";
 import MyProductsBanner from "./components/MyProductsBanner";
 import MyProductsMainContent from "./components/MyProductsMainContent";
+import { fetchColors } from "@/lib/strapi/fetchColors";
+import { fetchSizes } from "@/lib/strapi/fetchSizes";
 
 /**
  * MyProducts
@@ -11,11 +14,20 @@ import MyProductsMainContent from "./components/MyProductsMainContent";
  *
  * @returns {JSX.Element} The main content of the My Products page.
  */
-export default function MyProductsPage() {
+export default async function MyProductsPage() {
+  const [brandOptions, colorOptions, sizeOptions] = await Promise.all([
+    fetchBrands(),
+    fetchColors(),
+    fetchSizes(),
+  ]);
   return (
     <>
       <MyProductsBanner />
-      <MyProductsMainContent />
+      <MyProductsMainContent
+        colorOptions={colorOptions}
+        brandOptions={brandOptions}
+        sizeOptions={sizeOptions}
+      />
     </>
   );
 }

@@ -17,6 +17,7 @@ type CardProps = {
   overlayAction?: string;
   overlay?: boolean;
   showText?: boolean;
+  onEdit?: () => void;
 };
 
 /**
@@ -40,6 +41,7 @@ export default function Card({
   topAction = undefined,
   overlayAction = undefined,
   showText = true,
+  onEdit = () => {},
 }: CardProps): JSX.Element {
   const displayImage = product?.image || image;
 
@@ -66,7 +68,7 @@ export default function Card({
               <CardActionWrapperTopRight
                 action={
                   topAction === "cardButtonMenu" ? (
-                    <CardButtonMenu product={product!} />
+                    <CardButtonMenu product={product!} onEdit={onEdit!} />
                   ) : (
                     <CardButtonWishList product={product!} />
                   )

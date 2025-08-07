@@ -46,10 +46,22 @@ export interface MyProduct {
   id: number;
   name: string;
   price: number;
+  description: string;
   gender: {
+    id: number;
     name: string;
   };
   images: {
+    id: number;
     url: string;
   }[];
+  sizes: {
+    id: number;
+  }[];
+  brand: {
+    id: number;
+  };
+  color: {
+    id: number;
+  };
 }

@@ -11,6 +11,7 @@ import { useState, useCallback } from "react";
  */
 interface ImagePreviewUploaderProps {
   onFilesChange: (files: File[]) => void;
+  initialPreviews?: string[];
 }
 
 /**
@@ -24,9 +25,10 @@ interface ImagePreviewUploaderProps {
 
 export default function ImagePreviewerUploader({
   onFilesChange,
+  initialPreviews = [],
 }: ImagePreviewUploaderProps) {
   const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [previews, setPreviews] = useState<string[]>(initialPreviews);
 
   const handleAddFile = useCallback(
     (file: File) => {
