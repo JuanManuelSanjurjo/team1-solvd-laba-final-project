@@ -1,6 +1,6 @@
 "use client";
 
-import { Header } from "@/components/Header";
+// import { Header } from "@/components/Header";
 import { Typography, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Button from "@/components/Button";
@@ -10,7 +10,7 @@ export default function ThankYou() {
   const theme = useTheme();
   return (
     <>
-      <Header></Header>
+      {/* <Header></Header> */}
       <Stack
         direction={{ xs: "column", md: "row" }}
         spacing={{ xs: 4, md: 13 }}

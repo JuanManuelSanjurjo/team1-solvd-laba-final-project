@@ -20,12 +20,12 @@ import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import MobileDrawer from "./Navbar/MobileDrawer";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import CardContainer from "./cards/CardContainer";
 import { normalizeProductCard } from "@/lib/normalizers/normalizeProductCard";
 import Card from "./cards/Card";
 import { fetchProductsBySearch } from "@/lib/strapi/fetchProductsBySearch";
+import { Session } from "next-auth";
 
 const excludedPaths = [
   "/auth/sign-in",
@@ -55,8 +55,13 @@ const excludedPaths = [
  * @returns {JSX.Element} The responsive header component.
  */
 
-export const Header = (): JSX.Element | null => {
-  const { data: session, status: isAuthenticated } = useSession();
+export const Header = ({
+  session,
+}: {
+  session: Session | null;
+}): JSX.Element | null => {
+  const isAuthenticated = Boolean(session);
+
   const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // <600px
@@ -73,7 +78,7 @@ export const Header = (): JSX.Element | null => {
       fetchProductsBySearch(
         deferredSearchInput,
         ["name", "color.name", "gender.name"],
-        ["color.name", "gender.name", "images.url"],
+        ["color.name", "gender.name", "images.url"]
       ),
     enabled: isSearching && deferredSearchInput.length > 1,
   });
@@ -90,7 +95,7 @@ export const Header = (): JSX.Element | null => {
   };
 
   const toolbarHeight = isMobile ? 60 : isTablet ? 90 : 120;
-  const itemGap = isMobile || !isAuthenticated ? 2 : 5;
+  const itemGap = isMobile || !session ? 2 : 5;
   const bagIconSize = isMobile ? 20 : 24;
   const searchBarSize = isMobile ? "xsmall" : isTablet ? "medium" : "large";
 
@@ -201,8 +206,8 @@ export const Header = (): JSX.Element | null => {
                 {isAuthenticated && isDesktop && (
                   <ProfilePicture
                     width={24}
-                    alt={session?.user?.name}
-                    src="https://www.shareicon.net/data/128x128/2016/07/26/802043_man_512x512.png" //Should be change on NextAuth implementation
+                    alt={session?.user?.username}
+                    src={session?.user.avatar?.url || ""}
                   />
                 )}
               </Box>
@@ -263,14 +268,18 @@ export const Header = (): JSX.Element | null => {
                     key={index}
                     overlay={true}
                   />
-                ),
+                )
               )}
             </CardContainer>
           )}
         </Box>
       )}
 
-      <MobileDrawer open={open} handleToggleDrawer={handleToggleDrawer} />
+      <MobileDrawer
+        session={session}
+        open={open}
+        handleToggleDrawer={handleToggleDrawer}
+      />
     </AppBar>
   );
 };
