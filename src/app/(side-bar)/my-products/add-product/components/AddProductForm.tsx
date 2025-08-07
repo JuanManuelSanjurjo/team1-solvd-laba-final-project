@@ -17,6 +17,7 @@ import { useState } from "react";
 import { ProductFormData, productSchema } from "../schema";
 import { useCreateProduct } from "../hooks/useCreateProduct";
 import { Danger } from "iconsax-react";
+import { ProductFormFields } from "./ProductFormFields";
 
 /**
  * Props for AddProductForm component.
@@ -133,107 +134,16 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
         }}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Input
-          {...register("name")}
-          label="Product name"
-          name="name"
-          required
-          errorMessage={errors.name?.message ?? ""}
-        />
-
-        <Input
-          {...register("price", { valueAsNumber: true })}
-          label="Price"
-          name="price"
-          type="number"
-          required
-          errorMessage={errors.price?.message ?? ""}
-        />
-
-        <Controller
-          name="color"
+        <ProductFormFields
+          register={register}
           control={control}
-          render={({ field }) => (
-            <Select
-              {...field}
-              label="Color"
-              name="color"
-              options={colorOptions}
-              placeholder=""
-              required
-            />
-          )}
+          errors={errors}
+          colorOptions={colorOptions}
+          brandOptions={brandOptions}
+          sizeOptions={sizeOptions}
+          selectedSizes={selectedSizes}
+          toggleSize={toggleSize}
         />
-        <Box sx={{ display: "flex", gap: "16px" }}>
-          <Controller
-            name="gender"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                label="Gender"
-                name="gender"
-                options={[
-                  { label: "Women", value: 4 },
-                  { label: "Man", value: 3 },
-                ]}
-                placeholder=""
-              />
-            )}
-          />
-          <Controller
-            name="brand"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                label="Brand"
-                name="brand"
-                options={brandOptions}
-                placeholder=""
-              />
-            )}
-          />
-        </Box>
-        <Input
-          {...register("description")}
-          label="Description"
-          name="description"
-          required
-          errorMessage={errors.description?.message ?? ""}
-          multiline
-          fullWidth
-          sx={{ height: "320px", alignItems: "flex-start" }}
-        />
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, 82px)",
-            justifyContent: "space-around",
-            alignItems: "center",
-            gap: {
-              xs: 1,
-              md: 3,
-            },
-          }}
-        >
-          {sizeOptions.map((size) => (
-            <ShoeSizeOption
-              key={size.value}
-              value={size.value}
-              size={size.label}
-              disabled={false}
-              checked={selectedSizes.includes(size.value)}
-              onToggle={toggleSize}
-            />
-          ))}
-        </Box>
-        {errors.sizes?.message && (
-          <FormHelperText sx={{ color: "#FE645E" }}>
-            <Danger color="#FE645E" size="16" style={{ marginRight: "6px" }} />
-            {errors.sizes?.message}
-          </FormHelperText>
-        )}
       </Box>
       <Box sx={{ flex: 1 }}>
         <Typography

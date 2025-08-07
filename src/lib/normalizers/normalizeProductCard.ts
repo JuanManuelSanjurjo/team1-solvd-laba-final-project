@@ -1,4 +1,5 @@
-import { Product } from "@/types/product";
+import { MyProduct, Product } from "@/types/product";
+import { ProductAttributes } from "@/types/product-types";
 
 /**
  * Normalizes an array of `Product` objects into a simpler format suitable for product card display.
@@ -26,5 +27,16 @@ export function normalizeProductCard(products: Product[]) {
     name: product.attributes.name,
     price: product.attributes.price,
     gender: product.attributes.gender?.data?.attributes?.name ?? "No gender",
+  }));
+}
+export function normalizeMyProductCard(products: MyProduct[]) {
+  return products.map((product) => ({
+    id: product.id,
+    image:
+      product.images?.[0]?.url ||
+      "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
+    name: product.name,
+    price: product.price,
+    gender: product.gender?.name ?? "No gender",
   }));
 }

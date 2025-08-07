@@ -3,6 +3,17 @@ import { useState } from "react";
 import { Box } from "@mui/material";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
+import { fetchUserProducts } from "@/lib/strapi/fetchUserProducts";
+import { MyProduct, Product } from "@/types/product";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import CardContainer from "@/components/cards/CardContainer";
+import Card from "@/components/cards/Card";
+import SkeletonCardContainer from "@/app/products/components/SkeletonCardContainer";
+import {
+  normalizeMyProductCard,
+  normalizeProductCard,
+} from "@/lib/normalizers/normalizeProductCard";
 
 /**
  * MyProductsMainContent
@@ -14,9 +25,23 @@ import MyProductsHeader from "./MyProductsHeader";
  *
  * @returns {JSX.Element} The main content of the My Products page.
  */
-export default function MyProductsMainContent() {
-  const [products] = useState([]);
 
+export default function MyProductsMainContent() {
+  const { data: session, status } = useSession();
+
+  const userId = session?.user?.id;
+  const token = session?.user?.jwt;
+
+  const { data, isLoading, isError } = useQuery<MyProduct[], Error>({
+    queryKey: ["user-products", userId],
+    queryFn: () => {
+      if (!userId || !token) throw new Error("User not authenticated");
+      return fetchUserProducts(parseInt(userId), token);
+    },
+    enabled: !!userId && !!token,
+  });
+
+  const products = data ?? [];
   return (
     <Box
       sx={{
@@ -26,10 +51,21 @@ export default function MyProductsMainContent() {
         marginInline: { xs: "20px", lg: 0 },
       }}
     >
-      <MyProductsHeader isEmpty={products.length === 0} />
-      {/* CONDITIONAL RENDERING OF PRODUCT LIST HEADER OR EMPTY STATE */}
-      {products.length > 0 ? (
-        <Box m={10}>Actual fetch of my products</Box>
+      <MyProductsHeader isEmpty={products ? products.length === 0 : false} />
+      {isLoading ? (
+        <SkeletonCardContainer />
+      ) : products.length > 0 ? (
+        <CardContainer>
+          {normalizeMyProductCard(products).map((product, index) => (
+            <Card
+              product={product}
+              topAction="cardButtonWishList"
+              overlayAction="cardOverlayAddToCard"
+              key={index}
+              overlay={true}
+            />
+          ))}
+        </CardContainer>
       ) : (
         <MyProductsEmptyState
           title="You don't have any products yet"

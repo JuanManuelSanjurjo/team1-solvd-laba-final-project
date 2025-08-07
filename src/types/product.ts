@@ -41,3 +41,15 @@ export type ProductFilters = {
   priceMin?: number;
   priceMax?: number;
 };
+
+export interface MyProduct {
+  id: number;
+  name: string;
+  price: number;
+  gender: {
+    name: string;
+  };
+  images: {
+    url: string;
+  }[];
+}
