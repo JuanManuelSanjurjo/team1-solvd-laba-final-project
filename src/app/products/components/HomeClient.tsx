@@ -9,28 +9,37 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import CardContainer from "@/components/cards/CardContainer";
+import PaginationComponent from "@/components/PaginationComponent";
+import SkeletonPagination from "@/components/SkeletonPagination";
 import { FilterRemove, FilterSearch } from "iconsax-react";
-import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getFiltersFromSearchParams } from "@/lib/getFiltersFromSearchParams";
 import { hasActiveFilters } from "@/lib/filterUtils";
-import { Product } from "@/types/product";
 import Card from "@/components/cards/Card";
 import { FilterSideBar } from "./FiltersSideBar";
 import SkeletonCardContainer from "./SkeletonCardContainer";
-import { fetchProducts } from "@/lib/strapi/fetchProducts";
+import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { normalizeProductCard } from "@/lib/normalizers/normalizeProductCard";
+import useQueryPagedProducts from "@/app/products/hooks/useQueryPageProducts";
+import { PRODUCTS_PER_PAGE } from "@/lib/constants/globals";
 
 export default function HomeClient() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
+  const [page, setPage] = useState<number>(0);
 
   const searchParams = useSearchParams();
   const filters = getFiltersFromSearchParams(searchParams);
 
-  const { data: products, isPending } = useQuery<Product[], Error>({
-    queryKey: ["products", searchParams.toString()],
-    queryFn: () => fetchProducts(filters),
-  });
+  const {
+    data: products,
+    pagination,
+    isPending,
+  } = useQueryPagedProducts(
+    filters,
+    page,
+    PRODUCTS_PER_PAGE,
+    searchParams.toString(),
+  );
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -164,7 +173,7 @@ export default function HomeClient() {
               onClick={() => {
                 setFiltersOpen(!filtersOpen);
               }}
-              sx={{ display: "flex", alignItems: "center" }}
+              sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
             >
               {filtersOpen ? (
                 <>
@@ -213,7 +222,7 @@ export default function HomeClient() {
         <Box
           sx={{
             padding: {
-              xs: "0 20px",
+              xs: "0 5px",
               sm: "0 30px",
               md: "0 40px",
               lg: "0 60px",
@@ -223,17 +232,47 @@ export default function HomeClient() {
           {isPending ? (
             <SkeletonCardContainer />
           ) : (
-            <CardContainer>
-              {normalizeProductCard(products || []).map((product, index) => (
-                <Card
-                  product={product}
-                  topAction="cardButtonWishList"
-                  overlayAction="cardOverlayAddToCard"
-                  key={index}
-                  overlay={true}
-                />
-              ))}
-            </CardContainer>
+            <>
+              {products?.length === 0 ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: "25vh",
+                  }}
+                >
+                  <MyProductsEmptyState
+                    title="No products match this search"
+                    subtitle="Try removing some filters!"
+                  />
+                </Box>
+              ) : (
+                <>
+                  <CardContainer length={products?.length}>
+                    {normalizeProductCard(products || []).map(
+                      (product, index) => (
+                        <Card
+                          product={product}
+                          topAction="cardButtonWishList"
+                          overlayAction="cardOverlayAddToCard"
+                          key={index}
+                          overlay={true}
+                        />
+                      ),
+                    )}
+                  </CardContainer>
+                  {pagination ? (
+                    <PaginationComponent
+                      pagination={pagination}
+                      setPage={setPage}
+                    />
+                  ) : (
+                    <SkeletonPagination />
+                  )}
+                </>
+              )}
+            </>
           )}
         </Box>
       </Box>
