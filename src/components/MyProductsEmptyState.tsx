@@ -4,8 +4,8 @@ import { Box, Typography, Button } from "@mui/material";
 type MyProductsEmptyStateProps = {
   title: string;
   subtitle: string;
-  buttonText: string;
-  onClick: () => void;
+  buttonText?: string;
+  onClick?: () => void;
 };
 
 /**
@@ -59,9 +59,11 @@ export default function MyProductsEmptyState({
           {subtitle}
         </Typography>
       </Box>
-      <Button variant="contained" onClick={onClick}>
-        {buttonText}
-      </Button>
+      {buttonText && onClick && (
+        <Button variant="contained" onClick={onClick}>
+          {buttonText}
+        </Button>
+      )}
     </Box>
   );
 }
