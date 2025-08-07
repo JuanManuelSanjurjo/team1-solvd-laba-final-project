@@ -2,10 +2,16 @@
 
 import { Box } from "@mui/material";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
+import { useState } from "react";
 
 const EmptyCart = () => {
   const router = useRouter();
+  const [cartIsEmpty] = useState(false);
+
+  if (!cartIsEmpty) {
+    redirect("/cart");
+  }
 
   const buttonAction = () => {
     router.push("/products");
