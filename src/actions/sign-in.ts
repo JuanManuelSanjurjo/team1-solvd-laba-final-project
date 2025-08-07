@@ -1,12 +1,9 @@
 "use server";
 
 import { signIn } from "@/auth";
+import { SignInFormData } from "@/app/auth/sign-in/types";
 
-interface SignInPayload {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
+type SignInPayload = SignInFormData;
 
 export default async function signInAction(data: SignInPayload) {
   try {

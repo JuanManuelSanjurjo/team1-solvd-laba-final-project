@@ -1,9 +1,21 @@
 "use server";
 
+import { ResetPasswordFormData } from "@/app/auth/reset-password/types";
+
 interface ResetPasswordPayload {
   password: string;
   passwordConfirmation: string;
   code: string;
+}
+
+export async function transformResetPasswordData(
+  formData: ResetPasswordFormData
+): Promise<ResetPasswordPayload> {
+  return {
+    password: formData.password,
+    passwordConfirmation: formData.confirmPassword,
+    code: formData.code,
+  };
 }
 
 interface ResetPasswordSuccessResponse {

@@ -1,8 +1,8 @@
 "use server";
 
-interface ForgotPasswordPayload {
-  email: string;
-}
+import { ForgotPasswordFormData } from "@/app/auth/forgot-password/types";
+
+type ForgotPasswordPayload = ForgotPasswordFormData;
 
 interface ForgotPasswordSuccessResponse {
   ok: boolean;

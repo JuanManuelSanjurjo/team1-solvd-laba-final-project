@@ -1,6 +1,5 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -12,23 +11,13 @@ import {
 } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
-import resetPassword from "@/actions/reset-password";
+import resetPassword, {
+  transformResetPasswordData,
+} from "@/actions/reset-password";
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-
-const schema = z
-  .object({
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-    code: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Passwords do not match",
-  });
-
-type FormData = z.infer<typeof schema>;
+import { resetPasswordSchema, ResetPasswordFormData } from "../types";
 
 export default function ResetPasswordForm() {
   const router = useRouter();
@@ -57,8 +46,8 @@ export default function ResetPasswordForm() {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+  } = useForm<ResetPasswordFormData>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       code: code || "",
     },
@@ -72,7 +61,10 @@ export default function ResetPasswordForm() {
   }, [code, setValue]);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: resetPassword,
+    mutationFn: async (data: ResetPasswordFormData) => {
+      const payload = await transformResetPasswordData(data);
+      return resetPassword(payload);
+    },
     onSuccess: () => {
       setToastContent({
         severity: "success",
@@ -94,14 +86,8 @@ export default function ResetPasswordForm() {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    const payload = {
-      password: data.password,
-      passwordConfirmation: data.confirmPassword,
-      code: data.code,
-    };
-
-    mutate(payload);
+  const onSubmit = (data: ResetPasswordFormData) => {
+    mutate(data);
   };
 
   if (!code) {

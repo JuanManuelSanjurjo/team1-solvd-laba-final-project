@@ -1,6 +1,5 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -15,23 +14,7 @@ import Button from "@/components/Button";
 import signUp from "@/actions/sign-up";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-
-const schema = z
-  .object({
-    username: z
-      .string()
-      .min(5, "Username must be at least 5 characters")
-      .regex(/^\S*$/, "Username cannot contain spaces"),
-    email: z.email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Passwords do not match",
-  });
-
-type FormData = z.infer<typeof schema>;
+import { signUpSchema, SignUpFormData } from "../types";
 
 export default function SignUpForm() {
   const [open, setOpen] = useState(false);
@@ -55,8 +38,8 @@ export default function SignUpForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
     mode: "onBlur",
   });
 
@@ -78,8 +61,8 @@ export default function SignUpForm() {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    const submitData: Omit<FormData, "confirmPassword"> = {
+  const onSubmit = (data: SignUpFormData) => {
+    const submitData: Omit<SignUpFormData, "confirmPassword"> = {
       username: data.username,
       email: data.email,
       password: data.password,

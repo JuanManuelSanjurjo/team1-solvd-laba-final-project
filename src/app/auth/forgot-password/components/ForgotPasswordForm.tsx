@@ -1,6 +1,5 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -15,12 +14,7 @@ import Button from "@/components/Button";
 import forgotPassword from "@/actions/forgot-password";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-
-const schema = z.object({
-  email: z.email("Invalid email address"),
-});
-
-type FormData = z.infer<typeof schema>;
+import { forgotPasswordSchema, ForgotPasswordFormData } from "../types";
 
 export default function ForgotPasswordForm() {
   const [open, setOpen] = useState(false);
@@ -44,8 +38,8 @@ export default function ForgotPasswordForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+  } = useForm<ForgotPasswordFormData>({
+    resolver: zodResolver(forgotPasswordSchema),
     mode: "onBlur",
   });
 
@@ -68,7 +62,7 @@ export default function ForgotPasswordForm() {
     },
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: ForgotPasswordFormData) => {
     mutate(data);
   };
 
