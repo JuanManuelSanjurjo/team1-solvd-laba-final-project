@@ -1,13 +1,16 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "../../../utils/test-utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import resetPassword from "@/actions/reset-password";
+import resetPassword, { transformResetPasswordData } from "@/actions/reset-password";
 import ResetPasswordForm from "@/app/auth/reset-password/components/ResetPasswordForm";
 import { useSearchParams } from "next/navigation";
 
 jest.mock("@/actions/reset-password");
 const mockResetPassword = resetPassword as jest.MockedFunction<
   typeof resetPassword
+>;
+const mockTransformResetPasswordData = transformResetPasswordData as jest.MockedFunction<
+  typeof transformResetPasswordData
 >;
 
 jest.mock("next/navigation", () => ({
@@ -199,6 +202,14 @@ describe("ResetPasswordForm Component", () => {
         updatedAt: "2023-01-01",
       },
     };
+    
+    // Mock the transform function to return the expected payload
+    mockTransformResetPasswordData.mockResolvedValueOnce({
+      password: "newpassword123",
+      passwordConfirmation: "newpassword123",
+      code: "test-code-123",
+    });
+    
     mockResetPassword.mockResolvedValueOnce(mockResponse);
 
     const Wrapper = createWrapper();
@@ -217,6 +228,14 @@ describe("ResetPasswordForm Component", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
+      // Verify the transform function was called with form data
+      expect(mockTransformResetPasswordData).toHaveBeenCalledWith({
+        password: "newpassword123",
+        confirmPassword: "newpassword123",
+        code: "test-code-123",
+      });
+      
+      // Verify resetPassword was called with transformed data
       expect(mockResetPassword).toHaveBeenCalledWith({
         password: "newpassword123",
         passwordConfirmation: "newpassword123",
