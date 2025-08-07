@@ -1,16 +1,7 @@
 /**
  * Represents the available filters
  */
-
-export type ProductFilters = {
-  brands?: string[];
-  sizes?: string[];
-  genders?: string[];
-  colors?: string[];
-  categories?: string[];
-  priceMin?: number;
-  priceMax?: number;
-};
+import { ProductFilters } from "@/types/product";
 
 /**
  * Fetches products from the Strapi API based on provided filter criteria.
@@ -27,11 +18,17 @@ export type ProductFilters = {
  * @returns {Promise<any[]>} - A promise that resolves to an array of filtered product data from the API.
  * @throws {Error} - Throws an error if the network response is not OK.
  */
-export async function fetchProducts(filters: ProductFilters) {
+export async function fetchProducts(
+  filters: ProductFilters,
+  pageNumber: number,
+  pageSize: number,
+) {
   const baseUrl = new URL(
-    "https://shoes-shop-strapi.herokuapp.com/api/products"
+    "https://shoes-shop-strapi.herokuapp.com/api/products",
   );
   baseUrl.searchParams.set("populate", "*");
+  baseUrl.searchParams.set("pagination[page]", pageNumber.toString());
+  baseUrl.searchParams.set("pagination[pageSize]", pageSize.toString());
 
   if (filters.brands) {
     filters.brands.forEach((brand, index) => {
@@ -49,7 +46,7 @@ export async function fetchProducts(filters: ProductFilters) {
     filters.genders.forEach((gender, index) => {
       baseUrl.searchParams.append(
         `filters[gender][name][$in][${index}]`,
-        gender
+        gender,
       );
     });
   }
@@ -58,7 +55,7 @@ export async function fetchProducts(filters: ProductFilters) {
     filters.categories.forEach((categorie, index) => {
       baseUrl.searchParams.append(
         `filters[categories][name][$in][${index}]`,
-        categorie
+        categorie,
       );
     });
   }
@@ -72,16 +69,16 @@ export async function fetchProducts(filters: ProductFilters) {
   if (filters.priceMin !== undefined && filters.priceMax !== undefined) {
     baseUrl.searchParams.append(
       "filters[price][$between]",
-      filters.priceMin.toString()
+      filters.priceMin.toString(),
     );
     baseUrl.searchParams.append(
       "filters[price][$between]",
-      filters.priceMax.toString()
+      filters.priceMax.toString(),
     );
   }
 
   const response = await fetch(baseUrl.toString());
   if (!response.ok) throw new Error("Network response was not ok");
   const json = await response.json();
-  return json.data;
+  return json;
 }

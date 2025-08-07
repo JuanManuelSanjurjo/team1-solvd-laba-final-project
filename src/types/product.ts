@@ -21,3 +21,23 @@ export interface Product {
     };
   };
 }
+export type PaginatedProducts = {
+  data: Product[];
+  meta: {
+    pagination: {
+      page: number;
+      pageCount: number;
+      pageSize: number;
+      total: number;
+    };
+  };
+};
+export type ProductFilters = {
+  brands?: string[];
+  sizes?: string[];
+  genders?: string[];
+  colors?: string[];
+  categories?: string[];
+  priceMin?: number;
+  priceMax?: number;
+};
