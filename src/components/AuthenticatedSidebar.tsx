@@ -1,4 +1,5 @@
 "use client";
+
 import { JSX } from "react";
 import {
   Box,
@@ -23,7 +24,7 @@ import { usePathname } from "next/navigation";
 import SidebarIcon from "./SideBarIcon";
 import WelcomeComponent from "./WelcomeComponent";
 import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 const navItems = [
   {
@@ -69,6 +70,7 @@ type AuthenticatedSidebarProps = {
   anchor?: "left" | "right";
   backgroundColor?: string;
   width?: number | string;
+  session: Session | null;
 };
 
 /**
@@ -98,11 +100,12 @@ type AuthenticatedSidebarProps = {
  */
 
 const AuthenticatedSidebar = ({
+  session,
   showProfileComponent = true,
   width,
 }: AuthenticatedSidebarProps): JSX.Element => {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   const drawerWidth = {
     md: 240,
@@ -119,10 +122,9 @@ const AuthenticatedSidebar = ({
       <Box display="flex" flexDirection="column" height="100%">
         {showProfileComponent && (
           <>
-            {/* TODO change hardcoded src and name for user data*/}
             <WelcomeComponent
-              src="www.coolavatarbystrapi.com/images/upload/1.jpg"
-              name={session?.user?.name}
+              src={session?.user?.avatar?.url || ""}
+              name={session?.user?.username}
             />
             <Divider />
           </>

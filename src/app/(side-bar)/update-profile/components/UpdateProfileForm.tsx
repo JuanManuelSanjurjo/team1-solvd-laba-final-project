@@ -1,25 +1,33 @@
 "use client";
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Alert,
-  AlertProps,
-  Box,
-  Snackbar,
-  SnackbarCloseReason,
-} from "@mui/material";
+import { AlertProps, Box, Typography } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
-// import SignUp from "@/actions/sign-up";
+import Toast from "@/components/Toast";
 import { useState } from "react";
-// import { useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { Session } from "next-auth";
+import { redirect } from "next/navigation";
+import { updateUser } from "@/actions/update-user";
 import { useSession } from "next-auth/react";
 
 const schema = z.object({
-  name: z.string().min(2, "Name must be at least 5 characters").optional(),
-  surname: z.string().min(2, "Name must be at least 5 characters").optional(),
-  email: z.email("Invalid email address").optional(),
+  username: z
+    .string()
+    .min(5, "Username must be at least 5 characters")
+    .regex(/^\S*$/, "Username cannot contain spaces"),
+  firstName: z
+    .string()
+    .min(5, "First name must be at least 5 characters")
+    .optional(),
+  lastName: z
+    .string()
+    .min(5, "Last name must be at least 5 characters")
+    .optional(),
+  email: z.email("Invalid email address"),
   phoneNumber: z
     .string()
     .min(10, "Phone number must be at least 10 characters")
@@ -28,78 +36,86 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function UpdateProfileForm() {
+export default function UpdateProfileForm({
+  session,
+}: {
+  session: Session | null;
+}) {
+  if (session === null) {
+    redirect("/auth/sign-in");
+  }
+
+  const { update } = useSession();
+
   const [open, setOpen] = useState(false);
-  const [
-    toastContent,
-    //setToastContent;
-  ] = useState({
-    severity: "",
+  const [toastContent, setToastContent] = useState({
+    severity: "" as AlertProps["severity"],
     message: "",
   });
-  const { data: session } = useSession();
 
-  const handleClose = (
-    _: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason,
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
+  const handleClose = () => {
     setOpen(false);
+  };
+
+  const defaultValues = {
+    username: session?.user?.username,
+    firstName: session?.user?.firstName || "",
+    lastName: session?.user?.lastName || "",
+    email: session?.user?.email,
+    phoneNumber: session?.user?.phone || "",
   };
 
   const {
     register,
-    // handleSubmit,
+    handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues,
+    mode: "onBlur",
   });
 
-  // const { mutate, isPending } = useMutation({
-  //   mutationFn: SignUp,
-  //   onSuccess: () => {
-  //     setToastContent({
-  //       severity: "success",
-  //       message: "Succes, details updated!",
-  //     });
-  //     setOpen(true);
-  //   },
-  //   onError: (error: Error) => {
-  //     setOpen(true);
-  //     setToastContent({
-  //       severity: "error",
-  //       message: error.message,
-  //     });
-  //   },
-  // });
+  const isChanged = JSON.stringify(watch()) !== JSON.stringify(defaultValues);
 
-  // const onSubmit = (data: FormData) => {
-  //   mutate(data);
-  // };
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: FormData) => updateUser(data, session?.user.id || ""),
+    onSuccess: () => {
+      setToastContent({
+        severity: "success",
+        message: "Success, details updated!",
+      });
+      setOpen(true);
+      update({ trigger: "update" });
+    },
+    onError: (error: Error) => {
+      setOpen(true);
+      setToastContent({
+        severity: "error",
+        message: error.message,
+      });
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    mutate(data);
+  };
 
   return (
     <>
-      <Snackbar
+      <Toast
         open={open}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        autoHideDuration={5000}
         onClose={handleClose}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={toastContent.severity as AlertProps["severity"]}
-          variant="filled"
-          sx={{ width: "100%", color: "primary.contrastText" }}
-        >
-          {toastContent.message}
-        </Alert>
-      </Snackbar>
+        severity={toastContent.severity}
+        message={toastContent.message}
+      />
+
+      <Typography variant="body2" paddingBlock="26px">
+        Welcome back! Please enter your details to log into your account.
+      </Typography>
       <Box
         component="form"
-        // onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -107,38 +123,46 @@ export default function UpdateProfileForm() {
         }}
       >
         <Input
-          {...register("name")}
-          label="Name"
-          name="name"
-          value={session?.user?.name}
-          errorMessage={errors.name?.message ?? ""}
+          {...register("username")}
+          label="Username"
+          name="username"
+          placeholder="Enter your unique username (min. 8 characters)"
+          errorMessage={errors.username?.message ?? ""}
         />
         <Input
-          {...register("surname")}
-          label="Surname"
-          name="surname"
-          placeholder={"Surname"}
-          errorMessage={errors.surname?.message ?? ""}
+          {...register("firstName")}
+          label="First name"
+          name="firstName"
+          placeholder="Enter your first name"
+          errorMessage={errors.firstName?.message ?? ""}
+        />
+        <Input
+          {...register("lastName")}
+          label="Last name"
+          name="lastName"
+          placeholder="Enter your last name"
+          errorMessage={errors.lastName?.message ?? ""}
         />
         <Input
           {...register("email")}
+          value={session?.user?.email}
           label="E-mail"
           name="email"
-          value={session?.user?.email}
+          disabled
+          placeholder="Enter your email address (e.g., john@example.com)"
           errorMessage={errors.email?.message ?? ""}
         />
-        {/* Change phone number*/}
         <Input
           {...register("phoneNumber")}
           label="Phone number"
           name="phoneNumber"
-          placeholder={"Enter phone number"}
+          placeholder="Enter your phone number (e.g., +1 234 567 8900)"
           errorMessage={errors.phoneNumber?.message ?? ""}
         />
         <Button
           type="submit"
           variant="contained"
-          // disabled={isPending}
+          disabled={isPending || !isChanged}
           sx={{ width: "max-content", alignSelf: "flex-end" }}
         >
           Save changes

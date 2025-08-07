@@ -6,6 +6,8 @@ import { Add } from "iconsax-react";
 import IconButton from "@mui/material/IconButton";
 import Backdrop from "@mui/material/Backdrop";
 import AuthenticatedSidebar from "../AuthenticatedSidebar";
+import { Session } from "next-auth";
+// import { auth } from "@/auth";
 
 interface AppBarProps {
   open: boolean;
@@ -22,9 +24,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function MobileDrawer({
+  session,
   open,
   handleToggleDrawer,
-}: AppBarProps): JSX.Element {
+}: AppBarProps & { session: Session | null }): JSX.Element {
   return (
     <Box sx={{ display: "flex" }}>
       <Backdrop
@@ -57,6 +60,7 @@ export default function MobileDrawer({
             </IconButton>
           </DrawerHeader>
           <AuthenticatedSidebar
+            session={session}
             showProfileComponent={false}
             width={240}
           ></AuthenticatedSidebar>

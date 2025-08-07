@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import AuthenticatedSidebar from "@/components/AuthenticatedSidebar";
+import { auth } from "@/auth";
 
 /**
  * Layout
@@ -9,7 +10,13 @@ import AuthenticatedSidebar from "@/components/AuthenticatedSidebar";
  * @returns {JSX.Element} The main content of the page.
  */
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await auth();
+
   return (
     <Box
       sx={{
@@ -28,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           },
         }}
       >
-        <AuthenticatedSidebar />
+        <AuthenticatedSidebar session={session} />
       </Box>
 
       <Box

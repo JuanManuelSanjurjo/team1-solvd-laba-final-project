@@ -54,7 +54,14 @@ const WelcomeComponent = ({ src, name }: WelcomeComponentProps) => {
         <Typography
           variant="body1"
           fontWeight={500}
-          sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}
+          title={name}
+          sx={{
+            fontSize: { xs: "0.9rem", md: "1rem" },
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            maxWidth: "180px",
+          }}
         >
           {name}
         </Typography>
