@@ -14,7 +14,8 @@ export interface CartState {
   clearCart: () => void;
   updateQuantity: (id: number, action: "add" | "minus") => void;
   totalOfProduct: (id: number) => number;
-  total: () => number;
+  subtotal: () => number;
   taxes: () => number;
   shipping: () => number;
+  total: () => number;
 }

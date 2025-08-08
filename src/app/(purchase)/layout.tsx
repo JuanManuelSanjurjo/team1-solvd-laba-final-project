@@ -53,9 +53,6 @@ const PurchaseLayout = ({
       {!cartIsEmpty && (
         <Box sx={{ marginTop: "80px" }}>
           <CheckoutSummary
-            subtotal={140}
-            tax={0}
-            shipping={0}
             buttonText={buttonText}
             buttonAction={buttonAction}
           />

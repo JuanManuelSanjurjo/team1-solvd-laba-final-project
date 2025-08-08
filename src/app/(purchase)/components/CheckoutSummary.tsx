@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import PromocodeAccordion from "./PromocodeAccordion";
 // Update the import path if Button is located elsewhere, for example:
 import Button from "@/components/Button";
-import { useEffect, useState } from "react";
+import { useCartStore } from "@/store/cartStore";
 
 /**
  * A reusable summary component used in both the checkout and the cart pages.
@@ -18,40 +18,26 @@ import { useEffect, useState } from "react";
  *
  * @example
  * <CheckoutSummary
- *   subtotal={120}
- *   shipping={10}
- *   tax={25.2}
  *   buttonText="Place Order"
  *   buttonAction={() => console.log("Order placed")}
  * />
  */
 
 type checkoutSummary = {
-  subtotal: number;
-  shipping: number;
-  tax: number;
   buttonText: string;
   buttonAction(): void;
 };
 
-const CheckoutSummary = ({
-  subtotal,
-  shipping,
-  tax,
-  buttonText,
-  buttonAction,
-}: checkoutSummary) => {
-  const [total, setTotal] = useState(subtotal);
+const CheckoutSummary = ({ buttonText, buttonAction }: checkoutSummary) => {
+  const subtotal = useCartStore((state) => state.subtotal());
+  const total = useCartStore((state) => state.total());
+  const taxes = useCartStore((state) => state.taxes());
+  const shipping = useCartStore((state) => state.shipping());
 
   const infoStyles = {
     fontWeight: "400",
     fontSize: { xs: "20px", sm: "30px" },
   };
-
-  /* Calculate total price */
-  useEffect(() => {
-    setTotal(subtotal + tax + shipping);
-  }, [subtotal, tax, shipping]);
 
   return (
     <Box
@@ -79,7 +65,7 @@ const CheckoutSummary = ({
             Subtotal
           </Typography>
           <Typography variant="h3" sx={infoStyles}>
-            ${subtotal}
+            ${subtotal || "..."}
           </Typography>
         </Box>
 
@@ -88,7 +74,7 @@ const CheckoutSummary = ({
             Shipping
           </Typography>
           <Typography variant="h3" sx={infoStyles}>
-            ${shipping}
+            ${shipping || "..."}
           </Typography>
         </Box>
 
@@ -97,7 +83,7 @@ const CheckoutSummary = ({
             Tax
           </Typography>
           <Typography variant="h3" sx={infoStyles}>
-            ${tax}
+            ${taxes || "..."}
           </Typography>
         </Box>
       </Box>
@@ -122,7 +108,7 @@ const CheckoutSummary = ({
           variant="h3"
           sx={{ fontWeight: "600", fontSize: { xs: "20px", sm: "30px" } }}
         >
-          ${total}
+          ${total || "..."}
         </Typography>
       </Box>
 

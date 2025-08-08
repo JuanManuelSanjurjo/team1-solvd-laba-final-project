@@ -68,28 +68,39 @@ export const useCartStore = create<CartState>()(
         return item ? item.price * (item.quantity || 1) : 0;
       },
 
-      total: () => {
+      subtotal: () => {
         // Use totalOfProduct for each item to calculate total
-        return get().items.reduce((sum, item) => {
+        const result = get().items.reduce((sum, item) => {
           return sum + get().totalOfProduct(item.id);
         }, 0);
+
+        console.log("Subtotal: ", result);
+
+        return result;
       },
 
       taxes: () => {
         const taxRate = 0.1; // 10%
-        return get().total() * taxRate;
+        return get().subtotal() * taxRate;
       },
 
       shipping: () => {
         const minimumFreeShipping = 100;
         const shippingCost = 10;
-        const total = get().total();
+        const total = get().subtotal();
 
         if (total > minimumFreeShipping) {
           return 0;
         } else {
           return shippingCost;
         }
+      },
+
+      total: () => {
+        const subtotal = get().subtotal();
+        const taxes = get().taxes();
+        const shipping = get().shipping();
+        return subtotal + taxes + shipping;
       },
     }),
     {

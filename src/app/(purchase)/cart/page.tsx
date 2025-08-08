@@ -71,7 +71,6 @@ export default function Checkout() {
             <React.Fragment key={item.id}>
               <CartCard
                 id={item?.id}
-                price={item?.price}
                 gender={item?.gender || ""}
                 quantity={item?.quantity}
                 productTitle={item?.name}

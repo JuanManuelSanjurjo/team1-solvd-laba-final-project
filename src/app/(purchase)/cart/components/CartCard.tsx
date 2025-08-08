@@ -13,7 +13,6 @@ type CartCardProps = {
   quantity: number;
   productTitle: string;
   gender: string;
-  price: number;
   image: string;
 };
 
@@ -25,7 +24,6 @@ type CartCardProps = {
  * @param {number} quantity - Current quantity of the product.
  * @param {string} productTitle - Title or name of the product.
  * @param {string} gender - Gender category of the product (e.g., "Men", "Women").
- * @param {number} price - Price of the product.
  * @param {string} image - URL of the product image.
  *
  * @returns {JSX.Element} The rendered cart item card.
@@ -36,11 +34,11 @@ const CartCard = ({
   quantity,
   productTitle,
   gender,
-  price,
   image,
   ...moreProps
 }: CartCardProps): JSX.Element => {
   const removeItem = useCartStore((state) => state.removeItem);
+  const totalOfProduct = useCartStore((state) => state.totalOfProduct);
 
   return (
     <Box
@@ -105,7 +103,7 @@ const CartCard = ({
 
         <Grid size={2}>
           <Typography variant="h3" sx={{ fontSize: { xs: 12, sm: 30 } }}>
-            ${price}
+            ${totalOfProduct(id)}
           </Typography>
         </Grid>
 
@@ -120,7 +118,7 @@ const CartCard = ({
           }}
         >
           <Grid sx={{ display: "flex" }}>
-            <QuantityHandler quantity={quantity} />
+            <QuantityHandler quantity={quantity} id={id} />
 
             <Button
               onClick={() => removeItem(id)}
