@@ -23,7 +23,6 @@ type CartCardProps = {
  * @param {number} quantity - Current quantity of the product.
  * @param {string} productTitle - Title or name of the product.
  * @param {string} gender - Gender category of the product (e.g., "Men", "Women").
- * @param {boolean} stock - Whether the product is currently in stock.
  * @param {number} price - Price of the product.
  * @param {string} image - URL of the product image.
  *
@@ -34,7 +33,6 @@ const CartCard = ({
   quantity,
   productTitle,
   gender,
-  stock,
   price,
   image,
   ...moreProps
@@ -90,7 +88,7 @@ const CartCard = ({
               marginTop: "12px",
             })}
           >
-            {stock ? "In Stock" : "No Stock"}
+            In stock
           </Typography>
         </Grid>
 

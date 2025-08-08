@@ -2,6 +2,7 @@
 import { Box } from "@mui/material";
 import CheckoutSummary from "./components/CheckoutSummary";
 import { usePathname, useRouter } from "next/navigation";
+import { useCartStore } from "@/store/cartStore";
 
 /**
  * Layout wrapper for the cart and checkout pages.
@@ -24,11 +25,8 @@ const PurchaseLayout = ({
 
   const isCheckoutPage = pathname.includes("/checkout");
   const buttonText = isCheckoutPage ? "Confirm & Pay" : "Checkout";
-  const isCartEmpty = pathname.includes("/cart/empty");
-
-  if (isCartEmpty) {
-    return <>{children}</>;
-  }
+  const cartItems = useCartStore((state) => state.items);
+  const cartIsEmpty = cartItems.length === 0;
 
   const buttonAction = () => {
     if (isCheckoutPage) {
@@ -37,6 +35,7 @@ const PurchaseLayout = ({
       router.push("/checkout");
     }
   };
+
   return (
     <Box
       sx={{
@@ -51,15 +50,17 @@ const PurchaseLayout = ({
       }}
     >
       {children}
-      <Box sx={{ marginTop: "80px" }}>
-        <CheckoutSummary
-          subtotal={140}
-          tax={0}
-          shipping={0}
-          buttonText={buttonText}
-          buttonAction={buttonAction}
-        />
-      </Box>{" "}
+      {!cartIsEmpty && (
+        <Box sx={{ marginTop: "80px" }}>
+          <CheckoutSummary
+            subtotal={140}
+            tax={0}
+            shipping={0}
+            buttonText={buttonText}
+            buttonAction={buttonAction}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
