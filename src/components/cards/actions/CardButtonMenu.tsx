@@ -12,6 +12,7 @@ import Link from "next/link";
 type CardButtonMenuProps = {
   product: cardProduct;
   onEdit: () => void;
+  onDelete: () => void;
 };
 
 /**
@@ -19,12 +20,15 @@ type CardButtonMenuProps = {
  *
  * This component is a menu button that displays a dropdown menu when clicked.
  * Is passed to the Card component to be rendered on top of the image.
+ * @param product product object.
+ * @param onEdit edit callback.
  * @returns {JSX.Element} with the card menu component.
  */
 
 export default function CardButtonMenu({
   product,
   onEdit,
+  onDelete,
 }: CardButtonMenuProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open: boolean = Boolean(anchorEl);
@@ -97,7 +101,14 @@ export default function CardButtonMenu({
         <MenuItem component="button" onClick={handleClose}>
           Duplicate
         </MenuItem>
-        <MenuItem component="button" onClick={handleClose}>
+        <MenuItem
+          component="button"
+          onClick={(e) => {
+            e.preventDefault();
+            onDelete();
+            handleClose(e);
+          }}
+        >
           Delete
         </MenuItem>
       </Menu>

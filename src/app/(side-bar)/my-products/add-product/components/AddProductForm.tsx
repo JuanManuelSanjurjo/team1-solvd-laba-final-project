@@ -1,22 +1,13 @@
 "use client";
-import ShoeSizeOption from "@/app/products/[product-id]/components/ShoeSizeOption";
-import Input from "@/components/FormElements/Input";
-import Select from "@/components/FormElements/Select";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Alert,
-  Box,
-  FormHelperText,
-  Snackbar,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
 import { useState } from "react";
 import { ProductFormData, productSchema } from "../schema";
 import { useCreateProduct } from "../hooks/useCreateProduct";
-import { Danger } from "iconsax-react";
 import { ProductFormFields } from "./ProductFormFields";
 
 /**

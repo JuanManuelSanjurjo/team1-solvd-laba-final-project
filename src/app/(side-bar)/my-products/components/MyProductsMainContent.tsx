@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
 import { fetchUserProducts } from "@/lib/strapi/fetchUserProducts";
 import { MyProduct } from "@/types/product";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
@@ -15,6 +15,7 @@ import { EditProductModalWrapper } from "./EditProductModalWrapper";
 import Button from "@/components/Button";
 import { EditProductHeader } from "./EditProductHeader";
 import { EditProductForm } from "./EditProductForm";
+import { deleteProduct } from "@/lib/strapi/deleteProduct";
 
 interface MyProductsMainContentProps {
   brandOptions: { value: number; label: string }[];
@@ -38,7 +39,7 @@ export default function MyProductsMainContent({
   colorOptions,
   sizeOptions,
 }: MyProductsMainContentProps) {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const userId = session?.user?.id;
   const token = session?.user?.jwt;
 
@@ -47,7 +48,7 @@ export default function MyProductsMainContent({
   );
   const [editModalOpen, setEditModalOpen] = useState(false);
 
-  const { data, isLoading, isError } = useQuery<MyProduct[], Error>({
+  const { data, isLoading } = useQuery<MyProduct[], Error>({
     queryKey: ["user-products", userId],
     queryFn: () => {
       if (!userId || !token) throw new Error("User not authenticated");
@@ -57,6 +58,25 @@ export default function MyProductsMainContent({
   });
 
   const products = data ?? [];
+
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: (productId: number) => deleteProduct(productId, token!),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user-products", userId],
+      });
+    },
+    onError: (error) => {
+      console.error("Failed to delete product:", error);
+    },
+  });
+
+  const handleDeleteProduct = (productId: number) => {
+    deleteMutation.mutate(productId);
+  };
+
   return (
     <Box
       sx={{
@@ -80,6 +100,9 @@ export default function MyProductsMainContent({
               onEdit={() => {
                 setSelectedProduct(products[index]);
                 setEditModalOpen(!editModalOpen);
+              }}
+              onDelete={() => {
+                handleDeleteProduct(product.id);
               }}
             />
           ))}

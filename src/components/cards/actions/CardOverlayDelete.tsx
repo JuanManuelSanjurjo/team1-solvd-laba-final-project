@@ -10,7 +10,7 @@ import ConfirmationModal from "@/components/ConfirmationModal";
  * This component is an overlay that, when clicked,
  * Is passed to the Card component to be rendered on top of the image.
  * Opens a confirmation modal with a message asking the user to confirm deleting the item.
- *
+ * @param onDeletePreview delete callback.
  * @returns {JSX.Element} with the card delete overlay component.
  */
 
@@ -26,11 +26,6 @@ export default function CardOverlayDelete({
   function handleClose(event: React.SyntheticEvent) {
     event.preventDefault();
     setShowModal(false);
-  }
-
-  function handleDelete(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setShowModal(true);
   }
 
   return (

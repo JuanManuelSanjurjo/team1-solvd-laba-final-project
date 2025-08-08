@@ -1,5 +1,4 @@
 import { MyProduct, Product } from "@/types/product";
-import { ProductAttributes } from "@/types/product-types";
 
 /**
  * Normalizes an array of `Product` objects into a simpler format suitable for product card display.

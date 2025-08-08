@@ -1,10 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadImages } from "@/lib/strapi/uploadImages";
 import { useSession } from "next-auth/react";
 import { ProductFormData } from "../add-product/schema";
 import { updateProduct } from "@/lib/strapi/updateProduct";
 
 export function useUpdateProduct(productId: number) {
+  const queryClient = useQueryClient();
   const { data: session } = useSession();
   const token = session?.user.jwt;
   return useMutation({
@@ -25,7 +26,13 @@ export function useUpdateProduct(productId: number) {
       const payload = {
         data: { ...data, teamName: "team-1", images },
       };
+
       await updateProduct(productId, payload, token ?? "");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user-products", session?.user.id],
+      });
     },
   });
 }
