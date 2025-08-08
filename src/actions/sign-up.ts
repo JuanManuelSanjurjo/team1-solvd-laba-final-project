@@ -1,10 +1,8 @@
 "use server";
 
-interface SignUpPayload {
-  username: string;
-  email: string;
-  password: string;
-}
+import { SignUpFormData } from "@/app/auth/sign-up/types";
+
+type SignUpPayload = Omit<SignUpFormData, "confirmPassword">;
 
 type SignUpResponse = Omit<{ id: number } & SignUpPayload, "password">;
 
@@ -35,10 +33,8 @@ interface SignUpSuccessResponse {
   };
 }
 
-
 export default async function signUp(
   body: SignUpPayload
-
 ): Promise<SignUpResponse | false> {
   const response = await fetch(`${process.env.API_URL}/auth/local/register`, {
     method: "POST",

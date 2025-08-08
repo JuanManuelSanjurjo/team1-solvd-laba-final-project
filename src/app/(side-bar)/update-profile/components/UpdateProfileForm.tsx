@@ -1,6 +1,5 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AlertProps, Box, Typography } from "@mui/material";
@@ -13,28 +12,7 @@ import { Session } from "next-auth";
 import { redirect } from "next/navigation";
 import { updateUser } from "@/actions/update-user";
 import { useSession } from "next-auth/react";
-
-const schema = z.object({
-  username: z
-    .string()
-    .min(5, "Username must be at least 5 characters")
-    .regex(/^\S*$/, "Username cannot contain spaces"),
-  firstName: z
-    .string()
-    .min(5, "First name must be at least 5 characters")
-    .optional(),
-  lastName: z
-    .string()
-    .min(5, "Last name must be at least 5 characters")
-    .optional(),
-  email: z.email("Invalid email address"),
-  phoneNumber: z
-    .string()
-    .min(10, "Phone number must be at least 10 characters")
-    .optional(),
-});
-
-type FormData = z.infer<typeof schema>;
+import { updateProfileSchema, UpdateProfileFormData } from "../types";
 
 export default function UpdateProfileForm({
   session,
@@ -70,8 +48,8 @@ export default function UpdateProfileForm({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+  } = useForm<UpdateProfileFormData>({
+    resolver: zodResolver(updateProfileSchema),
     defaultValues,
     mode: "onBlur",
   });
@@ -79,7 +57,8 @@ export default function UpdateProfileForm({
   const isChanged = JSON.stringify(watch()) !== JSON.stringify(defaultValues);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: FormData) => updateUser(data, session?.user.id || ""),
+    mutationFn: (data: UpdateProfileFormData) =>
+      updateUser(data, session?.user.id || ""),
     onSuccess: () => {
       setToastContent({
         severity: "success",
@@ -97,7 +76,7 @@ export default function UpdateProfileForm({
     },
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: UpdateProfileFormData) => {
     mutate(data);
   };
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -19,14 +18,7 @@ import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import signInAction from "@/actions/sign-in";
-
-const schema = z.object({
-  email: z.email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  rememberMe: z.boolean(),
-});
-
-type FormData = z.infer<typeof schema>;
+import { signInSchema, SignInFormData } from "../types";
 
 function cleanUpError(error: string) {
   return error.replace(/Read more at.*/, "").trim();
@@ -44,8 +36,8 @@ export default function SignInForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+  } = useForm<SignInFormData>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       rememberMe: false,
     },
@@ -53,7 +45,7 @@ export default function SignInForm() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: FormData) => {
+    mutationFn: async (data: SignInFormData) => {
       return await signInAction(data);
     },
     onSuccess: () => {
@@ -79,7 +71,7 @@ export default function SignInForm() {
     setOpen(false);
   };
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: SignInFormData) => {
     mutate(data);
   };
 

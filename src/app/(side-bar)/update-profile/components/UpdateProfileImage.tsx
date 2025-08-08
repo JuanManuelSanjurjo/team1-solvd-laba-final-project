@@ -1,13 +1,11 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AlertProps, Box, Typography } from "@mui/material";
 import Button from "@/components/Button";
 import { useState, useRef, useEffect } from "react";
 import { ProfilePicture } from "@/components/ProfilePicture";
-import { Session } from "next-auth";
 import Toast from "@/components/Toast";
 import { useMutation } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
@@ -17,31 +15,12 @@ import { useSession } from "next-auth/react";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import HourglassEmptyRoundedIcon from "@mui/icons-material/HourglassEmptyRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
-
-const avatarSchema = z.object({
-  avatar: z
-    .any()
-    .optional()
-    .refine(
-      (files) => {
-        if (!files || files.length === 0) return true;
-        if (typeof files === "object" && files.length > 0) {
-          const file = files[0];
-          return file.type === "image/jpeg" || file.type === "image/png";
-        }
-        return true;
-      },
-      {
-        message: "Only JPG and PNG files are allowed",
-      }
-    ),
-});
-
-type AvatarFormData = z.infer<typeof avatarSchema>;
-
-interface UpdateProfileImageProps {
-  session: Session | null;
-}
+import {
+  avatarSchema,
+  AvatarFormData,
+  SelectedImageUrl,
+  UpdateProfileImageProps,
+} from "../types";
 
 export default function UpdateProfileImage({
   session,
@@ -50,10 +29,9 @@ export default function UpdateProfileImage({
     redirect("/auth/sign-in");
   }
 
-  const [selectedImageUrl, setSelectedImageUrl] = useState<{
-    id: string;
-    url: string;
-  }>(session.user.avatar || { id: "", url: "" });
+  const [selectedImageUrl, setSelectedImageUrl] = useState<SelectedImageUrl>(
+    session.user.avatar || { id: "", url: "" }
+  );
 
   const hiddenFileInputRef = useRef<HTMLInputElement>(null);
   const { update } = useSession();
