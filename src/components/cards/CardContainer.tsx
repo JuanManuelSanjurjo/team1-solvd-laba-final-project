@@ -3,6 +3,7 @@ import { JSX } from "react";
 
 type CardContainerProps = {
   children: React.ReactNode;
+  length?: number;
 };
 
 /**
@@ -18,13 +19,19 @@ type CardContainerProps = {
 
 export default function CardContainer({
   children,
+  length,
 }: CardContainerProps): JSX.Element {
   return (
     <Box
       sx={{
         paddingBlock: 4.5,
         display: "grid",
-        justifyContent: "space-around",
+        justifyContent: !length
+          ? "space-around"
+          : {
+              xs: length > 1 ? "space-around" : "flex-start",
+              md: length > 2 ? "space-around" : "flex-start",
+            },
         justifyItems: "center",
         gridTemplateColumns: {
           xs: "repeat(2, 1fr)",
