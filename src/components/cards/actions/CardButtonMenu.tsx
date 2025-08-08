@@ -20,8 +20,9 @@ type CardButtonMenuProps = {
  *
  * This component is a menu button that displays a dropdown menu when clicked.
  * Is passed to the Card component to be rendered on top of the image.
+ * @param onDelte delete product callback.
  * @param product product object.
- * @param onEdit edit callback.
+ * @param onEdit edit product callback.
  * @returns {JSX.Element} with the card menu component.
  */
 

@@ -23,49 +23,46 @@ interface ImagePreviewUploaderProps {
  * @param {ImagePreviewUploaderProps} props - The props object.
  * @returns {JSX.Element} The rendered component.
  */
+type Preview = { url: string; file?: File };
 
 export default function ImagePreviewerUploader({
   onFilesChange,
   initialPreviews = [],
-  onPreviewsChange = () => {},
+  onPreviewsChange,
 }: ImagePreviewUploaderProps) {
-  const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>(initialPreviews);
-
-  useEffect(() => {
-    onPreviewsChange(previews);
-  }, [previews, onPreviewsChange]);
-
-  const handleAddFile = useCallback(
-    (file: File) => {
-      const newFiles = [...files, file];
-      setFiles(newFiles);
-      onFilesChange(newFiles);
-
-      const objectUrl = URL.createObjectURL(file);
-      setPreviews((prev) => [...prev, objectUrl]);
-    },
-    [files, onFilesChange]
+  const [previews, setPreviews] = useState<Preview[]>(
+    initialPreviews.map((url) => ({ url }))
   );
 
+  const stableOnPreviewsChange = useCallback(onPreviewsChange || (() => {}), [
+    onPreviewsChange,
+  ]);
+
+  useEffect(() => {
+    const newFiles = previews.filter((p) => p.file).map((p) => p.file as File);
+    const remainingUrls = previews.filter((p) => !p.file).map((p) => p.url);
+
+    onFilesChange(newFiles);
+    stableOnPreviewsChange(remainingUrls);
+  }, [previews, onFilesChange, stableOnPreviewsChange]);
+
+  const handleAddFile = useCallback((file: File) => {
+    const objectUrl = URL.createObjectURL(file);
+    const newPreview: Preview = { url: objectUrl, file };
+
+    setPreviews((prev) => [...prev, newPreview]);
+  }, []);
   const handleDeletePreview = (index: number) => {
     const newPreviews = previews.filter((_, i) => i !== index);
-    const newFiles = files.filter((_, i) => {
-      return i !== index;
-    });
-
     setPreviews(newPreviews);
-    setFiles(newFiles);
-    onFilesChange(newFiles);
   };
-
   return (
     <CardContainer>
       <CardDragAndDrop onFileAdd={handleAddFile} />
-      {previews.map((url, idx) => (
+      {previews.map((preview, idx) => (
         <Card
           key={idx}
-          image={url}
+          image={preview.url}
           overlayAction="cardOverlayDelete"
           onDeletePreview={() => handleDeletePreview(idx)}
           showText={false}
