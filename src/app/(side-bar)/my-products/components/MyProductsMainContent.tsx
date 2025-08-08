@@ -3,6 +3,25 @@ import { useState } from "react";
 import { Box } from "@mui/material";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
+import { fetchUserProducts } from "@/lib/strapi/fetchUserProducts";
+import { MyProduct } from "@/types/product";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import CardContainer from "@/components/cards/CardContainer";
+import Card from "@/components/cards/Card";
+import SkeletonCardContainer from "@/app/products/components/SkeletonCardContainer";
+import { normalizeMyProductCard } from "@/lib/normalizers/normalizeProductCard";
+import { EditProductModalWrapper } from "./EditProductModalWrapper";
+import Button from "@/components/Button";
+import { EditProductHeader } from "./EditProductHeader";
+import { EditProductForm } from "./EditProductForm";
+import { deleteProduct } from "@/lib/strapi/deleteProduct";
+
+interface MyProductsMainContentProps {
+  brandOptions: { value: number; label: string }[];
+  colorOptions: { value: number; label: string }[];
+  sizeOptions: { value: number; label: number }[];
+}
 
 /**
  * MyProductsMainContent
@@ -14,8 +33,49 @@ import MyProductsHeader from "./MyProductsHeader";
  *
  * @returns {JSX.Element} The main content of the My Products page.
  */
-export default function MyProductsMainContent() {
-  const [products] = useState([]);
+
+export default function MyProductsMainContent({
+  brandOptions,
+  colorOptions,
+  sizeOptions,
+}: MyProductsMainContentProps) {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+  const token = session?.user?.jwt;
+
+  const [selectedProduct, setSelectedProduct] = useState<MyProduct | null>(
+    null
+  );
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
+  const { data, isLoading } = useQuery<MyProduct[], Error>({
+    queryKey: ["user-products", userId],
+    queryFn: () => {
+      if (!userId || !token) throw new Error("User not authenticated");
+      return fetchUserProducts(parseInt(userId), token);
+    },
+    enabled: !!userId && !!token,
+  });
+
+  const products = data ?? [];
+
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: (productId: number) => deleteProduct(productId, token!),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user-products", userId],
+      });
+    },
+    onError: (error) => {
+      console.error("Failed to delete product:", error);
+    },
+  });
+
+  const handleDeleteProduct = (productId: number) => {
+    deleteMutation.mutate(productId);
+  };
 
   return (
     <Box
@@ -26,10 +86,27 @@ export default function MyProductsMainContent() {
         marginInline: { xs: "20px", lg: 0 },
       }}
     >
-      <MyProductsHeader isEmpty={products.length === 0} />
-      {/* CONDITIONAL RENDERING OF PRODUCT LIST HEADER OR EMPTY STATE */}
-      {products.length > 0 ? (
-        <Box m={10}>Actual fetch of my products</Box>
+      <MyProductsHeader isEmpty={products ? products.length === 0 : false} />
+      {isLoading ? (
+        <SkeletonCardContainer />
+      ) : products.length > 0 ? (
+        <CardContainer>
+          {normalizeMyProductCard(products).map((product, index) => (
+            <Card
+              product={product}
+              topAction="cardButtonMenu"
+              key={index}
+              overlay={true}
+              onEdit={() => {
+                setSelectedProduct(products[index]);
+                setEditModalOpen(!editModalOpen);
+              }}
+              onDelete={() => {
+                handleDeleteProduct(product.id);
+              }}
+            />
+          ))}
+        </CardContainer>
       ) : (
         <MyProductsEmptyState
           title="You don't have any products yet"
@@ -37,6 +114,42 @@ export default function MyProductsMainContent() {
           buttonText="Add Product"
           onClick={() => console.log("Add Product")}
         />
+      )}
+      {editModalOpen && (
+        <EditProductModalWrapper
+          open={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+        >
+          <EditProductHeader
+            onClose={() => {
+              setEditModalOpen(false);
+            }}
+          />
+
+          <EditProductForm
+            sizeOptions={sizeOptions}
+            colorOptions={colorOptions}
+            brandOptions={brandOptions}
+            product={selectedProduct ?? products[0]}
+          />
+          <Box
+            sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+          >
+            <Button
+              variant="contained"
+              sx={{
+                position: { md: "absolute", sm: "static" },
+                top: { md: "40px" },
+                right: { md: "60px" },
+                width: { md: "120px", sm: "60%", xs: "80%" },
+              }}
+              form="edit-product-form"
+              type="submit"
+            >
+              Save
+            </Button>
+          </Box>
+        </EditProductModalWrapper>
       )}
     </Box>
   );

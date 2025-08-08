@@ -1,46 +1,34 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
-import ImagePreviewerUploader from "./ImagePreviewerUploader";
 import { useState } from "react";
-import { ProductFormData, productSchema } from "../schema";
-import { useCreateProduct } from "../hooks/useCreateProduct";
-import { ProductFormFields } from "./ProductFormFields";
+import { ProductFormData, productSchema } from "../add-product/schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ProductFormFields } from "../add-product/components/ProductFormFields";
+import { Alert, Box, Snackbar, Typography } from "@mui/material";
+import ImagePreviewerUploader from "../add-product/components/ImagePreviewerUploader";
+import { MyProduct } from "@/types/product";
+import { useUpdateProduct } from "../hooks/useUpdateProduct";
 
-/**
- * Props for AddProductForm component.
- *
- * @typedef AddProductFormProps
- * @property {Array<{ value: number; label: string }>} brandOptions - Options for the Brand select input.
- * @property {Array<{ value: number; label: string }>} colorOptions - Options for the Color select input.
- * @property {Array<{ value: number; label: number }>} sizeOptions - Options for the Sizes selection.
- */
-interface AddProductFormProps {
+interface EditProductFormProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
+  product: MyProduct;
 }
 
-/**
- * Form component to add a new product.
- *
- * Handles user inputs including product details, sizes, images, and submits the data.
- * Shows success/error notifications.
- *
- * @param {AddProductFormProps} props - Props containing options for brand, color, and size inputs.
- * @returns {JSX.Element} The rendered AddProductForm component.
- */
-
-export const AddProductForm: React.FC<AddProductFormProps> = ({
+export const EditProductForm: React.FC<EditProductFormProps> = ({
   brandOptions,
   colorOptions,
   sizeOptions,
+  product,
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [existentImages, setExistentImages] = useState<string[]>(
+    product.images.map((image) => image.url)
+  );
   const {
     register,
     handleSubmit,
@@ -51,20 +39,20 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      name: "",
-      color: colorOptions[0].value,
-      gender: 4,
-      brand: brandOptions[0].value,
-      price: 0,
-      description: "",
-      sizes: [],
+      name: product.name,
+      color: product.color.id,
+      gender: product.gender.id,
+      brand: product.brand.id,
+      price: product.price,
+      description: product.description,
+      sizes: product?.sizes?.map((size) => size.id),
       userID: 0,
     },
   });
 
-  const selectedSizes = watch("sizes");
+  const { mutateAsync: handleUpdateProduct } = useUpdateProduct(product.id);
 
-  const { mutateAsync: handleCreateProduct } = useCreateProduct();
+  const selectedSizes = watch("sizes");
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -86,14 +74,23 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
 
   const onSubmit = async (data: ProductFormData) => {
     const userID = parseInt(session?.user.id ?? "0", 10);
+
+    const remainingExistentImages = product.images
+      .filter((image) => existentImages.includes(image.url))
+      .map((image) => image.id);
+
     try {
-      await handleCreateProduct({ data: { ...data, userID }, imageFiles });
-      setSnackbarMessage("Product added successfully!");
+      await handleUpdateProduct({
+        data: { ...data, userID },
+        imageFiles,
+        existentImages: remainingExistentImages,
+      });
+      setSnackbarMessage("Product updated successfully!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
     } catch (err) {
       console.log(err);
-      setSnackbarMessage("Failed to add product.");
+      setSnackbarMessage("Failed to update product.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
@@ -109,7 +106,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     >
       <Box
         component="form"
-        id="add-product-form"
+        id="edit-product-form"
         noValidate
         sx={{
           display: "flex",
@@ -145,8 +142,13 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
         >
           Product images
         </Typography>
-        <ImagePreviewerUploader onFilesChange={setImageFiles} />
+        <ImagePreviewerUploader
+          onFilesChange={setImageFiles}
+          initialPreviews={product.images.map((image) => image.url)}
+          onPreviewsChange={setExistentImages}
+        />
       </Box>
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={4000}

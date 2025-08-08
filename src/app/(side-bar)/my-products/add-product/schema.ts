@@ -19,7 +19,7 @@ export const productSchema = z.object({
     })
     .positive("Price must be greater than 0"),
   sizes: z.array(z.number()).min(1, "At least one size must be selected"),
-  userId: z.number().refine((val) => typeof val === "number", {
+  userID: z.number().refine((val) => typeof val === "number", {
     message: "User id is required",
   }),
 });
