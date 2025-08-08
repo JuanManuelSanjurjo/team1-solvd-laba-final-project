@@ -16,6 +16,7 @@ import { JSX } from "react";
 type ConfirmationModalProps = {
   showModal: boolean;
   onClose: (e: React.SyntheticEvent) => void;
+  onPrimary: () => void;
   title: string;
   text: string;
   secondaryBtn: string;
@@ -30,6 +31,7 @@ type ConfirmationModalProps = {
  *
  * @param showModal - A boolean indicating whether the modal should be displayed.
  * @param onClose - A function to be called when the modal is closed.
+ * @param onPrimary - A function that is applied when the button is clicked
  * @param title - The title of the confirmation message.
  * @param text - The text of the confirmation message.
  * @param secondaryBtn - The text of the secondary button.
@@ -40,6 +42,7 @@ type ConfirmationModalProps = {
 export default function ConfirmationModal({
   showModal,
   onClose,
+  onPrimary,
   title,
   text,
   secondaryBtn,
@@ -129,7 +132,12 @@ export default function ConfirmationModal({
           >
             {secondaryBtn || "Cancel"}
           </Button>
-          <Button fullWidth variant="contained" size="extraLarge">
+          <Button
+            fullWidth
+            variant="contained"
+            size="extraLarge"
+            onClick={onPrimary}
+          >
             {primaryBtn || "Delete"}
           </Button>
         </DialogActions>

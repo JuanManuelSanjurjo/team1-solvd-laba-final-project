@@ -23,8 +23,10 @@ export const useCartStore = create<CartState>((set, get) => ({
         ),
       });
       //If product isn't already in cart we add it
+      console.log("Added item to product existing in cart", currentItems);
     } else {
       set({ items: [...currentItems, { ...item, quantity: 1 }] });
+      console.log("Added item to cart", currentItems);
     }
   },
 

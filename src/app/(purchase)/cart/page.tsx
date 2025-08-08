@@ -29,6 +29,8 @@ export default function Checkout() {
 
   const cartIsEmpty = cartItems.length === 0;
 
+  console.log("cart: ", cartItems);
+
   function visitProducts() {
     router.push("/products");
   }
@@ -44,7 +46,7 @@ export default function Checkout() {
             alignItems: "center",
             width: "100%",
             justifyContent: "center",
-            marginTop: "10%",
+            marginTop: "5rem",
           }}
         >
           <MyProductsEmptyState
@@ -62,7 +64,6 @@ export default function Checkout() {
     return (
       <>
         <Box sx={{ marginTop: "80px" }}>
-          <Typography variant="h2">Cart</Typography>
           <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
             Cart
           </Typography>
@@ -70,10 +71,10 @@ export default function Checkout() {
             <React.Fragment key={item.id}>
               <CartCard
                 price={item?.price}
-                gender={item?.gender}
+                gender={item?.gender || ""}
                 quantity={item?.quantity}
                 productTitle={item?.name}
-                image={item?.image}
+                image={item?.image || "Loading"}
               />
               {!isMobile && <Divider />}
             </React.Fragment>
