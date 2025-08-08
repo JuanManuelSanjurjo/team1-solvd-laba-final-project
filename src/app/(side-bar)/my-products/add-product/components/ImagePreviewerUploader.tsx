@@ -3,7 +3,7 @@
 import Card from "@/components/cards/Card";
 import CardContainer from "@/components/cards/CardContainer";
 import CardDragAndDrop from "@/components/cards/CardDragAndDrop";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 
 /**
  * Props for the ImagePreviewerUploader component.
@@ -34,9 +34,9 @@ export default function ImagePreviewerUploader({
     initialPreviews.map((url) => ({ url }))
   );
 
-  const stableOnPreviewsChange = useCallback(onPreviewsChange || (() => {}), [
-    onPreviewsChange,
-  ]);
+  const stableOnPreviewsChange = useMemo(() => {
+    return onPreviewsChange ?? (() => {});
+  }, [onPreviewsChange]);
 
   useEffect(() => {
     const newFiles = previews.filter((p) => p.file).map((p) => p.file as File);
