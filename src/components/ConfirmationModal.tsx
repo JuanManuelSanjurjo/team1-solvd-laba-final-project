@@ -16,7 +16,7 @@ import { JSX } from "react";
 type ConfirmationModalProps = {
   showModal: boolean;
   onClose: (e: React.SyntheticEvent) => void;
-  onPrimary: () => void;
+  onPrimary: (e: React.MouseEvent<HTMLButtonElement>) => void;
   title: string;
   text: string;
   secondaryBtn: string;

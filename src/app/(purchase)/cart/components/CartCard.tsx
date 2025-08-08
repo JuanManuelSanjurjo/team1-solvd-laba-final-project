@@ -6,8 +6,10 @@ import { Trash } from "iconsax-react";
 // import Image from "next/image"; //Add later. There is an issue with the external url not being add into next.config.js
 import QuantityHandler from "./QuantityHandler";
 import CartCardImage from "./CartCardImage";
+import { useCartStore } from "@/store/cartStore"; // ruta a tu store
 
 type CartCardProps = {
+  id: number;
   quantity: number;
   productTitle: string;
   gender: string;
@@ -30,6 +32,7 @@ type CartCardProps = {
  */
 
 const CartCard = ({
+  id,
   quantity,
   productTitle,
   gender,
@@ -37,6 +40,8 @@ const CartCard = ({
   image,
   ...moreProps
 }: CartCardProps): JSX.Element => {
+  const removeItem = useCartStore((state) => state.removeItem);
+
   return (
     <Box
       {...moreProps}
@@ -118,6 +123,7 @@ const CartCard = ({
             <QuantityHandler quantity={quantity} />
 
             <Button
+              onClick={() => removeItem(id)}
               sx={{
                 color: "#8B8E93",
                 fontSize: { xs: 12, sm: 24 },

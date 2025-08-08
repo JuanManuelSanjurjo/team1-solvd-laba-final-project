@@ -70,6 +70,7 @@ export default function Checkout() {
           {cartItems.map((item) => (
             <React.Fragment key={item.id}>
               <CartCard
+                id={item?.id}
                 price={item?.price}
                 gender={item?.gender || ""}
                 quantity={item?.quantity}
