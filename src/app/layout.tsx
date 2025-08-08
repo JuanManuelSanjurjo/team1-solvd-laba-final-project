@@ -3,6 +3,7 @@ import "./globals.css";
 import { worksans, nunitosans } from "@/style/fonts";
 import { Header } from "@/components/Header";
 import ProvidersFactory from "@/utils/providers/ProvidersFactory";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Shoes Shop",
@@ -12,17 +13,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="en">
       <body className={`${worksans.variable} ${nunitosans.variable}`}>
         <ProvidersFactory>
           <main>
-            <Header />
+            <Header session={session} />
             {/* We'll update this component next */}
             {children}
           </main>

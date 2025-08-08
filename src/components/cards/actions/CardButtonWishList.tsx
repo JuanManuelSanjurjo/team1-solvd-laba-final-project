@@ -26,7 +26,8 @@ export default function CardButtonWishList({
 
   const isInWisList = wishList.some((prod) => prod.id === product.id);
 
-  const handleToggle = () => {
+  const handleToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
     if (isInWisList) {
       removeFromWishList(product.id);
     } else {

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import HomeClient from "./_home/_components/HomeClient";
+import HomeClient from "./products/components/HomeClient";
 
-export default function Home() {
+export default async function Home() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <HomeClient />

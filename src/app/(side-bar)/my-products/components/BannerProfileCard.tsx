@@ -41,7 +41,7 @@ export default function BannerProfileCard() {
           fontWeight={500}
           sx={{ fontSize: { xs: 14, md: 20 } }}
         >
-          {session?.user?.name}
+          {session?.user?.username}
         </Typography>
         <Typography variant="body2" sx={{ fontSize: { xs: 12, md: 15 } }}>
           1235 bonus points

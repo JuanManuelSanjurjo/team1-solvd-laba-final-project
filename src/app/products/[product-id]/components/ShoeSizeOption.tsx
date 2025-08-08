@@ -1,7 +1,6 @@
 "use client";
 
 import { Box, Checkbox, FormControl } from "@mui/material";
-import { useState } from "react";
 
 /**
  * This component represents options of shoe sizes. It is built to be used as a checkbox, with the possibility of choosing more than one option at the same time.
@@ -16,8 +15,11 @@ import { useState } from "react";
  */
 
 type ShoeSizeOptionProps = {
+  value?: number;
   size: number;
   disabled: boolean;
+  checked?: boolean;
+  onToggle?: (size: number) => void;
 };
 
 const baseStyles = {
@@ -46,11 +48,12 @@ const stateStyles = {
 };
 
 export default function ShoeSizeOption({
+  value = 0,
   size,
   disabled,
+  checked = false,
+  onToggle = () => {},
 }: ShoeSizeOptionProps) {
-  const [checked, setChecked] = useState(false);
-
   const getState = () => {
     if (disabled) return "disabled";
     if (checked) return "checked";
@@ -65,7 +68,9 @@ export default function ShoeSizeOption({
         <Checkbox
           sx={{ display: "none" }}
           checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
+          onChange={() => {
+            onToggle(value);
+          }}
           disabled={disabled}
         />
 
@@ -76,7 +81,7 @@ export default function ShoeSizeOption({
             transition: "all 0.2s ease-in",
           }}
           onClick={() => {
-            if (!disabled) setChecked(!checked);
+            if (!disabled) onToggle(value);
           }}
         >
           EU-{size}

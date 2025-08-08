@@ -83,7 +83,7 @@ export default function RecentlyViewed() {
                 fontSize: { xs: 12, md: 20 },
               }}
             >
-              You haven&apost viewed any products yet.
+              {"You haven't viewed any products yet."}
             </Typography>
           </Box>
         </Box>

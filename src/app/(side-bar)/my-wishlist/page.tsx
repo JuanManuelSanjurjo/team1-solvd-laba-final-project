@@ -86,7 +86,7 @@ export default function MyWishlist() {
                 fontSize: { xs: 12, md: 20 },
               }}
             >
-              You haven&apost saved any products yet.
+              {"You haven't saved any products yet."}
             </Typography>
           </Box>
         </Box>

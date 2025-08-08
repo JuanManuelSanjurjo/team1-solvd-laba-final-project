@@ -6,7 +6,7 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import Button from "@/components/Button";
 import AiButton from "@/components/AiButton";
 import { SearchBar } from "@/components/SearchBar";
-import { Header } from "@/components/Header";
+// import { Header } from "@/components/Header";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import FilterCheckbox from "@/components/FilterCheckBox";
 import OrderHistoryItemRow from "@/app/(side-bar)/order-history/components/OrderHistoryItemRow";
@@ -78,12 +78,8 @@ export default function Playground() {
         <Typography variant="h3" sx={{ padding: 2 }}>
           Headers
         </Typography>
-        <Box>
-          <Header />
-        </Box>
-        <Box>
-          <Header />
-        </Box>
+        <Box>{/* <Header /> */}</Box>
+        <Box>{/* <Header /> */}</Box>
         <Divider
           sx={{
             width: "100%",

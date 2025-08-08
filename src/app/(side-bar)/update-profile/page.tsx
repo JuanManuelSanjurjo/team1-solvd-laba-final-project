@@ -1,8 +1,10 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import UpdateProfileForm from "./components/UpdateProfileForm";
-import { ProfilePicture } from "@/components/ProfilePicture";
+import { auth } from "@/auth";
+import UpdateProfileImage from "./components/UpdateProfileImage";
 
-export default function UpdateProfile() {
+export default async function UpdateProfile() {
+  const session = await auth();
   return (
     <Box
       width={"100%"}
@@ -12,7 +14,6 @@ export default function UpdateProfile() {
       }}
     >
       <Box
-        component="form"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -33,37 +34,8 @@ export default function UpdateProfile() {
         >
           My Profile
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            gap: {
-              xs: "28px",
-              md: "76px",
-            },
-          }}
-        >
-          <ProfilePicture
-            src="www.coolavatarbystrapi.com/images/upload/1.jpg"
-            alt="User avatar"
-            width={{ xs: 100, md: 150 }}
-          ></ProfilePicture>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              gap: "24px",
-            }}
-          >
-            <Button variant="outlined">Change photo</Button>
-            <Button variant="contained">Delete</Button>
-          </Box>
-        </Box>
-        <Typography variant="body2" paddingBlock="26px">
-          Welcome back! Please enter your details to log into your account.
-        </Typography>
-        <UpdateProfileForm />
+        <UpdateProfileImage session={session} />
+        <UpdateProfileForm session={session} />
       </Box>
     </Box>
   );
