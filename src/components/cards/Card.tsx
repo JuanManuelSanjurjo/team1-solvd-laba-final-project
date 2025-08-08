@@ -77,7 +77,7 @@ export default function Card({
               <CardActionWrapperCenter
                 action={
                   overlayAction === "cardOverlayAddToCard" ? (
-                    <CardOverlayAddToCart />
+                    <CardOverlayAddToCart product={product!} />
                   ) : (
                     <CardOverlayDelete />
                   )

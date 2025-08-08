@@ -1,16 +1,17 @@
 "use client";
 
 import React from "react";
-import { useState } from "react";
 import {
-  Typography,
   Divider,
-  Box,
   useMediaQuery,
   useTheme,
+  Typography,
+  Box,
 } from "@mui/material";
 import CartCard from "./components/CartCard";
-import Button from "@/components/Button";
+import { useCartStore } from "@/store/cartStore";
+import MyProductsEmptyState from "@/components/MyProductsEmptyState";
+import { useRouter } from "next/navigation";
 
 /**
  * Checkout page component that displays a list of products in the cart.
@@ -21,70 +22,64 @@ import Button from "@/components/Button";
  */
 
 export default function Checkout() {
-  const [cartItems] = useState([
-    {
-      id: 1,
-      title: "Product 1",
-      price: 1000,
-      quantity: 2,
-      gender: "Women",
-      stock: true,
-      image:
-        "https://www.opensports.com.ar/media/catalog/product/cache/4cbe9863fc1e4aa316955fdd123a5af3/I/H/IH2636_0.jpg",
-    },
-    {
-      id: 2,
-      title: "Product 2",
-      price: 2500,
-      quantity: 1,
-      gender: "Men",
-      stock: true,
-      image:
-        "https://www.opensports.com.ar/media/catalog/product/cache/4cbe9863fc1e4aa316955fdd123a5af3/I/H/IH2636_0.jpg",
-    },
-  ]);
-
+  const cartItems = useCartStore((state) => state.items);
   const theme = useTheme();
+  const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  return (
-    <>
-      <Box sx={{ marginTop: "80px" }}>
-        <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
-          Cart
-        </Typography>
+  const cartIsEmpty = cartItems.length === 0;
 
-        {cartItems.length > 0 ? (
-          cartItems.map((item) => (
+  console.log("cart: ", cartItems);
+
+  function visitProducts() {
+    router.push("/products");
+  }
+
+  if (cartIsEmpty) {
+    return (
+      <Box sx={{ marginTop: "80px", width: "90%", height: "100%" }}>
+        <Typography variant="h2">Cart</Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "center",
+            marginTop: "5rem",
+          }}
+        >
+          <MyProductsEmptyState
+            title="You don't have any products yet"
+            subtitle="Post can contain video, images and text."
+            buttonText="Add Product"
+            onClick={visitProducts}
+          />
+        </Box>
+      </Box>
+    );
+  }
+
+  if (cartItems.length > 0)
+    return (
+      <>
+        <Box sx={{ marginTop: "80px" }}>
+          <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
+            Cart
+          </Typography>
+          {cartItems.map((item) => (
             <React.Fragment key={item.id}>
               <CartCard
-                price={item.price}
-                stock={item.stock}
-                gender={item.gender}
-                quantity={item.quantity}
-                productTitle={item.title}
-                image={item.image}
+                id={item?.id}
+                gender={item?.gender || ""}
+                quantity={item?.quantity}
+                productTitle={item?.name}
+                image={item?.image || "Loading"}
               />
               {!isMobile && <Divider />}
             </React.Fragment>
-          ))
-        ) : (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100%",
-              minHeight: 200,
-            }}
-          >
-            <Typography variant="body1">The cart is empty</Typography>
-            <Button variant="contained">Go back to the store</Button>
-          </Box>
-        )}
-      </Box>
-    </>
-  );
+          ))}{" "}
+        </Box>
+      </>
+    );
 }

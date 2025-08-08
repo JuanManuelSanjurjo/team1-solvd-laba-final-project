@@ -69,6 +69,9 @@ export default function CardOverlayDelete(): JSX.Element {
         text="Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."
         primaryBtn="Delete"
         secondaryBtn="Cancel"
+        onPrimary={() => {
+          console.log("Deleting");
+        }}
       />
     </Box>
   );

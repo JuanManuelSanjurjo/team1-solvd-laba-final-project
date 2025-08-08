@@ -3,42 +3,43 @@ import { Typography, Box, Grid } from "@mui/material";
 import { JSX } from "react";
 import Button from "@/components/Button";
 import { Trash } from "iconsax-react";
-import Image from "next/image";
+// import Image from "next/image"; //Add later. There is an issue with the external url not being add into next.config.js
 import QuantityHandler from "./QuantityHandler";
+import CartCardImage from "./CartCardImage";
+import { useCartStore } from "@/store/cartStore"; // ruta a tu store
 
 type CartCardProps = {
+  id: number;
   quantity: number;
   productTitle: string;
   gender: string;
-  stock: boolean;
-  price: number;
   image: string;
 };
 
 /**
  * A card component used to display product details inside the shopping cart.
- * Shows product image, title, gender, stock status, price, quantity controls, and a delete button.
+ * Shows product image, title, gender, price, quantity controls, and a delete button.
  *
  * @component
  * @param {number} quantity - Current quantity of the product.
  * @param {string} productTitle - Title or name of the product.
  * @param {string} gender - Gender category of the product (e.g., "Men", "Women").
- * @param {boolean} stock - Whether the product is currently in stock.
- * @param {number} price - Price of the product.
  * @param {string} image - URL of the product image.
  *
  * @returns {JSX.Element} The rendered cart item card.
  */
 
 const CartCard = ({
+  id,
   quantity,
   productTitle,
   gender,
-  stock,
-  price,
   image,
   ...moreProps
 }: CartCardProps): JSX.Element => {
+  const removeItem = useCartStore((state) => state.removeItem);
+  const totalOfProduct = useCartStore((state) => state.totalOfProduct);
+
   return (
     <Box
       {...moreProps}
@@ -49,6 +50,7 @@ const CartCard = ({
         maxWidth: "963px",
         width: { lg: "65vw", md: "100%" },
         paddingRight: "2rem",
+        gap: "5%",
       }}
     >
       <Box
@@ -58,12 +60,17 @@ const CartCard = ({
           position: "relative",
         }}
       >
-        <Image
+        {/*  <Image
+          unoptimized
           fill
           alt={productTitle}
           src={image}
           style={{ objectFit: "contain" }}
-        />
+        /> */}
+        {/* Commented code on purpose to remember to fix this later */}
+
+        {/* Temporarily using img */}
+        <CartCardImage image={image} />
       </Box>
 
       <Grid container spacing={2} sx={{ width: "694px" }}>
@@ -90,13 +97,13 @@ const CartCard = ({
               marginTop: "12px",
             })}
           >
-            {stock ? "In Stock" : "No Stock"}
+            In stock
           </Typography>
         </Grid>
 
         <Grid size={2}>
           <Typography variant="h3" sx={{ fontSize: { xs: 12, sm: 30 } }}>
-            ${price}
+            ${totalOfProduct(id)}
           </Typography>
         </Grid>
 
@@ -111,9 +118,10 @@ const CartCard = ({
           }}
         >
           <Grid sx={{ display: "flex" }}>
-            <QuantityHandler quantity={quantity} />
+            <QuantityHandler quantity={quantity} id={id} />
 
             <Button
+              onClick={() => removeItem(id)}
               sx={{
                 color: "#8B8E93",
                 fontSize: { xs: 12, sm: 24 },

@@ -9,9 +9,11 @@ import {
 } from "@mui/material";
 import ProductQuantityButton from "./ProductQuantityButton";
 import { ArrowDown2 } from "iconsax-react";
+import { useCartStore } from "@/store/cartStore";
 
 type QuantityHandlerProps = {
   quantity: number;
+  id: number;
 };
 
 /**
@@ -27,17 +29,10 @@ type QuantityHandlerProps = {
  * @returns {JSX.Element} A responsive UI for handling product quantity adjustments.
  */
 
-const QuantityHandler = ({ quantity }: QuantityHandlerProps) => {
+const QuantityHandler = ({ quantity, id }: QuantityHandlerProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  function handleAdd() {
-    console.log("Adding");
-  }
-
-  function handleRest() {
-    console.log("Resting");
-  }
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
 
   if (isMobile) {
     return (
@@ -75,11 +70,17 @@ const QuantityHandler = ({ quantity }: QuantityHandlerProps) => {
               gap: "9px",
             }}
           >
-            <ProductQuantityButton onClick={handleRest} operation="Minus" />
+            <ProductQuantityButton
+              onClick={() => updateQuantity(id, "minus")}
+              operation="Minus"
+            />
             <Typography variant="body1" color="#494949">
               {quantity}
             </Typography>
-            <ProductQuantityButton onClick={handleAdd} operation="Add" />
+            <ProductQuantityButton
+              onClick={() => updateQuantity(id, "add")}
+              operation="Add"
+            />
           </Box>
         </AccordionDetails>
       </Accordion>
@@ -96,11 +97,17 @@ const QuantityHandler = ({ quantity }: QuantityHandlerProps) => {
         borderRight: "1px solid #8B8E93",
       }}
     >
-      <ProductQuantityButton onClick={handleRest} operation="Minus" />
+      <ProductQuantityButton
+        onClick={() => updateQuantity(id, "minus")}
+        operation="Minus"
+      />
       <Typography variant="h4" color="#494949">
         {quantity}
       </Typography>
-      <ProductQuantityButton onClick={handleAdd} operation="Add" />
+      <ProductQuantityButton
+        onClick={() => updateQuantity(id, "add")}
+        operation="Add"
+      />
       <Typography variant="h4" color="#494949">
         Quantity
       </Typography>
