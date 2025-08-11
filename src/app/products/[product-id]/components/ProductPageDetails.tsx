@@ -33,11 +33,11 @@ export default function ProductPageDetails({
       price: product.price,
       gender: product.gender,
     }),
-    [product]
+    [product],
   );
 
   const addToRecentlyViewed = useRecentlyViewedStore(
-    (state) => state.addToRecentlyViewed
+    (state) => state.addToRecentlyViewed,
   );
 
   useEffect(() => {
@@ -107,7 +107,8 @@ export default function ProductPageDetails({
           sx={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, 82px)",
-            justifyContent: "space-around",
+            justifyContent:
+              product.sizes?.length > 3 ? "space-between" : "flex-start",
             alignItems: "center",
             gap: {
               xs: 1,

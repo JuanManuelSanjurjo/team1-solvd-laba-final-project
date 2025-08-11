@@ -78,14 +78,13 @@ export const Header = ({
       fetchProductsBySearch(
         deferredSearchInput,
         ["name", "color.name", "gender.name"],
-        ["color.name", "gender.name", "images.url"]
+        ["color.name", "gender.name", "images.url"],
       ),
     enabled: isSearching && deferredSearchInput.length > 1,
   });
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
-    console.log(searchResults);
   };
 
   const [open, setOpen] = useState(false);
@@ -248,31 +247,16 @@ export const Header = ({
         )}
       </Toolbar>
       {isSearching && (
-        <Box
-          sx={{
-            width: "100%",
-            backgroundColor: "white",
-            position: "absolute",
-            top: isMobile ? 60 : isDesktop ? 120 : 90,
-            height: `calc(100vh - ${isMobile ? 60 : isDesktop ? 120 : 90}px)`,
-            overflowY: "auto",
-          }}
-        >
-          {isSearching && (
-            <CardContainer>
-              {normalizeProductCard(searchResults || []).map(
-                (product, index) => (
-                  <Card
-                    product={product}
-                    overlayAction="cardOverlayAddToCart"
-                    key={index}
-                    overlay={true}
-                  />
-                )
-              )}
-            </CardContainer>
-          )}
-        </Box>
+        <CardContainer length={searchResults?.length}>
+          {normalizeProductCard(searchResults || []).map((product, index) => (
+            <Card
+              product={product}
+              overlayAction="cardOverlayAddToCart"
+              key={index}
+              overlay={true}
+            />
+          ))}
+        </CardContainer>
       )}
 
       <MobileDrawer
