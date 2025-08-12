@@ -31,6 +31,8 @@ interface SearchBarProps {
   size?: SearchBarSize;
   fullWidth?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  focus?: boolean;
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const sizeStyles = {
@@ -68,7 +70,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = "Search",
   size = "large",
   fullWidth = false,
+  focus = false,
   onChange,
+  onSubmit,
 }) => {
   const style = sizeStyles[size];
 
@@ -84,23 +88,29 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         px: style.paddingX,
       }}
     >
-      <SearchNormal
-        style={{ width: style.iconSize, marginRight: 12 }}
-        color="#494949"
-      />
-      <InputBase
-        placeholder={placeholder}
-        onChange={onChange}
-        sx={{
-          flex: 1,
-          fontSize: style.fontSize,
-          color: "text.secondary",
-          "& input::placeholder": {
+      <form
+        onSubmit={onSubmit}
+        style={{ display: "flex", alignItems: "center" }}
+      >
+        <SearchNormal
+          style={{ width: style.iconSize, marginRight: 12, cursor: "pointer" }}
+          color="#494949"
+        />
+        <InputBase
+          placeholder={placeholder}
+          onChange={onChange}
+          autoFocus={focus}
+          sx={{
+            flex: 1,
+            fontSize: style.fontSize,
             color: "text.secondary",
-            opacity: 1,
-          },
-        }}
-      />
+            "& input::placeholder": {
+              color: "text.secondary",
+              opacity: 1,
+            },
+          }}
+        />
+      </form>
     </Box>
   );
 };
