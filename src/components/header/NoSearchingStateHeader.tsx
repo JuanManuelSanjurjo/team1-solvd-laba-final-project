@@ -9,6 +9,20 @@ import useMediaBreakpoints from "./hooks/useMediaBreakpoints";
 import Link from "next/link";
 import { Session } from "next-auth";
 
+/**
+ * NoSearchingStateHeader
+ *
+ * This component displays a header with a search bar and a profile menu for desktop devices.
+ * It includes a search bar, a logo, a search icon, and a profile menu.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Session | null} props.session - The session object for the user.
+ * @param {Function} props.toggleSearch - A function to toggle the search bar.
+ * @param {Function} props.handleToggleDrawer - A function to toggle the drawer.
+ *
+ * @returns {JSX.Element} The header component.
+ */
+
 export default function NoSearchingStateHeader({
   session,
   toggleSearch,

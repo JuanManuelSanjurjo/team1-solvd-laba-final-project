@@ -6,6 +6,15 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 
+/**
+ * DesktopProfileMenu
+ *
+ * This component displays a profile menu for desktop devices.
+ * It includes a profile picture, a menu with links to various pages, and a sign out button.
+ *
+ * @returns {JSX.Element} The profile menu component.
+ */
+
 export default function DesktopProfileMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { data: session } = useSession();

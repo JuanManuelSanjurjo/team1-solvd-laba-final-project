@@ -1,6 +1,19 @@
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 
+/**
+ * SearchResultItem
+ *
+ * This component displays a search result item with a product image, name, and price.
+ * It includes a link to the product page and a function to set the search state.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Object} props.product - The product object to display.
+ * @param {Function} props.setIsSearching - A function to set the search state.
+ *
+ * @returns {JSX.Element} The search result item component.
+ */
+
 type SearchResultItemProps = {
   product: {
     id: number;

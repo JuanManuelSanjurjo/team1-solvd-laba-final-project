@@ -10,6 +10,20 @@ type SearchResultsPreviewProps = {
   setIsSearching: (value: boolean) => void;
 };
 
+/**
+ * SearchResultsPreview
+ *
+ * This component displays a search results preview with a product card for each product.
+ * It includes a bag icon, a message, and a button to add a product.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Object} props.products - The products to display.
+ * @param {boolean} props.isSearching - A boolean value indicating whether the search is active.
+ * @param {Function} props.setIsSearching - A function to set the search state.
+ *
+ * @returns {JSX.Element} The search results preview component.
+ */
+
 export default function SearchResultsPreview({
   products,
   isSearching,

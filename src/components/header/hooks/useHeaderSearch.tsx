@@ -4,6 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProductsBySearch } from "@/lib/strapi/fetchProductsBySearch";
 import { useDeferredValue } from "react";
 
+/**
+ * useHeaderSearch
+ *
+ * This hook is used to handle the search input and search results.
+ * It returns the search input, search results, and functions to toggle the search, handle search input changes, and handle search submit.
+ *
+ * @returns {Object} The search input, search results, and a function to toggle the search.
+ */
+
 export default function useHeaderSearch() {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
