@@ -47,7 +47,7 @@ export default function HomeClient() {
   } = useConditionalQuery({
     filters,
     page,
-    searchParams,
+    searchParams: searchParams.toString(),
     searchTerm,
   });
 
