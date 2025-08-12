@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import PaginationComponent from "@/components/PaginationComponent";
 import SkeletonPagination from "@/components/SkeletonPagination";
@@ -20,26 +20,36 @@ import { FilterSideBar } from "./FiltersSideBar";
 import SkeletonCardContainer from "./SkeletonCardContainer";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { normalizeProductCard } from "@/lib/normalizers/normalizeProductCard";
-import useQueryPagedProducts from "@/app/products/hooks/useQueryPageProducts";
-import { PRODUCTS_PER_PAGE } from "@/lib/constants/globals";
+import useConditionalQuery from "@/app/products/hooks/useConditionalQuery";
 
 export default function HomeClient() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
   const [page, setPage] = useState<number>(0);
 
   const searchParams = useSearchParams();
-  const filters = getFiltersFromSearchParams(searchParams);
+  const filters = useMemo(
+    () => getFiltersFromSearchParams(searchParams),
+    [searchParams],
+  );
+  const searchTerm = useMemo(
+    () => searchParams.get("searchTerm"),
+    [searchParams],
+  );
+
+  useEffect(() => {
+    setPage(0);
+  }, [searchTerm, filters]);
 
   const {
     data: products,
     pagination,
     isPending,
-  } = useQueryPagedProducts(
+  } = useConditionalQuery({
     filters,
     page,
-    PRODUCTS_PER_PAGE,
-    searchParams.toString(),
-  );
+    searchParams,
+    searchTerm,
+  });
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -72,6 +82,8 @@ export default function HomeClient() {
             boxSizing: "border-box",
             backgroundColor: "rgba(255,255,255,1)",
             borderRight: "none",
+            height: "100%",
+            overflowY: "auto",
           },
         }}
       >
@@ -137,7 +149,11 @@ export default function HomeClient() {
             }}
             color="text.primary"
           >
-            {hasActiveFilters(filters) ? "Search results" : " Products List"}
+            {searchTerm
+              ? "Search results for " + "'" + searchTerm + "'"
+              : hasActiveFilters(filters)
+                ? "Search results"
+                : " Products List"}
           </Typography>
           <Box
             sx={{
