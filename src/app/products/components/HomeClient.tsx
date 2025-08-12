@@ -19,7 +19,7 @@ import Card from "@/components/cards/Card";
 import { FilterSideBar } from "./FiltersSideBar";
 import SkeletonCardContainer from "./SkeletonCardContainer";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
-import { normalizeProductCard } from "@/lib/normalizers/normalizeProductCard";
+import { normalizeProductCard } from "@/lib/normalizers/normalize-product-card";
 import useConditionalQuery from "@/app/products/hooks/useConditionalQuery";
 
 export default function HomeClient() {

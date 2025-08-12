@@ -1,7 +1,7 @@
 import { Product } from "@/types/product";
 import SearchResultItem from "./SearchResultItem";
 import { Box, Collapse, Typography } from "@mui/material";
-import { normalizeProductCard } from "@/lib/normalizers/normalizeProductCard";
+import { normalizeProductCard } from "@/lib/normalizers/normalize-product-card";
 import { Bag } from "iconsax-react";
 
 type SearchResultsPreviewProps = {

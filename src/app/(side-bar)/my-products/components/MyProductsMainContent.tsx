@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
 import SkeletonCardContainer from "@/app/products/components/SkeletonCardContainer";
-import { normalizeMyProductCard } from "@/lib/normalizers/normalizeProductCard";
+import { normalizeMyProductCard } from "@/lib/normalizers/normalize-product-card";
 import { EditProductModalWrapper } from "./EditProductModalWrapper";
 import Button from "@/components/Button";
 import { EditProductHeader } from "./EditProductHeader";
@@ -44,7 +44,7 @@ export default function MyProductsMainContent({
   const token = session?.user?.jwt;
 
   const [selectedProduct, setSelectedProduct] = useState<MyProduct | null>(
-    null
+    null,
   );
   const [editModalOpen, setEditModalOpen] = useState(false);
 
