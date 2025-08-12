@@ -12,8 +12,7 @@ const publicRoutes = [
 export default auth((req) => {
   const token = req.auth;
   const { pathname, origin } = req.nextUrl;
-  const isPublicRoute =
-    publicRoutes.includes(pathname) || /^\/products\/[^/]+$/.test(pathname);
+  const isPublicRoute = publicRoutes.includes(pathname);
 
   if (!token && !isPublicRoute) {
     return NextResponse.redirect(new URL("/auth/sign-in", origin));

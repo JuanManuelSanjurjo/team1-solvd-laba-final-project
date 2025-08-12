@@ -1,7 +1,6 @@
-"use client";
 import { Box, Typography } from "@mui/material";
 import { ProfilePicture } from "@/components/ProfilePicture";
-import { useSession } from "next-auth/react";
+import { auth } from "@/auth";
 
 /**
  * BannerProfileCard
@@ -13,9 +12,9 @@ import { useSession } from "next-auth/react";
  *
  * @returns {JSX.Element} A banner with a profile picture and name.
  */
-export default function BannerProfileCard() {
+export default async function BannerProfileCard() {
   const profilePic = "www.coolavatarbystrapi.com/images/upload/1.jpg";
-  const { data: session } = useSession();
+  const session = await auth();
 
   return (
     <Box
@@ -30,7 +29,7 @@ export default function BannerProfileCard() {
       }}
     >
       <ProfilePicture
-        src={profilePic}
+        src={session?.user.avatar?.url || profilePic}
         alt="User avatar"
         width={112}
         border={true}

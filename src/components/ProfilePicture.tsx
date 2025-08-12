@@ -1,6 +1,5 @@
 "use client";
 import { Avatar, Box, Tooltip } from "@mui/material";
-import Link from "next/link";
 
 /**
  * ProfilePicture component renders a circular avatar using the given image source.
@@ -31,6 +30,7 @@ interface ProfilePictureProps {
   src: string;
   alt?: string;
   width: number | object;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export const ProfilePicture: React.FC<ProfilePictureProps> = ({
@@ -38,23 +38,22 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
   src,
   alt = "Profile picture",
   width,
+  onClick,
 }: ProfilePictureProps) => {
   return (
-    <Box>
-      <Link href="/update-profile">
-        <Tooltip title={alt}>
-          <Avatar
-            src={src}
-            alt={alt}
-            sx={{
-              width,
-              height: width,
-              cursor: "pointer",
-              border: border ? "5px solid white" : "none",
-            }}
-          />
-        </Tooltip>
-      </Link>
+    <Box onClick={onClick}>
+      <Tooltip title={alt}>
+        <Avatar
+          src={src}
+          alt={alt}
+          sx={{
+            width,
+            height: width,
+            cursor: "pointer",
+            border: border ? "5px solid white" : "none",
+          }}
+        />
+      </Tooltip>
     </Box>
   );
 };

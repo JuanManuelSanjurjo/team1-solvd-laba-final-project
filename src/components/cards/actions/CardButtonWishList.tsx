@@ -21,9 +21,8 @@ type CardButtonWishListProps = {
 
 export default function CardButtonWishList({
   product,
-}: CardButtonWishListProps): JSX.Element {
+}: CardButtonWishListProps): JSX.Element | null {
   const { wishList, addToWishList, removeFromWishList } = useWishlistStore();
-
   const isInWisList = wishList.some((prod) => prod.id === product.id);
 
   const handleToggle = (e: React.MouseEvent) => {
