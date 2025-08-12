@@ -21,6 +21,8 @@ export const fetchProductsBySearch = async (
   query: string,
   searchFields: string[] = ["name"],
   populateFields: string[] = [],
+  pageNumber?: number,
+  pageSize?: number,
 ) => {
   if (!query.trim()) return [];
 
@@ -49,19 +51,20 @@ export const fetchProductsBySearch = async (
 
   const url = `https://shoes-shop-strapi.herokuapp.com/api/products?${filters}${
     populate ? `&${populate}` : ""
-  }`;
+  }${pageSize ? `&pagination[page]=${pageNumber}&pagination[pageSize]=${pageSize}` : ""}`;
 
   const response = await fetch(url);
   if (!response.ok) throw new Error("Failed to fetch products");
-
   const data = await response.json();
   return data.data;
 };
 
-export const createQuerystring = (
+export const fetchAllProductsBySearch = async (
   query: string,
   searchFields: string[] = ["name"],
   populateFields: string[] = [],
+  pageNumber?: number,
+  pageSize?: number,
 ) => {
   if (!query.trim()) return [];
 
@@ -88,7 +91,13 @@ export const createQuerystring = (
     })
     .join("&");
 
-  const urlToConcat = `?${filters}${populate ? `&${populate}` : ""}`;
+  const url = `https://shoes-shop-strapi.herokuapp.com/api/products?${filters}${
+    populate ? `&${populate}` : ""
+  }${pageSize ? `&pagination[page]=${pageNumber}&pagination[pageSize]=${pageSize}` : ""}`;
 
-  return urlToConcat;
+  console.log(url);
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Failed to fetch products");
+  const data = await response.json();
+  return data;
 };
