@@ -1,30 +1,30 @@
 "use client";
 import FilterCheckbox from "@/components/FilterCheckBox";
-import {
-  Box,
-  Slider,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Slider, Typography } from "@mui/material";
 import { SearchBar } from "@/components/SearchBar";
 import CloseIcon from "@mui/icons-material/Close";
 import { FiltersSection } from "./FiltersSection";
+import CurrentFilters from "./CurrentFilters";
+import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 interface FilterSideBarProps {
   hideDrawer: () => void;
+  paginationTotal?: number;
 }
 
-export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
+export const FilterSideBar: React.FC<FilterSideBarProps> = ({
+  hideDrawer,
+  paginationTotal,
+}: FilterSideBarProps) => {
+  const { isDesktop } = useMediaBreakpoints();
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const minPrice = Number(searchParams.get("priceMin")) || 0;
   const maxPrice = Number(searchParams.get("priceMax")) || 500;
+  const searchTerm = searchParams.get("searchTerm");
 
   const [priceRange, setPriceRange] = useState<[number, number]>([
     minPrice,
@@ -65,6 +65,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
 
     params.set("priceMin", min.toString());
     params.set("priceMax", max.toString());
+    params.delete("searchTerm");
 
     router.replace(`?${params.toString()}`);
   };
@@ -86,15 +87,25 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({ hideDrawer }) => {
             paddingBottom: "8px",
           }}
         >
+          <CurrentFilters priceRange={priceRange} />
+          {/* <Typography */}
+          {/*   variant="body2" */}
+          {/*   color="theme.secondary" */}
+          {/*   marginBottom="8px" */}
+          {/* > */}
+          {/*   Shoes/Air Force 1 */}
+          {/* </Typography> */}
           <Typography
-            variant="body2"
-            color="theme.secondary"
-            marginBottom="8px"
+            variant="h3"
+            color="theme.primary"
+            width="14ch"
+            sx={{
+              wordBreak: "break-word",
+            }}
           >
-            Shoes/Air Force 1
-          </Typography>
-          <Typography variant="h3" color="theme.primary">
-            Air Force 1 (137)
+            {searchTerm
+              ? searchTerm + ` (${paginationTotal || "0"})`
+              : "Filters"}
           </Typography>
         </Box>
       ) : (
