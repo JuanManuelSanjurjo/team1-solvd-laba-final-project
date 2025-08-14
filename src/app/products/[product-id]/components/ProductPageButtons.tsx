@@ -25,10 +25,28 @@ export default function ProductPageButtons({
   product: NormalizedProduct;
   cardProductInfo: cardProduct;
 }): JSX.Element {
-  const { wishList, addToWishList } = useWishlistStore();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+  const byUser = useWishlistStore((state) => state.byUser);
+  const addToWishList = useWishlistStore((state) => state.addToWishList);
+  const removeFromWishList = useWishlistStore(
+    (state) => state.removeFromWishList
+  );
 
+  const userId = String(session!.user!.id);
+  const wishList = byUser[userId] ?? [];
   const isInWisList = wishList.some((prod) => prod.id === product.id);
+
+  const handleWishlistClick = () => {
+    if (isInWisList) {
+      removeFromWishList(userId, product.id);
+    } else {
+      addToWishList(userId, cardProductInfo);
+    }
+  };
+
+  const wishlistButtonText = isInWisList
+    ? "Remove from wishlist"
+    : "Add to wishlist";
 
   return (
     <Box
@@ -45,13 +63,13 @@ export default function ProductPageButtons({
         },
       }}
     >
-      {!isInWisList && cardProductInfo && (
+      {cardProductInfo && (
         <Button
           disabled={status !== "authenticated"}
           variant="outlined"
-          onClick={() => addToWishList(cardProductInfo)}
+          onClick={handleWishlistClick}
         >
-          Add to wishlist
+          {wishlistButtonText}
         </Button>
       )}
       <Button disabled={status !== "authenticated"} variant="contained">

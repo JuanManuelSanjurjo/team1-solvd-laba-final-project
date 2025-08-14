@@ -6,6 +6,7 @@ type MyProductsEmptyStateProps = {
   subtitle: string;
   buttonText?: string;
   onClick?: () => void;
+  icon?: React.ElementType;
 };
 
 /**
@@ -18,6 +19,7 @@ type MyProductsEmptyStateProps = {
  * @property {string} subtitle - The subtitle of the empty state.
  * @property {string} buttonText - The text of the button.
  * @property {function} onClick - The function to be called when the button is clicked.
+ * @property {React.ElementType} icon - The React icon component to be rendered.
  *
  * @returns {JSX.Element} An empty state for the My Products page.
  */
@@ -26,6 +28,7 @@ export default function MyProductsEmptyState({
   subtitle,
   buttonText,
   onClick,
+  icon: Icon = Bag,
 }: MyProductsEmptyStateProps) {
   return (
     <Box
@@ -38,7 +41,7 @@ export default function MyProductsEmptyState({
         height: "100%",
       }}
     >
-      <Bag size={20} color="#292d32" />
+      <Icon size={20} color="#292d32" />
       <Box
         sx={{
           display: "flex",

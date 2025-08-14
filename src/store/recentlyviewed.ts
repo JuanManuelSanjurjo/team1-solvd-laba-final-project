@@ -1,30 +1,36 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import cardProduct from "@/components/cards/actions/types/cardProduct";
 
 type RecentlyViewedStore = {
-  recentlyViewed: cardProduct[];
-  addToRecentlyViewed: (product: cardProduct) => void;
-  clearRecentlyViewed: () => void;
+  byUser: Record<string, cardProduct[]>;
+  max: number;
+  addToRecentlyViewed: (userId: string, product: cardProduct) => void;
+  clearRecentlyViewed: (userId: string) => void;
 };
 
 export const useRecentlyViewedStore = create<RecentlyViewedStore>()(
   persist(
     (set, get) => ({
-      recentlyViewed: [],
-      addToRecentlyViewed: (product) => {
-        const current = get().recentlyViewed;
-
-        const filtered = current.filter((prod) => prod.id !== product.id);
-
-        const updated = [product, ...filtered].slice(0, 10);
-
-        set({ recentlyViewed: updated });
+      byUser: {},
+      max: 10,
+      addToRecentlyViewed: (userId, product) => {
+        const { byUser, max } = get();
+        const list = byUser[userId] ?? [];
+        const filtered = list.filter((prod) => prod.id !== product.id);
+        const next = [product, ...filtered].slice(0, max);
+        set({ byUser: { ...byUser, [userId]: next } });
       },
-      clearRecentlyViewed: () => set({ recentlyViewed: [] }),
+
+      clearRecentlyViewed: (userId) => {
+        const { byUser } = get();
+        set({ byUser: { ...byUser, [userId]: [] } });
+      },
     }),
     {
-      name: "recently-viewed-products",
+      name: "recently-viewed-products-v2",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ byUser: state.byUser, max: state.max }),
     }
   )
 );
