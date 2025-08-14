@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
     const { text } = await generateText({
       model: groq("compound-beta"),
-      prompt: `Write a concise, engaging product description (max 3 sentences) for "${name}".`,
+      prompt: `Write a concise, engaging product description (NO MORE THAN 300 CHARACTERS) for "${name}".`,
     });
 
     return NextResponse.json({ description: text });

@@ -92,7 +92,15 @@ export default function Card({
               <CardActionWrapperCenter
                 action={
                   overlayAction === "cardOverlayAddToCard" ? (
-                    <CardOverlayAddToCart />
+                    <CardOverlayAddToCart
+                      product={{
+                        id: product?.id ?? 0,
+                        image: product?.image,
+                        name: product?.name ?? "",
+                        price: product?.price ?? 0,
+                        gender: product?.gender,
+                      }}
+                    />
                   ) : (
                     <CardOverlayDelete onDeletePreview={onDeletePreview!} />
                   )

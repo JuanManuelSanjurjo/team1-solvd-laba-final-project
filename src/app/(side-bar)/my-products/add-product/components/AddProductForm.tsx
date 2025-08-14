@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
 import { useState } from "react";
 import { ProductFormData, productSchema } from "../schema";
@@ -48,6 +48,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     setValue,
     getValues,
     watch,
+    reset,
     formState: { errors },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -88,6 +89,20 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     const userID = parseInt(session?.user.id ?? "0", 10);
     try {
       await handleCreateProduct({ data: { ...data, userID }, imageFiles });
+
+      reset({
+        name: "",
+        color: colorOptions[0].value,
+        gender: 4,
+        brand: brandOptions[0].value,
+        price: 0,
+        description: "",
+        sizes: [],
+        userID: 0,
+      });
+
+      setImageFiles([]);
+
       setSnackbarMessage("Product added successfully!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
@@ -147,7 +162,10 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
         >
           Product images
         </Typography>
-        <ImagePreviewerUploader onFilesChange={setImageFiles} />
+        <ImagePreviewerUploader
+          onFilesChange={setImageFiles}
+          reset={imageFiles.length === 0}
+        />
       </Box>
       <Snackbar
         open={snackbarOpen}

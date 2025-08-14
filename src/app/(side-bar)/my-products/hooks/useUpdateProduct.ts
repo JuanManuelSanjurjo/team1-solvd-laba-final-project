@@ -34,7 +34,7 @@ export function useUpdateProduct(productId: number) {
 
       await updateProduct(productId, payload, token);
 
-      if (imagesToDelete.length > 0) {
+      if (imagesToDelete && imagesToDelete.length > 0) {
         await Promise.all(
           imagesToDelete.map(async (imageId) => {
             try {

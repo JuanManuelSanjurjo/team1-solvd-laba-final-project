@@ -13,6 +13,7 @@ interface ImagePreviewUploaderProps {
   onFilesChange: (files: File[]) => void;
   initialPreviews?: string[];
   onPreviewsChange?: (previews: string[]) => void;
+  reset?: boolean;
 }
 
 /**
@@ -29,6 +30,7 @@ export default function ImagePreviewerUploader({
   onFilesChange,
   initialPreviews = [],
   onPreviewsChange,
+  reset,
 }: ImagePreviewUploaderProps) {
   const [previews, setPreviews] = useState<Preview[]>(
     initialPreviews.map((url) => ({ url }))
@@ -45,6 +47,10 @@ export default function ImagePreviewerUploader({
     onFilesChange(newFiles);
     stableOnPreviewsChange(remainingUrls);
   }, [previews, onFilesChange, stableOnPreviewsChange]);
+
+  useEffect(() => {
+    if (reset) setPreviews([]);
+  }, [reset]);
 
   const handleAddFile = useCallback((file: File) => {
     const objectUrl = URL.createObjectURL(file);

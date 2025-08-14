@@ -5,7 +5,7 @@ import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
 import { fetchUserProducts } from "@/lib/strapi/fetchUserProducts";
 import { MyProduct } from "@/types/product";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
@@ -65,8 +65,6 @@ export default function MyProductsMainContent({
   });
 
   const products = data ?? [];
-
-  const queryClient = useQueryClient();
 
   return (
     <Box
@@ -135,6 +133,7 @@ export default function MyProductsMainContent({
             brandOptions={brandOptions}
             product={selectedProduct ?? products[0]}
             mode={formMode}
+            onSuccess={() => setEditModalOpen(false)}
           />
           <Box
             sx={{ width: "100%", display: "flex", justifyContent: "center" }}

@@ -10,12 +10,15 @@ import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import ImagePreviewerUploader from "../add-product/components/ImagePreviewerUploader";
 import { MyProduct } from "@/types/product";
 import { useUpdateProduct } from "../hooks/useUpdateProduct";
+import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
 
 interface EditProductFormProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
   product: MyProduct;
+  mode: "edit" | "duplicate";
+  onSuccess: () => void;
 }
 
 export const EditProductForm: React.FC<EditProductFormProps> = ({
@@ -23,6 +26,8 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   colorOptions,
   sizeOptions,
   product,
+  mode,
+  onSuccess,
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -52,6 +57,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   });
 
   const { mutateAsync: handleUpdateProduct } = useUpdateProduct(product.id);
+  const { mutateAsync: handleCreateProduct } = useCreateProduct();
 
   const selectedSizes = watch("sizes");
 
@@ -82,20 +88,43 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           .map((image) => image.id)
       : [];
 
-    try {
-      await handleUpdateProduct({
-        data: { ...data, userID },
-        imageFiles,
-        existentImages: remainingExistentImages,
-      });
-      setSnackbarMessage("Product updated successfully!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-    } catch (err) {
-      console.log(err);
-      setSnackbarMessage("Failed to update product.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+    const imagesToDelete =
+      product.images &&
+      product.images
+        .map((img) => img.id)
+        .filter((id) => !remainingExistentImages.includes(id));
+
+    if (mode === "edit") {
+      try {
+        await handleUpdateProduct({
+          data: { ...data, userID },
+          imageFiles,
+          existentImages: remainingExistentImages,
+          imagesToDelete,
+        });
+        setSnackbarMessage("Product updated successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        onSuccess?.();
+      } catch (err) {
+        console.log(err);
+        setSnackbarMessage("Failed to update product.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
+    } else {
+      try {
+        await handleCreateProduct({ data: { ...data, userID }, imageFiles });
+        setSnackbarMessage("Product added successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        onSuccess?.();
+      } catch (err) {
+        console.log(err);
+        setSnackbarMessage("Failed to add product.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
     }
   };
 

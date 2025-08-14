@@ -3,7 +3,8 @@ import {
   UseFormRegister,
   Control,
   FieldErrors,
-  useFormContext,
+  UseFormGetValues,
+  UseFormSetValue,
 } from "react-hook-form";
 import { Box, FormHelperText } from "@mui/material";
 import Input from "@/components/FormElements/Input";
@@ -24,8 +25,8 @@ interface ProductFormFieldsProps {
   sizeOptions: { value: number; label: number }[];
   selectedSizes: number[];
   toggleSize: (size: number) => void;
-  getValues: (name: string) => any;
-  setValue: (name: any, value: any) => void;
+  getValues: UseFormGetValues<ProductFormData>;
+  setValue: UseFormSetValue<ProductFormData>;
 }
 
 export const ProductFormFields = ({
@@ -44,7 +45,7 @@ export const ProductFormFields = ({
 
   const handleGenerate = async () => {
     const name = getValues("name");
-    if (!name) return; // optionally show a toast or error
+    if (!name) return;
 
     setLoading(true);
     try {
