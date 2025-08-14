@@ -13,6 +13,7 @@ type CardButtonMenuProps = {
   product: cardProduct;
   onEdit: () => void;
   onDelete: () => void;
+  onDuplicate: () => void;
 };
 
 /**
@@ -29,6 +30,7 @@ type CardButtonMenuProps = {
 export default function CardButtonMenu({
   product,
   onEdit,
+  onDuplicate,
   onDelete,
 }: CardButtonMenuProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -99,7 +101,14 @@ export default function CardButtonMenu({
         >
           Edit
         </MenuItem>
-        <MenuItem component="button" onClick={handleClose}>
+        <MenuItem
+          component="button"
+          onClick={(e) => {
+            e.preventDefault();
+            onDuplicate();
+            handleClose(e);
+          }}
+        >
           Duplicate
         </MenuItem>
         <MenuItem

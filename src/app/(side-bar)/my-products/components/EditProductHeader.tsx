@@ -3,14 +3,15 @@ import CloseIcon from "@mui/icons-material/Close";
 
 interface EditProductHeaderProps {
   onClose: () => void;
+  title: string;
 }
 
-export function EditProductHeader({ onClose }: EditProductHeaderProps) {
+export function EditProductHeader({ onClose, title }: EditProductHeaderProps) {
   return (
     <Box sx={{ width: { sm: "100%", md: "60%" } }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="h2" sx={{ marginBottom: "36px" }}>
-          Edit a product
+          {title}
         </Typography>
         <Box sx={{ display: { xs: "block", sm: "none" } }} onClick={onClose}>
           <CloseIcon

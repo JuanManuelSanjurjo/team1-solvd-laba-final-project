@@ -13,9 +13,9 @@ import SkeletonCardContainer from "@/app/products/components/SkeletonCardContain
 import { normalizeMyProductCard } from "@/lib/normalizers/normalizeProductCard";
 import { EditProductModalWrapper } from "./EditProductModalWrapper";
 import Button from "@/components/Button";
-import { EditProductHeader } from "./EditProductHeader";
 import { EditProductForm } from "./EditProductForm";
 import { deleteProduct } from "@/lib/strapi/deleteProduct";
+import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
 
 interface MyProductsMainContentProps {
   brandOptions: { value: number; label: string }[];
@@ -47,6 +47,7 @@ export default function MyProductsMainContent({
     null
   );
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
 
   const { data, isLoading } = useQuery<MyProduct[], Error>({
     queryKey: ["user-products", userId],
@@ -99,7 +100,13 @@ export default function MyProductsMainContent({
               overlay={true}
               onEdit={() => {
                 setSelectedProduct(products[index]);
-                setEditModalOpen(!editModalOpen);
+                setFormMode("edit");
+                setEditModalOpen(true);
+              }}
+              onDuplicate={() => {
+                setSelectedProduct(products[index]);
+                setFormMode("duplicate");
+                setEditModalOpen(true);
               }}
               onDelete={() => {
                 handleDeleteProduct(product.id);
@@ -124,6 +131,7 @@ export default function MyProductsMainContent({
             onClose={() => {
               setEditModalOpen(false);
             }}
+            title={formMode === "edit" ? "Edit Product" : "Add Product"}
           />
 
           <EditProductForm
@@ -131,6 +139,7 @@ export default function MyProductsMainContent({
             colorOptions={colorOptions}
             brandOptions={brandOptions}
             product={selectedProduct ?? products[0]}
+            mode={formMode}
           />
           <Box
             sx={{ width: "100%", display: "flex", justifyContent: "center" }}
