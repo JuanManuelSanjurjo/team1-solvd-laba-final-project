@@ -4,6 +4,18 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Add } from "iconsax-react";
 
+/**
+ * CurrentFilters component renders a list of filters that are currently applied to the search results.
+ * It displays the price range, brand, size, gender, and color filters, and allows the user to remove
+ * or change their selections.
+ *
+ * @param {Object} props - Component props
+ * @param {[number, number]} props.priceRange - An array containing the minimum and maximum price values.
+ * @param {(priceRange: [number, number]) => void} props.setPriceRange - A function to update the price range.
+ *
+ * @returns {JSX.Element} A list of filters that are currently applied to the search results.
+ */
+
 const StyledBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
