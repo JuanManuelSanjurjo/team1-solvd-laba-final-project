@@ -4,6 +4,7 @@ import { useWishlistStore } from "@/store/wishlist";
 import { NormalizedProduct } from "@/types/product-types";
 import cardProduct from "@/components/cards/actions/types/cardProduct";
 import { JSX } from "react";
+import { useSession } from "next-auth/react";
 
 /**
  * ProductPageButtons
@@ -25,6 +26,7 @@ export default function ProductPageButtons({
   cardProductInfo: cardProduct;
 }): JSX.Element {
   const { wishList, addToWishList } = useWishlistStore();
+  const { status } = useSession();
 
   const isInWisList = wishList.some((prod) => prod.id === product.id);
 
@@ -45,13 +47,16 @@ export default function ProductPageButtons({
     >
       {!isInWisList && cardProductInfo && (
         <Button
+          disabled={status !== "authenticated"}
           variant="outlined"
           onClick={() => addToWishList(cardProductInfo)}
         >
           Add to wishlist
         </Button>
       )}
-      <Button variant="contained">Add to cart</Button>
+      <Button disabled={status !== "authenticated"} variant="contained">
+        Add to cart
+      </Button>
     </Box>
   );
 }

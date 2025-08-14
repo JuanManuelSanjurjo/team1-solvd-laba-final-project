@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { worksans, nunitosans } from "@/style/fonts";
-import { Header } from "@/components/Header";
+import { Header } from "@/components/header/Header";
 import ProvidersFactory from "@/utils/providers/ProvidersFactory";
 import { auth } from "@/auth";
 

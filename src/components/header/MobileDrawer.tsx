@@ -7,7 +7,6 @@ import IconButton from "@mui/material/IconButton";
 import Backdrop from "@mui/material/Backdrop";
 import AuthenticatedSidebar from "../AuthenticatedSidebar";
 import { Session } from "next-auth";
-// import { auth } from "@/auth";
 
 interface AppBarProps {
   open: boolean;

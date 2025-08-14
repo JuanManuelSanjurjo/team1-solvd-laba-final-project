@@ -2,6 +2,7 @@
  * Represents the available filters
  */
 import { ProductFilters } from "@/types/product";
+import { getQueryStringFromFilters } from "@/lib/getQueryStringFromFilters";
 
 /**
  * Fetches products from the Strapi API based on provided filter criteria.
@@ -22,10 +23,16 @@ export async function fetchProducts(
   filters: ProductFilters,
   pageNumber: number,
   pageSize: number,
+  searchTerm: string | null,
+  searchFields: string[] = ["name"],
+  populateFields: string[] = [],
 ) {
-  const baseUrl = new URL(
-    "https://shoes-shop-strapi.herokuapp.com/api/products",
-  );
+  const baseUrl = searchTerm
+    ? new URL(
+        getQueryStringFromFilters(searchTerm, searchFields, populateFields),
+      )
+    : new URL("https://shoes-shop-strapi.herokuapp.com/api/products");
+
   baseUrl.searchParams.set("populate", "*");
   baseUrl.searchParams.set("pagination[page]", pageNumber.toString());
   baseUrl.searchParams.set("pagination[pageSize]", pageSize.toString());

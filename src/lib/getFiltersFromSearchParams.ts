@@ -6,6 +6,7 @@ export type ProductFilters = {
   categories?: string[];
   priceMin?: number;
   priceMax?: number;
+  searchTerm?: string;
 };
 
 /**
@@ -23,7 +24,7 @@ export type ProductFilters = {
  */
 
 export function getFiltersFromSearchParams(
-  searchParams: URLSearchParams
+  searchParams: URLSearchParams,
 ): ProductFilters {
   const sizeFilters = searchParams.getAll("size");
   const brandFilters = searchParams.getAll("brand");
@@ -32,6 +33,7 @@ export function getFiltersFromSearchParams(
   const categoriesFilters = searchParams.getAll("categories");
   const priceMin = searchParams.get("priceMin");
   const priceMax = searchParams.get("priceMax");
+  const searchTerm = searchParams.get("searchTerm");
 
   return {
     brands: brandFilters.length ? brandFilters : undefined,
@@ -42,5 +44,6 @@ export function getFiltersFromSearchParams(
 
     priceMin: priceMin ? Number(priceMin) : undefined,
     priceMax: priceMax ? Number(priceMax) : undefined,
+    searchTerm: searchTerm ? searchTerm : undefined,
   };
 }

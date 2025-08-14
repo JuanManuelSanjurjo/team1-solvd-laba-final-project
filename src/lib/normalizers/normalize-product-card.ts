@@ -21,8 +21,8 @@ export function normalizeProductCard(products: Product[]) {
   return products.map((product) => ({
     id: product.id,
     image:
-      product.attributes.images.data?.[0]?.attributes.url ||
-      "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
+      product.attributes.images.data?.[0]?.attributes?.url ||
+      "/assets/images/placeholders/400x400.svg",
     name: product.attributes.name,
     price: product.attributes.price,
     gender: product.attributes.gender?.data?.attributes?.name ?? "No gender",
@@ -32,8 +32,7 @@ export function normalizeMyProductCard(products: MyProduct[]) {
   return products.map((product) => ({
     id: product.id,
     image:
-      product.images?.[0]?.url ||
-      "https://d2s30hray1l0uq.cloudfront.net/frontend/shoe-photography-featured-image-1024x512.jpg",
+      product.images?.[0]?.url || "/assets/images/placeholders/400x400.svg",
     name: product.name,
     price: product.price,
     gender: product.gender?.name ?? "No gender",
