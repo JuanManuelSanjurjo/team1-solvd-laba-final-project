@@ -1,17 +1,11 @@
 "use client";
 
-import {
-  Box,
-  Drawer,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import { useState, useEffect, useMemo } from "react";
+import { Box, Drawer, Typography } from "@mui/material";
+import { useState, useMemo } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import PaginationComponent from "@/components/PaginationComponent";
 import SkeletonPagination from "@/components/SkeletonPagination";
-import { FilterRemove, FilterSearch } from "iconsax-react";
+import { Add, FilterRemove, FilterSearch } from "iconsax-react";
 import { useSearchParams } from "next/navigation";
 import { getFiltersFromSearchParams } from "@/lib/getFiltersFromSearchParams";
 import { hasActiveFilters } from "@/lib/filterUtils";
@@ -20,13 +14,17 @@ import { FilterSideBar } from "./FiltersSideBar";
 import SkeletonCardContainer from "./SkeletonCardContainer";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { normalizeProductCard } from "@/lib/normalizers/normalize-product-card";
-import useConditionalQuery from "@/app/products/hooks/useConditionalQuery";
+import { PRODUCTS_PER_PAGE } from "@/lib/constants/globals";
+import useQueryPagedProducts from "../hooks/useQueryPageProducts";
+import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
+import { useRouter } from "next/navigation";
 
 export default function HomeClient() {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(0);
-
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const page = Number(searchParams.get("page") ?? 1);
+
   const filters = useMemo(
     () => getFiltersFromSearchParams(searchParams),
     [searchParams],
@@ -35,25 +33,32 @@ export default function HomeClient() {
     () => searchParams.get("searchTerm"),
     [searchParams],
   );
-
-  useEffect(() => {
-    setPage(0);
-  }, [searchTerm, filters]);
-
   const {
     data: products,
     pagination,
     isPending,
-  } = useConditionalQuery({
+  } = useQueryPagedProducts({
     filters,
-    page,
+    pageNumber: page,
+    pageSize: PRODUCTS_PER_PAGE,
     searchParams: searchParams.toString(),
     searchTerm,
   });
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  function deleteSearchTerm() {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.delete("searchTerm");
+    newSearchParams.delete("page");
+    router.push(`?${newSearchParams.toString()}`);
+  }
+
+  function handleSetPage(page: number) {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set("page", page.toString());
+    router.push(`?${newSearchParams.toString()}`);
+  }
+
+  const { isMobile, isDesktop } = useMediaBreakpoints();
 
   const drawerWidth = isDesktop ? 320 : 240;
   const drawerVariant = isMobile ? "temporary" : "persistent";
@@ -88,6 +93,7 @@ export default function HomeClient() {
         }}
       >
         <FilterSideBar
+          paginationTotal={pagination?.total}
           hideDrawer={() => {
             setFiltersOpen(!filtersOpen);
           }}
@@ -127,8 +133,8 @@ export default function HomeClient() {
             component="h1"
             sx={{
               typography: {
-                xs: "h2",
-                sm: "h5",
+                xs: "h3",
+                sm: "h3",
                 md: "h3",
                 lg: "h2",
               },
@@ -146,14 +152,71 @@ export default function HomeClient() {
                 xs: "1px solid #eaecf0",
                 sm: "none",
               },
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}
             color="text.primary"
           >
-            {searchTerm
-              ? "Search results for " + "'" + searchTerm + "'"
-              : hasActiveFilters(filters)
-                ? "Search results"
-                : " Products List"}
+            {searchTerm && !isMobile ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: 1,
+                }}
+              >
+                <Typography
+                  sx={{
+                    typography: {
+                      xs: "h3",
+                      md: "h2",
+                    },
+                  }}
+                  color="text.primary"
+                >
+                  Search results for
+                </Typography>
+                <Box
+                  sx={{
+                    backgroundColor: "rgba(150,150,150,0.1)",
+                    borderRadius: 1,
+                    display: "flex",
+                    gap: 1,
+                    alignItems: "center",
+                    maxWidth: "100%",
+                  }}
+                >
+                  <Typography
+                    title={searchTerm}
+                    sx={{
+                      typography: {
+                        xs: "h3",
+                        md: "h2",
+                      },
+                      paddingInline: 1,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {searchTerm}
+                  </Typography>
+                  <Add
+                    color="rgba(92, 92, 92, 1)"
+                    size={24}
+                    style={{ transform: "rotate(45deg)", cursor: "pointer" }}
+                    onClick={deleteSearchTerm}
+                  />
+                </Box>
+              </Box>
+            ) : // ? "Search results for " + "'" + searchTerm + "'"
+            hasActiveFilters(filters) ? (
+              "Search results"
+            ) : (
+              " Products List"
+            )}
           </Typography>
           <Box
             sx={{
@@ -172,16 +235,23 @@ export default function HomeClient() {
             }}
           >
             {isMobile && (
-              <Box sx={{}}>
+              <Box sx={{ display: "flex", maxWidth: "65%" }}>
+                {/* <Typography */}
+                {/*   variant="body1" */}
+                {/*   color="text.secondary" */}
+                {/*   marginBottom="8px" */}
+                {/* ></Typography> */}
                 <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  marginBottom="8px"
+                  variant="h5"
+                  color="text.primary"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
                 >
-                  Shoes/Air Force 1
-                </Typography>
-                <Typography variant="h5" color="text.primary">
-                  Air Force 1 (137)
+                  {searchTerm
+                    ? `${searchTerm} (${pagination?.total || 0})`
+                    : ""}
                 </Typography>
               </Box>
             )}
@@ -200,6 +270,7 @@ export default function HomeClient() {
                         sm: "body2",
                         md: "h4",
                       },
+                      textWrap: "nowrap",
                     }}
                     color="text.secondary"
                   >
@@ -260,7 +331,7 @@ export default function HomeClient() {
                 >
                   <MyProductsEmptyState
                     title="No products match this search"
-                    subtitle="Try removing some filters!"
+                    subtitle="Try another search or remove some filters!"
                   />
                 </Box>
               ) : (
@@ -281,7 +352,7 @@ export default function HomeClient() {
                   {pagination ? (
                     <PaginationComponent
                       pagination={pagination}
-                      setPage={setPage}
+                      setPage={handleSetPage}
                     />
                   ) : (
                     <SkeletonPagination />
