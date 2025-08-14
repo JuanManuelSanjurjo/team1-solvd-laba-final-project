@@ -30,6 +30,7 @@ type CardProps = {
  * or a standalone image. It supports top-right and overlay actions.
  * @param onDelte edit callback.
  * @param onEdit edit callback.
+ * @param onDuplicate duplicate callback.
  * @param onDeletePreview delete callback.
  * @param product - Optional product to display with name, price, and description.
  * @param image - Optional image to show if no product is provided.

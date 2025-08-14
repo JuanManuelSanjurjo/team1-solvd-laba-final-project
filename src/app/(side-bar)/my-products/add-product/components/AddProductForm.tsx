@@ -18,6 +18,7 @@ import { ProductFormFields } from "./ProductFormFields";
  * @property {Array<{ value: number; label: string }>} colorOptions - Options for the Color select input.
  * @property {Array<{ value: number; label: number }>} sizeOptions - Options for the Sizes selection.
  */
+
 interface AddProductFormProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];

@@ -1,10 +1,30 @@
 import { Box, Modal, Fade, Backdrop } from "@mui/material";
 
+/**
+ * Props for the EditProductModalWrapper component.
+ *
+ * @typedef ModalWrapperProps
+ * @property {boolean} open - Controls whether the modal is visible.
+ * @property {() => void} onClose - Callback fired when the modal is requested to be closed.
+ * @property {React.ReactNode} children - The content to display inside the modal.
+ */
 interface ModalWrapperProps {
   open: boolean;
   onClose: () => void;
   children: React.ReactNode;
 }
+
+/**
+ * EditProductModalWrapper
+ *
+ * A reusable modal wrapper component used for editing products.
+ * It provides a styled container with transition effects (fade + backdrop)
+ * and handles proper positioning, sizing, and scrollable content.
+ *
+ * @component
+ * @param {ModalWrapperProps} props - The props for the modal wrapper.
+ * @returns {JSX.Element} The rendered modal wrapper with its children.
+ */
 
 export const EditProductModalWrapper: React.FC<ModalWrapperProps> = ({
   open,

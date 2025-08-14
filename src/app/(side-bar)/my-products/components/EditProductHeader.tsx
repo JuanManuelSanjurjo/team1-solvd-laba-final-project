@@ -1,10 +1,26 @@
 import { Box, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-
+/**
+ * Props for the EditProductHeader component.
+ *
+ * @interface EditProductHeaderProps
+ * @property {() => void} onClose - Callback fired when the close icon is clicked (used in mobile view).
+ * @property {string} title - The header title text to display.
+ */
 interface EditProductHeaderProps {
   onClose: () => void;
   title: string;
 }
+
+/**
+ * A header component for the Edit Product page.
+ *
+ * Displays the product title and a close button (visible only on mobile).
+ *
+ * @component
+ * @param {EditProductHeaderProps} props - The props for the component.
+ * @returns {JSX.Element} A styled header section with title and description.
+ */
 
 export function EditProductHeader({ onClose, title }: EditProductHeaderProps) {
   return (
