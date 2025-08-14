@@ -23,9 +23,10 @@ export default function CartCardImage({
     <Box
       position="relative"
       sx={{
-        width: "100%",
+        width: { xs: "100%", sm: 223 },
+        height: { xs: "auto", sm: 223 },
         overflow: "hidden",
-        maxHeight: "214px",
+        aspectRatio: "1/1",
       }}
     >
       <Box
@@ -33,9 +34,10 @@ export default function CartCardImage({
         src={image}
         alt={`product-img`}
         sx={{
-          objectFit: "contain",
+          objectFit: "cover",
           objectPosition: "center",
           width: "100%",
+          height: "100%",
         }}
       />
     </Box>

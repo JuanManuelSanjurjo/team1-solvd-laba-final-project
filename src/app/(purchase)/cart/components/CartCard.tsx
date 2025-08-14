@@ -53,25 +53,7 @@ const CartCard = ({
         gap: "5%",
       }}
     >
-      <Box
-        sx={{
-          width: { xs: "25%", lg: 223 },
-          height: { xs: "auto", lg: 223 },
-          position: "relative",
-        }}
-      >
-        {/*  <Image
-          unoptimized
-          fill
-          alt={productTitle}
-          src={image}
-          style={{ objectFit: "contain" }}
-        /> */}
-        {/* Commented code on purpose to remember to fix this later */}
-
-        {/* Temporarily using img */}
-        <CartCardImage image={image} />
-      </Box>
+      <CartCardImage image={image} />
 
       <Grid container spacing={2} sx={{ width: "694px" }}>
         <Grid size={10}>
