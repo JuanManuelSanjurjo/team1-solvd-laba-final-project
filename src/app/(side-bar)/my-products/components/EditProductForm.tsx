@@ -37,6 +37,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
     handleSubmit,
     control,
     setValue,
+    getValues,
     watch,
     formState: { errors },
   } = useForm<ProductFormData>({
@@ -158,6 +159,8 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           sizeOptions={sizeOptions}
           selectedSizes={selectedSizes}
           toggleSize={toggleSize}
+          setValue={setValue}
+          getValues={getValues}
         />
       </Box>
       <Box sx={{ flex: 1 }}>

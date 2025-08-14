@@ -3,6 +3,7 @@ import {
   UseFormRegister,
   Control,
   FieldErrors,
+  useFormContext,
 } from "react-hook-form";
 import { Box, FormHelperText } from "@mui/material";
 import Input from "@/components/FormElements/Input";
@@ -10,6 +11,9 @@ import Select from "@/components/FormElements/Select";
 import ShoeSizeOption from "@/app/products/[product-id]/components/ShoeSizeOption";
 import { Danger } from "iconsax-react";
 import { ProductFormData } from "../schema";
+import AiButton from "@/components/AiButton";
+import { useState } from "react";
+import { generateDescription } from "@/lib/ai/generateDescription";
 
 interface ProductFormFieldsProps {
   register: UseFormRegister<ProductFormData>;
@@ -20,6 +24,8 @@ interface ProductFormFieldsProps {
   sizeOptions: { value: number; label: number }[];
   selectedSizes: number[];
   toggleSize: (size: number) => void;
+  getValues: (name: string) => any;
+  setValue: (name: any, value: any) => void;
 }
 
 export const ProductFormFields = ({
@@ -31,7 +37,25 @@ export const ProductFormFields = ({
   sizeOptions,
   selectedSizes,
   toggleSize,
+  getValues,
+  setValue,
 }: ProductFormFieldsProps) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleGenerate = async () => {
+    const name = getValues("name");
+    if (!name) return; // optionally show a toast or error
+
+    setLoading(true);
+    try {
+      const aiDescription = await generateDescription(name);
+      setValue("description", aiDescription);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <Input
@@ -96,16 +120,30 @@ export const ProductFormFields = ({
           )}
         />
       </Box>
-      <Input
-        {...register("description")}
-        label="Description"
-        name="description"
-        required
-        errorMessage={errors.description?.message ?? ""}
-        multiline
-        fullWidth
-        sx={{ height: "320px", alignItems: "flex-start" }}
-      />
+      <Box sx={{ position: "relative" }}>
+        <Input
+          {...register("description")}
+          label="Description"
+          name="description"
+          required
+          errorMessage={errors.description?.message ?? ""}
+          multiline
+          fullWidth
+          sx={{ height: "320px", alignItems: "flex-start" }}
+        />
+        <AiButton
+          variant="contained"
+          size="small"
+          isLoading={loading}
+          onGenerate={handleGenerate}
+          sx={{
+            position: "absolute",
+            bottom: "10px",
+            right: "10px",
+            zIndex: 1000,
+          }}
+        />
+      </Box>
       <Box
         sx={{
           display: "grid",

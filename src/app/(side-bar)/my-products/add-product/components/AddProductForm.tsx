@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
 import { useState } from "react";
 import { ProductFormData, productSchema } from "../schema";
@@ -46,6 +46,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     handleSubmit,
     control,
     setValue,
+    getValues,
     watch,
     formState: { errors },
   } = useForm<ProductFormData>({
@@ -61,7 +62,6 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
       userID: 0,
     },
   });
-
   const selectedSizes = watch("sizes");
 
   const { mutateAsync: handleCreateProduct } = useCreateProduct();
@@ -134,6 +134,8 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
           sizeOptions={sizeOptions}
           selectedSizes={selectedSizes}
           toggleSize={toggleSize}
+          setValue={setValue}
+          getValues={getValues}
         />
       </Box>
       <Box sx={{ flex: 1 }}>

@@ -1,35 +1,23 @@
 "use client";
 
-import { JSX, useState } from "react";
+import { JSX } from "react";
 import Button from "./Button";
 import { ButtonProps as MuiButtonProps } from "@mui/material";
 import Image from "next/image";
 
-/**
- * AiButton is a custom button component built on top of the MUI Button.
- *
- * It conditionally shows a loading animation and swaps its content based on the loading state.
- * During loading, it shows a pulsing background and a spinning logo.
- *
- * @component
- * @param {MuiButtonProps} props - Inherits all Material UI Button props.
- * @returns {JSX.Element}
- * @example
- * <AiButton onClick={handleAction} />
- */
-export default function AiButton({ ...props }: MuiButtonProps): JSX.Element {
-  const [isLoading, setIsLoading] = useState(false); // probably this state will be outside the component in the parent component
+interface AiButtonProps extends MuiButtonProps {
+  isLoading?: boolean;
+  onGenerate?: () => void;
+}
 
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000); // remove this setTimeout when implementing
-  };
-
+export default function AiButton({
+  isLoading = false,
+  onGenerate,
+  ...props
+}: AiButtonProps): JSX.Element {
   return (
     <Button
-      onClick={handleClick}
+      onClick={onGenerate}
       sx={{
         background: isLoading
           ? "#F7635E1A"
