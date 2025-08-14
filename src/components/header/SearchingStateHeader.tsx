@@ -3,7 +3,7 @@ import { CloseCircle } from "iconsax-react";
 import { SearchBar } from "@/components/SearchBar";
 import Link from "next/link";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
-import useMediaBreakpoints from "./hooks/useMediaBreakpoints";
+import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 
 /**
  * SearchingStateHeader

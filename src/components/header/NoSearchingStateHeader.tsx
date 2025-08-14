@@ -5,7 +5,7 @@ import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DesktopProfileMenu from "./DesktopProfileMenu";
-import useMediaBreakpoints from "./hooks/useMediaBreakpoints";
+import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import Link from "next/link";
 import { Session } from "next-auth";
 
