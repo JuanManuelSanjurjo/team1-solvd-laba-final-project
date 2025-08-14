@@ -18,7 +18,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
   hideDrawer,
   paginationTotal,
 }: FilterSideBarProps) => {
-  const { isDesktop } = useMediaBreakpoints();
+  const { isMobile } = useMediaBreakpoints();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -33,7 +33,6 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
 
   const handleFilterChange = (filterType: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.delete("searchTerm");
     const existingValues = params.getAll(filterType);
     const isSelected = existingValues.includes(value);
 
@@ -65,7 +64,6 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
 
     params.set("priceMin", min.toString());
     params.set("priceMax", max.toString());
-    params.delete("searchTerm");
 
     router.replace(`?${params.toString()}`);
   };
@@ -79,46 +77,37 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
         width: "100%",
       }}
     >
-      {isDesktop ? (
-        <Box
-          sx={{
-            paddingLeft: "40px",
-            paddingTop: "40px",
-            paddingBottom: "8px",
-          }}
-        >
-          <CurrentFilters priceRange={priceRange} />
-          {/* <Typography */}
-          {/*   variant="body2" */}
-          {/*   color="theme.secondary" */}
-          {/*   marginBottom="8px" */}
-          {/* > */}
-          {/*   Shoes/Air Force 1 */}
-          {/* </Typography> */}
-          <Typography
-            variant="h3"
-            color="theme.primary"
-            width="14ch"
-            sx={{
-              wordBreak: "break-word",
-            }}
-          >
-            {searchTerm
-              ? searchTerm + ` (${paginationTotal || "0"})`
-              : "Filters"}
-          </Typography>
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            paddingTop: "25px",
-            paddingBottom: "46px",
-            display: "flex",
-            width: "100%",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Box onClick={hideDrawer}>
+      <Box
+        sx={{
+          paddingLeft: { xs: "30px", md: "40px" },
+          paddingTop: { xs: "25px", md: "40px" },
+          paddingBottom: { xs: "46", md: "8px" },
+          display: "flex",
+          flexDirection: { xs: "row", sm: "column" },
+          justifyContent: { xs: "flex-end", md: "center" },
+        }}
+      >
+        {!isMobile ? (
+          <>
+            <CurrentFilters
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+            />
+            <Typography
+              variant="h3"
+              color="theme.primary"
+              width="10ch"
+              sx={{
+                wordBreak: "break-word",
+              }}
+            >
+              {searchTerm
+                ? searchTerm + ` (${paginationTotal || "0"})`
+                : "Filters"}
+            </Typography>
+          </>
+        ) : (
+          <Box onClick={hideDrawer} sx={{ marginBottom: "36px" }}>
             <CloseIcon
               sx={{
                 width: "20px",
@@ -128,8 +117,8 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
               }}
             />
           </Box>
-        </Box>
-      )}
+        )}
+      </Box>
 
       <FiltersSection label="Gender">
         <FilterCheckbox
@@ -144,8 +133,16 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
         />
       </FiltersSection>
       <FiltersSection label="Kids">
-        <FilterCheckbox label="Boys" checked={true} onChange={() => {}} />
-        <FilterCheckbox label="Girls" checked={false} onChange={() => {}} />
+        <FilterCheckbox
+          label="Boys"
+          checked={searchParams.getAll("gender").includes("Boys")}
+          onChange={() => handleFilterChange("gender", "Boys")}
+        />
+        <FilterCheckbox
+          label="Girls"
+          checked={searchParams.getAll("gender").includes("Girls")}
+          onChange={() => handleFilterChange("gender", "Girls")}
+        />
       </FiltersSection>
       <FiltersSection label="Size">
         {[38, 39, 40, 41, 42, 43, 44].map((size) => (
@@ -161,12 +158,20 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
         <Box sx={{ paddingRight: { xs: "30px" }, marginBottom: "36px" }}>
           <SearchBar size="small" fullWidth />
         </Box>
-        <FilterCheckbox label="Adidas" checked={false} onChange={() => {}} />
-        <FilterCheckbox label="Asics" checked={false} onChange={() => {}} />
+        <FilterCheckbox
+          label="Adidas"
+          checked={searchParams.getAll("brand").includes("Adidas")}
+          onChange={() => handleFilterChange("brand", "Adidas")}
+        />
+        <FilterCheckbox
+          label="Asics"
+          checked={searchParams.getAll("brand").includes("Asics")}
+          onChange={() => handleFilterChange("brand", "Asics")}
+        />
         <FilterCheckbox
           label="New Balance"
-          checked={false}
-          onChange={() => {}}
+          checked={searchParams.getAll("brand").includes("New Balance")}
+          onChange={() => handleFilterChange("brand", "New Balance")}
         />
         <FilterCheckbox
           label="Nike"
@@ -178,7 +183,11 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
           checked={searchParams.getAll("brand").includes("Puma")}
           onChange={() => handleFilterChange("brand", "Puma")}
         />
-        <FilterCheckbox label="Reebok" checked={false} onChange={() => {}} />
+        <FilterCheckbox
+          label="Reebok"
+          checked={searchParams.getAll("brand").includes("Reebok")}
+          onChange={() => handleFilterChange("brand", "Reebok")}
+        />
       </FiltersSection>
       <FiltersSection label="Price">
         <Slider
