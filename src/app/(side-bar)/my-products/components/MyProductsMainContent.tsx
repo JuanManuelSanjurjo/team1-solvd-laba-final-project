@@ -16,6 +16,7 @@ import Button from "@/components/Button";
 import { EditProductForm } from "./EditProductForm";
 import { deleteProduct } from "@/lib/strapi/deleteProduct";
 import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
+import { useDeleteProduct } from "../hooks/useDeleteProduct";
 
 interface MyProductsMainContentProps {
   brandOptions: { value: number; label: string }[];
@@ -39,6 +40,15 @@ export default function MyProductsMainContent({
   colorOptions,
   sizeOptions,
 }: MyProductsMainContentProps) {
+  // at top of file
+
+  // inside component
+  const deleteMutation = useDeleteProduct();
+
+  const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
+    deleteMutation.mutate({ productId, imageIds });
+  };
+
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const token = session?.user?.jwt;
@@ -61,22 +71,6 @@ export default function MyProductsMainContent({
   const products = data ?? [];
 
   const queryClient = useQueryClient();
-
-  const deleteMutation = useMutation({
-    mutationFn: (productId: number) => deleteProduct(productId, token!),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["user-products", userId],
-      });
-    },
-    onError: (error) => {
-      console.error("Failed to delete product:", error);
-    },
-  });
-
-  const handleDeleteProduct = (productId: number) => {
-    deleteMutation.mutate(productId);
-  };
 
   return (
     <Box
@@ -109,7 +103,10 @@ export default function MyProductsMainContent({
                 setEditModalOpen(true);
               }}
               onDelete={() => {
-                handleDeleteProduct(product.id);
+                handleDeleteProduct(
+                  product.id,
+                  products[index].images.map((image) => image.id)
+                );
               }}
             />
           ))}

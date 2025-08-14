@@ -83,12 +83,17 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
       .filter((image) => existentImages.includes(image.url))
       .map((image) => image.id);
 
+    const imagesToDelete = product.images
+      .map((image) => image.id)
+      .filter((id) => !remainingExistentImages.includes(id));
+
     if (mode === "edit") {
       try {
         await handleUpdateProduct({
           data: { ...data, userID },
           imageFiles,
           existentImages: remainingExistentImages,
+          imagesToDelete,
         });
         setSnackbarMessage("Product updated successfully!");
         setSnackbarSeverity("success");
