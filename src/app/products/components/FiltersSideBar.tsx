@@ -34,6 +34,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
   const handleFilterChange = (filterType: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     const existingValues = params.getAll(filterType);
+    params.delete("page");
     const isSelected = existingValues.includes(value);
 
     if (isSelected) {
