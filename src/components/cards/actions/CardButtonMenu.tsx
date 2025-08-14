@@ -8,6 +8,7 @@ import { useState, JSX, MouseEvent } from "react";
 import { Box } from "@mui/material";
 import cardProduct from "./types/cardProduct";
 import Link from "next/link";
+import ConfirmationModal from "@/components/ConfirmationModal";
 
 type CardButtonMenuProps = {
   product: cardProduct;
@@ -35,6 +36,7 @@ export default function CardButtonMenu({
 }: CardButtonMenuProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open: boolean = Boolean(anchorEl);
+  const [showModal, setShowModal] = useState(false);
 
   function handleClick(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
@@ -44,7 +46,22 @@ export default function CardButtonMenu({
     e.preventDefault();
     setAnchorEl(null);
   }
+  function handleCloseModal(event: React.SyntheticEvent) {
+    event.preventDefault();
+    setShowModal(false);
+  }
 
+  function handleDeleteMenuClick(e: MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    setAnchorEl(null);
+    setShowModal(true);
+  }
+
+  async function handleConfirmDelete(e: React.SyntheticEvent) {
+    e.preventDefault();
+    setShowModal(false);
+    onDelete();
+  }
   return (
     <Box>
       <IconButton
@@ -111,17 +128,19 @@ export default function CardButtonMenu({
         >
           Duplicate
         </MenuItem>
-        <MenuItem
-          component="button"
-          onClick={(e) => {
-            e.preventDefault();
-            onDelete();
-            handleClose(e);
-          }}
-        >
+        <MenuItem component="button" onClick={handleDeleteMenuClick}>
           Delete
         </MenuItem>
       </Menu>
+      <ConfirmationModal
+        showModal={showModal}
+        onClose={handleCloseModal}
+        title="Are you sure to delete selected item?"
+        text="Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."
+        primaryBtn="Delete"
+        secondaryBtn="Cancel"
+        onPrimary={handleConfirmDelete}
+      />
     </Box>
   );
 }

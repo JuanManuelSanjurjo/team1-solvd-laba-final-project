@@ -14,7 +14,6 @@ import { normalizeMyProductCard } from "@/lib/normalizers/normalizeProductCard";
 import { EditProductModalWrapper } from "./EditProductModalWrapper";
 import Button from "@/components/Button";
 import { EditProductForm } from "./EditProductForm";
-import { deleteProduct } from "@/lib/strapi/deleteProduct";
 import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
 
@@ -40,9 +39,6 @@ export default function MyProductsMainContent({
   colorOptions,
   sizeOptions,
 }: MyProductsMainContentProps) {
-  // at top of file
-
-  // inside component
   const deleteMutation = useDeleteProduct();
 
   const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
@@ -105,7 +101,9 @@ export default function MyProductsMainContent({
               onDelete={() => {
                 handleDeleteProduct(
                   product.id,
-                  products[index].images.map((image) => image.id)
+                  products[index].images
+                    ? products[index].images.map((image) => image.id)
+                    : []
                 );
               }}
             />
