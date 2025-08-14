@@ -35,8 +35,15 @@ export default function useQueryPagedProducts({
 }: useQueryPagedProductsProps) {
   const { data, isPending } = useQuery<PaginatedProducts>({
     queryKey: ["products", searchParams, searchTerm, pageNumber, pageSize],
-    queryFn: () => fetchProducts(filters, pageNumber, pageSize),
-    enabled: !searchTerm,
+    queryFn: () =>
+      fetchProducts(
+        filters,
+        pageNumber,
+        pageSize,
+        searchTerm,
+        ["name", "color.name", "gender.name"],
+        ["color.name", "gender.name", "images.url"],
+      ),
   });
 
   return { data: data?.data, pagination: data?.meta?.pagination, isPending };
