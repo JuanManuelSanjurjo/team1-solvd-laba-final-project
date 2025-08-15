@@ -63,13 +63,9 @@ export default function CardButtonWishList({
           },
         },
       }}
-      role="button"
       onClick={handleToggle}
-      aria-label="Toggle wishlist"
     >
-      <HeartSlash
-        data-testid="heart-icon"
-        data-variant={isInWisList ? "Bold" : "Outline"}
+      <IconComponent
         size="32"
         color="currentColor"
         className="bg"
