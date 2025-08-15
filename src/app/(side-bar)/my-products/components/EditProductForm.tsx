@@ -151,7 +151,11 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
       }
     } else {
       try {
-        await handleCreateProduct({ data: { ...data, userID }, imageFiles });
+        await handleCreateProduct({
+          data: { ...data, userID },
+          imageFiles,
+          remainingExistentImages,
+        });
         setSnackbarMessage("Product added successfully!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
