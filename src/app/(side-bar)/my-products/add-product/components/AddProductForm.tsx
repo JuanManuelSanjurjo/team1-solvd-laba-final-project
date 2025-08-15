@@ -18,6 +18,7 @@ import { ProductFormFields } from "./ProductFormFields";
  * @property {Array<{ value: number; label: string }>} colorOptions - Options for the Color select input.
  * @property {Array<{ value: number; label: number }>} sizeOptions - Options for the Sizes selection.
  */
+
 interface AddProductFormProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
@@ -46,7 +47,9 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     handleSubmit,
     control,
     setValue,
+    getValues,
     watch,
+    reset,
     formState: { errors },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -61,7 +64,6 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
       userID: 0,
     },
   });
-
   const selectedSizes = watch("sizes");
 
   const { mutateAsync: handleCreateProduct } = useCreateProduct();
@@ -88,6 +90,20 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     const userID = parseInt(session?.user.id ?? "0", 10);
     try {
       await handleCreateProduct({ data: { ...data, userID }, imageFiles });
+
+      reset({
+        name: "",
+        color: colorOptions[0].value,
+        gender: 4,
+        brand: brandOptions[0].value,
+        price: 0,
+        description: "",
+        sizes: [],
+        userID: 0,
+      });
+
+      setImageFiles([]);
+
       setSnackbarMessage("Product added successfully!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
@@ -134,6 +150,8 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
           sizeOptions={sizeOptions}
           selectedSizes={selectedSizes}
           toggleSize={toggleSize}
+          setValue={setValue}
+          getValues={getValues}
         />
       </Box>
       <Box sx={{ flex: 1 }}>
@@ -145,7 +163,10 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
         >
           Product images
         </Typography>
-        <ImagePreviewerUploader onFilesChange={setImageFiles} />
+        <ImagePreviewerUploader
+          onFilesChange={setImageFiles}
+          reset={imageFiles.length === 0}
+        />
       </Box>
       <Snackbar
         open={snackbarOpen}

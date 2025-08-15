@@ -18,6 +18,7 @@ type CardProps = {
   overlay?: boolean;
   showText?: boolean;
   onEdit?: () => void;
+  onDuplicate?: () => void;
   onDeletePreview?: () => void;
   onDelete?: () => void;
 };
@@ -27,7 +28,9 @@ type CardProps = {
  *
  * This component displays either a product (with optional text and actions)
  * or a standalone image. It supports top-right and overlay actions.
+ * @param onDelte edit callback.
  * @param onEdit edit callback.
+ * @param onDuplicate duplicate callback.
  * @param onDeletePreview delete callback.
  * @param product - Optional product to display with name, price, and description.
  * @param image - Optional image to show if no product is provided.
@@ -45,6 +48,7 @@ export default function Card({
   overlayAction = undefined,
   showText = true,
   onEdit = () => {},
+  onDuplicate = () => {},
   onDeletePreview = () => {},
   onDelete = () => {},
 }: CardProps): JSX.Element {
@@ -77,6 +81,7 @@ export default function Card({
                       product={product!}
                       onEdit={onEdit!}
                       onDelete={onDelete!}
+                      onDuplicate={onDuplicate!}
                     />
                   ) : (
                     <CardButtonWishList product={product!} />
@@ -88,7 +93,15 @@ export default function Card({
               <CardActionWrapperCenter
                 action={
                   overlayAction === "cardOverlayAddToCard" ? (
-                    <CardOverlayAddToCart product={product!} />
+                    <CardOverlayAddToCart
+                      product={{
+                        id: product?.id ?? 0,
+                        image: product?.image,
+                        name: product?.name ?? "",
+                        price: product?.price ?? 0,
+                        gender: product?.gender,
+                      }}
+                    />
                   ) : (
                     <CardOverlayDelete onDeletePreview={onDeletePreview!} />
                   )

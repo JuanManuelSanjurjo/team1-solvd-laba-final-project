@@ -5,7 +5,7 @@ import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
 import { fetchUserProducts } from "@/lib/strapi/fetchUserProducts";
 import { MyProduct } from "@/types/product";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
@@ -13,9 +13,9 @@ import SkeletonCardContainer from "@/app/products/components/SkeletonCardContain
 import { normalizeMyProductCard } from "@/lib/normalizers/normalize-product-card";
 import { EditProductModalWrapper } from "./EditProductModalWrapper";
 import Button from "@/components/Button";
-import { EditProductHeader } from "./EditProductHeader";
 import { EditProductForm } from "./EditProductForm";
-import { deleteProduct } from "@/lib/strapi/deleteProduct";
+import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
+import { useDeleteProduct } from "../hooks/useDeleteProduct";
 
 interface MyProductsMainContentProps {
   brandOptions: { value: number; label: string }[];
@@ -39,6 +39,12 @@ export default function MyProductsMainContent({
   colorOptions,
   sizeOptions,
 }: MyProductsMainContentProps) {
+  const deleteMutation = useDeleteProduct();
+
+  const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
+    deleteMutation.mutate({ productId, imageIds });
+  };
+
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const token = session?.user?.jwt;
@@ -47,6 +53,7 @@ export default function MyProductsMainContent({
     null,
   );
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
 
   const { data, isLoading } = useQuery<MyProduct[], Error>({
     queryKey: ["user-products", userId],
@@ -58,24 +65,6 @@ export default function MyProductsMainContent({
   });
 
   const products = data ?? [];
-
-  const queryClient = useQueryClient();
-
-  const deleteMutation = useMutation({
-    mutationFn: (productId: number) => deleteProduct(productId, token!),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["user-products", userId],
-      });
-    },
-    onError: (error) => {
-      console.error("Failed to delete product:", error);
-    },
-  });
-
-  const handleDeleteProduct = (productId: number) => {
-    deleteMutation.mutate(productId);
-  };
 
   return (
     <Box
@@ -99,10 +88,21 @@ export default function MyProductsMainContent({
               overlay={true}
               onEdit={() => {
                 setSelectedProduct(products[index]);
-                setEditModalOpen(!editModalOpen);
+                setFormMode("edit");
+                setEditModalOpen(true);
+              }}
+              onDuplicate={() => {
+                setSelectedProduct(products[index]);
+                setFormMode("duplicate");
+                setEditModalOpen(true);
               }}
               onDelete={() => {
-                handleDeleteProduct(product.id);
+                handleDeleteProduct(
+                  product.id,
+                  products[index].images
+                    ? products[index].images.map((image) => image.id)
+                    : []
+                );
               }}
             />
           ))}
@@ -124,6 +124,7 @@ export default function MyProductsMainContent({
             onClose={() => {
               setEditModalOpen(false);
             }}
+            title={formMode === "edit" ? "Edit Product" : "Add Product"}
           />
 
           <EditProductForm
@@ -131,6 +132,8 @@ export default function MyProductsMainContent({
             colorOptions={colorOptions}
             brandOptions={brandOptions}
             product={selectedProduct ?? products[0]}
+            mode={formMode}
+            onSuccess={() => setEditModalOpen(false)}
           />
           <Box
             sx={{ width: "100%", display: "flex", justifyContent: "center" }}

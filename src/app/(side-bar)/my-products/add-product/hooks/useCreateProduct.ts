@@ -11,15 +11,18 @@ export function useCreateProduct() {
     mutationFn: async ({
       data,
       imageFiles,
+      remainingExistentImages = [],
     }: {
       data: ProductFormData;
       imageFiles: File[];
+      remainingExistentImages?: number[];
     }) => {
       const uploadedIds = imageFiles.length
         ? await uploadImages(imageFiles)
         : [];
+      const images = uploadedIds.concat(remainingExistentImages);
       const payload = {
-        data: { ...data, teamName: "team-1", images: uploadedIds },
+        data: { ...data, teamName: "team-1", images },
       };
       await createProduct(payload, token ?? "");
     },

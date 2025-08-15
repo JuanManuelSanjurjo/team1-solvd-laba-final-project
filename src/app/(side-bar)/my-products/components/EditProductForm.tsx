@@ -10,30 +10,73 @@ import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import ImagePreviewerUploader from "../add-product/components/ImagePreviewerUploader";
 import { MyProduct } from "@/types/product";
 import { useUpdateProduct } from "../hooks/useUpdateProduct";
+import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
+
+/**
+ * Props for the EditProductForm component.
+ *
+ * @interface EditProductFormProps
+ * @property {{ value: number, label: string }[]} brandOptions - Options for the Brand select input.
+ * @property {{ value: number, label: string }[]} colorOptions - Options for the Color select input.
+ * @property {{ value: number, label: number }[]} sizeOptions - Options for the Sizes selection.
+ * @property {MyProduct} product  - The details of an existent product.
+ * @property {String} mode  - Defines if we are going to delete or duplicate a product.
+ * @property {()=> void} onSuccess  - onSuccess action.
+
+
+ */
 
 interface EditProductFormProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
   product: MyProduct;
+  mode: "edit" | "duplicate";
+  onSuccess: () => void;
 }
+
+/**
+ * A form component for editing or duplicating an existing product.
+ *
+ * - Uses `react-hook-form` with a Zod schema resolver for validation.
+ * - Handles both "edit" (update existing product) and "duplicate" (create new product) modes.
+ * - Provides image management (upload, delete).
+ * - Displays success/error feedback via Material UI `Snackbar` and `Alert`.
+ *
+ * @component
+ * @param {EditProductFormProps} props - Props for configuring the form.
+ * @returns {JSX.Element} The rendered product form UI.
+ *
+ * @example
+ * <EditProductForm
+ *   brandOptions={[{ value: 1, label: "Nike" }]}
+ *   colorOptions={[{ value: 1, label: "Red" }]}
+ *   sizeOptions={[{ value: 42, label: 42 }]}
+ *   product={myProduct}
+ *   mode="edit"
+ *   onSuccess={() => console.log("Updated!")}
+ * />
+ */
 
 export const EditProductForm: React.FC<EditProductFormProps> = ({
   brandOptions,
   colorOptions,
   sizeOptions,
   product,
+  mode,
+  onSuccess,
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existentImages, setExistentImages] = useState<string[]>(
-    product.images.map((image) => image.url)
+    product.images ? product.images.map((image) => image.url) : []
   );
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    getValues,
     watch,
     formState: { errors },
   } = useForm<ProductFormData>({
@@ -51,6 +94,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   });
 
   const { mutateAsync: handleUpdateProduct } = useUpdateProduct(product.id);
+  const { mutateAsync: handleCreateProduct } = useCreateProduct();
 
   const selectedSizes = watch("sizes");
 
@@ -76,23 +120,52 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
     const userID = parseInt(session?.user.id ?? "0", 10);
 
     const remainingExistentImages = product.images
-      .filter((image) => existentImages.includes(image.url))
-      .map((image) => image.id);
+      ? product.images
+          .filter((image) => existentImages.includes(image.url))
+          .map((image) => image.id)
+      : [];
 
-    try {
-      await handleUpdateProduct({
-        data: { ...data, userID },
-        imageFiles,
-        existentImages: remainingExistentImages,
-      });
-      setSnackbarMessage("Product updated successfully!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-    } catch (err) {
-      console.log(err);
-      setSnackbarMessage("Failed to update product.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+    const imagesToDelete =
+      product.images &&
+      product.images
+        .map((img) => img.id)
+        .filter((id) => !remainingExistentImages.includes(id));
+
+    if (mode === "edit") {
+      try {
+        await handleUpdateProduct({
+          data: { ...data, userID },
+          imageFiles,
+          existentImages: remainingExistentImages,
+          imagesToDelete,
+        });
+        setSnackbarMessage("Product updated successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        onSuccess?.();
+      } catch (err) {
+        console.log(err);
+        setSnackbarMessage("Failed to update product.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
+    } else {
+      try {
+        await handleCreateProduct({
+          data: { ...data, userID },
+          imageFiles,
+          remainingExistentImages,
+        });
+        setSnackbarMessage("Product added successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        onSuccess?.();
+      } catch (err) {
+        console.log(err);
+        setSnackbarMessage("Failed to add product.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
     }
   };
 
@@ -131,6 +204,8 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           sizeOptions={sizeOptions}
           selectedSizes={selectedSizes}
           toggleSize={toggleSize}
+          getValues={getValues}
+          setValue={setValue}
         />
       </Box>
       <Box sx={{ flex: 1 }}>
@@ -144,7 +219,9 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         </Typography>
         <ImagePreviewerUploader
           onFilesChange={setImageFiles}
-          initialPreviews={product.images.map((image) => image.url)}
+          initialPreviews={
+            product.images ? product.images.map((image) => image.url) : []
+          }
           onPreviewsChange={setExistentImages}
         />
       </Box>
