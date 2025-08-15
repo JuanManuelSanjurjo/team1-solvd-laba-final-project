@@ -1,10 +1,11 @@
 "use client";
 
 import { Box } from "@mui/material";
-import { HeartSlash } from "iconsax-react";
+import { HeartSlash, Heart } from "iconsax-react";
 import { JSX } from "react";
 import { useWishlistStore } from "@/store/wishlist";
 import cardProduct from "./types/cardProduct";
+import { useSession } from "next-auth/react";
 
 type CardButtonWishListProps = {
   product: cardProduct;
@@ -21,18 +22,29 @@ type CardButtonWishListProps = {
 
 export default function CardButtonWishList({
   product,
-}: CardButtonWishListProps): JSX.Element | null {
-  const { wishList, addToWishList, removeFromWishList } = useWishlistStore();
+}: CardButtonWishListProps): JSX.Element {
+  const { data: session } = useSession();
+
+  const userId = String(session?.user.id);
+  const byUser = useWishlistStore((state) => state.byUser);
+  const addToWishList = useWishlistStore((state) => state.addToWishList);
+  const removeFromWishList = useWishlistStore(
+    (state) => state.removeFromWishList
+  );
+
+  const wishList = byUser[userId] ?? [];
   const isInWisList = wishList.some((prod) => prod.id === product.id);
 
   const handleToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isInWisList) {
-      removeFromWishList(product.id);
+      removeFromWishList(userId, product.id);
     } else {
-      addToWishList(product);
+      addToWishList(userId, product);
     }
   };
+
+  const IconComponent = isInWisList ? HeartSlash : Heart;
 
   return (
     <Box
@@ -51,13 +63,9 @@ export default function CardButtonWishList({
           },
         },
       }}
-      role="button"
       onClick={handleToggle}
-      aria-label="Toggle wishlist"
     >
-      <HeartSlash
-        data-testid="heart-icon"
-        data-variant={isInWisList ? "Bold" : "Outline"}
+      <IconComponent
         size="32"
         color="currentColor"
         className="bg"

@@ -7,6 +7,7 @@ import { JSX, useEffect, useMemo } from "react";
 import { NormalizedProduct } from "@/types/product-types";
 import cardProduct from "@/components/cards/actions/types/cardProduct";
 import { useRecentlyViewedStore } from "@/store/recentlyviewed";
+import { useSession } from "next-auth/react";
 
 /**
  * ProductPageDetails
@@ -28,7 +29,7 @@ export default function ProductPageDetails({
   const cardProductInfo: cardProduct = useMemo(
     () => ({
       id: product.id,
-      image: product.images?.[0]?.url,
+      image: product.images?.[0]?.url || "https://placehold.co/400",
       name: product.name,
       price: product.price,
       gender: product.gender,
@@ -36,13 +37,23 @@ export default function ProductPageDetails({
     [product],
   );
 
+  const { data: session, status } = useSession();
   const addToRecentlyViewed = useRecentlyViewedStore(
     (state) => state.addToRecentlyViewed,
   );
 
   useEffect(() => {
-    addToRecentlyViewed(cardProductInfo);
-  }, [addToRecentlyViewed, cardProductInfo]);
+    if (status !== "authenticated") return;
+    const userId = session?.user?.id ? String(session.user.id) : null;
+    if (!userId) return;
+    addToRecentlyViewed(userId, cardProductInfo);
+  }, [
+    status,
+    session?.user?.id,
+    product.id,
+    addToRecentlyViewed,
+    cardProductInfo,
+  ]);
 
   return (
     <Box
