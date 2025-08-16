@@ -41,7 +41,11 @@ const WelcomeComponent = ({ src, name }: WelcomeComponentProps) => {
         ml: { xs: 2, lg: 5 },
       }}
     >
-      <ProfilePicture src={src} alt="User avatar" width={64}></ProfilePicture>
+      <ProfilePicture
+        src={src}
+        alt={`${name}'s avatar`}
+        width={64}
+      ></ProfilePicture>
       <Box display="flex" flexDirection="column">
         <Typography
           variant="body1"
