@@ -36,13 +36,16 @@ interface SignUpSuccessResponse {
 export default async function signUp(
   body: SignUpPayload
 ): Promise<SignUpResponse | false> {
-  const response = await fetch(`${process.env.API_URL}/auth/local/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/local/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
 
   const responseBody: SignUpSuccessResponse | SignUpErrorResponse =
     await response.json();

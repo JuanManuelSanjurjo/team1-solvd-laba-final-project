@@ -25,13 +25,13 @@ export async function fetchProducts(
   pageSize: number,
   searchTerm: string | null,
   searchFields: string[] = ["name"],
-  populateFields: string[] = [],
+  populateFields: string[] = []
 ) {
   const baseUrl = searchTerm
     ? new URL(
-        getQueryStringFromFilters(searchTerm, searchFields, populateFields),
+        getQueryStringFromFilters(searchTerm, searchFields, populateFields)
       )
-    : new URL("https://shoes-shop-strapi.herokuapp.com/api/products");
+    : new URL(`${process.env.NEXT_PUBLIC_API_URL}/products`);
 
   baseUrl.searchParams.set("populate", "*");
   baseUrl.searchParams.set("pagination[page]", pageNumber.toString());
@@ -53,7 +53,7 @@ export async function fetchProducts(
     filters.genders.forEach((gender, index) => {
       baseUrl.searchParams.append(
         `filters[gender][name][$in][${index}]`,
-        gender,
+        gender
       );
     });
   }
@@ -62,7 +62,7 @@ export async function fetchProducts(
     filters.categories.forEach((categorie, index) => {
       baseUrl.searchParams.append(
         `filters[categories][name][$in][${index}]`,
-        categorie,
+        categorie
       );
     });
   }
@@ -76,11 +76,11 @@ export async function fetchProducts(
   if (filters.priceMin !== undefined && filters.priceMax !== undefined) {
     baseUrl.searchParams.append(
       "filters[price][$between]",
-      filters.priceMin.toString(),
+      filters.priceMin.toString()
     );
     baseUrl.searchParams.append(
       "filters[price][$between]",
-      filters.priceMax.toString(),
+      filters.priceMax.toString()
     );
   }
 
