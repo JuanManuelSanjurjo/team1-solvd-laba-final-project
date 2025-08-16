@@ -6,6 +6,11 @@ import AuthLogo from "../components/AuthLogo";
 import { Typography } from "@mui/material";
 import Link from "next/link";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `Forgot Password | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+};
 
 export default function ForgotPassword() {
   return (

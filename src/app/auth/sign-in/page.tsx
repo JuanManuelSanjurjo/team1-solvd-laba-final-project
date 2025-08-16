@@ -6,6 +6,11 @@ import AuthLogo from "../components/AuthLogo";
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 import SignInForm from "./components/SignInForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `Sign In | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+};
 
 export default function SignIn() {
   return (

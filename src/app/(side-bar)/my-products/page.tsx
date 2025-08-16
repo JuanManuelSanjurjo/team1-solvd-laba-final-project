@@ -3,6 +3,11 @@ import MyProductsBanner from "./components/MyProductsBanner";
 import MyProductsMainContent from "./components/MyProductsMainContent";
 import { fetchColors } from "@/lib/strapi/fetchColors";
 import { fetchSizes } from "@/lib/strapi/fetchSizes";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `My Products | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+};
 
 /**
  * MyProducts
