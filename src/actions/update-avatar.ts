@@ -16,7 +16,7 @@ export const updateAvatar = async (
   formData.append("ref", "plugin::users-permissions.user");
   formData.append("field", "avatar");
 
-  const response = await fetch(`${process.env.API_URL}/upload`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${session?.user.jwt}`,

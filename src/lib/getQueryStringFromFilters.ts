@@ -22,7 +22,7 @@
 export function getQueryStringFromFilters(
   query: string,
   searchFields: string[] = ["name"],
-  populateFields: string[] = [],
+  populateFields: string[] = []
 ): string {
   const encoded = encodeURIComponent(query);
 
@@ -47,7 +47,9 @@ export function getQueryStringFromFilters(
     })
     .join("&");
 
-  const url = `https://shoes-shop-strapi.herokuapp.com/api/products?${filters}${populate ? `&${populate}` : ""}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/products?${filters}${
+    populate ? `&${populate}` : ""
+  }`;
 
   return url;
 }

@@ -12,7 +12,7 @@
 export async function getProductDetails(id: string) {
   try {
     const response = await fetch(
-      `https://shoes-shop-strapi.herokuapp.com/api/products/${id}?fields[0]=name&fields[1]=price&fields[2]=description
+      `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?fields[0]=name&fields[1]=price&fields[2]=description
       &populate[color][fields][0]=name&populate[sizes][fields][0]=value&populate[images][fields][0]=url&populate[gender][fields][0]=name`,
       { cache: "no-store" }
     );

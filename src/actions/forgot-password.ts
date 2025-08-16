@@ -21,13 +21,16 @@ interface ForgotPasswordErrorResponse {
 export default async function forgotPassword(
   body: ForgotPasswordPayload
 ): Promise<boolean> {
-  const response = await fetch(`${process.env.API_URL}/auth/forgot-password`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
 
   const responseBody:
     | ForgotPasswordSuccessResponse
