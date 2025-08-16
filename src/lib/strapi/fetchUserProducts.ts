@@ -1,6 +1,6 @@
 export async function fetchUserProducts(userId: number, token: string) {
   const response = await fetch(
-    `https://shoes-shop-strapi.herokuapp.com/api/users/${userId}?populate[products][populate]=*
+    `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}?populate[products][populate]=*
 `,
     {
       headers: {

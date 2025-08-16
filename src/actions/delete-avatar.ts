@@ -15,7 +15,7 @@ export const deleteAvatar = async (
   const session = await auth();
 
   const response = await fetch(
-    `${process.env.API_URL}/upload/files/${avatarId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/upload/files/${avatarId}`,
     {
       method: "DELETE",
       headers: {

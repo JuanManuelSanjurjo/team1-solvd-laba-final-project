@@ -12,8 +12,8 @@
 export async function getProductImages(id: string) {
   try {
     const response = await fetch(
-      `https://shoes-shop-strapi.herokuapp.com/api/products/${id}?populate[images][fields][0]=url&populate[images][fields][1]=name`,
-      { cache: "no-store" },
+      `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?populate[images][fields][0]=url&populate[images][fields][1]=name`,
+      { cache: "no-store" }
     );
     if (!response.ok) {
       throw new Error("Failed to fetch product images");

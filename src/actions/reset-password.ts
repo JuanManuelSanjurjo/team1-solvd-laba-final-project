@@ -45,13 +45,16 @@ interface ResetPasswordErrorResponse {
 export default async function resetPassword(
   body: ResetPasswordPayload
 ): Promise<ResetPasswordSuccessResponse | false> {
-  const response = await fetch(`${process.env.API_URL}/auth/reset-password`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
 
   const responseBody:
     | ResetPasswordSuccessResponse
