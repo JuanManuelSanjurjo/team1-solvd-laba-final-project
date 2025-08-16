@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 /**
  * DesktopProfileMenu
@@ -15,9 +15,12 @@ import { useSession } from "next-auth/react";
  * @returns {JSX.Element} The profile menu component.
  */
 
-export default function DesktopProfileMenu() {
+export default function DesktopProfileMenu({
+  session,
+}: {
+  session: Session | null;
+}) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { data: session } = useSession();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
