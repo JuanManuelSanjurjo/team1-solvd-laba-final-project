@@ -13,7 +13,7 @@ import {
 global.fetch = jest.fn();
 const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
 
-process.env.API_URL = TEST_API_URLS.STRAPI;
+process.env.NEXT_PUBLIC_API_URL = TEST_API_URLS.STRAPI;
 
 describe("resetPassword", () => {
   beforeEach(() => {
