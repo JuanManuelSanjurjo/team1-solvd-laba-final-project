@@ -40,6 +40,8 @@ jest.mock("next/link", () => {
 
 import signInAction from "@/actions/sign-in";
 import { useRouter } from "next/navigation";
+import authMocks from "__tests__/mocks/auth";
+import { SignInResponse } from "@/app/auth/sign-in/types";
 
 const mockSignInAction = signInAction as jest.MockedFunction<
   typeof signInAction
@@ -70,7 +72,7 @@ describe("SignInForm Component", () => {
 
   describe("Form Submission", () => {
     it("submits form with valid data", async () => {
-      mockSignInAction.mockResolvedValue(undefined);
+      mockSignInAction.mockResolvedValue(authMocks.success);
       const Wrapper = createWrapper();
 
       await act(async () => {
@@ -102,7 +104,7 @@ describe("SignInForm Component", () => {
     });
 
     it("shows success message and redirects on successful sign in", async () => {
-      mockSignInAction.mockResolvedValue(undefined);
+      mockSignInAction.mockResolvedValue(authMocks.success);
       const Wrapper = createWrapper();
 
       await act(async () => {
@@ -123,9 +125,7 @@ describe("SignInForm Component", () => {
       });
 
       await waitFor(() => {
-        expect(
-          screen.getByText("Login successful! Redirecting...")
-        ).toBeInTheDocument();
+        expect(screen.getByText(authMocks.success.message)).toBeInTheDocument();
       });
 
       expect(mockPush).toHaveBeenCalledWith("/products");
@@ -160,10 +160,15 @@ describe("SignInForm Component", () => {
     });
 
     it("disables submit button during pending request", async () => {
-      let resolveSignIn: () => void;
-      const signInPromise = new Promise<void>((resolve) => {
-        resolveSignIn = resolve;
+      let resolvePromise: () => boolean;
+
+      const signInPromise = new Promise<SignInResponse>((resolve) => {
+        resolvePromise = (): boolean => {
+          resolve(authMocks.success);
+          return true;
+        };
       });
+
       mockSignInAction.mockReturnValue(signInPromise);
 
       const Wrapper = createWrapper();
@@ -190,7 +195,7 @@ describe("SignInForm Component", () => {
       });
 
       await act(async () => {
-        resolveSignIn!();
+        resolvePromise!();
       });
 
       await waitFor(() => {

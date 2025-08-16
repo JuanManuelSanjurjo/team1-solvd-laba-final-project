@@ -1,26 +1,16 @@
 "use server";
 
 import { ForgotPasswordFormData } from "@/app/auth/forgot-password/types";
+import { handleApiError } from "@/lib/normalizers/handle-api-error";
 
-type ForgotPasswordPayload = ForgotPasswordFormData;
-
-interface ForgotPasswordSuccessResponse {
-  ok: boolean;
-}
-
-interface ForgotPasswordErrorResponse {
-  data: Record<string, unknown>;
-  error: {
-    status: number;
-    name: string;
-    message: string;
-    details: Record<string, unknown>;
-  };
+export interface ForgotPasswordResponse {
+  error: boolean;
+  message: string;
 }
 
 export default async function forgotPassword(
-  body: ForgotPasswordPayload
-): Promise<boolean> {
+  body: ForgotPasswordFormData
+): Promise<ForgotPasswordResponse> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`,
     {
@@ -32,20 +22,12 @@ export default async function forgotPassword(
     }
   );
 
-  const responseBody:
-    | ForgotPasswordSuccessResponse
-    | ForgotPasswordErrorResponse = await response.json();
-
   if (!response.ok) {
-    if ("error" in responseBody && responseBody.error?.message) {
-      throw Error(responseBody.error.message);
-    }
-    throw Error("Error trying to reset password!");
+    return await handleApiError(response, "Failed to update avatar");
   }
 
-  if ("ok" in responseBody && responseBody.ok) {
-    return true;
-  }
-
-  return false;
+  return {
+    error: false,
+    message: "Success! Please check your email for password reset instructions",
+  };
 }

@@ -6,4 +6,9 @@ export const signInSchema = z.object({
   rememberMe: z.boolean(),
 });
 
+export type SignInResponse = {
+  error: boolean;
+  message: string;
+};
+
 export type SignInFormData = z.infer<typeof signInSchema>;
