@@ -2,9 +2,20 @@ import { Box, Typography } from "@mui/material";
 import UpdateProfileForm from "./components/UpdateProfileForm";
 import { auth } from "@/auth";
 import UpdateProfileImage from "./components/UpdateProfileImage";
+import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `Profile | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+};
 
 export default async function UpdateProfile() {
   const session = await auth();
+
+  if (session === null) {
+    redirect("/auth/sign-in");
+  }
+
   return (
     <Box
       width={"100%"}

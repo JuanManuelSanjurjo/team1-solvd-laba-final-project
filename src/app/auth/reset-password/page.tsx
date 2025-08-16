@@ -7,6 +7,11 @@ import { Typography } from "@mui/material";
 import Link from "next/link";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import { Suspense } from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `Reset Password | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+};
 
 function ResetPasswordWrapper() {
   return (
