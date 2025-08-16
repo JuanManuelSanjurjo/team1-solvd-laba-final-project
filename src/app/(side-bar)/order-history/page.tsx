@@ -1,6 +1,11 @@
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { Box, Typography } from "@mui/material";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `Order History | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+};
 
 export default function OrderHistory() {
   return (

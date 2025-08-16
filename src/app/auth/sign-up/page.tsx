@@ -7,6 +7,11 @@ import AuthLogo from "../components/AuthLogo";
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 import SignUpForm from "./components/SignUpForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `Register | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+};
 
 export default function SignUp() {
   return (
