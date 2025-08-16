@@ -88,7 +88,9 @@ export default function NoSearchingStateHeader({
               </Link>
             </Tooltip>
           )}
-          {isAuthenticated && isDesktop && <DesktopProfileMenu />}
+          {isAuthenticated && isDesktop && (
+            <DesktopProfileMenu session={session} />
+          )}
         </Box>
         {!isDesktop && isAuthenticated && (
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
