@@ -18,11 +18,7 @@ import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import signInAction from "@/actions/sign-in";
-import { signInSchema, SignInFormData } from "../types";
-
-function cleanUpError(error: string) {
-  return error.replace(/Read more at.*/, "").trim();
-}
+import { signInSchema, SignInFormData, SignInResponse } from "../types";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -45,14 +41,20 @@ export default function SignInForm() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: SignInFormData) => {
-      return await signInAction(data);
+    mutationFn: async (data: SignInFormData): Promise<SignInResponse> => {
+      const response = await signInAction(data);
+
+      if (response.error) {
+        throw new Error(response.message);
+      }
+
+      return response;
     },
-    onSuccess: () => {
+    onSuccess: ({ message }: SignInResponse) => {
       setOpen(true);
       setToastContent({
         severity: "success",
-        message: "Login successful! Redirecting...",
+        message: message,
       });
 
       router.push("/products");
@@ -62,7 +64,7 @@ export default function SignInForm() {
       setOpen(true);
       setToastContent({
         severity: "error",
-        message: cleanUpError(error.message),
+        message: error.message,
       });
     },
   });

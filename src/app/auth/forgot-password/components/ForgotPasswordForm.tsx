@@ -11,7 +11,9 @@ import {
 } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
-import forgotPassword from "@/actions/forgot-password";
+import forgotPassword, {
+  ForgotPasswordResponse,
+} from "@/actions/forgot-password";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordSchema, ForgotPasswordFormData } from "../types";
@@ -44,12 +46,19 @@ export default function ForgotPasswordForm() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: forgotPassword,
-    onSuccess: () => {
+    mutationFn: async (data: ForgotPasswordFormData) => {
+      const response = await forgotPassword(data);
+
+      if (response.error) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: ({ message }: ForgotPasswordResponse) => {
       setToastContent({
         severity: "success",
-        message:
-          "Success! Please check your email for password reset instructions",
+        message: message,
       });
       setOpen(true);
     },

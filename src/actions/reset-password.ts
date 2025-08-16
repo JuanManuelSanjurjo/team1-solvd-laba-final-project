@@ -1,50 +1,21 @@
 "use server";
 
-import { ResetPasswordFormData } from "@/app/auth/reset-password/types";
+import { handleApiError } from "@/lib/normalizers/handle-api-error";
 
-interface ResetPasswordPayload {
+export interface ResetPasswordPayload {
   password: string;
   passwordConfirmation: string;
   code: string;
 }
 
-export async function transformResetPasswordData(
-  formData: ResetPasswordFormData
-): Promise<ResetPasswordPayload> {
-  return {
-    password: formData.password,
-    passwordConfirmation: formData.confirmPassword,
-    code: formData.code,
-  };
-}
-
-interface ResetPasswordSuccessResponse {
-  jwt: string;
-  user: {
-    id: number;
-    username: string;
-    email: string;
-    provider: string;
-    confirmed: boolean;
-    blocked: boolean;
-    createdAt: string;
-    updatedAt: string;
-  };
-}
-
-interface ResetPasswordErrorResponse {
-  data: Record<string, unknown>;
-  error: {
-    status: number;
-    name: string;
-    message: string;
-    details: Record<string, unknown>;
-  };
+export interface ResetPasswordResponse {
+  error: boolean;
+  message: string;
 }
 
 export default async function resetPassword(
   body: ResetPasswordPayload
-): Promise<ResetPasswordSuccessResponse | false> {
+): Promise<ResetPasswordResponse> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password`,
     {
@@ -56,20 +27,13 @@ export default async function resetPassword(
     }
   );
 
-  const responseBody:
-    | ResetPasswordSuccessResponse
-    | ResetPasswordErrorResponse = await response.json();
-
   if (!response.ok) {
-    if ("error" in responseBody && responseBody.error?.message) {
-      throw Error(responseBody.error.message);
-    }
-    throw Error("Error trying to reset password!");
+    return await handleApiError(response, "Failed to reset password");
   }
 
-  if ("jwt" in responseBody && responseBody.user) {
-    return responseBody;
-  }
-
-  return false;
+  return {
+    error: false,
+    message:
+      "Password reset successful! You can now log in with your new password.",
+  };
 }

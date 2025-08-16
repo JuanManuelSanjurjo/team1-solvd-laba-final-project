@@ -1,41 +1,15 @@
 "use server";
 
-import { SignUpFormData } from "@/app/auth/sign-up/types";
-
-type SignUpPayload = Omit<SignUpFormData, "confirmPassword">;
-
-type SignUpResponse = Omit<{ id: number } & SignUpPayload, "password">;
-
-interface SignUpErrorResponse {
-  data: null;
-  error: {
-    status: number;
-    name: string;
-    message: string;
-    details: Record<string, unknown>;
-  };
-}
-
-interface SignUpSuccessResponse {
-  user: {
-    id: number;
-    username: string;
-    email: string;
-    provider: string;
-    confirmed: boolean;
-    blocked: boolean;
-    createdAt: string;
-    updatedAt: string;
-    phoneNumber: string | null;
-    firstName: string | null;
-    lastName: string | null;
-    customerId: string | null;
-  };
-}
+import {
+  SignUpPayload,
+  SignUpResponse,
+  SignUpSuccessResponse,
+} from "@/app/auth/sign-up/types";
+import { handleApiError } from "@/lib/normalizers/handle-api-error";
 
 export default async function signUp(
   body: SignUpPayload
-): Promise<SignUpResponse | false> {
+): Promise<SignUpResponse> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/auth/local/register`,
     {
@@ -47,25 +21,18 @@ export default async function signUp(
     }
   );
 
-  const responseBody: SignUpSuccessResponse | SignUpErrorResponse =
-    await response.json();
-
   if (!response.ok) {
-    if ("error" in responseBody && responseBody.error?.message) {
-      throw Error(responseBody.error.message);
-    }
-    throw Error("Error trying to sign up!");
+    return await handleApiError(response, "Failed to update avatar");
   }
+
+  const responseBody: SignUpSuccessResponse = await response.json();
 
   if ("user" in responseBody && responseBody.user) {
-    const user = responseBody.user;
-    const data: SignUpResponse = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
+    return {
+      error: false,
+      message: "Success! Please confirm your account in your e-mail",
     };
-    return data;
   }
 
-  return false;
+  return { error: true, message: "Error trying to sign up!" };
 }

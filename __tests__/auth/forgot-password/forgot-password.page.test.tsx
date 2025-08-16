@@ -8,7 +8,10 @@ import {
 } from "../../utils/test-utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ForgotPasswordPage from "@/app/auth/forgot-password/page";
-import forgotPassword from "@/actions/forgot-password";
+import forgotPassword, {
+  ForgotPasswordResponse,
+} from "@/actions/forgot-password";
+import authMocks from "__tests__/mocks/auth";
 
 jest.mock("@/actions/forgot-password");
 const mockForgotPassword = forgotPassword as jest.MockedFunction<
@@ -103,7 +106,7 @@ describe("Forgot Password Page", () => {
     });
 
     it("submits form with valid email", async () => {
-      mockForgotPassword.mockResolvedValueOnce(true);
+      mockForgotPassword.mockResolvedValueOnce(authMocks.success);
       renderWithQueryClient(<ForgotPasswordPage />);
 
       const emailInput = screen.getByLabelText(/e-mail/i);
@@ -124,7 +127,7 @@ describe("Forgot Password Page", () => {
     });
 
     it("shows success message on successful submission", async () => {
-      mockForgotPassword.mockResolvedValueOnce(true);
+      mockForgotPassword.mockResolvedValueOnce(authMocks.success);
       renderWithQueryClient(<ForgotPasswordPage />);
 
       const emailInput = screen.getByLabelText(/e-mail/i);
@@ -138,11 +141,7 @@ describe("Forgot Password Page", () => {
       });
 
       await waitFor(() => {
-        expect(
-          screen.getByText(
-            "Success! Please check your email for password reset instructions"
-          )
-        ).toBeInTheDocument();
+        expect(screen.getByText(authMocks.success.message)).toBeInTheDocument();
       });
     });
 
@@ -167,11 +166,16 @@ describe("Forgot Password Page", () => {
     });
 
     it("disables submit button during submission", async () => {
-      let resolvePromise: () => void;
-      const pendingPromise = new Promise<void>((resolve) => {
-        resolvePromise = resolve;
+      let resolvePromise: () => boolean;
+
+      const pendingPromise = new Promise<ForgotPasswordResponse>((resolve) => {
+        resolvePromise = (): boolean => {
+          resolve(authMocks.success);
+          return true;
+        };
       });
-      mockForgotPassword.mockReturnValueOnce(pendingPromise.then(() => true));
+
+      mockForgotPassword.mockReturnValueOnce(pendingPromise);
 
       renderWithQueryClient(<ForgotPasswordPage />);
 

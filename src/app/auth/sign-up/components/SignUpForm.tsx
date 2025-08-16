@@ -14,7 +14,7 @@ import Button from "@/components/Button";
 import signUp from "@/actions/sign-up";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { signUpSchema, SignUpFormData } from "../types";
+import { signUpSchema, SignUpFormData, SignUpResponse } from "../types";
 
 export default function SignUpForm() {
   const [open, setOpen] = useState(false);
@@ -44,11 +44,25 @@ export default function SignUpForm() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: signUp,
-    onSuccess: () => {
+    mutationFn: async (data: SignUpFormData): Promise<SignUpResponse> => {
+      const submitData: Omit<SignUpFormData, "confirmPassword"> = {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      };
+
+      const response = await signUp(submitData);
+
+      if (response.error) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: (data: SignUpResponse) => {
       setToastContent({
         severity: "success",
-        message: "Success! Please confirm your account in your e-mail",
+        message: data.message,
       });
       setOpen(true);
     },
@@ -62,12 +76,7 @@ export default function SignUpForm() {
   });
 
   const onSubmit = (data: SignUpFormData) => {
-    const submitData: Omit<SignUpFormData, "confirmPassword"> = {
-      username: data.username,
-      email: data.email,
-      password: data.password,
-    };
-    mutate(submitData);
+    mutate(data);
   };
 
   return (
