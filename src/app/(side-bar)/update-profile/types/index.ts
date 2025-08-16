@@ -52,3 +52,8 @@ export interface SelectedImageUrl {
 export interface UpdateProfileImageProps {
   session: Session | null;
 }
+
+export interface UpdateProfileResponse {
+  error: boolean;
+  message: string;
+}

@@ -9,6 +9,8 @@ import {
   waitFor,
   act,
 } from "__tests__/utils/test-utils";
+import { SignUpResponse } from "@/app/auth/sign-up/types";
+import authMocks from "__tests__/mocks/auth";
 
 jest.mock("@/actions/sign-up");
 const mockSignUp = signUp as jest.MockedFunction<typeof signUp>;
@@ -141,7 +143,7 @@ describe("SignUpForm Component", () => {
     });
 
     it("submits form with valid data", async () => {
-      mockSignUp.mockResolvedValueOnce(MOCK_USER_RESPONSE);
+      mockSignUp.mockResolvedValueOnce(authMocks.success);
 
       const Wrapper = createWrapper();
       render(<SignUpForm />, { wrapper: Wrapper } as any);
@@ -159,7 +161,7 @@ describe("SignUpForm Component", () => {
     });
 
     it("shows success message on successful submission", async () => {
-      mockSignUp.mockResolvedValueOnce(MOCK_USER_RESPONSE);
+      mockSignUp.mockResolvedValueOnce(authMocks.success);
 
       const Wrapper = createWrapper();
       render(<SignUpForm />, { wrapper: Wrapper } as any);
@@ -170,11 +172,7 @@ describe("SignUpForm Component", () => {
       });
 
       await waitFor(() => {
-        expect(
-          screen.getByText(
-            /success! please confirm your account in your e-mail/i
-          )
-        ).toBeInTheDocument();
+        expect(screen.getByText(authMocks.success.message)).toBeInTheDocument();
       });
     });
 
@@ -197,20 +195,14 @@ describe("SignUpForm Component", () => {
 
     it("disables submit button while request is pending", async () => {
       let resolvePromise: () => boolean;
-      const pendingPromise = new Promise<boolean>((resolve) => {
+      const pendingPromise = new Promise<SignUpResponse>((resolve) => {
         resolvePromise = (): boolean => {
-          resolve(true);
+          resolve(authMocks.success);
           return true;
         };
       });
 
-      mockSignUp.mockReturnValueOnce(
-        pendingPromise as unknown as Promise<{
-          id: number;
-          username: string;
-          email: string;
-        }>
-      );
+      mockSignUp.mockReturnValueOnce(pendingPromise);
 
       const Wrapper = createWrapper();
       render(<SignUpForm />, { wrapper: Wrapper } as any);
@@ -236,7 +228,7 @@ describe("SignUpForm Component", () => {
     });
 
     it("closes snackbar when close button is clicked", async () => {
-      mockSignUp.mockResolvedValueOnce(MOCK_USER_RESPONSE);
+      mockSignUp.mockResolvedValueOnce(authMocks.success);
 
       const Wrapper = createWrapper();
       render(<SignUpForm />, { wrapper: Wrapper } as any);
@@ -248,9 +240,7 @@ describe("SignUpForm Component", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(
-            /success! please confirm your account in your e-mail/i
-          )
+          screen.queryByText(authMocks.success.message)
         ).toBeInTheDocument();
       });
 
@@ -261,9 +251,7 @@ describe("SignUpForm Component", () => {
 
       await waitFor(() => {
         expect(
-          screen.queryByText(
-            /success! please confirm your account in your e-mail/i
-          )
+          screen.queryByText(authMocks.success.message)
         ).not.toBeInTheDocument();
       });
     });
