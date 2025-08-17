@@ -2,10 +2,6 @@ import Gallery from "../components/gallery/Gallery";
 import { normalizeImages } from "@/lib/normalizers/product-normalizers";
 import { getProductImages } from "@/lib/strapi/get-product-images";
 
-type Params = {
-  "product-id": string;
-};
-
 /**
  * GalleryPage
  *
@@ -14,8 +10,13 @@ type Params = {
  * @param {Params} params - The URL parameters.
  * @returns {JSX.Element} The gallery component.
  */
-export default async function GalleryPage({ params }: { params: Params }) {
-  const { data } = await getProductImages(params["product-id"]);
+export default async function GalleryPage({
+  params,
+}: {
+  params: Promise<{ "product-id": string }>;
+}) {
+  const product = await params;
+  const { data } = await getProductImages(product["product-id"]);
   const images = data ? normalizeImages(data) : [];
 
   const defaultImage = {
