@@ -23,9 +23,12 @@ interface Color {
  */
 
 export async function fetchColors() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/colors`, {
-    next: { revalidate: 3600 },
-  });
+  const res = await fetch(
+    `https://shoes-shop-strapi.herokuapp.com/api/colors`,
+    {
+      next: { revalidate: 3600 },
+    }
+  );
 
   if (!res.ok) throw new Error("Failed to fetch colors");
 
