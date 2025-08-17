@@ -28,6 +28,12 @@ export default function ProductPageButtons({
   const { data: session, status } = useSession();
   const userId = session?.user?.id;
 
+  const byUser = useWishlistStore((state) => state.byUser);
+  const addToWishList = useWishlistStore((state) => state.addToWishList);
+  const removeFromWishList = useWishlistStore(
+    (state) => state.removeFromWishList
+  );
+
   if (!userId) {
     return (
       <Box
@@ -55,12 +61,6 @@ export default function ProductPageButtons({
       </Box>
     );
   }
-
-  const byUser = useWishlistStore((state) => state.byUser);
-  const addToWishList = useWishlistStore((state) => state.addToWishList);
-  const removeFromWishList = useWishlistStore(
-    (state) => state.removeFromWishList
-  );
 
   const wishList = byUser[userId] ?? [];
   const isInWishList = wishList.some((prod) => prod.id === product.id);
