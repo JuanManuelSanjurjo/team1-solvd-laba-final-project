@@ -1,4 +1,5 @@
 "use client";
+
 import Fade from "@mui/material/Fade";
 import { useState, useRef, useEffect, JSX } from "react";
 import { Box } from "@mui/material";

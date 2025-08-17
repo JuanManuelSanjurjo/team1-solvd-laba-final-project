@@ -2,10 +2,6 @@ import ProductPageDetails from "../components/ProductPageDetails";
 import { normalizeProduct } from "@/lib/normalizers/product-normalizers";
 import { getProductDetails } from "@/lib/strapi/get-product-details";
 
-type Params = {
-  "product-id": string;
-};
-
 /**
  * SingleProduct
  *
@@ -14,11 +10,15 @@ type Params = {
  * @param {Params} params - The URL parameters.
  * @returns {JSX.Element} The product details component.
  */
-async function SingleProduct({ params }: { params: Params }) {
-  const { data } = await getProductDetails(params["product-id"]);
+export default async function SingleProduct({
+  params,
+}: {
+  params: Promise<{ "product-id": string }>;
+}) {
+  const product = await params;
+
+  const { data } = await getProductDetails(product["product-id"]);
   const normalizedProduct = normalizeProduct(data);
 
   return <ProductPageDetails product={normalizedProduct} />;
 }
-
-export default SingleProduct;
