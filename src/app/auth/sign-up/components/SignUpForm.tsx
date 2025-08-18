@@ -2,36 +2,24 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Alert,
-  AlertProps,
-  Box,
-  Snackbar,
-  SnackbarCloseReason,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
 import signUp from "@/actions/sign-up";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { signUpSchema, SignUpFormData, SignUpResponse } from "../types";
+import Toast from "@/components/Toast";
 
 export default function SignUpForm() {
-  const [open, setOpen] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
   const [toastContent, setToastContent] = useState({
-    severity: "",
+    severity: "success" as "success" | "error",
     message: "",
   });
 
-  const handleClose = (
-    _: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
+  const handleCloseToast = () => {
+    setToastOpen(false);
   };
 
   const {
@@ -64,10 +52,10 @@ export default function SignUpForm() {
         severity: "success",
         message: data.message,
       });
-      setOpen(true);
+      setToastOpen(true);
     },
     onError: (error: Error) => {
-      setOpen(true);
+      setToastOpen(true);
       setToastContent({
         severity: "error",
         message: error.message,
@@ -81,21 +69,13 @@ export default function SignUpForm() {
 
   return (
     <>
-      <Snackbar
-        open={open}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      <Toast
+        open={toastOpen}
+        onClose={handleCloseToast}
+        severity={toastContent.severity}
+        message={toastContent.message}
         autoHideDuration={5000}
-        onClose={handleClose}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={toastContent.severity as AlertProps["severity"]}
-          variant="filled"
-          sx={{ width: "100%", color: "primary.contrastText" }}
-        >
-          {toastContent.message}
-        </Alert>
-      </Snackbar>
+      />
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}

@@ -12,6 +12,7 @@ import { MyProduct } from "@/types/product";
 import { useUpdateProduct } from "../hooks/useUpdateProduct";
 import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
 import { urlToFile } from "@/lib/url-utils";
+import Toast from "@/components/Toast";
 
 /**
  * Props for the EditProductForm component.
@@ -43,7 +44,7 @@ interface EditProductFormProps {
  * - Uses `react-hook-form` with a Zod schema resolver for validation.
  * - Handles both "edit" (update existing product) and "duplicate" (create new product) modes.
  * - Provides image management (upload, delete).
- * - Displays success/error feedback via Material UI `Snackbar` and `Alert`.
+ * - Displays success/error feedback via Toast component.
  *
  * @component
  * @param {EditProductFormProps} props - Props for configuring the form.
@@ -104,6 +105,19 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
 
   const selectedSizes = watch("sizes");
 
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastContent, setToastContent] = useState<{
+    message: string;
+    severity: "success" | "error";
+  }>({
+    message: "",
+    severity: "success",
+  });
+
+  const handleCloseToast = () => {
+    setToastOpen(false);
+  };
+
   const toggleSize = (size: number) => {
     const currentSizes = selectedSizes || [];
     const newSizes = currentSizes.includes(size)
@@ -135,11 +149,18 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           existentImages: remainingExistentImages,
           imagesToDelete,
         });
-        onNotify?.("Product edited successfully!", "success");
+        setToastContent({
+          message: "Product updated successfully!",
+          severity: "success",
+        });
+        setToastOpen(true);
         onSuccess?.();
       } catch (err) {
-        console.log(err);
-        onNotify?.("Failed to edit product.", "error");
+        setToastContent({
+          message: "Failed to update product.",
+          severity: "error",
+        });
+        setToastOpen(true);
       }
     } else {
       try {
@@ -155,11 +176,19 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           data: { ...data, userID },
           imageFiles: filesToUpload,
         });
-        onNotify?.("Product added successfully!", "success");
+        setToastContent({
+          message: "Product added successfully!",
+          severity: "success",
+        });
+        setToastOpen(true);
         onSuccess?.();
       } catch (err) {
         console.log(err);
-        onNotify?.("Failed to add product.", "error");
+        setToastContent({
+          message: "Failed to add product.",
+          severity: "error",
+        });
+        setToastOpen(true);
       }
     }
   };
@@ -221,6 +250,14 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           onPreviewsChange={setExistentImages}
         />
       </Box>
+
+      <Toast
+        open={toastOpen}
+        onClose={handleCloseToast}
+        severity={toastContent.severity}
+        message={toastContent.message}
+        autoHideDuration={4000}
+      />
     </Box>
   );
 };
