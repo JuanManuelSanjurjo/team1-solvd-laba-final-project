@@ -101,7 +101,6 @@ export const Header = ({
       {isSearching && searchInput.length > 0 && (
         <SearchResultsPreview
           products={searchResults}
-          isSearching={isSearching}
           setIsSearching={setIsSearching}
         />
       )}
