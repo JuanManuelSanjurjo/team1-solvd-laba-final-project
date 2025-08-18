@@ -1,8 +1,8 @@
 "use client";
-import { Typography, Box, styled } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { Add } from "iconsax-react";
+import FilterChip from "./FilterChip";
 
 /**
  * CurrentFilters component renders a list of filters that are currently applied to the search results.
@@ -15,19 +15,6 @@ import { Add } from "iconsax-react";
  *
  * @returns {JSX.Element} A list of filters that are currently applied to the search results.
  */
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  backgroundColor: "rgba(150, 150, 150, 0.1)",
-  padding: "2px 6px",
-  color: theme.palette.text.secondary,
-  borderRight: "2px solid rgba(0, 0, 0, 0.1)",
-  wordBreak: "keep-all",
-  borderRadius: 4,
-  cursor: "pointer",
-}));
 
 export default function CurrentFilters({
   priceRange,
@@ -87,31 +74,17 @@ export default function CurrentFilters({
       )}
       {filters.length > 0 &&
         filters.map(([filter, value], index) => (
-          <StyledBox
+          <FilterChip
             key={index}
+            text={value}
             onClick={() => handleRemoveFilter(filter, value)}
-          >
-            <Typography key={index} variant="caption">
-              {value}
-            </Typography>
-            <Add
-              color="rgba(92, 92, 92, 1)"
-              size={14}
-              style={{ transform: "rotate(45deg)", cursor: "pointer" }}
-            />
-          </StyledBox>
+          />
         ))}
       {isPriceRangeActive && (
-        <StyledBox onClick={handleRemovePricerange}>
-          <Typography variant="caption">
-            Price: ${priceRange[0]}/{priceRange[1]}
-          </Typography>
-          <Add
-            color="rgba(92, 92, 92, 1)"
-            size={14}
-            style={{ transform: "rotate(45deg)", cursor: "pointer" }}
-          />
-        </StyledBox>
+        <FilterChip
+          text={`Price: ${priceRange[0]}/${priceRange[1]}`}
+          onClick={handleRemovePricerange}
+        />
       )}
     </Box>
   );
