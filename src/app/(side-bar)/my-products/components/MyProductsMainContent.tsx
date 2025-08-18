@@ -81,7 +81,7 @@ export default function MyProductsMainContent({
       {isPending ? (
         <SkeletonCardContainer />
       ) : products.length > 0 ? (
-        <CardContainer>
+        <CardContainer length={products.length}>
           {normalizeMyProductCard(products).map((product, index) => (
             <Card
               product={product}
