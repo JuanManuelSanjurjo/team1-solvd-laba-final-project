@@ -33,6 +33,10 @@ export const useCartStore = create<CartState>()(
         }
       },
 
+      totalItems: () => {
+        return get().items.reduce((sum, item) => sum + (item.quantity || 1), 0); //If no quantity, assumes 1.
+      },
+
       removeItem: (id) => {
         set({ items: get().items.filter((item) => item.id !== id) });
       },
@@ -81,7 +85,7 @@ export const useCartStore = create<CartState>()(
 
       taxes: () => {
         const taxRate = 0.1; // 10%
-        return get().subtotal() * taxRate;
+        return Math.round(get().subtotal() * taxRate);
       },
 
       shipping: () => {
