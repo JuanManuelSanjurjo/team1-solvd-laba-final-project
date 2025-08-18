@@ -24,9 +24,8 @@ export default function ProductPageButtons({
 }: {
   product: NormalizedProduct;
   cardProductInfo: cardProduct;
-}): JSX.Element {
+}): JSX.Element | null {
   const { data: session, status } = useSession();
-  const userId = session?.user?.id;
 
   const byUser = useWishlistStore((state) => state.byUser);
   const addToWishList = useWishlistStore((state) => state.addToWishList);
@@ -34,34 +33,9 @@ export default function ProductPageButtons({
     (state) => state.removeFromWishList,
   );
 
-  if (!userId) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: "26px",
-          marginTop: 4,
-          "& button": {
-            width: "100%",
-            fontWeight: 500,
-            height: "60px",
-          },
-        }}
-      >
-        {cardProductInfo && (
-          <Button disabled variant="outlined">
-            Add to wishlist
-          </Button>
-        )}
-        <Button disabled={status !== "authenticated"} variant="contained">
-          Add to cart
-        </Button>
-      </Box>
-    );
-  }
+  if (status !== "authenticated") return null;
 
+  const userId = String(session!.user!.id);
   const wishList = byUser[userId] ?? [];
   const isInWishList = wishList.some((prod) => prod.id === product.id);
 
