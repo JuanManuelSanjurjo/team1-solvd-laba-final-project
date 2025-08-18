@@ -6,11 +6,12 @@ import { ProductFormData, productSchema } from "../add-product/schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductFormFields } from "../add-product/components/ProductFormFields";
-import { Alert, Box, Snackbar, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ImagePreviewerUploader from "../add-product/components/ImagePreviewerUploader";
 import { MyProduct } from "@/types/product";
 import { useUpdateProduct } from "../hooks/useUpdateProduct";
 import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
+import Toast from "@/components/Toast";
 
 /**
  * Props for the EditProductForm component.
@@ -22,8 +23,6 @@ import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
  * @property {MyProduct} product  - The details of an existent product.
  * @property {String} mode  - Defines if we are going to delete or duplicate a product.
  * @property {()=> void} onSuccess  - onSuccess action.
-
-
  */
 
 interface EditProductFormProps {
@@ -41,7 +40,7 @@ interface EditProductFormProps {
  * - Uses `react-hook-form` with a Zod schema resolver for validation.
  * - Handles both "edit" (update existing product) and "duplicate" (create new product) modes.
  * - Provides image management (upload, delete).
- * - Displays success/error feedback via Material UI `Snackbar` and `Alert`.
+ * - Displays success/error feedback via Toast component.
  *
  * @component
  * @param {EditProductFormProps} props - Props for configuring the form.
@@ -98,14 +97,17 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
 
   const selectedSizes = watch("sizes");
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
-    "success"
-  );
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastContent, setToastContent] = useState<{
+    message: string;
+    severity: "success" | "error";
+  }>({
+    message: "",
+    severity: "success",
+  });
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
+  const handleCloseToast = () => {
+    setToastOpen(false);
   };
 
   const toggleSize = (size: number) => {
@@ -139,15 +141,19 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           existentImages: remainingExistentImages,
           imagesToDelete,
         });
-        setSnackbarMessage("Product updated successfully!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+        setToastContent({
+          message: "Product updated successfully!",
+          severity: "success",
+        });
+        setToastOpen(true);
         onSuccess?.();
       } catch (err) {
         console.log(err);
-        setSnackbarMessage("Failed to update product.");
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        setToastContent({
+          message: "Failed to update product.",
+          severity: "error",
+        });
+        setToastOpen(true);
       }
     } else {
       try {
@@ -156,15 +162,19 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           imageFiles,
           remainingExistentImages,
         });
-        setSnackbarMessage("Product added successfully!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+        setToastContent({
+          message: "Product added successfully!",
+          severity: "success",
+        });
+        setToastOpen(true);
         onSuccess?.();
       } catch (err) {
         console.log(err);
-        setSnackbarMessage("Failed to add product.");
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        setToastContent({
+          message: "Failed to add product.",
+          severity: "error",
+        });
+        setToastOpen(true);
       }
     }
   };
@@ -226,21 +236,13 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         />
       </Box>
 
-      <Snackbar
-        open={snackbarOpen}
+      <Toast
+        open={toastOpen}
+        onClose={handleCloseToast}
+        severity={toastContent.severity}
+        message={toastContent.message}
         autoHideDuration={4000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbarSeverity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      />
     </Box>
   );
 };

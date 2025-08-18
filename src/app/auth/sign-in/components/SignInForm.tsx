@@ -8,9 +8,6 @@ import {
   Checkbox,
   FormControlLabel,
   Typography,
-  Alert,
-  Snackbar,
-  AlertProps,
 } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
@@ -19,12 +16,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import signInAction from "@/actions/sign-in";
 import { signInSchema, SignInFormData, SignInResponse } from "../types";
+import Toast from "@/components/Toast";
 
 export default function SignInForm() {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
   const [toastContent, setToastContent] = useState({
-    severity: "",
+    severity: "success" as "success" | "error",
     message: "",
   });
 
@@ -51,7 +49,7 @@ export default function SignInForm() {
       return response;
     },
     onSuccess: ({ message }: SignInResponse) => {
-      setOpen(true);
+      setToastOpen(true);
       setToastContent({
         severity: "success",
         message: message,
@@ -61,7 +59,7 @@ export default function SignInForm() {
       router.refresh();
     },
     onError: (error: Error) => {
-      setOpen(true);
+      setToastOpen(true);
       setToastContent({
         severity: "error",
         message: error.message,
@@ -69,8 +67,8 @@ export default function SignInForm() {
     },
   });
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseToast = () => {
+    setToastOpen(false);
   };
 
   const onSubmit = (data: SignInFormData) => {
@@ -79,21 +77,13 @@ export default function SignInForm() {
 
   return (
     <>
-      <Snackbar
-        open={open}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      <Toast
+        open={toastOpen}
+        onClose={handleCloseToast}
+        severity={toastContent.severity}
+        message={toastContent.message}
         autoHideDuration={5000}
-        onClose={handleClose}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={toastContent.severity as AlertProps["severity"]}
-          variant="filled"
-          sx={{ width: "100%", color: "primary.contrastText" }}
-        >
-          {toastContent.message}
-        </Alert>
-      </Snackbar>
+      />
       <Box
         component="form"
         role="form"

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Alert, Box, Snackbar, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
@@ -9,6 +9,8 @@ import { useState } from "react";
 import { ProductFormData, productSchema } from "../schema";
 import { useCreateProduct } from "../hooks/useCreateProduct";
 import { ProductFormFields } from "./ProductFormFields";
+import Toast from "@/components/Toast";
+import { AlertProps } from "@mui/material";
 
 /**
  * Props for AddProductForm component.
@@ -68,14 +70,14 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
 
   const { mutateAsync: handleCreateProduct } = useCreateProduct();
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
-    "success"
-  );
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastContent, setToastContent] = useState({
+    severity: "" as AlertProps["severity"],
+    message: "",
+  });
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
+  const handleCloseToast = () => {
+    setToastOpen(false);
   };
 
   const toggleSize = (size: number) => {
@@ -104,14 +106,18 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
 
       setImageFiles([]);
 
-      setSnackbarMessage("Product added successfully!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
+      setToastContent({
+        severity: "success",
+        message: "Product added successfully!",
+      });
+      setToastOpen(true);
     } catch (err) {
       console.log(err);
-      setSnackbarMessage("Failed to add product.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      setToastContent({
+        severity: "error",
+        message: "Failed to add product.",
+      });
+      setToastOpen(true);
     }
   };
 
@@ -168,21 +174,13 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
           reset={imageFiles.length === 0}
         />
       </Box>
-      <Snackbar
-        open={snackbarOpen}
+      <Toast
+        open={toastOpen}
+        onClose={handleCloseToast}
+        severity={toastContent.severity}
+        message={toastContent.message}
         autoHideDuration={4000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbarSeverity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      />
     </Box>
   );
 };
