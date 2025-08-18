@@ -46,7 +46,7 @@ export async function updateProduct(
   token: string
 ): Promise<void> {
   const res = await fetch(
-    `https://shoes-shop-strapi.herokuapp.com/api/products/${productId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`,
     {
       method: "PUT",
       headers: {

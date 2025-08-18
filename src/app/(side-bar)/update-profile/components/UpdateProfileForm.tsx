@@ -9,20 +9,21 @@ import Toast from "@/components/Toast";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Session } from "next-auth";
-import { redirect } from "next/navigation";
 import { updateUser } from "@/actions/update-user";
 import { useSession } from "next-auth/react";
-import { updateProfileSchema, UpdateProfileFormData } from "../types";
+import {
+  updateProfileSchema,
+  UpdateProfileFormData,
+  UpdateProfileResponse,
+} from "../types";
+import { useRouter } from "next/navigation";
 
 export default function UpdateProfileForm({
   session,
 }: {
   session: Session | null;
 }) {
-  if (session === null) {
-    redirect("/auth/sign-in");
-  }
-
+  const router = useRouter();
   const { update } = useSession();
 
   const [open, setOpen] = useState(false);
@@ -57,15 +58,23 @@ export default function UpdateProfileForm({
   const isChanged = JSON.stringify(watch()) !== JSON.stringify(defaultValues);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: UpdateProfileFormData) =>
-      updateUser(data, session?.user.id || ""),
-    onSuccess: () => {
+    mutationFn: async (data: UpdateProfileFormData) => {
+      const response = await updateUser(data, session?.user.id || "");
+
+      if (response.error) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: ({ message }: UpdateProfileResponse) => {
       setToastContent({
         severity: "success",
-        message: "Success, details updated!",
+        message: message,
       });
       setOpen(true);
       update({ trigger: "update" });
+      router.refresh();
     },
     onError: (error: Error) => {
       setOpen(true);

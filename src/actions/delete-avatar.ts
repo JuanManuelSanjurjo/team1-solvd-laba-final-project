@@ -1,10 +1,11 @@
 "use server";
 
 import { auth } from "@/auth";
+import { handleApiError } from "@/lib/normalizers/handle-api-error";
 
-interface DeleteAvatarResponse {
-  id: number;
-  url: string;
+export interface DeleteAvatarResponse {
+  error: boolean;
+  message: string;
 }
 
 export const deleteAvatar = async (
@@ -15,7 +16,7 @@ export const deleteAvatar = async (
   const session = await auth();
 
   const response = await fetch(
-    `${process.env.API_URL}/upload/files/${avatarId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/upload/files/${avatarId}`,
     {
       method: "DELETE",
       headers: {
@@ -25,8 +26,11 @@ export const deleteAvatar = async (
   );
 
   if (!response.ok) {
-    throw new Error("Failed to delete avatar");
+    return await handleApiError(response, "Failed to update avatar");
   }
 
-  return await response.json();
+  return {
+    error: false,
+    message: "Avatar deleted",
+  };
 };

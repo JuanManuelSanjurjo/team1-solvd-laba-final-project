@@ -34,12 +34,12 @@ export default function ProductPageDetails({
       price: product.price,
       gender: product.gender,
     }),
-    [product],
+    [product]
   );
 
   const { data: session, status } = useSession();
   const addToRecentlyViewed = useRecentlyViewedStore(
-    (state) => state.addToRecentlyViewed,
+    (state) => state.addToRecentlyViewed
   );
 
   useEffect(() => {

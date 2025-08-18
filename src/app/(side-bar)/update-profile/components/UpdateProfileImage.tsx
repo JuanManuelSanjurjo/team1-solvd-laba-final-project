@@ -8,9 +8,9 @@ import { useState, useRef, useEffect } from "react";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import Toast from "@/components/Toast";
 import { useMutation } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
-import { updateAvatar, UpdateAvatarResponse } from "@/actions/update-avatar";
-import { deleteAvatar } from "@/actions/delete-avatar";
+import { redirect, useRouter } from "next/navigation";
+import { AvatarUpdateResponse, updateAvatar } from "@/actions/update-avatar";
+import { deleteAvatar, DeleteAvatarResponse } from "@/actions/delete-avatar";
 import { useSession } from "next-auth/react";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import HourglassEmptyRoundedIcon from "@mui/icons-material/HourglassEmptyRounded";
@@ -45,7 +45,7 @@ export default function UpdateProfileImage({
   } = useForm<AvatarFormData>({
     resolver: zodResolver(avatarSchema),
   });
-
+  const router = useRouter();
   const avatarFiles = watch("avatar");
 
   const [open, setOpen] = useState(false);
@@ -59,19 +59,30 @@ export default function UpdateProfileImage({
   };
 
   const { mutate: updateAvatarMutation, isPending: isUpdating } = useMutation({
-    mutationFn: updateAvatar,
+    mutationFn: async (formData: FormData) => {
+      const response = await updateAvatar(formData);
+
+      if (response.error) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
     mutationKey: ["updateAvatar"],
-    onSuccess: (data: UpdateAvatarResponse[]) => {
+    onSuccess: ({ data, message }: AvatarUpdateResponse) => {
       setToastContent({
         severity: "success",
-        message: "Avatar updated successfully!",
+        message: message,
       });
       setOpen(true);
       update({ trigger: "update" });
-      if (data && data.length > 0) {
-        setSelectedImageUrl({ id: data[0].id, url: data[0].url });
+
+      if (data) {
+        setSelectedImageUrl({ id: data.id, url: data.url });
       }
+
       reset();
+      router.refresh();
     },
     onError: (error: Error) => {
       setToastContent({
@@ -83,12 +94,27 @@ export default function UpdateProfileImage({
   });
 
   const { mutate: deleteAvatarMutation, isPending: isDeleting } = useMutation({
-    mutationFn: deleteAvatar,
-    onSuccess: () => {
+    mutationFn: async (
+      avatarId: string | null
+    ): Promise<DeleteAvatarResponse | void> => {
+      const response = await deleteAvatar(avatarId);
+
+      if (response?.error) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: (data: DeleteAvatarResponse | void) => {
+      if (!data) {
+        return;
+      }
+
       setToastContent({
         severity: "success",
-        message: "Avatar deleted successfully!",
+        message: data.message,
       });
+
       setOpen(true);
       update({ trigger: "update" });
       reset();

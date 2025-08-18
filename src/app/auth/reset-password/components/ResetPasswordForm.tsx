@@ -12,12 +12,23 @@ import {
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
 import resetPassword, {
-  transformResetPasswordData,
+  ResetPasswordPayload,
+  ResetPasswordResponse,
 } from "@/actions/reset-password";
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { resetPasswordSchema, ResetPasswordFormData } from "../types";
+
+export function transformResetPasswordData(
+  formData: ResetPasswordFormData
+): ResetPasswordPayload {
+  return {
+    password: formData.password,
+    passwordConfirmation: formData.confirmPassword,
+    code: formData.code,
+  };
+}
 
 export default function ResetPasswordForm() {
   const router = useRouter();
@@ -61,15 +72,22 @@ export default function ResetPasswordForm() {
   }, [code, setValue]);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: ResetPasswordFormData) => {
-      const payload = await transformResetPasswordData(data);
-      return resetPassword(payload);
+    mutationFn: async (
+      data: ResetPasswordFormData
+    ): Promise<ResetPasswordResponse> => {
+      const payload = transformResetPasswordData(data);
+      const response = await resetPassword(payload);
+
+      if (response.error) {
+        throw new Error(response.message);
+      }
+
+      return response;
     },
-    onSuccess: () => {
+    onSuccess: (res: ResetPasswordResponse) => {
       setToastContent({
         severity: "success",
-        message:
-          "Password reset successful! You can now log in with your new password.",
+        message: res.message,
       });
       setOpen(true);
 

@@ -2,8 +2,11 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "../../../utils/test-utils";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import forgotPassword from "@/actions/forgot-password";
+import forgotPassword, {
+  ForgotPasswordResponse,
+} from "@/actions/forgot-password";
 import ForgotPasswordForm from "@/app/auth/forgot-password/components/ForgotPasswordForm";
+import authMocks from "__tests__/mocks/auth";
 
 jest.mock("@/actions/forgot-password");
 const mockforgotPassword = forgotPassword as jest.MockedFunction<
@@ -57,7 +60,7 @@ describe("ForgotPasswordForm Component", () => {
   });
 
   it("submits form with valid email", async () => {
-    mockforgotPassword.mockResolvedValueOnce(true);
+    mockforgotPassword.mockResolvedValueOnce(authMocks.success);
 
     const Wrapper = createWrapper();
     render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
@@ -78,7 +81,7 @@ describe("ForgotPasswordForm Component", () => {
   });
 
   it("shows success message on successful submission", async () => {
-    mockforgotPassword.mockResolvedValueOnce(true);
+    mockforgotPassword.mockResolvedValueOnce(authMocks.success);
 
     const Wrapper = createWrapper();
     render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
@@ -92,9 +95,7 @@ describe("ForgotPasswordForm Component", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/success! please check your email/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText("Success")).toBeInTheDocument();
     });
   });
 
@@ -120,9 +121,9 @@ describe("ForgotPasswordForm Component", () => {
 
   it("disables submit button while request is pending", async () => {
     let resolvePromise: () => boolean;
-    const pendingPromise = new Promise<boolean>((resolve) => {
+    const pendingPromise = new Promise<ForgotPasswordResponse>((resolve) => {
       resolvePromise = (): boolean => {
-        resolve(true);
+        resolve(authMocks.success);
         return true;
       };
     });
@@ -151,7 +152,7 @@ describe("ForgotPasswordForm Component", () => {
   });
 
   it("closes snackbar when close button is clicked", async () => {
-    mockforgotPassword.mockResolvedValueOnce(true);
+    mockforgotPassword.mockResolvedValueOnce(authMocks.success);
 
     const Wrapper = createWrapper();
     render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
@@ -165,9 +166,7 @@ describe("ForgotPasswordForm Component", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/success! please check your email/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(authMocks.success.message)).toBeInTheDocument();
     });
 
     const closeButton = screen.getByRole("button", { name: /close/i });
@@ -181,7 +180,7 @@ describe("ForgotPasswordForm Component", () => {
   });
 
   it("properly handles clickaway events", async () => {
-    mockforgotPassword.mockResolvedValueOnce(true);
+    mockforgotPassword.mockResolvedValueOnce(authMocks.success);
 
     const Wrapper = createWrapper();
     render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
@@ -195,9 +194,7 @@ describe("ForgotPasswordForm Component", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/success! please check your email/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(authMocks.success.message)).toBeInTheDocument();
     });
 
     const snackbar = screen.getByRole("alert").closest('[role="presentation"]');
@@ -206,9 +203,7 @@ describe("ForgotPasswordForm Component", () => {
       const clickAwayEvent = new Event("click");
       fireEvent(snackbar, clickAwayEvent);
 
-      expect(
-        screen.getByText(/success! please check your email/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(authMocks.success.message)).toBeInTheDocument();
     }
   });
 });

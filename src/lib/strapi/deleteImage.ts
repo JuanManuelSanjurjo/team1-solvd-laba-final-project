@@ -3,7 +3,7 @@ export async function deleteImage(
   token: string
 ): Promise<void> {
   const res = await fetch(
-    `https://shoes-shop-strapi.herokuapp.com/api/upload/files/${imageId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/upload/files/${imageId}`,
     {
       method: "DELETE",
       headers: {

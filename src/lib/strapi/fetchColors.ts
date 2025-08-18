@@ -24,7 +24,7 @@ interface Color {
 
 export async function fetchColors() {
   const res = await fetch(
-    "https://shoes-shop-strapi.herokuapp.com/api/colors",
+    `https://shoes-shop-strapi.herokuapp.com/api/colors`,
     {
       next: { revalidate: 3600 },
     }

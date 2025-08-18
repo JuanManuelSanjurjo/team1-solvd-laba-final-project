@@ -21,7 +21,7 @@ interface Size {
  * // Output: [{ label: 40, value: 1 }, { label: 41, value: 2 }, ...]
  */
 export async function fetchSizes() {
-  const res = await fetch("https://shoes-shop-strapi.herokuapp.com/api/sizes", {
+  const res = await fetch(`https://shoes-shop-strapi.herokuapp.com/api/sizes`, {
     next: { revalidate: 3600 },
   });
 

@@ -33,13 +33,16 @@ interface ErrorResponse {
 }
 
 const getUserInfo = async (jwt: string): Promise<SignInResponse["user"]> => {
-  const response = await fetch(`${process.env.API_URL}/users/me?populate=*`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${jwt}`,
-    },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/me?populate=*`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
 
   return await response.json();
 };
@@ -59,16 +62,19 @@ export const authOptions = {
         }
 
         try {
-          const response = await fetch(`${process.env.API_URL}/auth/local`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              identifier: credentials.identifier,
-              password: credentials.password,
-            }),
-          });
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/local`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                identifier: credentials.identifier,
+                password: credentials.password,
+              }),
+            }
+          );
 
           const data = await response.json();
 
@@ -163,7 +169,7 @@ export const authOptions = {
   },
   pages: {
     signIn: "/auth/sign-in",
-    signOut: "/auth/sign-in",
+    signOut: "/",
   },
   session: {
     strategy: "jwt",

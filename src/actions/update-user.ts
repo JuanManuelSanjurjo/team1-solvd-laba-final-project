@@ -1,25 +1,36 @@
 "use server";
 
 import { auth } from "@/auth";
-import { UpdateProfileFormData } from "@/app/(side-bar)/update-profile/types";
+import {
+  UpdateProfileFormData,
+  UpdateProfileResponse,
+} from "@/app/(side-bar)/update-profile/types";
+import { handleApiError } from "@/lib/normalizers/handle-api-error";
 
-type UpdateUserPayload = UpdateProfileFormData;
-
-export const updateUser = async (data: UpdateUserPayload, userId: string) => {
+export const updateUser = async (
+  data: UpdateProfileFormData,
+  userId: string
+): Promise<UpdateProfileResponse> => {
   const session = await auth();
 
-  const response = await fetch(`${process.env.API_URL}/users/${userId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.user.jwt}`,
-    },
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.user.jwt}`,
+      },
+      body: JSON.stringify(data),
+    }
+  );
 
   if (!response.ok) {
-    throw new Error("Failed to update user");
+    return await handleApiError(response, "Failed to update user");
   }
 
-  return await response.json();
+  return {
+    error: false,
+    message: "Success, details updated!",
+  };
 };

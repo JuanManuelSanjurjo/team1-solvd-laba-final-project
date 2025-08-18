@@ -16,3 +16,37 @@ export const signUpSchema = z
   });
 
 export type SignUpFormData = z.infer<typeof signUpSchema>;
+
+export type SignUpResponse = {
+  error: boolean;
+  message: string;
+};
+
+export type SignUpPayload = Omit<SignUpFormData, "confirmPassword">;
+
+export interface SignUpErrorResponse {
+  data: null;
+  error: {
+    status: number;
+    name: string;
+    message: string;
+    details: Record<string, unknown>;
+  };
+}
+
+export interface SignUpSuccessResponse {
+  user: {
+    id: number;
+    username: string;
+    email: string;
+    provider: string;
+    confirmed: boolean;
+    blocked: boolean;
+    createdAt: string;
+    updatedAt: string;
+    phoneNumber: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    customerId: string | null;
+  };
+}

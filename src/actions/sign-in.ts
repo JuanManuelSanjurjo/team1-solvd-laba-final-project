@@ -1,11 +1,15 @@
 "use server";
 
 import { signIn } from "@/auth";
-import { SignInFormData } from "@/app/auth/sign-in/types";
+import { SignInFormData, SignInResponse } from "@/app/auth/sign-in/types";
 
-type SignInPayload = SignInFormData;
+function cleanUpError(error: string) {
+  return error.replace(/Read more at.*/, "").trim();
+}
 
-export default async function signInAction(data: SignInPayload) {
+export default async function signInAction(
+  data: SignInFormData
+): Promise<SignInResponse> {
   try {
     await signIn("credentials", {
       identifier: data.email,
@@ -13,7 +17,12 @@ export default async function signInAction(data: SignInPayload) {
       rememberMe: data.rememberMe,
       redirect: false,
     });
+
+    return { error: false, message: "Login successful! Redirecting..." };
   } catch (error) {
-    throw error;
+    if (error instanceof Error) {
+      return { error: true, message: cleanUpError(error.message) };
+    }
+    return { error: true, message: "An unknown error occurred" };
   }
 }

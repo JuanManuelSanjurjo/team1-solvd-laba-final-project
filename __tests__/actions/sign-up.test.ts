@@ -1,10 +1,7 @@
 import signUp from "@/actions/sign-up";
 import {
   TEST_API_URLS,
-  API_ENDPOINTS,
-  DEFAULT_HEADERS,
   HTTP_METHODS,
-  TEST_EMAILS,
   ERROR_MESSAGES,
   TEST_USER_DATA,
   MOCK_USER_RESPONSE,
@@ -12,21 +9,31 @@ import {
   ERROR_NAMES,
 } from "./action-test-constants";
 
+jest.mock("@/lib/normalizers/handle-api-error", () => ({
+  handleApiError: jest.fn(),
+}));
+
+import { handleApiError } from "@/lib/normalizers/handle-api-error";
+const mockHandleApiError = handleApiError as jest.MockedFunction<
+  typeof handleApiError
+>;
+
 global.fetch = jest.fn();
 const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
 
-process.env.API_URL = TEST_API_URLS.EXAMPLE;
+process.env.NEXT_PUBLIC_API_URL = TEST_API_URLS.EXAMPLE;
 
 describe("signUp Action", () => {
   beforeEach(() => {
     mockFetch.mockClear();
+    mockHandleApiError.mockClear();
   });
 
   const mockSuccessResponse = {
     user: MOCK_USER_RESPONSE,
   };
 
-  it("returns user data on successful registration", async () => {
+  it("returns success response on successful registration", async () => {
     const mockResponse = {
       ok: true,
       json: jest.fn().mockResolvedValue(mockSuccessResponse),
@@ -36,22 +43,23 @@ describe("signUp Action", () => {
     const result = await signUp(TEST_USER_DATA.VALID_PAYLOAD);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      `${TEST_API_URLS.EXAMPLE}${API_ENDPOINTS.REGISTER}`,
+      `${TEST_API_URLS.EXAMPLE}/auth/local/register`,
       {
         method: HTTP_METHODS.POST,
-        headers: DEFAULT_HEADERS,
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(TEST_USER_DATA.VALID_PAYLOAD),
       }
     );
 
     expect(result).toEqual({
-      id: 1,
-      username: "testuser",
-      email: TEST_EMAILS.VALID,
+      error: false,
+      message: "Success! Please confirm your account in your e-mail",
     });
   });
 
-  it("returns false when user object is missing from success response", async () => {
+  it("returns error response when user object is missing from success response", async () => {
     const mockResponse = {
       ok: true,
       json: jest.fn().mockResolvedValue({ someOtherData: "value" }),
@@ -60,10 +68,18 @@ describe("signUp Action", () => {
 
     const result = await signUp(TEST_USER_DATA.VALID_PAYLOAD);
 
-    expect(result).toBe(false);
+    expect(result).toEqual({
+      error: true,
+      message: "Error trying to sign up!",
+    });
   });
 
-  it("throws error when API returns error with message", async () => {
+  it("returns error response when API returns error with message", async () => {
+    const mockErrorResponse = {
+      error: true,
+      message: ERROR_MESSAGES.EMAIL_EXISTS,
+    };
+
     const mockResponse = {
       ok: false,
       json: jest.fn().mockResolvedValue({
@@ -77,13 +93,23 @@ describe("signUp Action", () => {
       }),
     };
     mockFetch.mockResolvedValue(mockResponse as any);
+    mockHandleApiError.mockResolvedValue(mockErrorResponse);
 
-    await expect(signUp(TEST_USER_DATA.VALID_PAYLOAD)).rejects.toThrow(
-      ERROR_MESSAGES.EMAIL_EXISTS
+    const result = await signUp(TEST_USER_DATA.VALID_PAYLOAD);
+
+    expect(mockHandleApiError).toHaveBeenCalledWith(
+      mockResponse,
+      "Failed to update avatar"
     );
+    expect(result).toEqual(mockErrorResponse);
   });
 
-  it("throws generic error when API returns error without message", async () => {
+  it("returns error response when API returns error without message", async () => {
+    const mockErrorResponse = {
+      error: true,
+      message: "Failed to update avatar",
+    };
+
     const mockResponse = {
       ok: false,
       json: jest.fn().mockResolvedValue({
@@ -97,13 +123,23 @@ describe("signUp Action", () => {
       }),
     };
     mockFetch.mockResolvedValue(mockResponse as any);
+    mockHandleApiError.mockResolvedValue(mockErrorResponse);
 
-    await expect(signUp(TEST_USER_DATA.VALID_PAYLOAD)).rejects.toThrow(
-      ERROR_MESSAGES.SIGN_UP
+    const result = await signUp(TEST_USER_DATA.VALID_PAYLOAD);
+
+    expect(mockHandleApiError).toHaveBeenCalledWith(
+      mockResponse,
+      "Failed to update avatar"
     );
+    expect(result).toEqual(mockErrorResponse);
   });
 
-  it("throws generic error when response is not ok and no error object", async () => {
+  it("returns error response when response is not ok and no error object", async () => {
+    const mockErrorResponse = {
+      error: true,
+      message: "Failed to update avatar",
+    };
+
     const mockResponse = {
       ok: false,
       json: jest.fn().mockResolvedValue({
@@ -111,13 +147,18 @@ describe("signUp Action", () => {
       }),
     };
     mockFetch.mockResolvedValue(mockResponse as any);
+    mockHandleApiError.mockResolvedValue(mockErrorResponse);
 
-    await expect(signUp(TEST_USER_DATA.VALID_PAYLOAD)).rejects.toThrow(
-      ERROR_MESSAGES.SIGN_UP
+    const result = await signUp(TEST_USER_DATA.VALID_PAYLOAD);
+
+    expect(mockHandleApiError).toHaveBeenCalledWith(
+      mockResponse,
+      "Failed to update avatar"
     );
+    expect(result).toEqual(mockErrorResponse);
   });
 
-  it("handles network errors", async () => {
+  it("handles network errors by letting them propagate", async () => {
     mockFetch.mockRejectedValue(new Error(ERROR_MESSAGES.NETWORK_ERROR));
 
     await expect(signUp(TEST_USER_DATA.VALID_PAYLOAD)).rejects.toThrow(
@@ -137,7 +178,7 @@ describe("signUp Action", () => {
     );
   });
 
-  it("correctly excludes password from returned user data", async () => {
+  it("returns success response when user data is present", async () => {
     const mockResponse = {
       ok: true,
       json: jest.fn().mockResolvedValue(mockSuccessResponse),
@@ -146,16 +187,18 @@ describe("signUp Action", () => {
 
     const result = await signUp(TEST_USER_DATA.VALID_PAYLOAD);
 
-    // Ensure password is not in the returned data
-    expect(result).not.toHaveProperty("password");
     expect(result).toEqual({
-      id: 1,
-      username: "testuser",
-      email: TEST_EMAILS.VALID,
+      error: false,
+      message: "Success! Please confirm your account in your e-mail",
     });
   });
 
-  it("handles different error response structures", async () => {
+  it("returns error response for different error response structures", async () => {
+    const mockErrorResponse = {
+      error: true,
+      message: ERROR_MESSAGES.USERNAME_TAKEN,
+    };
+
     const mockResponse = {
       ok: false,
       json: jest.fn().mockResolvedValue({
@@ -175,9 +218,14 @@ describe("signUp Action", () => {
       }),
     };
     mockFetch.mockResolvedValue(mockResponse as any);
+    mockHandleApiError.mockResolvedValue(mockErrorResponse);
 
-    await expect(signUp(TEST_USER_DATA.VALID_PAYLOAD)).rejects.toThrow(
-      ERROR_MESSAGES.USERNAME_TAKEN
+    const result = await signUp(TEST_USER_DATA.VALID_PAYLOAD);
+
+    expect(mockHandleApiError).toHaveBeenCalledWith(
+      mockResponse,
+      "Failed to update avatar"
     );
+    expect(result).toEqual(mockErrorResponse);
   });
 });

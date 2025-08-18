@@ -1,8 +1,6 @@
 import forgotPassword from "@/actions/forgot-password";
 import {
   TEST_API_URLS,
-  API_ENDPOINTS,
-  DEFAULT_HEADERS,
   HTTP_METHODS,
   TEST_EMAILS,
   ERROR_MESSAGES,
@@ -10,17 +8,27 @@ import {
   ERROR_NAMES,
 } from "./action-test-constants";
 
+jest.mock("@/lib/normalizers/handle-api-error", () => ({
+  handleApiError: jest.fn(),
+}));
+
+import { handleApiError } from "@/lib/normalizers/handle-api-error";
+const mockHandleApiError = handleApiError as jest.MockedFunction<
+  typeof handleApiError
+>;
+
 global.fetch = jest.fn();
 const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
 
-process.env.API_URL = TEST_API_URLS.EXAMPLE;
+process.env.NEXT_PUBLIC_API_URL = TEST_API_URLS.EXAMPLE;
 
 describe("forgotPassword Action", () => {
   beforeEach(() => {
     mockFetch.mockClear();
+    mockHandleApiError.mockClear();
   });
 
-  it("returns true on successful password reset request", async () => {
+  it("returns success response on successful password reset request", async () => {
     const mockResponse = {
       ok: true,
       json: jest.fn().mockResolvedValue({ ok: true }),
@@ -30,29 +38,28 @@ describe("forgotPassword Action", () => {
     const result = await forgotPassword({ email: TEST_EMAILS.VALID });
 
     expect(mockFetch).toHaveBeenCalledWith(
-      `${TEST_API_URLS.EXAMPLE}${API_ENDPOINTS.FORGOT_PASSWORD}`,
+      `${TEST_API_URLS.EXAMPLE}/auth/forgot-password`,
       {
         method: HTTP_METHODS.POST,
-        headers: DEFAULT_HEADERS,
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ email: TEST_EMAILS.VALID }),
       }
     );
-    expect(result).toBe(true);
+    expect(result).toEqual({
+      error: false,
+      message:
+        "Success! Please check your email for password reset instructions",
+    });
   });
 
-  it("returns false when response ok is false in success response", async () => {
-    const mockResponse = {
-      ok: true,
-      json: jest.fn().mockResolvedValue({ ok: false }),
+  it("returns error response when API returns error", async () => {
+    const mockErrorResponse = {
+      error: true,
+      message: ERROR_MESSAGES.INVALID_EMAIL,
     };
-    mockFetch.mockResolvedValue(mockResponse as any);
 
-    const result = await forgotPassword({ email: TEST_EMAILS.VALID });
-
-    expect(result).toBe(false);
-  });
-
-  it("throws error when API returns error with message", async () => {
     const mockResponse = {
       ok: false,
       json: jest.fn().mockResolvedValue({
@@ -66,13 +73,23 @@ describe("forgotPassword Action", () => {
       }),
     };
     mockFetch.mockResolvedValue(mockResponse as any);
+    mockHandleApiError.mockResolvedValue(mockErrorResponse);
 
-    await expect(
-      forgotPassword({ email: TEST_EMAILS.INVALID })
-    ).rejects.toThrow(ERROR_MESSAGES.INVALID_EMAIL);
+    const result = await forgotPassword({ email: TEST_EMAILS.INVALID });
+
+    expect(mockHandleApiError).toHaveBeenCalledWith(
+      mockResponse,
+      "Failed to update avatar"
+    );
+    expect(result).toEqual(mockErrorResponse);
   });
 
-  it("throws generic error when API returns error without message", async () => {
+  it("returns error response when API returns generic error", async () => {
+    const mockErrorResponse = {
+      error: true,
+      message: "Failed to update avatar",
+    };
+
     const mockResponse = {
       ok: false,
       json: jest.fn().mockResolvedValue({
@@ -86,13 +103,23 @@ describe("forgotPassword Action", () => {
       }),
     };
     mockFetch.mockResolvedValue(mockResponse as any);
+    mockHandleApiError.mockResolvedValue(mockErrorResponse);
 
-    await expect(forgotPassword({ email: TEST_EMAILS.VALID })).rejects.toThrow(
-      ERROR_MESSAGES.RESET_PASSWORD
+    const result = await forgotPassword({ email: TEST_EMAILS.VALID });
+
+    expect(mockHandleApiError).toHaveBeenCalledWith(
+      mockResponse,
+      "Failed to update avatar"
     );
+    expect(result).toEqual(mockErrorResponse);
   });
 
-  it("throws generic error when response is not ok and no error object", async () => {
+  it("returns error response when response is not ok and no error object", async () => {
+    const mockErrorResponse = {
+      error: true,
+      message: "Failed to update avatar",
+    };
+
     const mockResponse = {
       ok: false,
       json: jest.fn().mockResolvedValue({
@@ -100,29 +127,22 @@ describe("forgotPassword Action", () => {
       }),
     };
     mockFetch.mockResolvedValue(mockResponse as any);
+    mockHandleApiError.mockResolvedValue(mockErrorResponse);
 
-    await expect(forgotPassword({ email: TEST_EMAILS.VALID })).rejects.toThrow(
-      ERROR_MESSAGES.RESET_PASSWORD
+    const result = await forgotPassword({ email: TEST_EMAILS.VALID });
+
+    expect(mockHandleApiError).toHaveBeenCalledWith(
+      mockResponse,
+      "Failed to update avatar"
     );
+    expect(result).toEqual(mockErrorResponse);
   });
 
-  it("handles network errors", async () => {
+  it("handles network errors by letting them propagate", async () => {
     mockFetch.mockRejectedValue(new Error(ERROR_MESSAGES.NETWORK_ERROR));
 
     await expect(forgotPassword({ email: TEST_EMAILS.VALID })).rejects.toThrow(
       ERROR_MESSAGES.NETWORK_ERROR
-    );
-  });
-
-  it("handles malformed JSON response", async () => {
-    const mockResponse = {
-      ok: true,
-      json: jest.fn().mockRejectedValue(new Error(ERROR_MESSAGES.INVALID_JSON)),
-    };
-    mockFetch.mockResolvedValue(mockResponse as any);
-
-    await expect(forgotPassword({ email: TEST_EMAILS.VALID })).rejects.toThrow(
-      ERROR_MESSAGES.INVALID_JSON
     );
   });
 });

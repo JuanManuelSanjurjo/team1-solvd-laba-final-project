@@ -24,7 +24,7 @@ interface Brand {
 
 export async function fetchBrands() {
   const res = await fetch(
-    "https://shoes-shop-strapi.herokuapp.com/api/brands",
+    `https://shoes-shop-strapi.herokuapp.com/api/brands`,
     {
       next: { revalidate: 3600 },
     }
