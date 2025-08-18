@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import MyWishlist from "@/app/(side-bar)/my-wishlist/page";
+import MyWishlist from "@/app/(side-bar)/(profile)/my-wishlist/page";
 import "@testing-library/jest-dom";
 import { setupMockWishlistStore } from "__tests__/mocks/wishlist/mock-wishlist-data";
 import {
