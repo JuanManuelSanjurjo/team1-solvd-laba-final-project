@@ -58,21 +58,21 @@ export default function DesktopProfileMenu({
           },
         })}
       >
-        <MenuItem onClick={handleClose}>
-          <Link href="/my-products">My Products</Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link href="/order-history">Order History</Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link href="/my-wishlist">My Wishlist</Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link href="/recently-viewed">Recently Viewed</Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link href="/update-profile">Settings</Link>
-        </MenuItem>
+        <Link href="/my-products">
+          <MenuItem onClick={handleClose}>My Products</MenuItem>
+        </Link>
+        <Link href="/order-history">
+          <MenuItem onClick={handleClose}>Order History</MenuItem>
+        </Link>
+        <Link href="/my-wishlist">
+          <MenuItem onClick={handleClose}>My Wishlist</MenuItem>
+        </Link>
+        <Link href="/recently-viewed">
+          <MenuItem onClick={handleClose}>Recently Viewed</MenuItem>
+        </Link>
+        <Link href="/update-profile">
+          <MenuItem onClick={handleClose}>Settings</MenuItem>
+        </Link>
         <MenuItem onClick={() => signOut()}>Log out</MenuItem>
       </Menu>
     </>
