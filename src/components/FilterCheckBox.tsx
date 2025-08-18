@@ -55,7 +55,13 @@ const FilterCheckbox: React.FC<FilterCheckboxProps> = ({
       }}
     >
       <FormControlLabel
-        control={<Checkbox checked={checked} onChange={onChange} />}
+        control={
+          <Checkbox
+            checked={checked}
+            onChange={onChange}
+            sx={{ transition: "all 0.2s ease-in" }}
+          />
+        }
         label={
           <Typography
             variant="body1"

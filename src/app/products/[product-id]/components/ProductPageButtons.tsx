@@ -31,7 +31,7 @@ export default function ProductPageButtons({
   const byUser = useWishlistStore((state) => state.byUser);
   const addToWishList = useWishlistStore((state) => state.addToWishList);
   const removeFromWishList = useWishlistStore(
-    (state) => state.removeFromWishList
+    (state) => state.removeFromWishList,
   );
 
   if (!userId) {
