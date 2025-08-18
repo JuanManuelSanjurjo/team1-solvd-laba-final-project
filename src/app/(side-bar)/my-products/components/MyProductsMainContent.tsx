@@ -16,6 +16,7 @@ import Button from "@/components/Button";
 import { EditProductForm } from "./EditProductForm";
 import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
+import { useRouter } from "next/navigation";
 
 interface MyProductsMainContentProps {
   brandOptions: { value: number; label: string }[];
@@ -40,6 +41,7 @@ export default function MyProductsMainContent({
   sizeOptions,
 }: MyProductsMainContentProps) {
   const deleteMutation = useDeleteProduct();
+  const router = useRouter();
 
   const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
     deleteMutation.mutate({ productId, imageIds });
@@ -55,7 +57,7 @@ export default function MyProductsMainContent({
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
 
-  const { data, isLoading } = useQuery<MyProduct[], Error>({
+  const { data, isPending } = useQuery<MyProduct[], Error>({
     queryKey: ["user-products", userId],
     queryFn: () => {
       if (!userId || !token) throw new Error("User not authenticated");
@@ -76,7 +78,7 @@ export default function MyProductsMainContent({
       }}
     >
       <MyProductsHeader isEmpty={products ? products.length === 0 : false} />
-      {isLoading ? (
+      {isPending ? (
         <SkeletonCardContainer />
       ) : products.length > 0 ? (
         <CardContainer>
@@ -101,7 +103,7 @@ export default function MyProductsMainContent({
                   product.id,
                   products[index].images
                     ? products[index].images.map((image) => image.id)
-                    : []
+                    : [],
                 );
               }}
             />
@@ -112,7 +114,7 @@ export default function MyProductsMainContent({
           title="You don't have any products yet"
           subtitle="Post can contain video, images and text"
           buttonText="Add Product"
-          onClick={() => console.log("Add Product")}
+          onClick={() => router.push("/my-products/add-product")}
         />
       )}
       {editModalOpen && (
