@@ -1,4 +1,4 @@
-import SkeletonGallery from "../components/SkeletonGallery";
+import SkeletonGallery from "../components/skeletons/SkeletonGallery";
 
 /**
  * Loading
