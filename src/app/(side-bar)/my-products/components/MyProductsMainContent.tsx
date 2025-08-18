@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
-import SkeletonCardContainer from "@/app/products/components/SkeletonCardContainer";
+import SkeletonCardContainer from "@/components/skeletons/products/SkeletonCardContainer";
 import { normalizeMyProductCard } from "@/lib/normalizers/normalize-product-card";
 import { EditProductModalWrapper } from "./EditProductModalWrapper";
 import Button from "@/components/Button";

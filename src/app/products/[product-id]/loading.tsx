@@ -1,4 +1,4 @@
-import SkeletonProductPage from "./components/skeletons/SkeletonProductPage";
+import SkeletonProductPage from "../../../components/skeletons/single-product/SkeletonProductPage";
 
 /**
  * Loading

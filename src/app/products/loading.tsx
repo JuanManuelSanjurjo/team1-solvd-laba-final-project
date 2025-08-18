@@ -1,7 +1,7 @@
 import { JSX } from "react";
 import { Box } from "@mui/material";
-import SkeletonCardContainer from "./components/SkeletonCardContainer";
-import SidebarSkeleton from "./components/SidebarSkeleton";
+import SkeletonCardContainer from "../../components/skeletons/products/SkeletonCardContainer";
+import SidebarSkeleton from "../../components/skeletons/SidebarSkeleton";
 
 export default function Loading(): JSX.Element {
   return (

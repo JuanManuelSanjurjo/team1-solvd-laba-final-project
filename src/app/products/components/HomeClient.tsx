@@ -11,7 +11,7 @@ import { getFiltersFromSearchParams } from "@/lib/getFiltersFromSearchParams";
 import { hasActiveFilters } from "@/lib/filterUtils";
 import Card from "@/components/cards/Card";
 import { FilterSideBar } from "./FiltersSideBar";
-import SkeletonCardContainer from "./SkeletonCardContainer";
+import SkeletonCardContainer from "../../../components/skeletons/products/SkeletonCardContainer";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { normalizeProductCard } from "@/lib/normalizers/normalize-product-card";
 import { PRODUCTS_PER_PAGE } from "@/lib/constants/globals";
