@@ -111,6 +111,7 @@ export default function SignUpForm() {
           label="Username"
           name="username"
           required
+          placeholder="Choose a unique username"
           errorMessage={errors.username?.message ?? ""}
         />
         <Input
@@ -119,6 +120,7 @@ export default function SignUpForm() {
           name="email"
           type="email"
           required
+          placeholder="Enter your email address"
           errorMessage={errors.email?.message ?? ""}
         />
         <Input
@@ -127,6 +129,7 @@ export default function SignUpForm() {
           type="password"
           name="password"
           required
+          placeholder="Create a strong password"
           errorMessage={errors.password?.message ?? ""}
         />
         <Input
@@ -135,6 +138,7 @@ export default function SignUpForm() {
           type="password"
           name="confirmPassword"
           required
+          placeholder="Re-enter your password"
           errorMessage={errors.confirmPassword?.message ?? ""}
         />
         <Button
