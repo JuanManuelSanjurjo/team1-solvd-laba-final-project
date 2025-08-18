@@ -12,6 +12,7 @@ import CartCard from "./components/CartCard";
 import { useCartStore } from "@/store/cartStore";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
+import CheckoutSummary from "../components/CheckoutSummary";
 
 /**
  * Checkout page component that displays a list of products in the cart.
@@ -62,7 +63,18 @@ export default function Checkout() {
 
   if (cartItems.length > 0)
     return (
-      <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: {
+            xs: "column",
+            lg: "row",
+          },
+          paddingInline: "20px",
+          marginTop: "80px",
+          justifyContent: "space-around",
+        }}
+      >
         <Box sx={{ marginTop: "80px" }}>
           <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
             Cart
@@ -80,6 +92,12 @@ export default function Checkout() {
             </React.Fragment>
           ))}{" "}
         </Box>
-      </>
+
+        <Box sx={{ marginTop: "80px" }}></Box>
+        <CheckoutSummary
+          buttonText="Checkout"
+          buttonAction={() => router.push("/checkout")}
+        />
+      </Box>
     );
 }

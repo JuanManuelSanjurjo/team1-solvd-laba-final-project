@@ -4,6 +4,9 @@ import { useState, JSX } from "react";
 import { Stack, Box, Typography } from "@mui/material";
 import PaymentMethodOption from "./PaymentMethodOption";
 import Input from "@/components/FormElements/Input";
+import { useFormContext } from "react-hook-form";
+import { CheckoutFormValues } from "../validation/checkoutSchema";
+
 import {
   Card,
   Wallet,
@@ -29,6 +32,9 @@ import { IconButton } from "@mui/material";
 const PaymentInfo = (): JSX.Element => {
   const [selectedId, setSelectedId] = useState(1);
   const [showPaymentForm, setShowPaymentForm] = useState(true);
+  const {
+    formState: { errors },
+  } = useFormContext<CheckoutFormValues>();
 
   type PaymentMethod = {
     id: number;
@@ -86,8 +92,8 @@ const PaymentInfo = (): JSX.Element => {
           sx={{
             border: "1px solid #E1E1E1",
             borderRadius: "12px",
-            paddingInline: {sm: "24px", xs: "10px"},
-            paddingBlock: {sm: "38px", xs: "10px"},
+            paddingInline: { sm: "24px", xs: "10px" },
+            paddingBlock: { sm: "38px", xs: "10px" },
           }}
           onClick={() => setShowPaymentForm(!showPaymentForm)}
         >
@@ -104,25 +110,25 @@ const PaymentInfo = (): JSX.Element => {
           {selectedId === 1 && (
             <>
               <Input
-                errorMessage=""
+                errorMessage={errors.cardNumber?.message || ""}
                 type="text"
-                name="card-number"
+                name="cardNumber"
                 label="Card number"
                 placeholder="1234 1234 1234 1234"
               />
 
               <Stack direction="row" sx={{ width: "100%" }} spacing="24px">
                 <Input
-                  errorMessage=""
+                  errorMessage={errors.expDate?.message || ""}
                   type="text"
-                  name="expiration-date"
+                  name="expDate"
                   label="Expiration date"
                   placeholder="MM / YY"
                 />
                 <Input
-                  errorMessage=""
+                  errorMessage={errors.cvc?.message || ""}
                   type="text"
-                  name="security-code"
+                  name="cvc"
                   label="Security Code"
                   placeholder="CVC"
                 />
