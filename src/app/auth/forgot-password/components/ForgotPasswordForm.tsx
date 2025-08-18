@@ -108,6 +108,7 @@ export default function ForgotPasswordForm() {
           name="email"
           type="email"
           required
+          placeholder="Enter your registered email address"
           errorMessage={errors.email?.message ?? ""}
         />
         <Button

@@ -110,6 +110,7 @@ export default function SignInForm() {
           name="email"
           type="email"
           required
+          placeholder="Enter your email address"
           errorMessage={errors.email?.message ?? ""}
         />
         <Input
@@ -118,6 +119,7 @@ export default function SignInForm() {
           type="password"
           name="password"
           required
+          placeholder="Enter your password"
           errorMessage={errors.password?.message ?? ""}
         />
         <Box

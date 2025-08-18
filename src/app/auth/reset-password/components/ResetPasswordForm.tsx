@@ -152,6 +152,7 @@ export default function ResetPasswordForm() {
           type="password"
           name="password"
           required
+          placeholder="Enter your new password"
           errorMessage={errors.password?.message ?? ""}
         />
         <Input
@@ -160,6 +161,7 @@ export default function ResetPasswordForm() {
           type="password"
           name="confirmPassword"
           required
+          placeholder="Re-enter your new password"
           errorMessage={errors.confirmPassword?.message ?? ""}
         />
         <Button
