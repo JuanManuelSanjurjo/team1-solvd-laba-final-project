@@ -1,6 +1,4 @@
 "use client";
-
-// import { Header } from "@/components/Header";
 import { Typography, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Button from "@/components/Button";
@@ -108,28 +106,28 @@ export default function ThankYou() {
               mt: { xs: "25px", md: "65px", xl: "95px" },
             }}
           >
-            <Link href="/order-history">
-              <Button
-                variant="outlined"
-                sx={{
-                  width: { xs: "100%", md: "281px" },
-                  height: { md: "65px" },
-                }}
-              >
-                View order
-              </Button>
-            </Link>
-            <Link href="/">
-              <Button
-                variant="contained"
-                sx={{
-                  width: { xs: "100%", md: "281px" },
-                  height: { md: "65px" },
-                }}
-              >
-                Continue shopping
-              </Button>
-            </Link>
+            <Button
+              component={Link}
+              href="/order-history"
+              variant="outlined"
+              sx={{
+                width: { xs: "100%", md: "281px" },
+                height: { md: "65px" },
+              }}
+            >
+              View order
+            </Button>
+            <Button
+              component={Link}
+              href="/"
+              variant="contained"
+              sx={{
+                width: { xs: "100%", md: "281px" },
+                height: { md: "65px" },
+              }}
+            >
+              Continue shopping
+            </Button>
           </Stack>
         </Stack>
 

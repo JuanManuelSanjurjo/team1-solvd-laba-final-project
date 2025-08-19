@@ -37,18 +37,17 @@ export default function SignIn() {
             }}
           >
             Don&apos;t have an account?{" "}
-            <Link href="/auth/sign-up" passHref>
-              <Typography
-                component="span"
-                sx={{
-                  fontWeight: 600,
-                  color: "primary.main",
-                  textDecoration: "none",
-                }}
-              >
-                Sign up
-              </Typography>
-            </Link>
+            <Typography
+              component={Link}
+              href="/auth/sign-up"
+              sx={{
+                fontWeight: 600,
+                color: "primary.main",
+                textDecoration: "none",
+              }}
+            >
+              Sign up
+            </Typography>
           </Typography>
         </Box>
       </LeftBoxFormContainer>

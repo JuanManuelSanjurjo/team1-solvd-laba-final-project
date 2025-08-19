@@ -41,11 +41,14 @@ export default function MyProductsHeader({
         My Products
       </Typography>
       {!isEmpty && (
-        <Link href="/my-products/add-product" passHref>
-          <Button variant="contained" sx={{ height: "40px" }}>
-            Add Product
-          </Button>
-        </Link>
+        <Button
+          component={Link}
+          href="/my-products/add-product"
+          variant="contained"
+          sx={{ height: "40px" }}
+        >
+          Add Product
+        </Button>
       )}
     </Box>
   );

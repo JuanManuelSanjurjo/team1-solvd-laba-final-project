@@ -148,18 +148,17 @@ export default function SignInForm() {
               },
             }}
           />
-          <Link href="/auth/forgot-password" passHref>
-            <Typography
-              component="span"
-              sx={{
-                fontWeight: 300,
-                color: "primary.main",
-                textDecoration: "none",
-              }}
-            >
-              Forgot password?
-            </Typography>
-          </Link>
+          <Typography
+            component={Link}
+            href="/auth/forgot-password"
+            sx={{
+              fontWeight: 300,
+              color: "primary.main",
+              textDecoration: "none",
+            }}
+          >
+            Forgot password?
+          </Typography>
         </Box>
         <Button
           type="submit"

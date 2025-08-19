@@ -38,18 +38,17 @@ export default function SignUp() {
             }}
           >
             Already have an account?{" "}
-            <Link href="/auth/sign-in">
-              <Typography
-                component="span"
-                sx={{
-                  fontWeight: 600,
-                  color: "primary.main",
-                  textDecoration: "none",
-                }}
-              >
-                Log in
-              </Typography>
-            </Link>
+            <Typography
+              component={Link}
+              href="/auth/sign-in"
+              sx={{
+                fontWeight: 600,
+                color: "primary.main",
+                textDecoration: "none",
+              }}
+            >
+              Log in
+            </Typography>
           </Typography>
         </Box>
       </LeftBoxFormContainer>

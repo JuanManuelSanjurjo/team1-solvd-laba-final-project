@@ -108,21 +108,21 @@ export default function NoSearchingStateHeader({
           </Box>
         )}
         {!isAuthenticated && (
-          <Link href="/auth/sign-in">
-            <Button
-              variant="contained"
-              size="small"
-              sx={{
-                padding: "8px 12px ",
-                fontSize: {
-                  xs: "0.8rem",
-                  md: "1rem",
-                },
-              }}
-            >
-              Sign in
-            </Button>
-          </Link>
+          <Button
+            component={Link}
+            href="/auth/sign-in"
+            variant="contained"
+            size="small"
+            sx={{
+              padding: "8px 12px ",
+              fontSize: {
+                xs: "0.8rem",
+                md: "1rem",
+              },
+            }}
+          >
+            Sign in
+          </Button>
         )}
       </Box>
     </>
