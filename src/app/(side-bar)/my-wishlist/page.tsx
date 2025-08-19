@@ -1,20 +1,19 @@
 "use client";
-import Card from "@/components/cards/Card";
 import CardContainer from "@/components/cards/CardContainer";
-import { useRecentlyViewedStore } from "@/store/recentlyviewed";
+import Card from "@/components/cards/Card";
 import { Box, Typography } from "@mui/material";
+import { useWishlistStore } from "@/store/wishlist";
 import { useState, useEffect } from "react";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import { useSession } from "next-auth/react";
-import ProfileHeaderTitle from "../components/ProfileHeaderTitle";
 
-export default function RecentlyViewed() {
+export default function MyWishlist() {
   const [isHydrated, setIsHydrated] = useState(false);
   const router = useRouter();
   const { data: session, status } = useSession();
-  const byUser = useRecentlyViewedStore((state) => state.byUser);
+  const byUser = useWishlistStore((state) => state.byUser);
 
   useEffect(() => {
     setIsHydrated(true);
@@ -37,7 +36,7 @@ export default function RecentlyViewed() {
   }
 
   const userId = String(session!.user!.id);
-  const recentlyViewed = byUser[userId] ?? [];
+  const wishList = byUser[userId] ?? [];
 
   function visitProducts() {
     router.push("/products");
@@ -45,9 +44,12 @@ export default function RecentlyViewed() {
 
   return (
     <>
-      <ProfileHeaderTitle>Recently Viewed</ProfileHeaderTitle>
-
-      <Box>
+      <Box
+        sx={{
+          marginInline: { xs: "20px", lg: 0 },
+          textAlign: "left",
+        }}
+      >
         <Box display="flex" alignItems="center">
           <Typography
             variant="h2"
@@ -55,28 +57,27 @@ export default function RecentlyViewed() {
               marginTop: "40px",
             }}
           >
-            Recently viewed
+            My Wishlist
           </Typography>
         </Box>
-        {recentlyViewed.length > 0 ? (
-          <CardContainer length={recentlyViewed.length}>
-            {recentlyViewed.map((product, index) => (
+        {wishList.length > 0 ? (
+          <CardContainer length={wishList.length}>
+            {wishList.map((product, index) => (
               <Card
                 product={product}
                 key={index}
                 topAction="cardButtonWishList"
-                overlayAction="cardOverlayAddToCard"
               />
             ))}
           </CardContainer>
         ) : (
           <MyProductsEmptyState
-            title="You haven't viewed any products yet"
-            subtitle="View available products in the products page."
+            title="You don't have any products in wishlist yet"
+            subtitle="Add products from products page using the heart icon."
             buttonText="Go to products"
             onClick={visitProducts}
             icon={LogoBlackSvg}
-          />
+          ></MyProductsEmptyState>
         )}
       </Box>
     </>
