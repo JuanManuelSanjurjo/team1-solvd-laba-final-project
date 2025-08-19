@@ -8,6 +8,7 @@ import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import { useSession } from "next-auth/react";
+import ProfileHeaderTitle from "../components/ProfileHeaderTitle";
 
 export default function RecentlyViewed() {
   const [isHydrated, setIsHydrated] = useState(false);
@@ -44,37 +45,36 @@ export default function RecentlyViewed() {
 
   return (
     <>
-      <Box>
-        <Box display="flex" alignItems="center">
-          <Typography
-            variant="h2"
-            sx={{
-              marginTop: "40px",
-            }}
-          >
-            Recently viewed
-          </Typography>
-        </Box>
-        {recentlyViewed.length > 0 ? (
-          <CardContainer>
-            {recentlyViewed.map((product, index) => (
-              <Card
-                product={product}
-                key={index}
-                overlayAction="cardButtonAddToCart"
-              />
-            ))}
-          </CardContainer>
-        ) : (
+      <ProfileHeaderTitle>Recently Viewed</ProfileHeaderTitle>
+      {recentlyViewed.length > 0 ? (
+        <CardContainer>
+          {recentlyViewed.map((product, index) => (
+            <Card
+              product={product}
+              key={index}
+              overlayAction="cardButtonAddToCart"
+            />
+          ))}
+        </CardContainer>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
           <MyProductsEmptyState
             title="You haven't viewed any products yet"
             subtitle="View available products in the products page."
             buttonText="Go to products"
             onClick={visitProducts}
             icon={LogoBlackSvg}
-          ></MyProductsEmptyState>
-        )}
-      </Box>
+          />
+        </Box>
+      )}
     </>
   );
 }

@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import {
   UpdateProfileFormData,
   UpdateProfileResponse,
-} from "@/app/(side-bar)/update-profile/types";
+} from "@/app/(side-bar)/(profile)/update-profile/types";
 import { handleApiError } from "@/lib/normalizers/handle-api-error";
 
 export const updateUser = async (

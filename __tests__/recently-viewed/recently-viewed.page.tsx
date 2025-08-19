@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import RecentlyViewed from "@/app/(side-bar)/recently-viewed/page";
+import RecentlyViewed from "@/app/(side-bar)/(profile)/recently-viewed/page";
 import "@testing-library/jest-dom";
 import { setupMockRecentlyViewedStore } from "__tests__/mocks/recently-viewed/mock-recentlyviewed-data";
 import {
