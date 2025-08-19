@@ -1,44 +1,44 @@
 "use client";
-
-import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
+import CardContainer from "@/components/cards/CardContainer";
+import { useRecentlyViewedStore } from "@/store/recentlyviewed";
 import { Box } from "@mui/material";
-import { useWishlistStore } from "@/store/wishlist";
+import { useCallback } from "react";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import { Session } from "next-auth";
-import { useCallback } from "react";
 import ProfileHeaderTitle from "../../components/ProfileHeaderTitle";
-import SkeletonCardContainer from "@/components/skeletons/products/SkeletonCardContainer";
 import {
   useClientHydrated,
   useCleanUpGhostProducts,
 } from "../../hooks/useCleanupGhostProducts";
+import SkeletonCardContainer from "@/components/skeletons/products/SkeletonCardContainer";
 
-export default function Wishlist({ session }: { session: Session }) {
+export default function RecentlyViewed({ session }: { session: Session }) {
   const router = useRouter();
   const userId = session.user.id;
-  const byUser = useWishlistStore((state) => state.byUser);
+  const byUser = useRecentlyViewedStore((state) => state.byUser);
   const isHydrated = useClientHydrated();
-  const removeInactiveProducts = useWishlistStore(
+  const removeInactiveProducts = useRecentlyViewedStore(
     (state) => state.removeInactiveProducts
   );
-  const wishList = byUser[userId] ?? [];
+
+  const recentlyViewed = byUser[userId] ?? [];
 
   const visitProducts = useCallback(() => {
     router.push("/products");
   }, [router]);
 
   useCleanUpGhostProducts(
-    isHydrated ? wishList.map((prod) => prod.id) : [],
+    isHydrated ? recentlyViewed.map((prod) => prod.id) : [],
     (inactive) => removeInactiveProducts(userId, inactive)
   );
 
   if (!isHydrated) {
     return (
       <>
-        <ProfileHeaderTitle>My wishlist</ProfileHeaderTitle>
+        <ProfileHeaderTitle>Recently Viewed</ProfileHeaderTitle>
         <SkeletonCardContainer></SkeletonCardContainer>
       </>
     );
@@ -46,14 +46,14 @@ export default function Wishlist({ session }: { session: Session }) {
 
   return (
     <>
-      <ProfileHeaderTitle>My wishlist</ProfileHeaderTitle>
-      {wishList.length > 0 ? (
-        <CardContainer length={wishList.length}>
-          {wishList.map((product, index) => (
+      <ProfileHeaderTitle>Recently Viewed</ProfileHeaderTitle>
+      {recentlyViewed.length > 0 ? (
+        <CardContainer>
+          {recentlyViewed.map((product) => (
             <Card
               product={product}
               key={product.id}
-              topAction="cardButtonWishList"
+              overlayAction="cardButtonAddToCart"
             />
           ))}
         </CardContainer>
@@ -68,8 +68,8 @@ export default function Wishlist({ session }: { session: Session }) {
           }}
         >
           <MyProductsEmptyState
-            title="You don't have any products in wishlist yet"
-            subtitle="Add products from products page using the heart icon."
+            title="You haven't viewed any products yet"
+            subtitle="View available products in the products page."
             buttonText="Go to products"
             onClick={visitProducts}
             icon={LogoBlackSvg}
