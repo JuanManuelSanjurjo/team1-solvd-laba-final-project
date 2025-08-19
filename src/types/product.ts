@@ -47,6 +47,7 @@ export interface MyProduct {
   name: string;
   price: number;
   description: string;
+  categories: { id: number; name: string }[];
   gender: {
     id: number;
     name: string;

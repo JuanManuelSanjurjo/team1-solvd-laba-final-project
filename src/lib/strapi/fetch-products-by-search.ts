@@ -1,4 +1,4 @@
-import { getQueryStringFromFilters } from "@/lib/getQueryStringFromFilters";
+import { getQueryStringFromFilters } from "@/lib/get-query-string-from-filters";
 
 /**
  * Fetches products from the Strapi API by performing a case-insensitive search across one or more fields.
@@ -24,13 +24,17 @@ export const fetchProductsBySearch = async (
   searchFields: string[] = ["name"],
   populateFields: string[] = [],
   pageNumber?: number,
-  pageSize?: number,
+  pageSize?: number
 ) => {
   if (!query.trim()) return [];
 
   let url = getQueryStringFromFilters(query, searchFields, populateFields);
 
-  url += `${pageSize ? `&pagination[page]=${pageNumber}&pagination[pageSize]=${pageSize}` : ""}`;
+  url += `${
+    pageSize
+      ? `&pagination[page]=${pageNumber}&pagination[pageSize]=${pageSize}`
+      : ""
+  }`;
 
   const response = await fetch(url);
   if (!response.ok) throw new Error("Failed to fetch products");

@@ -1,6 +1,6 @@
 "use client";
-import { deleteImage } from "@/lib/strapi/deleteImage";
-import { deleteProduct } from "@/lib/strapi/deleteProduct";
+import { deleteImage } from "@/lib/strapi/delete-image";
+import { deleteProduct } from "@/lib/strapi/delete-product";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 

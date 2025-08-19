@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { Box } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
-import { fetchUserProducts } from "@/lib/strapi/fetchUserProducts";
+import { fetchUserProducts } from "@/lib/strapi/fetch-user-products";
 import { MyProduct } from "@/types/product";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
@@ -22,6 +22,7 @@ interface MyProductsMainContentProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
+  categoryOptions: { value: number; label: string }[];
 }
 
 /**
@@ -39,6 +40,7 @@ export default function MyProductsMainContent({
   brandOptions,
   colorOptions,
   sizeOptions,
+  categoryOptions,
 }: MyProductsMainContentProps) {
   const deleteMutation = useDeleteProduct();
   const router = useRouter();
@@ -52,10 +54,19 @@ export default function MyProductsMainContent({
   const token = session?.user?.jwt;
 
   const [selectedProduct, setSelectedProduct] = useState<MyProduct | null>(
-    null,
+    null
   );
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
+  const [snack, setSnack] = useState<{
+    open: boolean;
+    msg: string;
+    sev: "success" | "error";
+  }>({
+    open: false,
+    msg: "",
+    sev: "success",
+  });
 
   const { data, isPending } = useQuery<MyProduct[], Error>({
     queryKey: ["user-products", userId],
@@ -65,6 +76,14 @@ export default function MyProductsMainContent({
     },
     enabled: !!userId && !!token,
   });
+
+  const handleNotify = (msg: string, sev: "success" | "error") => {
+    setSnack({ open: true, msg, sev });
+  };
+
+  const handleSnackClose = () => {
+    setSnack({ ...snack, open: false });
+  };
 
   const products = data ?? [];
 
@@ -133,9 +152,11 @@ export default function MyProductsMainContent({
             sizeOptions={sizeOptions}
             colorOptions={colorOptions}
             brandOptions={brandOptions}
+            categoryOptions={categoryOptions}
             product={selectedProduct ?? products[0]}
             mode={formMode}
             onSuccess={() => setEditModalOpen(false)}
+            onNotify={handleNotify}
           />
           <Box
             sx={{ width: "100%", display: "flex", justifyContent: "center" }}
@@ -156,6 +177,21 @@ export default function MyProductsMainContent({
           </Box>
         </EditProductModalWrapper>
       )}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={4000}
+        onClose={handleSnackClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleSnackClose}
+          severity={snack.sev}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {snack.msg}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

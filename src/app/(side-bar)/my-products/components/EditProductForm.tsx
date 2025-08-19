@@ -6,11 +6,12 @@ import { ProductFormData, productSchema } from "../add-product/schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductFormFields } from "../add-product/components/ProductFormFields";
-import { Alert, Box, Snackbar, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ImagePreviewerUploader from "../add-product/components/ImagePreviewerUploader";
 import { MyProduct } from "@/types/product";
 import { useUpdateProduct } from "../hooks/useUpdateProduct";
 import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
+import { urlToFile } from "@/lib/url-utils";
 
 /**
  * Props for the EditProductForm component.
@@ -22,17 +23,18 @@ import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
  * @property {MyProduct} product  - The details of an existent product.
  * @property {String} mode  - Defines if we are going to delete or duplicate a product.
  * @property {()=> void} onSuccess  - onSuccess action.
-
-
+ * @property {(msg:string , sev: "success" | "error")=>} onNotify  - onNotify action.
  */
 
 interface EditProductFormProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
+  categoryOptions: { value: number; label: string }[];
   product: MyProduct;
   mode: "edit" | "duplicate";
   onSuccess: () => void;
+  onNotify?: (message: string, sev: "success" | "error") => void;
 }
 
 /**
@@ -55,6 +57,7 @@ interface EditProductFormProps {
  *   product={myProduct}
  *   mode="edit"
  *   onSuccess={() => console.log("Updated!")}
+ *   onNotify={handleNotify}
  * />
  */
 
@@ -62,9 +65,11 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   brandOptions,
   colorOptions,
   sizeOptions,
+  categoryOptions,
   product,
   mode,
   onSuccess,
+  onNotify,
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -87,6 +92,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
       gender: product.gender.id,
       brand: product.brand.id,
       price: product.price,
+      categories: product.categories[0].id,
       description: product.description,
       sizes: product?.sizes?.map((size) => size.id),
       userID: 0,
@@ -97,16 +103,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   const { mutateAsync: handleCreateProduct } = useCreateProduct();
 
   const selectedSizes = watch("sizes");
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
-    "success"
-  );
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
 
   const toggleSize = (size: number) => {
     const currentSizes = selectedSizes || [];
@@ -139,32 +135,31 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           existentImages: remainingExistentImages,
           imagesToDelete,
         });
-        setSnackbarMessage("Product updated successfully!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+        onNotify?.("Product edited successfully!", "success");
         onSuccess?.();
       } catch (err) {
         console.log(err);
-        setSnackbarMessage("Failed to update product.");
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        onNotify?.("Failed to edit product.", "error");
       }
     } else {
       try {
+        let filesToUpload: File[] = [...imageFiles];
+        if (product.images?.length) {
+          const duplicatedFiles = await Promise.all(
+            product.images.map((img) => urlToFile(img.url))
+          );
+          filesToUpload = [...filesToUpload, ...duplicatedFiles];
+        }
+
         await handleCreateProduct({
           data: { ...data, userID },
-          imageFiles,
-          remainingExistentImages,
+          imageFiles: filesToUpload,
         });
-        setSnackbarMessage("Product added successfully!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+        onNotify?.("Product added successfully!", "success");
         onSuccess?.();
       } catch (err) {
         console.log(err);
-        setSnackbarMessage("Failed to add product.");
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        onNotify?.("Failed to add product.", "error");
       }
     }
   };
@@ -202,6 +197,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           colorOptions={colorOptions}
           brandOptions={brandOptions}
           sizeOptions={sizeOptions}
+          categoryOptions={categoryOptions}
           selectedSizes={selectedSizes}
           toggleSize={toggleSize}
           getValues={getValues}
@@ -225,22 +221,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           onPreviewsChange={setExistentImages}
         />
       </Box>
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbarSeverity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

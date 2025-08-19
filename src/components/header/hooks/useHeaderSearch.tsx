@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProductsBySearch } from "@/lib/strapi/fetchProductsBySearch";
+import { fetchProductsBySearch } from "@/lib/strapi/fetch-products-by-search";
 import useDebounce from "@/hooks/useDebounce";
 
 /**
@@ -33,7 +33,7 @@ export default function useHeaderSearch() {
         ["name", "color.name", "gender.name"],
         ["color.name", "gender.name", "images.url"],
         1,
-        5,
+        5
       ),
     enabled: isSearching && debouncedSearchInput.length > 1,
     staleTime: 10 * 1000,

@@ -1,21 +1,24 @@
 import { Box, Typography } from "@mui/material";
 import { AddProductForm } from "./components/AddProductForm";
-import { fetchBrands } from "@/lib/strapi/fetchBrands";
-import { fetchColors } from "@/lib/strapi/fetchColors";
-import { fetchSizes } from "@/lib/strapi/fetchSizes";
+import { fetchBrands } from "@/lib/strapi/fetch-brands";
+import { fetchColors } from "@/lib/strapi/fetch-colors";
+import { fetchSizes } from "@/lib/strapi/fetch-sizes";
 import Button from "@/components/Button";
 import { Metadata } from "next";
+import { fetchCategories } from "@/lib/strapi/fetch-categories";
 
 export const metadata: Metadata = {
   title: `Add new product | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
 };
 
 export default async function AddProduct() {
-  const [brandOptions, colorOptions, sizeOptions] = await Promise.all([
-    fetchBrands(),
-    fetchColors(),
-    fetchSizes(),
-  ]);
+  const [brandOptions, colorOptions, sizeOptions, categoryOptions] =
+    await Promise.all([
+      fetchBrands(),
+      fetchColors(),
+      fetchSizes(),
+      fetchCategories(),
+    ]);
   return (
     <Box sx={{ margin: "0 20px" }}>
       <Box sx={{ width: { sm: "100%", md: "60%" } }}>
@@ -39,6 +42,7 @@ export default async function AddProduct() {
         colorOptions={colorOptions}
         brandOptions={brandOptions}
         sizeOptions={sizeOptions}
+        categoryOptions={categoryOptions}
       />
       <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
         <Button
