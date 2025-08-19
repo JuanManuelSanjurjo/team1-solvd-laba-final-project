@@ -25,7 +25,7 @@ export default function Wishlist({ session }: { session: Session }) {
     <>
       <ProfileHeaderTitle>My wishlist</ProfileHeaderTitle>
       {wishList.length > 0 ? (
-        <CardContainer>
+        <CardContainer length={wishList.length}>
           {wishList.map((product, index) => (
             <Card
               product={product}

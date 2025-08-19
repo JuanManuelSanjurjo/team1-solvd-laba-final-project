@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import { useSession } from "next-auth/react";
 import ProfileHeaderTitle from "../components/ProfileHeaderTitle";
+import SkeletonCardContainer from "@/components/skeletons/products/SkeletonCardContainer";
 
 export default function RecentlyViewed() {
   const [isHydrated, setIsHydrated] = useState(false);
@@ -20,21 +21,7 @@ export default function RecentlyViewed() {
     setIsHydrated(true);
   }, []);
 
-  if (!isHydrated || status === "loading") {
-    return (
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <Typography
-          variant="h4"
-          sx={{
-            marginTop: "40px",
-            fontSize: { xs: 20, md: 30 },
-          }}
-        >
-          Loading...
-        </Typography>
-      </Box>
-    );
-  }
+  if (!isHydrated || status === "loading") <SkeletonCardContainer />;
 
   const userId = String(session!.user!.id);
   const recentlyViewed = byUser[userId] ?? [];
