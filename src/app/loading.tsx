@@ -2,6 +2,10 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import { JSX } from "react";
 
+/**
+ * Basic Loading component
+ * @returns {JSX.Element}
+ */
 export default function Loading(): JSX.Element {
   return (
     <Box
