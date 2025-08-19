@@ -32,8 +32,8 @@ export default function ProductLayout({
           justifyContent: "center",
           alignItems: "center",
           paddingTop: {
-            xs: "60px",
-            sm: "90px",
+            xs: "0px",
+            sm: "30px",
             md: "120px",
           },
         }}
@@ -53,7 +53,8 @@ export default function ProductLayout({
               lg: "row",
             },
             gap: {
-              xs: 8,
+              xs: 4,
+              md: 8,
               lg: "100px",
             },
           }}
