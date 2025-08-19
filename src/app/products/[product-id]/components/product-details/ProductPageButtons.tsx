@@ -33,9 +33,7 @@ export default function ProductPageButtons({
     (state) => state.removeFromWishList,
   );
 
-  if (status !== "authenticated") return null;
-
-  const userId = String(session!.user!.id);
+  const userId = String(session?.user?.id);
   const wishList = byUser[userId] ?? [];
   const isInWishList = wishList.some((prod) => prod.id === product.id);
 
