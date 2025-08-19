@@ -23,6 +23,7 @@ interface ProductFormFieldsProps {
   colorOptions: { value: number; label: string }[];
   brandOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
+  categoryOptions: { value: number; label: string }[];
   selectedSizes: number[];
   toggleSize: (size: number) => void;
   getValues: UseFormGetValues<ProductFormData>;
@@ -36,6 +37,7 @@ export const ProductFormFields = ({
   colorOptions,
   brandOptions,
   sizeOptions,
+  categoryOptions,
   selectedSizes,
   toggleSize,
   getValues,
@@ -85,6 +87,21 @@ export const ProductFormFields = ({
             label="Color"
             name="color"
             options={colorOptions}
+            placeholder=""
+            required
+          />
+        )}
+      />
+
+      <Controller
+        name="category"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            label="Category"
+            name="category"
+            options={categoryOptions}
             placeholder=""
             required
           />

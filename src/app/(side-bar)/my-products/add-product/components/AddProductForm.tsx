@@ -17,12 +17,15 @@ import { ProductFormFields } from "./ProductFormFields";
  * @property {Array<{ value: number; label: string }>} brandOptions - Options for the Brand select input.
  * @property {Array<{ value: number; label: string }>} colorOptions - Options for the Color select input.
  * @property {Array<{ value: number; label: number }>} sizeOptions - Options for the Sizes selection.
+ * @property {Array<{ value: number; label: number }>} categoryOptions - Options for the Sizes selection.
+
  */
 
 interface AddProductFormProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
+  categoryOptions: { value: number; label: string }[];
 }
 
 /**
@@ -39,6 +42,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
   brandOptions,
   colorOptions,
   sizeOptions,
+  categoryOptions,
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -58,6 +62,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
       color: colorOptions[0].value,
       gender: 4,
       brand: brandOptions[0].value,
+      category: categoryOptions[0].value,
       price: 0,
       description: "",
       sizes: [],
@@ -149,6 +154,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
           brandOptions={brandOptions}
           sizeOptions={sizeOptions}
           selectedSizes={selectedSizes}
+          categoryOptions={categoryOptions}
           toggleSize={toggleSize}
           setValue={setValue}
           getValues={getValues}

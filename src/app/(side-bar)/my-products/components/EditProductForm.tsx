@@ -22,14 +22,13 @@ import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
  * @property {MyProduct} product  - The details of an existent product.
  * @property {String} mode  - Defines if we are going to delete or duplicate a product.
  * @property {()=> void} onSuccess  - onSuccess action.
-
-
  */
 
 interface EditProductFormProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
+  categoryOptions: { value: number; label: string }[];
   product: MyProduct;
   mode: "edit" | "duplicate";
   onSuccess: () => void;
@@ -62,6 +61,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   brandOptions,
   colorOptions,
   sizeOptions,
+  categoryOptions,
   product,
   mode,
   onSuccess,
@@ -151,11 +151,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
       }
     } else {
       try {
-        await handleCreateProduct({
-          data: { ...data, userID },
-          imageFiles,
-          remainingExistentImages,
-        });
+        await handleCreateProduct({ data: { ...data, userID }, imageFiles });
         setSnackbarMessage("Product added successfully!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
@@ -202,6 +198,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           colorOptions={colorOptions}
           brandOptions={brandOptions}
           sizeOptions={sizeOptions}
+          categoryOptions={categoryOptions}
           selectedSizes={selectedSizes}
           toggleSize={toggleSize}
           getValues={getValues}
