@@ -19,6 +19,19 @@ type FilterChipProps = {
   onClick: () => void;
 };
 
+/**
+ * FilterChip
+ *
+ * This component renders a chip for filtering products.
+ *
+ * @component
+ *
+ * @param {string} text - The text to display in the chip.
+ * @param {function} onClick - The function to be called when the chip is clicked.
+ *
+ * @returns {JSX.Element} The chip for filtering products.
+ */
+
 export default function FilterChip({ text, onClick }: FilterChipProps) {
   return (
     <StyledBox onClick={onClick}>
