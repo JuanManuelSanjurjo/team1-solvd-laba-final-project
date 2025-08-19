@@ -23,6 +23,7 @@ import { urlToFile } from "@/lib/url-utils";
  * @property {MyProduct} product  - The details of an existent product.
  * @property {String} mode  - Defines if we are going to delete or duplicate a product.
  * @property {()=> void} onSuccess  - onSuccess action.
+ * @property {(msg:string , sev: "success" | "error")=>} onNotify  - onNotify action.
  */
 
 interface EditProductFormProps {
@@ -56,6 +57,7 @@ interface EditProductFormProps {
  *   product={myProduct}
  *   mode="edit"
  *   onSuccess={() => console.log("Updated!")}
+ *   onNotify={handleNotify}
  * />
  */
 
