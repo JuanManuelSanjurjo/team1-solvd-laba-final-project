@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductsBySearch } from "@/lib/strapi/fetchProductsBySearch";
-import { useDeferredValue } from "react";
+import useDebounce from "@/hooks/useDebounce";
 
 /**
  * useHeaderSearch
@@ -17,7 +17,7 @@ import { useDeferredValue } from "react";
 export default function useHeaderSearch() {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
-  const deferredSearchInput = useDeferredValue(searchInput);
+  const debouncedSearchInput = useDebounce(searchInput, 300);
   const [isSearching, setIsSearching] = useState(false);
   const [open, setOpen] = useState(false);
   const toggleSearch = () => {
@@ -26,16 +26,16 @@ export default function useHeaderSearch() {
   };
 
   const { data: searchResults = [] } = useQuery({
-    queryKey: ["products", searchInput],
+    queryKey: ["products", debouncedSearchInput],
     queryFn: () =>
       fetchProductsBySearch(
-        deferredSearchInput,
+        debouncedSearchInput,
         ["name", "color.name", "gender.name"],
         ["color.name", "gender.name", "images.url"],
         1,
         5,
       ),
-    enabled: isSearching && deferredSearchInput.length > 1,
+    enabled: isSearching && debouncedSearchInput.length > 1,
   });
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
