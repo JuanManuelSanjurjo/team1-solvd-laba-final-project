@@ -104,9 +104,14 @@ export default function CardButtonMenu({
             },
           },
         }}
+        sx={{
+          "& .MuiMenuItem-root": {
+            width: "100%",
+          },
+        }}
       >
-        <MenuItem component="button" onClick={handleClose}>
-          <Link href={`/products/${product.id}`}>View</Link>
+        <MenuItem component={Link} href={`/products/${product.id}`}>
+          View
         </MenuItem>
         <MenuItem
           component="button"
