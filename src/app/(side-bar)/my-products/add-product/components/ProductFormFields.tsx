@@ -94,7 +94,7 @@ export const ProductFormFields = ({
       />
 
       <Controller
-        name="category"
+        name="categories"
         control={control}
         render={({ field }) => (
           <Select

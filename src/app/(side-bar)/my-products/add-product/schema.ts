@@ -5,7 +5,7 @@ export const productSchema = z.object({
   color: z.number().refine((val) => typeof val === "number", {
     message: "Color is required",
   }),
-  category: z.number().refine((val) => typeof val === "number", {
+  categories: z.number().refine((val) => typeof val === "number", {
     message: "Category is required",
   }),
   gender: z.number().refine((val) => typeof val === "number", {

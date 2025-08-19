@@ -62,7 +62,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
       color: colorOptions[0].value,
       gender: 4,
       brand: brandOptions[0].value,
-      category: categoryOptions[0].value,
+      categories: categoryOptions[0].value,
       price: 0,
       description: "",
       sizes: [],

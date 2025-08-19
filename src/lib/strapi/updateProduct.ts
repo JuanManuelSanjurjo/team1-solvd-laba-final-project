@@ -8,7 +8,7 @@ type ProductFormData = {
     price: number;
     sizes: number[];
     images: number[];
-    category: [];
+    categories: number;
     teamName: string;
     userID: number;
   };

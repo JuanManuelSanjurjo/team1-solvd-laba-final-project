@@ -22,6 +22,7 @@ interface MyProductsMainContentProps {
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
+  categoryOptions: { value: number; label: string }[];
 }
 
 /**
@@ -39,6 +40,7 @@ export default function MyProductsMainContent({
   brandOptions,
   colorOptions,
   sizeOptions,
+  categoryOptions,
 }: MyProductsMainContentProps) {
   const deleteMutation = useDeleteProduct();
   const router = useRouter();
@@ -52,7 +54,7 @@ export default function MyProductsMainContent({
   const token = session?.user?.jwt;
 
   const [selectedProduct, setSelectedProduct] = useState<MyProduct | null>(
-    null,
+    null
   );
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
@@ -133,6 +135,7 @@ export default function MyProductsMainContent({
             sizeOptions={sizeOptions}
             colorOptions={colorOptions}
             brandOptions={brandOptions}
+            categoryOptions={categoryOptions}
             product={selectedProduct ?? products[0]}
             mode={formMode}
             onSuccess={() => setEditModalOpen(false)}

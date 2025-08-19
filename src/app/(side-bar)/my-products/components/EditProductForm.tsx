@@ -11,6 +11,7 @@ import ImagePreviewerUploader from "../add-product/components/ImagePreviewerUplo
 import { MyProduct } from "@/types/product";
 import { useUpdateProduct } from "../hooks/useUpdateProduct";
 import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
+import { urlToFile } from "@/lib/url-utils";
 
 /**
  * Props for the EditProductForm component.
@@ -87,6 +88,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
       gender: product.gender.id,
       brand: product.brand.id,
       price: product.price,
+      categories: product.categories[0].id,
       description: product.description,
       sizes: product?.sizes?.map((size) => size.id),
       userID: 0,
@@ -151,7 +153,18 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
       }
     } else {
       try {
-        await handleCreateProduct({ data: { ...data, userID }, imageFiles });
+        let filesToUpload: File[] = [...imageFiles];
+        if (product.images?.length) {
+          const duplicatedFiles = await Promise.all(
+            product.images.map((img, idx) => urlToFile(img.url))
+          );
+          filesToUpload = [...filesToUpload, ...duplicatedFiles];
+        }
+
+        await handleCreateProduct({
+          data: { ...data, userID },
+          imageFiles: filesToUpload,
+        });
         setSnackbarMessage("Product added successfully!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
