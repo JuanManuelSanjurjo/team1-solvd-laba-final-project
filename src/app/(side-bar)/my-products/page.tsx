@@ -1,9 +1,9 @@
-import { fetchBrands } from "@/lib/strapi/fetchBrands";
+import { fetchBrands } from "@/lib/strapi/fetch-brands";
 import MyProductsBanner from "./components/MyProductsBanner";
 import MyProductsMainContent from "./components/MyProductsMainContent";
-import { fetchColors } from "@/lib/strapi/fetchColors";
-import { fetchSizes } from "@/lib/strapi/fetchSizes";
-import { fetchCategories } from "@/lib/strapi/fetchCategories";
+import { fetchColors } from "@/lib/strapi/fetch-colors";
+import { fetchSizes } from "@/lib/strapi/fetch-sizes";
+import { fetchCategories } from "@/lib/strapi/fetch-categories";
 
 /**
  * MyProducts

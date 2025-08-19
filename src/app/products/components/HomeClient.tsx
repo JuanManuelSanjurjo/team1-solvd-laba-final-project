@@ -7,8 +7,8 @@ import PaginationComponent from "@/components/PaginationComponent";
 import SkeletonPagination from "@/components/SkeletonPagination";
 import { Add, FilterRemove, FilterSearch } from "iconsax-react";
 import { useSearchParams } from "next/navigation";
-import { getFiltersFromSearchParams } from "@/lib/getFiltersFromSearchParams";
-import { hasActiveFilters } from "@/lib/filterUtils";
+import { getFiltersFromSearchParams } from "@/lib/get-filters-from-search-params";
+import { hasActiveFilters } from "@/lib/filter-utils";
 import Card from "@/components/cards/Card";
 import { FilterSideBar } from "./FiltersSideBar";
 import SkeletonCardContainer from "../../../components/skeletons/products/SkeletonCardContainer";
@@ -27,11 +27,11 @@ export default function HomeClient() {
 
   const filters = useMemo(
     () => getFiltersFromSearchParams(searchParams),
-    [searchParams],
+    [searchParams]
   );
   const searchTerm = useMemo(
     () => searchParams.get("searchTerm"),
-    [searchParams],
+    [searchParams]
   );
   const {
     data: products,
@@ -346,7 +346,7 @@ export default function HomeClient() {
                           key={index}
                           overlay={true}
                         />
-                      ),
+                      )
                     )}
                   </CardContainer>
                   {pagination ? (

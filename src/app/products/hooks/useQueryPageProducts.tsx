@@ -1,5 +1,5 @@
 import { ProductFilters, PaginatedProducts } from "@/types/product";
-import { fetchProducts } from "@/lib/strapi/fetchProducts";
+import { fetchProducts } from "@/lib/strapi/fetch-products";
 import { useQuery } from "@tanstack/react-query";
 
 type useQueryPagedProductsProps = {
@@ -42,7 +42,7 @@ export default function useQueryPagedProducts({
         pageSize,
         searchTerm,
         ["name", "color.name", "gender.name"],
-        ["color.name", "gender.name", "images.url"],
+        ["color.name", "gender.name", "images.url"]
       ),
   });
 

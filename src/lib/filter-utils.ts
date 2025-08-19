@@ -1,4 +1,4 @@
-import { ProductFilters } from "./getFiltersFromSearchParams";
+import { ProductFilters } from "./get-filters-from-search-params";
 
 /**
  * Determines whether any filters are currently active.

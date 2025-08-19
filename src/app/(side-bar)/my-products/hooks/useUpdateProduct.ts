@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { uploadImages } from "@/lib/strapi/uploadImages";
+import { uploadImages } from "@/lib/strapi/upload-images";
 import { useSession } from "next-auth/react";
 import { ProductFormData } from "../add-product/schema";
-import { updateProduct } from "@/lib/strapi/updateProduct";
-import { deleteImage } from "@/lib/strapi/deleteImage";
+import { updateProduct } from "@/lib/strapi/update-product";
+import { deleteImage } from "@/lib/strapi/delete-image";
 
 export function useUpdateProduct(productId: number) {
   const queryClient = useQueryClient();

@@ -1,11 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { AddProductForm } from "./components/AddProductForm";
-import { fetchBrands } from "@/lib/strapi/fetchBrands";
-import { fetchColors } from "@/lib/strapi/fetchColors";
-import { fetchSizes } from "@/lib/strapi/fetchSizes";
+import { fetchBrands } from "@/lib/strapi/fetch-brands";
+import { fetchColors } from "@/lib/strapi/fetch-colors";
+import { fetchSizes } from "@/lib/strapi/fetch-sizes";
 import Button from "@/components/Button";
 import { Metadata } from "next";
-import { fetchCategories } from "@/lib/strapi/fetchCategories";
+import { fetchCategories } from "@/lib/strapi/fetch-categories";
 
 export const metadata: Metadata = {
   title: `Add new product | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,

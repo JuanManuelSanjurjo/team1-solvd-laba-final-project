@@ -2,7 +2,7 @@
  * Represents the available filters
  */
 import { ProductFilters } from "@/types/product";
-import { getQueryStringFromFilters } from "@/lib/getQueryStringFromFilters";
+import { getQueryStringFromFilters } from "@/lib/get-query-string-from-filters";
 
 /**
  * Fetches products from the Strapi API based on provided filter criteria.
