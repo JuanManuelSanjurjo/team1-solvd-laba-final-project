@@ -36,6 +36,7 @@ export default function useHeaderSearch() {
         5,
       ),
     enabled: isSearching && debouncedSearchInput.length > 1,
+    staleTime: 10 * 1000,
   });
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
