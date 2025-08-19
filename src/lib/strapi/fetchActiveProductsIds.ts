@@ -1,4 +1,24 @@
-const BASE_URL = "https://shoes-shop-strapi.herokuapp.com";
+/**
+ * Verifies a list of product IDs against Strapi and returns only those that exist.
+ *
+ * How it works:
+ * - Splits the incoming `ids` into chunks of size `MAX`.
+ * - Calls `/api/products` using `filters[id][$in]` and requests only the `id` field.
+ * - Accumulates the found IDs, then **preserves input order** by filtering the original `ids`.
+ * - Uses `cache: "no-store"` to avoid cached responses.
+ * - **Does not throw:** logs errors and continues with remaining chunks if any request fails.
+ *
+ * @param {number[]} ids - Product IDs to validate against Strapi.
+ * @returns {Promise<number[]>} A promise resolving to the subset of `ids` that exist (same order as input).
+ *
+ * @example
+ * // If ID 2 no longer exists in Strapi:
+ * const activeIds = await fetchActiveProductsIds([1, 2, 3]);
+ * // => [1, 3]
+ *
+ */
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const MAX = 100;
 
 export async function fetchActiveProductsIds(ids: number[]): Promise<number[]> {
@@ -19,7 +39,7 @@ export async function fetchActiveProductsIds(ids: number[]): Promise<number[]> {
     qs.append("pagination[pageSize]", String(chunk.length));
     qs.append("pagination[withCount]", "false");
 
-    const url = `${BASE_URL}/api/products?${qs.toString()}`;
+    const url = `${BASE_URL}/products?${qs.toString()}`;
 
     try {
       const res = await fetch(url, { cache: "no-store" });
