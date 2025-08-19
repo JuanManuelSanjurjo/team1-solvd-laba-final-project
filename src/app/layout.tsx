@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { worksans, nunitosans } from "@/style/fonts";
 import { Header } from "@/components/header/Header";
-import ProvidersFactory from "@/utils/providers/ProvidersFactory";
+import ProvidersFactory from "@/providers/ProvidersFactory";
 import { auth } from "@/auth";
 
 export const metadata: Metadata = {
