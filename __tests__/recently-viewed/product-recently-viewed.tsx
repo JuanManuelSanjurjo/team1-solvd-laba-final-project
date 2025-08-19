@@ -28,7 +28,7 @@ describe("ProductPageRecentlyViewed", () => {
     const { mockAddToRecentlyViewed } = setupMockRecentlyViewedStore();
 
     const { rerender } = render(
-      <ProductPageDetails product={mockNormalizedProduct} />
+      <ProductPageDetails product={mockNormalizedProduct} />,
     );
 
     expect(mockAddToRecentlyViewed).toHaveBeenCalledTimes(1);

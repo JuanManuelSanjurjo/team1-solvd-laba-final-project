@@ -31,20 +31,19 @@ export default function ResetPassword() {
           subtitle="Please create new password here"
         />
         <ResetPasswordWrapper />
-        <Link href="/auth/sign-in">
-          <Typography
-            component="p"
-            sx={{
-              fontWeight: 500,
-              color: "text.secondary",
-              textDecoration: "none",
-              textAlign: "center",
-              mt: "20px",
-            }}
-          >
-            Back to login
-          </Typography>
-        </Link>
+        <Typography
+          component={Link}
+          href="/auth/sign-in"
+          sx={{
+            fontWeight: 500,
+            color: "text.secondary",
+            textDecoration: "none",
+            textAlign: "center",
+            mt: "20px",
+          }}
+        >
+          Back to login
+        </Typography>
       </LeftBoxFormContainer>
       <AsideImage
         imageUrl="/assets/images/auth-aside.jpg"

@@ -1,5 +1,6 @@
 import { Box, Typography, Button } from "@mui/material";
 import { JSX } from "react";
+import Link from "next/link";
 
 /**
  * MyPorductsHeader
@@ -40,7 +41,12 @@ export default function MyProductsHeader({
         My Products
       </Typography>
       {!isEmpty && (
-        <Button variant="contained" sx={{ height: "40px" }}>
+        <Button
+          component={Link}
+          href="/my-products/add-product"
+          variant="contained"
+          sx={{ height: "40px" }}
+        >
           Add Product
         </Button>
       )}

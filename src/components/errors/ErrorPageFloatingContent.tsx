@@ -1,0 +1,116 @@
+"use client";
+import { Box, Typography, Button } from "@mui/material";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+export default function ErrorPageFloatingContent() {
+  const router = useRouter();
+  return (
+    <Box
+      position="absolute"
+      left={{
+        xs: "50%",
+        md: "8%",
+      }}
+      height="100%"
+      padding="40px 16px"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        textAlign: {
+          xs: "center",
+          md: "start",
+        },
+        justifyContent: {
+          xs: "space-between",
+          md: "center",
+        },
+        transform: {
+          xs: "translateX(-50%)",
+          md: "translateX(0%)",
+        },
+      }}
+    >
+      <Box
+        maxWidth={{ xs: 320, md: "45%" }}
+        height="100%"
+        position="relative"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: {
+            xs: "space-between",
+            md: "center",
+          },
+          justifyItems: {
+            xs: "flex-start",
+            md: "center",
+          },
+        }}
+      >
+        <Typography
+          variant="h2"
+          fontWeight={500}
+          fontSize={{ xs: 30, md: 45 }}
+          sx={{
+            "&::after": {
+              content: '"..."',
+              display: {
+                xs: "none",
+                md: "inline",
+              },
+            },
+          }}
+        >
+          We lost that page
+        </Typography>
+        <Typography
+          variant="body1"
+          fontSize={{ xs: 12, md: 20 }}
+          mb={2}
+          sx={{
+            color: { xs: "white", md: "text.secondary" },
+            marginTop: "20px",
+            position: {
+              xs: "absolute",
+              md: "initial",
+            },
+            top: {
+              xs: "70%",
+              md: "initial",
+            },
+          }}
+        >
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+          nonummy nibh euismod tincidunt ut laoreet dolore magna
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+            width: 320,
+            gap: 2,
+            "& .MuiButton-root": {
+              width: "100%",
+              fontSize: 16,
+              height: 40,
+            },
+          }}
+        >
+          <Button
+            onClick={() => router.back()}
+            sx={{ width: "100%" }}
+            variant="outlined"
+          >
+            Go back
+          </Button>
+          <Button variant="contained" component={Link} href="/">
+            Go home
+          </Button>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
