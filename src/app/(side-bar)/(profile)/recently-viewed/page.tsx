@@ -2,7 +2,6 @@
 import Card from "@/components/cards/Card";
 import CardContainer from "@/components/cards/CardContainer";
 import { useRecentlyViewedStore } from "@/store/recentlyviewed";
-import { Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
