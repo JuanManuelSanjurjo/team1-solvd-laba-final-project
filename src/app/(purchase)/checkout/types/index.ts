@@ -41,7 +41,7 @@ export const paymentInfoSchema = z.object({
   expDate: z
     .string()
     .trim()
-    .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Format must be MM/YY"),
+    .regex(/^(0?[1-9]|1[0-2])\/\d{2}$/, "Format must be MM/YY"),
   cvc: z.string().regex(/^\d{3,4}$/, "CVC"),
 });
 
