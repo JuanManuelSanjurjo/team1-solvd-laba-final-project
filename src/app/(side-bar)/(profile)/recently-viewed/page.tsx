@@ -23,7 +23,7 @@ export default function RecentlyViewed() {
 
   if (!isHydrated || status === "loading") <SkeletonCardContainer />;
 
-  const userId = String(session!.user!.id);
+  const userId = String(session?.user?.id);
   const recentlyViewed = byUser[userId] ?? [];
 
   function visitProducts() {
@@ -33,39 +33,26 @@ export default function RecentlyViewed() {
   return (
     <>
       <ProfileHeaderTitle>Recently Viewed</ProfileHeaderTitle>
-
-      <Box>
-        <Box display="flex" alignItems="center">
-          <Typography
-            variant="h2"
-            sx={{
-              marginTop: "40px",
-            }}
-          >
-            Recently viewed
-          </Typography>
-        </Box>
-        {recentlyViewed.length > 0 ? (
-          <CardContainer length={recentlyViewed.length}>
-            {recentlyViewed.map((product, index) => (
-              <Card
-                product={product}
-                key={index}
-                topAction="cardButtonWishList"
-                overlayAction="cardOverlayAddToCard"
-              />
-            ))}
-          </CardContainer>
-        ) : (
-          <MyProductsEmptyState
-            title="You haven't viewed any products yet"
-            subtitle="View available products in the products page."
-            buttonText="Go to products"
-            onClick={visitProducts}
-            icon={LogoBlackSvg}
-          />
-        )}
-      </Box>
+      {recentlyViewed.length > 0 ? (
+        <CardContainer length={recentlyViewed.length}>
+          {recentlyViewed.map((product, index) => (
+            <Card
+              product={product}
+              key={index}
+              topAction="cardButtonWishList"
+              overlayAction="cardOverlayAddToCard"
+            />
+          ))}
+        </CardContainer>
+      ) : (
+        <MyProductsEmptyState
+          title="You haven't viewed any products yet"
+          subtitle="View available products in the products page."
+          buttonText="Go to products"
+          onClick={visitProducts}
+          icon={LogoBlackSvg}
+        />
+      )}
     </>
   );
 }
