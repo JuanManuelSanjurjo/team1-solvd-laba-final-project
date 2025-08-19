@@ -146,7 +146,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         let filesToUpload: File[] = [...imageFiles];
         if (product.images?.length) {
           const duplicatedFiles = await Promise.all(
-            product.images.map((img, idx) => urlToFile(img.url))
+            product.images.map((img) => urlToFile(img.url))
           );
           filesToUpload = [...filesToUpload, ...duplicatedFiles];
         }
