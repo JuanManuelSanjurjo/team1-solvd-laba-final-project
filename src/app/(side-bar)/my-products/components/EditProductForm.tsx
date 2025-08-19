@@ -33,6 +33,7 @@ interface EditProductFormProps {
   product: MyProduct;
   mode: "edit" | "duplicate";
   onSuccess: () => void;
+  onNotify?: (message: string, sev: "success" | "error") => void;
 }
 
 /**
@@ -66,6 +67,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   product,
   mode,
   onSuccess,
+  onNotify,
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -100,16 +102,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
 
   const selectedSizes = watch("sizes");
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
-    "success"
-  );
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
-
   const toggleSize = (size: number) => {
     const currentSizes = selectedSizes || [];
     const newSizes = currentSizes.includes(size)
@@ -141,15 +133,11 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           existentImages: remainingExistentImages,
           imagesToDelete,
         });
-        setSnackbarMessage("Product updated successfully!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+        onNotify?.("Product edited successfully!", "success");
         onSuccess?.();
       } catch (err) {
         console.log(err);
-        setSnackbarMessage("Failed to update product.");
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        onNotify?.("Failed to edit product.", "error");
       }
     } else {
       try {
@@ -165,15 +153,11 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           data: { ...data, userID },
           imageFiles: filesToUpload,
         });
-        setSnackbarMessage("Product added successfully!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+        onNotify?.("Product added successfully!", "success");
         onSuccess?.();
       } catch (err) {
         console.log(err);
-        setSnackbarMessage("Failed to add product.");
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        onNotify?.("Failed to add product.", "error");
       }
     }
   };
@@ -235,22 +219,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           onPreviewsChange={setExistentImages}
         />
       </Box>
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbarSeverity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };
