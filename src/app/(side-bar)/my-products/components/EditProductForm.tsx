@@ -12,7 +12,6 @@ import { MyProduct } from "@/types/product";
 import { useUpdateProduct } from "../hooks/useUpdateProduct";
 import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
 import { urlToFile } from "@/lib/url-utils";
-import Toast from "@/components/Toast";
 
 /**
  * Props for the EditProductForm component.
