@@ -1,10 +1,19 @@
 "use client";
-import { Box, Typography, Stack } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Stack,
+  Alert,
+  Snackbar,
+  AlertProps,
+} from "@mui/material";
 import { BagTick } from "iconsax-react";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState, JSX } from "react";
 import cardProduct from "./types/cardProduct";
 import { useCartStore } from "@/store/cartStore";
+import { useSession } from "next-auth/react";
+import { useToastStore } from "@/store/toastStore";
 
 /**
  * CardOverlayAddToCart
@@ -24,7 +33,12 @@ export default function CardOverlayAddToCart({
   product,
 }: CardOverlayAddToCardProps): JSX.Element {
   const [showModal, setShowModal] = useState(false);
-
+  const { data: session } = useSession();
+  const [toastOpened, setToastOpened] = useState(false);
+  const [toastContent, setToastContent] = useState({
+    severity: "",
+    message: "",
+  });
   const addItem = useCartStore((state) => state.addItem);
 
   function handleClose(event: React.SyntheticEvent) {
@@ -35,7 +49,17 @@ export default function CardOverlayAddToCart({
   function handleConfirmAdd(e: React.MouseEvent) {
     e?.stopPropagation();
     e?.preventDefault();
-    addItem({
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      useToastStore.getState().show({
+        severity: "error",
+        message: "You need to log in first",
+      });
+      return;
+    }
+
+    addItem(userId, {
       id: product.id,
       image: product.image,
       name: product.name,
@@ -88,6 +112,19 @@ export default function CardOverlayAddToCart({
         secondaryBtn="Cancel"
         onPrimary={handleConfirmAdd}
       />
+      <Snackbar
+        open={toastOpened}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={5000}
+        onClose={() => setToastOpened(false)}
+      >
+        <Alert
+          onClose={() => setToastOpened(false)}
+          severity={toastContent.severity as AlertProps["severity"]}
+          variant="filled"
+          sx={{ width: "100%", color: "primary.contrastText" }}
+        ></Alert>
+      </Snackbar>
     </Box>
   );
 }

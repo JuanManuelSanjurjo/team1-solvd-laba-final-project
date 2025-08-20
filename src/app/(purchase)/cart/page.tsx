@@ -13,6 +13,8 @@ import { useCartStore } from "@/store/cartStore";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
 import CheckoutSummary from "../components/CheckoutSummary";
+// import Link from "next/link";
+import { Link } from "@mui/material";
 
 /**
  * Checkout page component that displays a list of products in the cart.
@@ -43,7 +45,7 @@ export default function Checkout() {
           width: "90%",
           height: "100%",
           margin: "auto",
-          marginTop: "160px",
+          marginTop: "80px",
         }}
       >
         <Typography variant="h2">Cart</Typography>
@@ -83,6 +85,9 @@ export default function Checkout() {
         }}
       >
         <Box sx={{ marginTop: "80px" }}>
+          <Link href="/products" sx={{ color: "#494949" }}>
+            Back to products
+          </Link>
           <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
             Cart
           </Typography>

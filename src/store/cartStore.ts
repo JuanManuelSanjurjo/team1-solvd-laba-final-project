@@ -1,15 +1,27 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { useToastStore } from "./toastStore";
 
 import type { CartItem, CartState } from "@/app/(purchase)/cart/types/types";
 
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
-      items: [],
+      byUser: {},
 
-      addItem: (item: CartItem) => {
-        const currentItems = get().items;
+      addItem: (userId, item: CartItem) => {
+        const { byUser } = get();
+
+        if (userId!) {
+          useToastStore.getState().show({
+            severity: "error",
+            message: "You need to log in first",
+          });
+
+          return;
+        }
+
+        const currentItems = byUser[userId] ?? [];
 
         //Search if any product in cart matches the one that is being added
         const itemAlreadyInCart = currentItems.find(
@@ -19,34 +31,65 @@ export const useCartStore = create<CartState>()(
         //If product is already added to the cart we add 1 item to that existing element in cart
         if (itemAlreadyInCart) {
           set({
-            items: currentItems.map((product) =>
-              product.id === item.id
-                ? { ...product, quantity: (product.quantity || 1) + 1 }
-                : product
-            ),
+            byUser: {
+              ...byUser,
+              [userId]: currentItems.map((prod) =>
+                prod.id === item.id
+                  ? { ...prod, quantity: (prod.quantity || 1) + 1 }
+                  : prod
+              ),
+            },
           });
+
           //If product isn't already in cart we add it
           console.log("Added item to product existing in cart", currentItems);
+          useToastStore.getState().show({
+            severity: "success",
+            message: "Added item to product existing in cart",
+          });
         } else {
-          set({ items: [...currentItems, { ...item, quantity: 1 }] });
+          set({
+            byUser: {
+              ...byUser,
+              [userId]: [...currentItems, { ...item, quantity: 1 }],
+            },
+          });
+          useToastStore.getState().show({
+            severity: "success",
+            message: "Added item to cart",
+          });
           console.log("Added item to cart", currentItems);
         }
       },
 
-      totalItems: () => {
-        return get().items.reduce((sum, item) => sum + (item.quantity || 1), 0); //If no quantity, assumes 1.
+      totalItems: (userId) => {
+        return (get().byUser[userId] ?? []).reduce(
+          (sum, item) => sum + (item.quantity || 1),
+          0
+        );
       },
 
-      removeItem: (id) => {
-        set({ items: get().items.filter((item) => item.id !== id) });
+      removeItem: (userId, id) => {
+        const { byUser } = get();
+
+        set({
+          byUser: {
+            ...byUser,
+            [userId]: (byUser[userId] ?? []).filter((item) => item.id !== id),
+          },
+        });
       },
 
-      clearCart: () => {
-        set({ items: [] });
+      clearCart: (userId) => {
+        const { byUser } = get();
+        set({ byUser: { ...byUser, [userId]: [] } });
       },
 
-      updateQuantity: (id, action) => {
-        const updatedItems = get().items.map((item) => {
+      updateQuantity: (userId, id, action) => {
+        const { byUser } = get();
+        const list = byUser[userId] ?? [];
+
+        const updatedItems = list.map((item) => {
           //If product doesn't match id, we return it as it is
           if (item.id !== id) return item;
 
@@ -61,37 +104,38 @@ export const useCartStore = create<CartState>()(
         });
 
         //Update cart state
-        set({ items: updatedItems });
+        set({ byUser: { ...byUser, [userId]: updatedItems } });
       },
 
-      totalOfProduct: (id) => {
+      totalOfProduct: (userId, id) => {
         //Find the item that matches the id
-        const item = get().items.find((product) => product.id === id);
+        const { byUser } = get();
+
+        const list = byUser[userId] ?? [];
+
+        const item = list.find((product) => product.id === id);
 
         //If item exists, calculate total. If not, returns 0
         return item ? item.price * (item.quantity || 1) : 0;
       },
 
-      subtotal: () => {
+      subtotal: (userId) => {
         // Use totalOfProduct for each item to calculate total
-        const result = get().items.reduce((sum, item) => {
-          return sum + get().totalOfProduct(item.id);
-        }, 0);
-
-        console.log("Subtotal: ", result);
-
-        return result;
+        return (get().byUser[userId] ?? []).reduce(
+          (sum, item) => sum + item.price * (item.quantity || 1),
+          0
+        );
       },
 
-      taxes: () => {
-        const taxRate = 0.1; // 10%
-        return Math.round(get().subtotal() * taxRate);
+      taxes: (userId) => {
+        const taxRate = 0.1; //10%
+        return Math.round(get().subtotal(userId) * taxRate);
       },
 
-      shipping: () => {
+      shipping: (userId) => {
         const minimumFreeShipping = 100;
         const shippingCost = 10;
-        const total = get().subtotal();
+        const total = get().subtotal(userId);
 
         if (total > minimumFreeShipping) {
           return 0;
@@ -100,15 +144,17 @@ export const useCartStore = create<CartState>()(
         }
       },
 
-      total: () => {
-        const subtotal = get().subtotal();
-        const taxes = get().taxes();
-        const shipping = get().shipping();
+      total: (userId) => {
+        const subtotal = get().subtotal(userId);
+        const taxes = get().taxes(userId);
+        const shipping = get().shipping(userId);
         return subtotal + taxes + shipping;
       },
     }),
     {
-      name: "cart-storage", // clave en localStorage
+      name: "cart-storage-v2", // clave en localStorage
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ byUser: state.byUser }),
     }
   )
 );
