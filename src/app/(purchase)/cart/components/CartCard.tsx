@@ -7,6 +7,8 @@ import { Trash } from "iconsax-react";
 import QuantityHandler from "./QuantityHandler";
 import CartCardImage from "./CartCardImage";
 import { useCartStore } from "@/store/cartStore"; // ruta a tu store
+import ConfirmationModal from "@/components/ConfirmationModal";
+import { useState } from "react";
 
 type CartCardProps = {
   id: number;
@@ -39,6 +41,8 @@ const CartCard = ({
 }: CartCardProps): JSX.Element => {
   const removeItem = useCartStore((state) => state.removeItem);
   const totalOfProduct = useCartStore((state) => state.totalOfProduct);
+
+  const [ConfirmationModalOpened, setConfirmationModalOpened] = useState(false);
 
   return (
     <Box
@@ -103,7 +107,7 @@ const CartCard = ({
             <QuantityHandler quantity={quantity} id={id} />
 
             <Button
-              onClick={() => removeItem(id)}
+              onClick={() => setConfirmationModalOpened(true)}
               sx={{
                 color: "#8B8E93",
                 fontSize: { xs: 12, sm: 24 },
@@ -117,6 +121,16 @@ const CartCard = ({
           </Grid>
         </Grid>
       </Grid>
+
+      <ConfirmationModal
+        showModal={ConfirmationModalOpened}
+        onClose={() => setConfirmationModalOpened(false)}
+        onPrimary={() => removeItem(id)}
+        title="Delete product from cart"
+        text="Are you sure you want to delete this product from the cart?"
+        secondaryBtn="No, keep product"
+        primaryBtn="Yes, delete"
+      />
     </Box>
   );
 };

@@ -38,7 +38,14 @@ export default function Checkout() {
 
   if (cartIsEmpty) {
     return (
-      <Box sx={{ marginTop: "80px", width: "90%", height: "100%" }}>
+      <Box
+        sx={{
+          width: "90%",
+          height: "100%",
+          margin: "auto",
+          marginTop: "160px",
+        }}
+      >
         <Typography variant="h2">Cart</Typography>
 
         <Box
@@ -93,11 +100,12 @@ export default function Checkout() {
           ))}{" "}
         </Box>
 
-        <Box sx={{ marginTop: "80px" }}></Box>
-        <CheckoutSummary
-          buttonText="Checkout"
-          buttonAction={() => router.push("/checkout")}
-        />
+        <Box sx={{ marginTop: "80px" }}>
+          <CheckoutSummary
+            buttonText="Checkout"
+            buttonAction={() => router.push("/checkout")}
+          />
+        </Box>
       </Box>
     );
 }
