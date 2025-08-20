@@ -7,6 +7,7 @@ type WishlistStore = {
   addToWishList: (userId: string, product: cardProduct) => void;
   removeFromWishList: (userId: string, productId: number) => void;
   clearWishList: (userId: string) => void;
+  removeInactiveProducts: (userId: string, productsIds: number[]) => void;
 };
 
 export const useWishlistStore = create<WishlistStore>()(
@@ -37,7 +38,20 @@ export const useWishlistStore = create<WishlistStore>()(
         const { byUser } = get();
         set({ byUser: { ...byUser, [userId]: [] } });
       },
+
+      removeInactiveProducts: (userId, ids) => {
+        const { byUser } = get();
+        const list = byUser[userId] ?? [];
+        const toRemove = new Set(ids);
+        set({
+          byUser: {
+            ...byUser,
+            [userId]: list.filter((prod) => !toRemove.has(prod.id)),
+          },
+        });
+      },
     }),
+
     {
       name: "wishlist-storage-v2",
       storage: createJSONStorage(() => localStorage),

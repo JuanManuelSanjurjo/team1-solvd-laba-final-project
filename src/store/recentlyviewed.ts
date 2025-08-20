@@ -7,6 +7,7 @@ type RecentlyViewedStore = {
   max: number;
   addToRecentlyViewed: (userId: string, product: cardProduct) => void;
   clearRecentlyViewed: (userId: string) => void;
+  removeInactiveProducts: (userId: string, productsIds: number[]) => void;
 };
 
 export const useRecentlyViewedStore = create<RecentlyViewedStore>()(
@@ -25,6 +26,17 @@ export const useRecentlyViewedStore = create<RecentlyViewedStore>()(
       clearRecentlyViewed: (userId) => {
         const { byUser } = get();
         set({ byUser: { ...byUser, [userId]: [] } });
+      },
+      removeInactiveProducts: (userId, ids) => {
+        const { byUser } = get();
+        const list = byUser[userId] ?? [];
+        const toRemove = new Set(ids);
+        set({
+          byUser: {
+            ...byUser,
+            [userId]: list.filter((prod) => !toRemove.has(prod.id)),
+          },
+        });
       },
     }),
     {
