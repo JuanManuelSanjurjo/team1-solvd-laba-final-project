@@ -1,7 +1,9 @@
 "use client";
+
+import { getQueryClient } from "@/lib/get-query-client";
 import { deleteImage } from "@/lib/strapi/delete-image";
 import { deleteProduct } from "@/lib/strapi/delete-product";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 type DeletePayload = {
@@ -12,7 +14,7 @@ type DeletePayload = {
 export function useDeleteProduct() {
   const { data: session } = useSession();
   const token = session?.user?.jwt;
-  const queryClient = useQueryClient();
+  const queryClient = getQueryClient();
 
   return useMutation<void, Error, DeletePayload>({
     mutationFn: async ({ productId, imageIds = [] }) => {
