@@ -1,7 +1,7 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import ReactQueryProvider from "@/utils/providers/ReactQueryProvider";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/style/theme";

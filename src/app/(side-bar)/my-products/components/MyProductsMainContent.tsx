@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Alert, Box, Snackbar } from "@mui/material";
+import { Box } from "@mui/material";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
 import { fetchUserProducts } from "@/lib/strapi/fetch-user-products";
@@ -17,6 +17,7 @@ import { EditProductForm } from "./EditProductForm";
 import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
 import { useRouter } from "next/navigation";
+import Toast from "@/components/Toast";
 
 interface MyProductsMainContentProps {
   brandOptions: { value: number; label: string }[];
@@ -58,15 +59,24 @@ export default function MyProductsMainContent({
   );
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
-  const [snack, setSnack] = useState<{
-    open: boolean;
-    msg: string;
-    sev: "success" | "error";
+
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastContent, setToastContent] = useState<{
+    message: string;
+    severity: "success" | "error";
   }>({
-    open: false,
-    msg: "",
-    sev: "success",
+    message: "",
+    severity: "success",
   });
+
+  const handleCloseToast = () => {
+    setToastOpen(false);
+  };
+
+  const handleNotify = (message: string, severity: "success" | "error") => {
+    setToastContent({ message, severity });
+    setToastOpen(true);
+  };
 
   const { data, isPending } = useQuery<MyProduct[], Error>({
     queryKey: ["user-products", userId],
@@ -76,14 +86,6 @@ export default function MyProductsMainContent({
     },
     enabled: !!userId && !!token,
   });
-
-  const handleNotify = (msg: string, sev: "success" | "error") => {
-    setSnack({ open: true, msg, sev });
-  };
-
-  const handleSnackClose = () => {
-    setSnack({ ...snack, open: false });
-  };
 
   const products = data ?? [];
 
@@ -122,7 +124,7 @@ export default function MyProductsMainContent({
                   product.id,
                   products[index].images
                     ? products[index].images.map((image) => image.id)
-                    : [],
+                    : []
                 );
               }}
             />
@@ -177,21 +179,13 @@ export default function MyProductsMainContent({
           </Box>
         </EditProductModalWrapper>
       )}
-      <Snackbar
-        open={snack.open}
+      <Toast
+        open={toastOpen}
+        onClose={handleCloseToast}
+        severity={toastContent.severity}
+        message={toastContent.message}
         autoHideDuration={4000}
-        onClose={handleSnackClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleSnackClose}
-          severity={snack.sev}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snack.msg}
-        </Alert>
-      </Snackbar>
+      />
     </Box>
   );
 }

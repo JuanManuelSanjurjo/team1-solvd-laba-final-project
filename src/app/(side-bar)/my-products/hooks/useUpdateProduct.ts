@@ -1,12 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { uploadImages } from "@/lib/strapi/upload-images";
 import { useSession } from "next-auth/react";
 import { ProductFormData } from "../add-product/schema";
 import { updateProduct } from "@/lib/strapi/update-product";
 import { deleteImage } from "@/lib/strapi/delete-image";
+import { getQueryClient } from "@/lib/get-query-client";
 
 export function useUpdateProduct(productId: number) {
-  const queryClient = useQueryClient();
+  const queryClient = getQueryClient();
   const { data: session } = useSession();
   const token = session?.user.jwt;
   if (!token) throw new Error("User not authenticated (missing token)");
