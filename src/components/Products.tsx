@@ -95,16 +95,23 @@ export default function Products({
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: isMobile ? "74%" : drawerWidth,
-            marginTop: {
+            // set top/height so paper doesn't exceed viewport
+            top: {
               xs: "0px",
               sm: "90px",
               md: "120px",
             },
+            height: {
+              xs: "100vh",
+              sm: "calc(100vh - 90px)",
+              md: "calc(100vh - 120px)",
+            },
             boxSizing: "border-box",
             backgroundColor: "rgba(255,255,255,1)",
             borderRight: "none",
-            height: "100%",
+            // remove the earlier height: "100%" + marginTop combination
             overflowY: "auto",
+            overflowX: "hidden",
           },
         }}
       >
