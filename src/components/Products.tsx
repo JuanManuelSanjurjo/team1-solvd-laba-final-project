@@ -20,7 +20,21 @@ import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 
-export default function Products({ session }: { session: Session | null }) {
+interface ProductsProps {
+  session: Session | null;
+  brandOptions: { value: number; label: string }[];
+  colorOptions: { value: number; label: string }[];
+  sizeOptions: { value: number; label: number }[];
+  categoryOptions: { value: number; label: string }[];
+}
+
+export default function Products({
+  session,
+  brandOptions,
+  colorOptions,
+  sizeOptions,
+  categoryOptions,
+}: ProductsProps) {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,6 +48,7 @@ export default function Products({ session }: { session: Session | null }) {
     () => searchParams.get("searchTerm"),
     [searchParams]
   );
+
   const {
     data: products,
     pagination,
@@ -98,6 +113,10 @@ export default function Products({ session }: { session: Session | null }) {
           hideDrawer={() => {
             setFiltersOpen(!filtersOpen);
           }}
+          categoryOptions={categoryOptions}
+          colorOptions={colorOptions}
+          brandOptions={brandOptions}
+          sizeOptions={sizeOptions}
         />
       </Drawer>
       <Box
