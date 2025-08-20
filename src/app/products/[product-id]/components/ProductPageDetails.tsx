@@ -9,7 +9,7 @@ import { JSX, useEffect, useMemo } from "react";
 import { NormalizedProduct } from "@/types/product-types";
 import cardProduct from "@/components/cards/actions/types/cardProduct";
 import { useRecentlyViewedStore } from "@/store/recentlyviewed";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 /**
  * ProductPageDetails
@@ -25,8 +25,10 @@ import { useSession } from "next-auth/react";
 
 export default function ProductPageDetails({
   product,
+  session,
 }: {
   product: NormalizedProduct;
+  session: Session | null;
 }): JSX.Element {
   const cardProductInfo: cardProduct = useMemo(
     () => ({
@@ -36,21 +38,22 @@ export default function ProductPageDetails({
       price: product.price,
       gender: product.gender,
     }),
-    [product]
+    [product],
   );
 
-  const { data: session, status } = useSession();
+  const isLoggedIn = Boolean(session?.user);
+
   const addToRecentlyViewed = useRecentlyViewedStore(
-    (state) => state.addToRecentlyViewed
+    (state) => state.addToRecentlyViewed,
   );
 
   useEffect(() => {
-    if (status !== "authenticated") return;
+    if (isLoggedIn) return;
     const userId = session?.user?.id ? String(session.user.id) : null;
     if (!userId) return;
     addToRecentlyViewed(userId, cardProductInfo);
   }, [
-    status,
+    isLoggedIn,
     session?.user?.id,
     product.id,
     addToRecentlyViewed,
@@ -69,7 +72,11 @@ export default function ProductPageDetails({
     >
       <ProdcuctMainData product={product} />
       <ProductSizes product={product} />
-      <ProductPageButtons product={product} cardProductInfo={cardProductInfo} />
+      <ProductPageButtons
+        product={product}
+        session={session}
+        cardProductInfo={cardProductInfo}
+      />
       <ProductDescription product={product} />
     </Box>
   );
