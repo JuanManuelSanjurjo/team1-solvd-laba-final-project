@@ -15,9 +15,8 @@ export default function Checkout() {
     undefined
   );
   const total = useCartStore((s) => s.total());
-  useEffect(() => {
-    // Call API create-intent
 
+  useEffect(() => {
     fetch("/checkout/api/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -30,28 +29,14 @@ export default function Checkout() {
   const options = {
     clientSecret,
     appearance: {
-      theme: "flat",
+      theme: "stripe",
       variables: {
-        colorPrimary: "#1976d2", // azul Material UI
+        colorPrimary: "#FE645E",
         colorBackground: "#ffffff",
-        colorText: "#000000",
+        iconColor: "#292D32",
+        colorText: "#494949",
         fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-        borderRadius: "8px",
-      },
-      rules: {
-        ".Input": {
-          border: "1px solid #ccc",
-          padding: "12px",
-        },
-        ".Input:focus": {
-          borderColor: "#1976d2",
-        },
-      },
-    },
-    paymentElementOptions: {
-      layout: {
-        type: "tabs",
-        defaultCollapsed: false,
+        borderRadius: "12px",
       },
     },
   } as const;

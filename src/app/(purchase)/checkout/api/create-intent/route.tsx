@@ -14,6 +14,11 @@ export async function POST(req: Request) {
     const body: CreatePaymentIntentRequest = await req.json();
     const { amount } = body;
 
+    //Validate
+    if (typeof amount !== "number" || !isFinite(amount) || amount <= 0) {
+      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+    }
+
     // 2. Creamos el PaymentIntent en Stripe
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), //Turned into cents as Stripe requires
@@ -26,8 +31,11 @@ export async function POST(req: Request) {
   } catch (err) {
     //Handling errors: Stripe and non Stripe ones
     if (err instanceof Stripe.errors.StripeError) {
+      console.log("error", err.message);
       return NextResponse.json({ error: err.message }, { status: 400 });
     }
+
+    console.log("Error");
     return NextResponse.json(
       { error: "Unknown server error" },
       { status: 500 }

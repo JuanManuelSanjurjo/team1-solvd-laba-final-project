@@ -185,6 +185,13 @@ export default function CheckoutForm() {
     console.log("Form Submitted:", data);
   };
 
+  const options = {
+    layout: {
+      type: "tabs",
+      defaultCollapsed: false,
+    },
+  } as const;
+
   return (
     <Box
       sx={{
@@ -288,7 +295,7 @@ export default function CheckoutForm() {
               <Typography variant="subtitle1" sx={{ marginBottom: "32px" }}>
                 Payment info
               </Typography>
-              <PaymentElement />
+              <PaymentElement options={options} />
             </Box>
           </Box>
         </form>
