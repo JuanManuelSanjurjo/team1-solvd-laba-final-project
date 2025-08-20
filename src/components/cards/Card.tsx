@@ -21,6 +21,7 @@ type CardProps = {
   onDuplicate?: () => void;
   onDeletePreview?: () => void;
   onDelete?: () => void;
+  userId: string;
 };
 
 /**
@@ -38,6 +39,7 @@ type CardProps = {
  * @param overlayAction - Action to show in the center overlay (e.g., "CardOverlayAddToCard").
  * @param overlay - Currently unused (reserved for future positioning logic).
  * @param showText - Whether to show text details if a product is passed.
+ * @param userId - Id of the user authenticated
  * @returns {JSX.Element}
  */
 
@@ -51,6 +53,7 @@ export default function Card({
   onDuplicate = () => {},
   onDeletePreview = () => {},
   onDelete = () => {},
+  userId,
 }: CardProps): JSX.Element {
   const displayImage = product?.image || image;
 
@@ -94,6 +97,7 @@ export default function Card({
                 action={
                   overlayAction === "cardOverlayAddToCard" ? (
                     <CardOverlayAddToCart
+                      userId={userId}
                       product={{
                         id: product?.id ?? 0,
                         image: product?.image,

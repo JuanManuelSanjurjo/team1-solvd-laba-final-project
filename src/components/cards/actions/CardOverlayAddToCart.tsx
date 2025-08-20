@@ -5,8 +5,6 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState, JSX } from "react";
 import cardProduct from "./types/cardProduct";
 import { useCartStore } from "@/store/cartStore";
-import { useSession } from "next-auth/react";
-import { useToastStore } from "@/store/toastStore";
 
 /**
  * CardOverlayAddToCart
@@ -20,13 +18,14 @@ import { useToastStore } from "@/store/toastStore";
 
 type CardOverlayAddToCardProps = {
   product: cardProduct;
+  userId: string;
 };
 
 export default function CardOverlayAddToCart({
   product,
+  userId,
 }: CardOverlayAddToCardProps): JSX.Element {
   const [showModal, setShowModal] = useState(false);
-  const { data: session } = useSession();
 
   const addItem = useCartStore((state) => state.addItem);
 
@@ -38,15 +37,6 @@ export default function CardOverlayAddToCart({
   function handleConfirmAdd(e: React.MouseEvent) {
     e?.stopPropagation();
     e?.preventDefault();
-    const userId = session?.user?.id;
-
-    if (!userId) {
-      useToastStore.getState().show({
-        severity: "error",
-        message: "You need to log in first",
-      });
-      return;
-    }
 
     addItem(userId, {
       id: product.id,

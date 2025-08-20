@@ -12,7 +12,7 @@ export const useCartStore = create<CartState>()(
       addItem: (userId, item: CartItem) => {
         const { byUser } = get();
 
-        if (userId!) {
+        if (!userId) {
           useToastStore.getState().show({
             severity: "error",
             message: "You need to log in first",

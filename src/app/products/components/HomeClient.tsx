@@ -19,7 +19,11 @@ import useQueryPagedProducts from "../hooks/useQueryPageProducts";
 import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import { useRouter } from "next/navigation";
 
-export default function HomeClient() {
+type HomeClientProps = {
+  userId: string;
+};
+
+export default function HomeClient({ userId }: HomeClientProps) {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -345,6 +349,7 @@ export default function HomeClient() {
                           overlayAction="cardOverlayAddToCard"
                           key={index}
                           overlay={true}
+                          userId={userId}
                         />
                       )
                     )}
