@@ -1,12 +1,5 @@
 "use client";
-import {
-  Box,
-  Typography,
-  Stack,
-  Alert,
-  Snackbar,
-  AlertProps,
-} from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import { BagTick } from "iconsax-react";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState, JSX } from "react";
@@ -34,11 +27,7 @@ export default function CardOverlayAddToCart({
 }: CardOverlayAddToCardProps): JSX.Element {
   const [showModal, setShowModal] = useState(false);
   const { data: session } = useSession();
-  const [toastOpened, setToastOpened] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "",
-    message: "",
-  });
+
   const addItem = useCartStore((state) => state.addItem);
 
   function handleClose(event: React.SyntheticEvent) {
@@ -112,19 +101,6 @@ export default function CardOverlayAddToCart({
         secondaryBtn="Cancel"
         onPrimary={handleConfirmAdd}
       />
-      <Snackbar
-        open={toastOpened}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        autoHideDuration={5000}
-        onClose={() => setToastOpened(false)}
-      >
-        <Alert
-          onClose={() => setToastOpened(false)}
-          severity={toastContent.severity as AlertProps["severity"]}
-          variant="filled"
-          sx={{ width: "100%", color: "primary.contrastText" }}
-        ></Alert>
-      </Snackbar>
     </Box>
   );
 }
