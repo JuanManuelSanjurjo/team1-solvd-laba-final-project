@@ -9,9 +9,9 @@ import { JSX, useEffect, useMemo } from "react";
 import { NormalizedProduct } from "@/types/product-types";
 import cardProduct from "@/components/cards/actions/types/cardProduct";
 import { useRecentlyViewedStore } from "@/store/recentlyviewed";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useCartStore } from "@/store/cartStore";
+import { Session } from "next-auth";
 
 /**
  * ProductPageDetails
@@ -28,9 +28,11 @@ import { useCartStore } from "@/store/cartStore";
 export default function ProductPageDetails({
   product,
   userId,
+  session,
 }: {
   product: NormalizedProduct;
   userId: string;
+  session: Session | null;
 }): JSX.Element {
   const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
 
@@ -45,18 +47,19 @@ export default function ProductPageDetails({
     [product]
   );
 
-  const { data: session, status } = useSession();
+  const isLoggedIn = Boolean(session?.user);
+
   const addToRecentlyViewed = useRecentlyViewedStore(
     (state) => state.addToRecentlyViewed
   );
 
   useEffect(() => {
-    if (status !== "authenticated") return;
+    if (isLoggedIn) return;
     const userId = session?.user?.id ? String(session.user.id) : null;
     if (!userId) return;
     addToRecentlyViewed(userId, cardProductInfo);
   }, [
-    status,
+    isLoggedIn,
     session?.user?.id,
     product.id,
     addToRecentlyViewed,
@@ -71,7 +74,6 @@ export default function ProductPageDetails({
   const addItem = useCartStore((state) => state.addItem);
 
   const handleAddToCart = () => {
-
     if (!userId) {
       return;
     }
@@ -108,6 +110,7 @@ export default function ProductPageDetails({
       <ProductPageButtons
         onAddToCart={handleAddToCart}
         product={product}
+        session={session}
         cardProductInfo={cardProductInfo}
       />
       <ProductDescription product={product} />
