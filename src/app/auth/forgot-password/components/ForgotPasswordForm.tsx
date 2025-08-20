@@ -2,13 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Alert,
-  AlertProps,
-  Box,
-  Snackbar,
-  SnackbarCloseReason,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
 import forgotPassword, {
@@ -17,23 +11,17 @@ import forgotPassword, {
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordSchema, ForgotPasswordFormData } from "../types";
+import Toast from "@/components/Toast";
 
 export default function ForgotPasswordForm() {
-  const [open, setOpen] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
   const [toastContent, setToastContent] = useState({
-    severity: "",
+    severity: "success" as "success" | "error",
     message: "",
   });
 
-  const handleClose = (
-    _: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
+  const handleCloseToast = () => {
+    setToastOpen(false);
   };
 
   const {
@@ -60,10 +48,10 @@ export default function ForgotPasswordForm() {
         severity: "success",
         message: message,
       });
-      setOpen(true);
+      setToastOpen(true);
     },
     onError: (error: Error) => {
-      setOpen(true);
+      setToastOpen(true);
       setToastContent({
         severity: "error",
         message: error.message,
@@ -77,21 +65,13 @@ export default function ForgotPasswordForm() {
 
   return (
     <>
-      <Snackbar
-        open={open}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      <Toast
+        open={toastOpen}
+        onClose={handleCloseToast}
+        severity={toastContent.severity}
+        message={toastContent.message}
         autoHideDuration={5000}
-        onClose={handleClose}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={toastContent.severity as AlertProps["severity"]}
-          variant="filled"
-          sx={{ width: "100%", color: "primary.contrastText" }}
-        >
-          {toastContent.message}
-        </Alert>
-      </Snackbar>
+      />
       <Box
         component="form"
         role="form"
@@ -108,6 +88,7 @@ export default function ForgotPasswordForm() {
           name="email"
           type="email"
           required
+          placeholder="Enter your registered email address"
           errorMessage={errors.email?.message ?? ""}
         />
         <Button

@@ -34,7 +34,7 @@ interface EditProductFormProps {
   product: MyProduct;
   mode: "edit" | "duplicate";
   onSuccess: () => void;
-  onNotify?: (message: string, sev: "success" | "error") => void;
+  onNotify: (message: string, sev: "success" | "error") => void;
 }
 
 /**
@@ -43,7 +43,7 @@ interface EditProductFormProps {
  * - Uses `react-hook-form` with a Zod schema resolver for validation.
  * - Handles both "edit" (update existing product) and "duplicate" (create new product) modes.
  * - Provides image management (upload, delete).
- * - Displays success/error feedback via Material UI `Snackbar` and `Alert`.
+ * - Displays success/error feedback via Toast component.
  *
  * @component
  * @param {EditProductFormProps} props - Props for configuring the form.
@@ -135,11 +135,10 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           existentImages: remainingExistentImages,
           imagesToDelete,
         });
-        onNotify?.("Product edited successfully!", "success");
+        onNotify("Product updated successfully!", "success");
         onSuccess?.();
-      } catch (err) {
-        console.log(err);
-        onNotify?.("Failed to edit product.", "error");
+      } catch {
+        onNotify("Failed to update product.", "error");
       }
     } else {
       try {
@@ -155,11 +154,10 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           data: { ...data, userID },
           imageFiles: filesToUpload,
         });
-        onNotify?.("Product added successfully!", "success");
-        onSuccess?.();
-      } catch (err) {
-        console.log(err);
-        onNotify?.("Failed to add product.", "error");
+        onNotify("Product added successfully!", "success");
+        onSuccess();
+      } catch {
+        onNotify("Failed to add product.", "error");
       }
     }
   };

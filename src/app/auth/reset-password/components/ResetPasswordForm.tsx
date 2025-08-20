@@ -2,13 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Alert,
-  AlertProps,
-  Box,
-  Snackbar,
-  SnackbarCloseReason,
-} from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
 import resetPassword, {
@@ -19,6 +13,7 @@ import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { resetPasswordSchema, ResetPasswordFormData } from "../types";
+import Toast from "@/components/Toast";
 
 export function transformResetPasswordData(
   formData: ResetPasswordFormData
@@ -35,21 +30,14 @@ export default function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
 
-  const [open, setOpen] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
   const [toastContent, setToastContent] = useState({
-    severity: "",
+    severity: "success" as "success" | "error",
     message: "",
   });
 
-  const handleClose = (
-    _: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
+  const handleCloseToast = () => {
+    setToastOpen(false);
   };
 
   const {
@@ -89,14 +77,14 @@ export default function ResetPasswordForm() {
         severity: "success",
         message: res.message,
       });
-      setOpen(true);
+      setToastOpen(true);
 
       setTimeout(() => {
         router.push("/auth/sign-in");
       }, 2000);
     },
     onError: (error: Error) => {
-      setOpen(true);
+      setToastOpen(true);
       setToastContent({
         severity: "error",
         message: error.message,
@@ -119,21 +107,13 @@ export default function ResetPasswordForm() {
 
   return (
     <>
-      <Snackbar
-        open={open}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      <Toast
+        open={toastOpen}
+        onClose={handleCloseToast}
+        severity={toastContent.severity}
+        message={toastContent.message}
         autoHideDuration={5000}
-        onClose={handleClose}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={toastContent.severity as AlertProps["severity"]}
-          variant="filled"
-          sx={{ width: "100%", color: "primary.contrastText" }}
-        >
-          {toastContent.message}
-        </Alert>
-      </Snackbar>
+      />
       <Box
         component="form"
         role="form"
@@ -152,6 +132,7 @@ export default function ResetPasswordForm() {
           type="password"
           name="password"
           required
+          placeholder="Enter your new password"
           errorMessage={errors.password?.message ?? ""}
         />
         <Input
@@ -160,6 +141,7 @@ export default function ResetPasswordForm() {
           type="password"
           name="confirmPassword"
           required
+          placeholder="Re-enter your new password"
           errorMessage={errors.confirmPassword?.message ?? ""}
         />
         <Button
