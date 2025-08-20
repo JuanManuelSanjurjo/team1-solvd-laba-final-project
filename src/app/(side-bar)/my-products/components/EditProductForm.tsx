@@ -70,7 +70,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   product,
   mode,
   onSuccess,
-  onNotify,
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -155,7 +154,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         });
         setToastOpen(true);
         onSuccess?.();
-      } catch (err) {
+      } catch {
         setToastContent({
           message: "Failed to update product.",
           severity: "error",
@@ -182,8 +181,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         });
         setToastOpen(true);
         onSuccess?.();
-      } catch (err) {
-        console.log(err);
+      } catch {
         setToastContent({
           message: "Failed to add product.",
           severity: "error",
