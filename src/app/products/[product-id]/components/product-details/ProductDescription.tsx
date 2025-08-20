@@ -27,6 +27,7 @@ export default function ProductDescription({
         color="text.secondary"
         sx={{
           lineHeight: "24px",
+          wordBreak: "break-word",
           fontSize: { xs: "14px", sm: "16px", md: "16px" },
         }}
       >
