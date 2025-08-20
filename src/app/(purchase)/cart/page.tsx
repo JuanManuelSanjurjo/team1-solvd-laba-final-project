@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import CheckoutSummary from "../components/CheckoutSummary";
 // import Link from "next/link";
 import { Link } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 /**
  * Checkout page component that displays a list of products in the cart.
@@ -24,15 +25,18 @@ import { Link } from "@mui/material";
  * @returns {JSX.Element} The rendered checkout page with cart items or an empty state.
  */
 
-export default function Checkout() {
-  const cartItems = useCartStore((state) => state.items);
+export default function Cart() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id ?? "";
+  const byUser = useCartStore((state) => state.byUser);
+
+  const cartItems = userId ? byUser[userId] ?? [] : [];
+
   const theme = useTheme();
   const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const cartIsEmpty = cartItems.length === 0;
-
-  console.log("cart: ", cartItems);
 
   function visitProducts() {
     router.push("/products");
@@ -45,7 +49,7 @@ export default function Checkout() {
           width: "90%",
           height: "100%",
           margin: "auto",
-          marginTop: "80px",
+          marginTop: "160px",
         }}
       >
         <Typography variant="h2">Cart</Typography>
@@ -61,7 +65,7 @@ export default function Checkout() {
         >
           <MyProductsEmptyState
             title="You don't have any products yet"
-            subtitle="Post can contain video, images and text."
+            subtitle="Browse our products and find your perfect pair!"
             buttonText="Add Product"
             onClick={visitProducts}
           />
