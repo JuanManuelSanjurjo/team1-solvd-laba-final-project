@@ -8,7 +8,7 @@ import QuantityHandler from "./QuantityHandler";
 import CartCardImage from "./CartCardImage";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState } from "react";
-import { useCartStore } from "@/store/cart-store"; 
+import { useCartStore } from "@/store/cart-store";
 
 type CartCardProps = {
   id: number;
