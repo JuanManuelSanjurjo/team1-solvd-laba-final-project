@@ -23,7 +23,6 @@ type CardProps = {
   onDuplicate?: () => void;
   onDeletePreview?: () => void;
   onDelete?: () => void;
-  userId?: string;
 };
 
 /**
@@ -56,7 +55,6 @@ export default function Card({
   onDuplicate = () => {},
   onDeletePreview = () => {},
   onDelete = () => {},
-  userId,
 }: CardProps): JSX.Element {
   const displayImage = product?.image || image;
 
@@ -100,7 +98,7 @@ export default function Card({
                 action={
                   overlayAction === "cardOverlayAddToCard" ? (
                     <CardOverlayAddToCart
-                      userId={userId}
+                      session={session}
                       product={{
                         id: product?.id ?? 0,
                         image: product?.image,

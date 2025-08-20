@@ -1,4 +1,3 @@
-import HomeClient from "@/components/Products";
 import { auth } from "@/auth";
 import { fetchCategories } from "@/lib/actions/fetch-categories";
 import { fetchSizes } from "@/lib/actions/fetch-sizes";

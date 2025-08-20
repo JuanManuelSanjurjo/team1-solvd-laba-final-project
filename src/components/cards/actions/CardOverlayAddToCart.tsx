@@ -1,19 +1,12 @@
 "use client";
-import {
-  Box,
-  Typography,
-  Stack,
-  Alert,
-  Snackbar,
-  AlertProps,
-} from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import { BagTick } from "iconsax-react";
-import { useState, JSX } from "react";
+import { useState } from "react";
 import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
 import { useCartStore } from "@/store/cart-store";
 import CardProduct from "./types";
 import Select from "@/components/form-elements/Select";
-
+import { Session } from "next-auth";
 /**
  * CardOverlayAddToCart
  *
@@ -21,20 +14,21 @@ import Select from "@/components/form-elements/Select";
  * Is passed to the Card component to be rendered on top of the image.
  * Opens a confirmation modal with a message asking the user to confirm adding the item to the cart.
  *
- * @returns {JSX.Element} with the card add to cart component.
  */
 
 type CardOverlayAddToCardProps = {
   product: CardProduct;
-  userId?: string;
+  session: Session | null;
 };
 
 export default function CardOverlayAddToCart({
   product,
-  userId,
-}: CardOverlayAddToCardProps): JSX.Element {
+  session,
+}: CardOverlayAddToCardProps) {
   const [showModal, setShowModal] = useState(false);
   const [selectedSize, setSelectedSize] = useState<number>(0);
+
+  const userId = session?.user.id;
 
   const addItem = useCartStore((state) => state.addItem);
 
