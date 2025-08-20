@@ -35,7 +35,7 @@ interface EditProductFormProps {
   product: MyProduct;
   mode: "edit" | "duplicate";
   onSuccess: () => void;
-  onNotify?: (message: string, sev: "success" | "error") => void;
+  onNotify: (message: string, sev: "success" | "error") => void;
 }
 
 /**
@@ -70,6 +70,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   product,
   mode,
   onSuccess,
+  onNotify,
 }) => {
   const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -104,19 +105,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
 
   const selectedSizes = watch("sizes");
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState<{
-    message: string;
-    severity: "success" | "error";
-  }>({
-    message: "",
-    severity: "success",
-  });
-
-  const handleCloseToast = () => {
-    setToastOpen(false);
-  };
-
   const toggleSize = (size: number) => {
     const currentSizes = selectedSizes || [];
     const newSizes = currentSizes.includes(size)
@@ -148,18 +136,10 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           existentImages: remainingExistentImages,
           imagesToDelete,
         });
-        setToastContent({
-          message: "Product updated successfully!",
-          severity: "success",
-        });
-        setToastOpen(true);
+        onNotify("Product updated successfully!", "success");
         onSuccess?.();
       } catch {
-        setToastContent({
-          message: "Failed to update product.",
-          severity: "error",
-        });
-        setToastOpen(true);
+        onNotify("Failed to update product.", "error");
       }
     } else {
       try {
@@ -175,18 +155,10 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           data: { ...data, userID },
           imageFiles: filesToUpload,
         });
-        setToastContent({
-          message: "Product added successfully!",
-          severity: "success",
-        });
-        setToastOpen(true);
-        onSuccess?.();
+        onNotify("Product added successfully!", "success");
+        onSuccess();
       } catch {
-        setToastContent({
-          message: "Failed to add product.",
-          severity: "error",
-        });
-        setToastOpen(true);
+        onNotify("Failed to add product.", "error");
       }
     }
   };
@@ -248,14 +220,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           onPreviewsChange={setExistentImages}
         />
       </Box>
-
-      <Toast
-        open={toastOpen}
-        onClose={handleCloseToast}
-        severity={toastContent.severity}
-        message={toastContent.message}
-        autoHideDuration={4000}
-      />
     </Box>
   );
 };
