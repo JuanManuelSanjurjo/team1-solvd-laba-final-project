@@ -82,8 +82,8 @@ export default function CardOverlayAddToCart({
       <ConfirmationModal
         showModal={showModal}
         onClose={handleClose}
-        title="Are you sure to add to cart?"
-        text="Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."
+        title="Add to cart?"
+        text="Are you sure you want to add this item to your cart?"
         primaryBtn="Add"
         secondaryBtn="Cancel"
         onPrimary={handleConfirmAdd}
