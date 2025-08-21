@@ -17,7 +17,8 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { StripePaymentElementOptions } from "@stripe/stripe-js";
 
 /* Inputs */
 
@@ -132,22 +133,18 @@ const shippingInfoInputs: CheckoutInputProps[] = [
 
 /* Default values */
 const defaultValues = {
-  name: "",
-  surname: "",
-  email: "",
-  phone: "",
-  country: "",
-  city: "",
-  state: "",
-  zip: "",
-  address: "",
-  cardHolder: "",
-  cardNumber: "",
-  expDate: "",
-  cvc: "",
+  name: "John",
+  surname: "Doe",
+  email: "john.doe@example.com",
+  phone: "(555) 123-4567",
+  country: "United States",
+  city: "New York",
+  state: "New York",
+  zip: "10001",
+  address: "123 Main Street, Apt 4B",
 };
 
-export default function CheckoutForm() {
+export default function CheckoutForm({ orderId }: { orderId: string }) {
   const cartItems = useCartStore((state) => state.items);
   const cartIsEmpty = cartItems.length === 0;
 
@@ -164,7 +161,12 @@ export default function CheckoutForm() {
   const {
     handleSubmit,
     formState: { errors },
+    watch,
   } = methods;
+
+  useEffect(() => {
+    console.log(watch());
+  }, [watch()]);
 
   const onSubmit = async (data: CheckoutFormValues) => {
     if (!stripe || !elements) return;
@@ -173,7 +175,21 @@ export default function CheckoutForm() {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/thank-you`,
+        return_url: `${window.location.origin}/thank-you?orderId=${orderId}`,
+        payment_method_data: {
+          billing_details: {
+            email: data.email,
+            name: `${data.name} ${data.surname}`,
+            phone: data.phone,
+            address: {
+              country: data.country,
+              city: data.city,
+              state: data.state,
+              postal_code: data.zip,
+              line1: data.address,
+            },
+          },
+        },
       },
     });
 
@@ -185,7 +201,7 @@ export default function CheckoutForm() {
     console.log("Form Submitted:", data);
   };
 
-  const options = {
+  const options: StripePaymentElementOptions = {
     layout: {
       type: "tabs",
       defaultCollapsed: false,
@@ -298,17 +314,17 @@ export default function CheckoutForm() {
               <PaymentElement options={options} />
             </Box>
           </Box>
-
-          {!cartIsEmpty && (
-            <Box sx={{ marginTop: "80px" }}>
-              <CheckoutSummary
-                buttonText="Confirm & Pay"
-                buttonAction={handleSubmit(onSubmit)}
-              />
-            </Box>
-          )}
         </form>
       </FormProvider>
+
+      {!cartIsEmpty && (
+        <Box sx={{ marginTop: "80px" }}>
+          <CheckoutSummary
+            buttonText="Confirm & Pay"
+            buttonAction={handleSubmit(onSubmit)}
+          />
+        </Box>
+      )}
     </Box>
   );
 }

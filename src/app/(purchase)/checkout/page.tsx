@@ -15,15 +15,20 @@ export default function Checkout() {
     undefined
   );
   const total = useCartStore((s) => s.total());
+  const [orderId, setOrderId] = useState<string>("");
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
-    fetch("/checkout/api/create-intent", {
+    fetch("/api/checkout/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: total }),
     })
       .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
+      .then((data) => {
+        setClientSecret(data.clientSecret);
+        setOrderId(data.orderId);
+      });
   }, []);
 
   const options = {
@@ -45,7 +50,7 @@ export default function Checkout() {
     <>
       {clientSecret && (
         <Elements stripe={stripePromise} options={options}>
-          <CheckoutForm />
+          <CheckoutForm orderId={orderId} />
         </Elements>
       )}
     </>
