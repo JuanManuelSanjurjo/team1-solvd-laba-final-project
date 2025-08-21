@@ -34,10 +34,14 @@ export default function NoSearchingStateHeader({
   handleToggleDrawer: () => void;
 }) {
   const { isMobile, isDesktop } = useMediaBreakpoints();
-  const totalItems = useCartStore((state) =>
-    state.totalItems(session?.user?.id)
-  );
 
+  let userId: string;
+
+  if (session) {
+    userId = session.user.id;
+  }
+
+  const totalItems = useCartStore((state) => state.totalItems(userId || ""));
   const isAuthenticated = Boolean(session);
 
   const itemGap = isMobile || !session ? 2 : 5;
@@ -96,6 +100,7 @@ export default function NoSearchingStateHeader({
                 >
                   <Bag style={{ width: bagIconSize }} color="#292d32" />
                 </Badge>
+                <Typography></Typography>
               </Link>
             </Tooltip>
           )}
