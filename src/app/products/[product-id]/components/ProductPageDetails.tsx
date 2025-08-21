@@ -7,11 +7,11 @@ import ProductDescription from "./product-details/ProductDescription";
 import ProductPageButtons from "./product-details/ProductPageButtons";
 import { JSX, useEffect, useMemo } from "react";
 import { NormalizedProduct } from "@/types/product-types";
+import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
+import { Session } from "next-auth";
 import CardProduct from "@/components/cards/actions/types";
 import { useState } from "react";
 import { useCartStore } from "@/store/cartStore";
-import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
-import { Session } from "next-auth";
 
 /**
  * ProductPageDetails
@@ -27,11 +27,9 @@ import { Session } from "next-auth";
 
 export default function ProductPageDetails({
   product,
-  userId,
   session,
 }: {
   product: NormalizedProduct;
-  userId: string;
   session: Session | null;
 }): JSX.Element {
   const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
@@ -74,6 +72,8 @@ export default function ProductPageDetails({
   const addItem = useCartStore((state) => state.addItem);
 
   const handleAddToCart = () => {
+    const userId = session?.user?.id ? String(session.user.id) : null;
+
     if (!userId) {
       return;
     }

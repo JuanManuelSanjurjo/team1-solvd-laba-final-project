@@ -109,8 +109,6 @@ export const useCartStore = create<CartState>()(
 
           let newQuantity = item.quantity || 1;
 
-          let newQuantity = item.quantity || 1;
-
           //If item matches id, we perform the correspondin action
           if (action === "add") {
             newQuantity++;

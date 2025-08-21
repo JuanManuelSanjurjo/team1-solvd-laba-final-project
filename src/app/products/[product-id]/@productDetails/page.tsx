@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import ProductPageDetails from "../components/ProductPageDetails";
 import { normalizeProduct } from "@/lib/normalizers/product-normalizers";
 import { getProductDetails } from "@/lib/actions/get-product-details";
-
 /**
  * SingleProduct
  *
