@@ -47,7 +47,9 @@ export function getQueryStringFromFilters(
     })
     .join("&");
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/products?${filters}${
+  const url = `${
+    process.env.NEXT_PUBLIC_API_URL
+  }/products?${filters}&filters[teamName][$in]=team-1${
     populate ? `&${populate}` : ""
   }`;
 
