@@ -127,7 +127,7 @@ const CartCard = ({
       <ConfirmationModal
         showModal={ConfirmationModalOpened}
         onClose={() => setConfirmationModalOpened(false)}
-        onPrimary={() => removeItem(id)}
+        onPrimary={() => removeItem(userId, id)}
         title="Delete product from cart"
         text="Are you sure you want to delete this product from the cart?"
         secondaryBtn="No, keep product"

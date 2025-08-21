@@ -275,6 +275,7 @@ export default function Checkout({ userId }: CheckoutProps) {
           <CheckoutSummary
             buttonText="Confirm & Pay"
             buttonAction={() => handleSubmit(onSubmit)()}
+            userId={userId}
           />{" "}
         </Box>
       )}

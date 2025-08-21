@@ -138,13 +138,9 @@ export const useCartStore = create<CartState>()(
       shipping: (userId) => {
         const minimumFreeShipping = 100;
         const shippingCost = 10;
-        const total = get().subtotal(userId);
+        const subtotal = get().subtotal(userId);
 
-        if (total > minimumFreeShipping) {
-          return 0;
-        } else {
-          return shippingCost;
-        }
+        return subtotal > minimumFreeShipping ? 0 : shippingCost;
       },
 
       total: (userId) => {

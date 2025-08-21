@@ -26,13 +26,18 @@ import { useCartStore } from "@/store/cartStore";
 type checkoutSummary = {
   buttonText: string;
   buttonAction(): void;
+  userId: string;
 };
 
-const CheckoutSummary = ({ buttonText, buttonAction }: checkoutSummary) => {
-  const subtotal = useCartStore((state) => state.subtotal());
-  const total = useCartStore((state) => state.total());
-  const taxes = useCartStore((state) => state.taxes());
-  const shipping = useCartStore((state) => state.shipping());
+const CheckoutSummary = ({
+  buttonText,
+  buttonAction,
+  userId,
+}: checkoutSummary) => {
+  const subtotal = useCartStore((state) => state.subtotal(userId));
+  const total = useCartStore((state) => state.total(userId));
+  const taxes = useCartStore((state) => state.taxes(userId));
+  const shipping = useCartStore((state) => state.shipping(userId));
 
   const infoStyles = {
     fontWeight: "400",
@@ -65,7 +70,7 @@ const CheckoutSummary = ({ buttonText, buttonAction }: checkoutSummary) => {
             Subtotal
           </Typography>
           <Typography variant="h3" sx={infoStyles}>
-            ${subtotal || "..."}
+            ${subtotal || "Error"}
           </Typography>
         </Box>
 
@@ -74,7 +79,7 @@ const CheckoutSummary = ({ buttonText, buttonAction }: checkoutSummary) => {
             Shipping
           </Typography>
           <Typography variant="h3" sx={infoStyles}>
-            ${shipping || "..."}
+            ${shipping ?? "Error"}
           </Typography>
         </Box>
 
@@ -83,7 +88,7 @@ const CheckoutSummary = ({ buttonText, buttonAction }: checkoutSummary) => {
             Tax
           </Typography>
           <Typography variant="h3" sx={infoStyles}>
-            ${taxes || "..."}
+            ${taxes || "Error"}
           </Typography>
         </Box>
       </Box>

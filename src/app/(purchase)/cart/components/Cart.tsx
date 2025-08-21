@@ -117,6 +117,7 @@ export default function Cart({ userId }: CartProps) {
           <CheckoutSummary
             buttonText="Checkout"
             buttonAction={() => router.push("/checkout")}
+            userId={userId}
           />
         </Box>
       </Box>
