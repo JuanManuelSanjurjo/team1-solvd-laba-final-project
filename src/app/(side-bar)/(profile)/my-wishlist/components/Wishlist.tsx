@@ -3,7 +3,6 @@
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
 import { Box } from "@mui/material";
-("");
 import { useWishlistStore } from "@/store/wishlist";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
