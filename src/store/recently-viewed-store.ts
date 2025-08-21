@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import cardProduct from "@/components/cards/actions/types/cardProduct";
+import cardProduct from "@/components/cards/actions/types";
 
 type RecentlyViewedStore = {
   byUser: Record<string, cardProduct[]>;

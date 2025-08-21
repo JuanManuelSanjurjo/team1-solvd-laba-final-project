@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { fetchActiveProductsIds } from "@/lib/strapi/fetchActiveProductsIds";
+import { fetchActiveProductsIds } from "@/lib/actions/fetch-active-products-ids";
 
 export function useClientHydrated() {
   const [isHydrated, setIsHydrated] = useState(false);

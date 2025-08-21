@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useState, JSX, MouseEvent } from "react";
 import { Box } from "@mui/material";
-import cardProduct from "./types/cardProduct";
+import cardProduct from "./types";
 import Link from "next/link";
 import ConfirmationModal from "@/components/ConfirmationModal";
 

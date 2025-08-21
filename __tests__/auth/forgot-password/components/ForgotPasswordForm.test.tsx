@@ -4,11 +4,11 @@ import { render, screen, fireEvent, waitFor } from "../../../utils/test-utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import forgotPassword, {
   ForgotPasswordResponse,
-} from "@/actions/forgot-password";
+} from "@/lib/actions/forgot-password";
 import ForgotPasswordForm from "@/app/auth/forgot-password/components/ForgotPasswordForm";
 import authMocks from "__tests__/mocks/auth";
 
-jest.mock("@/actions/forgot-password");
+jest.mock("@/lib/actions/forgot-password");
 const mockforgotPassword = forgotPassword as jest.MockedFunction<
   typeof forgotPassword
 >;

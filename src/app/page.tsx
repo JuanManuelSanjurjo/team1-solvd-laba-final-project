@@ -1,9 +1,8 @@
 import { auth } from "@/auth";
-import HomeClient from "./products/components/HomeClient";
+import Products from "@/components/Products";
 
-export default async function Home() {
+export default async function ProductsPage() {
   const session = await auth();
-  const userId = session?.user?.id ?? "";
 
-  return <HomeClient userId={userId} />;
+  return <Products session={session} />;
 }

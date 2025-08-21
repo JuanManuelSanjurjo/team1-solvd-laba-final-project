@@ -9,8 +9,14 @@ import { ProfilePicture } from "@/components/ProfilePicture";
 import Toast from "@/components/Toast";
 import { useMutation } from "@tanstack/react-query";
 import { redirect, useRouter } from "next/navigation";
-import { AvatarUpdateResponse, updateAvatar } from "@/actions/update-avatar";
-import { deleteAvatar, DeleteAvatarResponse } from "@/actions/delete-avatar";
+import {
+  AvatarUpdateResponse,
+  updateAvatar,
+} from "@/lib/actions/update-avatar";
+import {
+  deleteAvatar,
+  DeleteAvatarResponse,
+} from "@/lib/actions/delete-avatar";
 import { useSession } from "next-auth/react";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import HourglassEmptyRoundedIcon from "@mui/icons-material/HourglassEmptyRounded";

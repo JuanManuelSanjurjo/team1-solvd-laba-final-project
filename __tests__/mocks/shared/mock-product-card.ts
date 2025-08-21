@@ -1,4 +1,4 @@
-import cardProduct from "@/components/cards/actions/types/cardProduct";
+import cardProduct from "@/components/cards/actions/types";
 
 export const mockCardProduct: cardProduct = {
   id: 1,

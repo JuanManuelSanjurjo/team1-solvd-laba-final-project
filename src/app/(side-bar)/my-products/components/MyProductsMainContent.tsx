@@ -3,10 +3,9 @@ import { useState } from "react";
 import { Box } from "@mui/material";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
-import { fetchUserProducts } from "@/lib/strapi/fetch-user-products";
+import { fetchUserProducts } from "@/lib/actions/fetch-user-products";
 import { MyProduct } from "@/types/product";
 import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
 import SkeletonCardContainer from "@/components/skeletons/products/SkeletonCardContainer";
@@ -18,8 +17,10 @@ import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditP
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
 import { useRouter } from "next/navigation";
 import Toast from "@/components/Toast";
+import { Session } from "next-auth";
 
 interface MyProductsMainContentProps {
+  session: Session;
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
@@ -38,19 +39,19 @@ interface MyProductsMainContentProps {
  */
 
 export default function MyProductsMainContent({
+  session,
   brandOptions,
   colorOptions,
   sizeOptions,
   categoryOptions,
 }: MyProductsMainContentProps) {
-  const deleteMutation = useDeleteProduct();
+  const deleteMutation = useDeleteProduct(session);
   const router = useRouter();
 
   const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
     deleteMutation.mutate({ productId, imageIds });
   };
 
-  const { data: session } = useSession();
   const userId = session?.user?.id;
   const token = session?.user?.jwt;
 
@@ -105,6 +106,7 @@ export default function MyProductsMainContent({
         <CardContainer length={products.length}>
           {normalizeMyProductCard(products).map((product, index) => (
             <Card
+              session={session}
               product={product}
               topAction="cardButtonMenu"
               key={index}
@@ -151,6 +153,7 @@ export default function MyProductsMainContent({
           />
 
           <EditProductForm
+            session={session}
             sizeOptions={sizeOptions}
             colorOptions={colorOptions}
             brandOptions={brandOptions}

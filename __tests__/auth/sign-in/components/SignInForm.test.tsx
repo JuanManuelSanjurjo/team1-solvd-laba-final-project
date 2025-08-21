@@ -13,7 +13,7 @@ jest.mock("next-auth/react", () => ({
   signIn: jest.fn(),
 }));
 
-jest.mock("@/actions/sign-in", () => ({
+jest.mock("@/lib/actions/sign-in", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
@@ -38,7 +38,7 @@ jest.mock("next/link", () => {
   };
 });
 
-import signInAction from "@/actions/sign-in";
+import signInAction from "@/lib/actions/sign-in";
 import { useRouter } from "next/navigation";
 import authMocks from "__tests__/mocks/auth";
 import { SignInResponse } from "@/app/auth/sign-in/types";

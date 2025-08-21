@@ -1,12 +1,12 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "../../../utils/test-utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import resetPassword from "@/actions/reset-password";
+import resetPassword from "@/lib/actions/reset-password";
 import ResetPasswordForm from "@/app/auth/reset-password/components/ResetPasswordForm";
 import { useSearchParams } from "next/navigation";
 import authMocks from "__tests__/mocks/auth";
 
-jest.mock("@/actions/reset-password");
+jest.mock("@/lib/actions/reset-password");
 const mockResetPassword = resetPassword as jest.MockedFunction<
   typeof resetPassword
 >;

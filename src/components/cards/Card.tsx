@@ -4,13 +4,15 @@ import CardImage from "./CardImage";
 import CardActionWrapperTopRight from "./wrappers/CardActionWrapperTopRight";
 import CardActionWrapperCenter from "./wrappers/CardActionWrapperCenter";
 import { JSX } from "react";
-import cardProduct from "./actions/types/cardProduct";
+import cardProduct from "./actions/types";
 import CardButtonMenu from "./actions/CardButtonMenu";
 import CardButtonWishList from "./actions/CardButtonWishList";
 import CardOverlayAddToCart from "./actions/CardOverlayAddToCart";
 import CardOverlayDelete from "./actions/CardOverlayDelete";
+import { Session } from "next-auth";
 
 type CardProps = {
+  session: Session | null;
   product?: cardProduct;
   image?: string;
   topAction?: string;
@@ -44,6 +46,7 @@ type CardProps = {
  */
 
 export default function Card({
+  session,
   product,
   image,
   topAction = undefined,
@@ -87,7 +90,7 @@ export default function Card({
                       onDuplicate={onDuplicate!}
                     />
                   ) : (
-                    <CardButtonWishList product={product!} />
+                    <CardButtonWishList session={session} product={product!} />
                   )
                 }
               />

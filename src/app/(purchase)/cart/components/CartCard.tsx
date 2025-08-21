@@ -6,9 +6,9 @@ import { Trash } from "iconsax-react";
 // import Image from "next/image"; //Add later. There is an issue with the external url not being add into next.config.js
 import QuantityHandler from "./QuantityHandler";
 import CartCardImage from "./CartCardImage";
-import { useCartStore } from "@/store/cartStore"; // ruta a tu store
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState } from "react";
+import { useCartStore } from "@/store/cart-store"; 
 
 type CartCardProps = {
   id: number;

@@ -2,10 +2,10 @@
 import { Box, Typography, Stack } from "@mui/material";
 import { BagTick } from "iconsax-react";
 import { useState, JSX } from "react";
-import cardProduct from "./types/cardProduct";
-import { useCartStore } from "@/store/cartStore";
 import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
-import Select from "@/components/FormElements/Select";
+import { useCartStore } from "@/store/cart-store";
+import CardProduct from "./types";
+import Select from "@/components/form-elements/Select";
 
 /**
  * CardOverlayAddToCart
@@ -18,7 +18,7 @@ import Select from "@/components/FormElements/Select";
  */
 
 type CardOverlayAddToCardProps = {
-  product: cardProduct;
+  product: CardProduct;
   userId?: string;
 };
 

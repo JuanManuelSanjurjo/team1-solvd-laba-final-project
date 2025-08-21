@@ -7,10 +7,10 @@ import ProductDescription from "./product-details/ProductDescription";
 import ProductPageButtons from "./product-details/ProductPageButtons";
 import { JSX, useEffect, useMemo } from "react";
 import { NormalizedProduct } from "@/types/product-types";
-import cardProduct from "@/components/cards/actions/types/cardProduct";
-import { useRecentlyViewedStore } from "@/store/recentlyviewed";
+import CardProduct from "@/components/cards/actions/types";
 import { useState } from "react";
 import { useCartStore } from "@/store/cartStore";
+import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
 import { Session } from "next-auth";
 
 /**
@@ -36,7 +36,7 @@ export default function ProductPageDetails({
 }): JSX.Element {
   const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
 
-  const cardProductInfo: cardProduct = useMemo(
+  const cardProductInfo: CardProduct = useMemo(
     () => ({
       id: product.id,
       image: product.images?.[0]?.url || "https://placehold.co/400",

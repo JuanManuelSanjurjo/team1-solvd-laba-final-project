@@ -1,7 +1,7 @@
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 
 import { ArrowDown2 } from "iconsax-react";
-import Input from "@/components/FormElements/Input";
+import Input from "@/components/form-elements/Input";
 import Button from "@/components/Button";
 
 /**

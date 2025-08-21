@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import PromocodeAccordion from "./PromocodeAccordion";
 // Update the import path if Button is located elsewhere, for example:
 import Button from "@/components/Button";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cart-store";
 
 /**
  * A reusable summary component used in both the checkout and the cart pages.

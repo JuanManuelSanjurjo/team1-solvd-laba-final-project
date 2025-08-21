@@ -105,7 +105,6 @@ const AuthenticatedSidebar = ({
   width,
 }: AuthenticatedSidebarProps): JSX.Element => {
   const pathname = usePathname();
-  // const { data: session } = useSession();
 
   const drawerWidth = {
     md: 240,

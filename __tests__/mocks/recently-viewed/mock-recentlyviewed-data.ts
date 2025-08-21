@@ -1,5 +1,5 @@
-import { useRecentlyViewedStore } from "@/store/recentlyviewed";
-import cardProduct from "@/components/cards/actions/types/cardProduct";
+import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
+import cardProduct from "@/components/cards/actions/types";
 
 type MockedRecentlyViewedStore = {
   recentlyViewed: cardProduct[];
