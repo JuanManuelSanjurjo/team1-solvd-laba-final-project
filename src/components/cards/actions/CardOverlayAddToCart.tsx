@@ -18,7 +18,7 @@ import { useCartStore } from "@/store/cartStore";
 
 type CardOverlayAddToCardProps = {
   product: cardProduct;
-  userId: string;
+  userId?: string;
 };
 
 export default function CardOverlayAddToCart({
@@ -37,6 +37,10 @@ export default function CardOverlayAddToCart({
   function handleConfirmAdd(e: React.MouseEvent) {
     e?.stopPropagation();
     e?.preventDefault();
+
+    if (!userId) {
+      return;
+    }
 
     addItem(userId, {
       id: product.id,

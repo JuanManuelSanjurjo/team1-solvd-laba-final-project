@@ -21,7 +21,7 @@ type CardProps = {
   onDuplicate?: () => void;
   onDeletePreview?: () => void;
   onDelete?: () => void;
-  userId: string;
+  userId?: string;
 };
 
 /**
