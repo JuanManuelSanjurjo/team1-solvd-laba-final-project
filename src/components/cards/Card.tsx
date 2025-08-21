@@ -4,7 +4,7 @@ import CardImage from "./CardImage";
 import CardActionWrapperTopRight from "./wrappers/CardActionWrapperTopRight";
 import CardActionWrapperCenter from "./wrappers/CardActionWrapperCenter";
 import { JSX } from "react";
-import cardProduct from "./actions/types/cardProduct";
+import cardProduct from "./actions/types";
 import CardButtonMenu from "./actions/CardButtonMenu";
 import CardButtonWishList from "./actions/CardButtonWishList";
 import CardOverlayAddToCart from "./actions/CardOverlayAddToCart";

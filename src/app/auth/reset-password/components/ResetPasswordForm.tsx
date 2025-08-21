@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Alert, Box } from "@mui/material";
-import Input from "@/components/FormElements/Input";
+import Input from "@/components/form-elements/Input";
 import Button from "@/components/Button";
 import resetPassword, {
   ResetPasswordPayload,

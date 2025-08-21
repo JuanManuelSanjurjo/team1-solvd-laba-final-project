@@ -3,17 +3,14 @@
 import { Typography, Box } from "@mui/material";
 import PaymentInfo from "./components/PaymentInfo";
 import { Grid, Divider } from "@mui/material";
-import Input from "@/components/FormElements/Input";
+import Input from "@/components/form-elements/Input";
 import { InputProps } from "@/types/form";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckoutSummary from "../components/CheckoutSummary";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cart-store";
 
-import {
-  checkoutSchema,
-  type CheckoutFormValues,
-} from "./validation/checkoutSchema";
+import { checkoutSchema, type CheckoutFormValues } from "./types";
 
 type CheckoutInputProps = Omit<InputProps, "name"> & {
   name:

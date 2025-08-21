@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import ProductQuantityButton from "./ProductQuantityButton";
 import { ArrowDown2 } from "iconsax-react";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cart-store";
 
 type QuantityHandlerProps = {
   quantity: number;

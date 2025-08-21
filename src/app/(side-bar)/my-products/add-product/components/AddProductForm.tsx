@@ -5,7 +5,7 @@ import { Box, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
 import { useState } from "react";
-import { ProductFormData, productSchema } from "../schema";
+import { ProductFormData, productSchema } from "../types";
 import { useCreateProduct } from "../hooks/useCreateProduct";
 import { ProductFormFields } from "./ProductFormFields";
 import { Session } from "next-auth";

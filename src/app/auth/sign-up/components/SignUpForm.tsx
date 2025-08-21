@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Box } from "@mui/material";
-import Input from "@/components/FormElements/Input";
+import Input from "@/components/form-elements/Input";
 import Button from "@/components/Button";
 import signUp from "@/lib/actions/sign-up";
 import { useState } from "react";

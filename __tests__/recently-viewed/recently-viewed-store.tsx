@@ -1,5 +1,5 @@
-import { useRecentlyViewedStore } from "@/store/recentlyviewed";
-import CardProduct from "@/components/cards/actions/types/cardProduct";
+import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
+import CardProduct from "@/components/cards/actions/types";
 import {
   mockCardProduct,
   mockCardProduct2,

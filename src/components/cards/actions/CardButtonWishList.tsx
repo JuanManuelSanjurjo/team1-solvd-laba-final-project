@@ -3,8 +3,8 @@
 import { Box } from "@mui/material";
 import { HeartSlash, Heart } from "iconsax-react";
 import { JSX } from "react";
-import { useWishlistStore } from "@/store/wishlist";
-import cardProduct from "./types/cardProduct";
+import { useWishlistStore } from "@/store/wishlist-store";
+import cardProduct from "./types";
 import { Session } from "next-auth";
 
 type CardButtonWishListProps = {

@@ -3,9 +3,9 @@
 import { useState, JSX } from "react";
 import { Stack, Box, Typography } from "@mui/material";
 import PaymentMethodOption from "./PaymentMethodOption";
-import Input from "@/components/FormElements/Input";
+import Input from "@/components/form-elements/Input";
 import { useFormContext } from "react-hook-form";
-import { CheckoutFormValues } from "../validation/checkoutSchema";
+import { CheckoutFormValues } from "../types";
 
 import {
   Card,

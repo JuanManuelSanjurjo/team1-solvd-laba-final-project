@@ -3,8 +3,8 @@ import { Box, Typography, Stack } from "@mui/material";
 import { BagTick } from "iconsax-react";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState, JSX } from "react";
-import cardProduct from "./types/cardProduct";
-import { useCartStore } from "@/store/cartStore";
+import cardProduct from "./types";
+import { useCartStore } from "@/store/cart-store";
 
 /**
  * CardOverlayAddToCart

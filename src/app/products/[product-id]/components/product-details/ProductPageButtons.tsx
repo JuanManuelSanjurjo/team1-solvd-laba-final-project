@@ -1,8 +1,8 @@
 "use client";
 import { Box, Button } from "@mui/material";
-import { useWishlistStore } from "@/store/wishlist";
+import { useWishlistStore } from "@/store/wishlist-store";
 import { NormalizedProduct } from "@/types/product-types";
-import cardProduct from "@/components/cards/actions/types/cardProduct";
+import cardProduct from "@/components/cards/actions/types";
 import { JSX } from "react";
 import { Session } from "next-auth";
 
@@ -33,7 +33,7 @@ export default function ProductPageButtons({
   const byUser = useWishlistStore((state) => state.byUser);
   const addToWishList = useWishlistStore((state) => state.addToWishList);
   const removeFromWishList = useWishlistStore(
-    (state) => state.removeFromWishList,
+    (state) => state.removeFromWishList
   );
 
   if (!userId) {

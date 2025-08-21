@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ProductFormData, productSchema } from "../add-product/schema";
+import { ProductFormData, productSchema } from "../add-product/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductFormFields } from "../add-product/components/ProductFormFields";

@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { ProductFormData } from "../schema";
+import { ProductFormData } from "../types";
 import { uploadImages } from "@/lib/actions/upload-images";
 import { createProduct } from "@/lib/actions/upload-product";
 import { Session } from "next-auth";
