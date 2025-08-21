@@ -1,10 +1,11 @@
 "use client";
 import { Box, Typography, Stack } from "@mui/material";
 import { BagTick } from "iconsax-react";
-import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState, JSX } from "react";
 import cardProduct from "./types/cardProduct";
 import { useCartStore } from "@/store/cartStore";
+import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
+import Select from "@/components/FormElements/Select";
 
 /**
  * CardOverlayAddToCart
@@ -26,6 +27,7 @@ export default function CardOverlayAddToCart({
   userId,
 }: CardOverlayAddToCardProps): JSX.Element {
   const [showModal, setShowModal] = useState(false);
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
 
   const addItem = useCartStore((state) => state.addItem);
 
@@ -49,6 +51,7 @@ export default function CardOverlayAddToCart({
       price: product.price,
       quantity: 1,
       gender: product.gender,
+      size: selectedSize,
     });
 
     setShowModal(false);
@@ -86,15 +89,25 @@ export default function CardOverlayAddToCart({
           Add to cart
         </Typography>
       </Stack>
-      <ConfirmationModal
+      <SizeSelectorModal
         showModal={showModal}
         onClose={handleClose}
-        title="Are you sure to add to cart?"
-        text="Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."
+        title="Select a size"
+        text=""
         primaryBtn="Add"
         secondaryBtn="Cancel"
         onPrimary={handleConfirmAdd}
-      />
+      >
+        <Select
+    name="size"
+    label="Size"
+    placeholder="Choose your size"
+    required
+    options={(product.sizes ?? []).map((s) => ({ label: String(s), value: s }))}
+    value={selectedSize ?? ""}
+    onChange={(e) => setSelectedSize(Number(e.target.value))}
+  />
+      </SizeSelectorModal>
     </Box>
   );
 }

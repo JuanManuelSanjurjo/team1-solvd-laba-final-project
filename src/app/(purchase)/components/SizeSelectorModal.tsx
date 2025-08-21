@@ -11,32 +11,26 @@ import {
   Box,
 } from "@mui/material";
 import { Add } from "iconsax-react";
-import { JSX } from "react";
+import { JSX, ReactNode } from "react";
 
-type ConfirmationModalProps = {
+type SizeSelectorModalProps = {
   showModal: boolean;
   onClose: (e: React.SyntheticEvent) => void;
   onPrimary: (e: React.MouseEvent<HTMLButtonElement>) => void;
   title: string;
-  text: string;
-  secondaryBtn: string;
-  primaryBtn: string;
+  text?: string;
+  secondaryBtn?: string;
+  primaryBtn?: string;
+  children?: ReactNode; // 👈 agregado
 };
 
 /**
  * SizeSelectorModal
  *
- * This component is a modal that displays a select with all shoe sizes with two buttons.
- * both buttons are currently hardcoded to always be closed by default until we implement the functionality.
+ * This component is a modal that can display a custom content (children)
+ * with two action buttons.
  *
- * @param showModal - A boolean indicating whether the modal should be displayed.
- * @param onClose - A function to be called when the modal is closed.
- * @param onPrimary - A function that is applied when the button is clicked
- * @param title - The title of the confirmation message.
- * @param text - The text of the confirmation message.
- * @param secondaryBtn - The text of the secondary button.
- * @param primaryBtn - The text of the primary button.
- * @returns {JSX.Element} with the confirmation modal component.
+ * @returns {JSX.Element} with the size selector modal component.
  */
 
 export default function SizeSelectorModal({
@@ -47,7 +41,8 @@ export default function SizeSelectorModal({
   text,
   secondaryBtn,
   primaryBtn,
-}: ConfirmationModalProps): JSX.Element {
+  children,
+}: SizeSelectorModalProps): JSX.Element {
   return (
     <Dialog
       slotProps={{
@@ -90,7 +85,7 @@ export default function SizeSelectorModal({
           }}
           id="customized-dialog-title"
         >
-          {title || "Are you sure to delete product image"}
+          {title}
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -109,12 +104,17 @@ export default function SizeSelectorModal({
             style={{ transform: "rotate(45deg)" }}
           />
         </IconButton>
-        <DialogContent sx={{ px: "32px", py: "56px" }}>
-          <Typography variant="body2" color="text.secondary" gutterBottom>
-            {text ||
-              "Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."}
-          </Typography>
-          <Divider sx={{ pt: "56px" }} />
+        <DialogContent sx={{ px: "32px", py: "40px" }}>
+          {text && (
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              {text}
+            </Typography>
+          )}
+
+          {/* 👇 acá renderizamos el contenido extra */}
+          {children && <Box mt={text ? 3 : 0}>{children}</Box>}
+
+          <Divider sx={{ pt: "40px" }} />
         </DialogContent>
         <DialogActions
           sx={{
@@ -138,7 +138,7 @@ export default function SizeSelectorModal({
             size="extraLarge"
             onClick={onPrimary}
           >
-            {primaryBtn || "Delete"}
+            {primaryBtn || "Confirm"}
           </Button>
         </DialogActions>
       </Box>
