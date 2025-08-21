@@ -11,11 +11,16 @@ export interface CartItem {
 export interface CartState {
   byUser: Record<string, CartItem[]>;
   addItem: (userId: string, item: CartItem) => void;
-  removeItem: (userId: string, id: number) => void;
+  removeItem: (userId: string, id: number, size: number) => void;
   totalItems: (userId: string) => number;
   clearCart: (userId: string) => void;
-  updateQuantity: (userId: string, id: number, action: "add" | "minus") => void;
-  totalOfProduct: (userId: string, id: number) => number;
+  updateQuantity: (
+    userId: string,
+    id: number,
+    action: "add" | "minus",
+    size: number
+  ) => void;
+  totalOfProduct: (userId: string, id: number, size: number) => number;
   subtotal: (userId: string) => number;
   taxes: (userId: string) => number;
   shipping: (userId: string) => number;

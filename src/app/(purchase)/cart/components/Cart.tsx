@@ -106,6 +106,7 @@ export default function Cart({ userId }: CartProps) {
                 quantity={item?.quantity}
                 productTitle={item?.name}
                 image={item?.image || "Loading"}
+                size={item.size}
                 userId={userId}
               />
               {!isMobile && <Divider />}

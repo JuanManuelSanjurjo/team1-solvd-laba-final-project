@@ -17,6 +17,7 @@ type CartCardProps = {
   gender: string;
   image: string;
   userId: string;
+  size: number;
 };
 
 /**
@@ -38,6 +39,7 @@ const CartCard = ({
   productTitle,
   gender,
   image,
+  size,
   userId,
   ...moreProps
 }: CartCardProps): JSX.Element => {
@@ -75,6 +77,15 @@ const CartCard = ({
           >
             {gender}&apos;s Shoes
           </Typography>
+          <Typography
+            variant="subtitle1"
+            sx={(theme) => ({
+              color: theme.palette.text.secondary,
+              marginTop: "4px",
+            })}
+          >
+            EU{size}
+          </Typography>
 
           <Typography
             sx={(theme) => ({
@@ -91,7 +102,7 @@ const CartCard = ({
 
         <Grid size={2}>
           <Typography variant="h3" sx={{ fontSize: { xs: 12, sm: 30 } }}>
-            ${totalOfProduct(userId, id)}
+            ${totalOfProduct(userId, id, size)}
           </Typography>
         </Grid>
 
@@ -106,7 +117,12 @@ const CartCard = ({
           }}
         >
           <Grid sx={{ display: "flex" }}>
-            <QuantityHandler quantity={quantity} id={id} userId={userId} />
+            <QuantityHandler
+              quantity={quantity}
+              id={id}
+              userId={userId}
+              size={size}
+            />
 
             <Button
               onClick={() => setConfirmationModalOpened(true)}
@@ -127,7 +143,7 @@ const CartCard = ({
       <ConfirmationModal
         showModal={ConfirmationModalOpened}
         onClose={() => setConfirmationModalOpened(false)}
-        onPrimary={() => removeItem(userId, id)}
+        onPrimary={() => removeItem(userId, id, size)}
         title="Delete product from cart"
         text="Are you sure you want to delete this product from the cart?"
         secondaryBtn="No, keep product"

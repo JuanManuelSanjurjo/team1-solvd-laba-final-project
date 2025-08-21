@@ -49,10 +49,13 @@ export const useCartStore = create<CartState>()(
             },
           });
 
-          console.log("Added item to product existing in cart", currentItems);
+          console.log(
+            "Added item(s) to product existing in cart",
+            currentItems
+          );
           useToastStore.getState().show({
             severity: "success",
-            message: "Added item to product existing in cart",
+            message: "Added item(s) to product existing in cart",
           });
         } else {
           //If product isn't already in cart we add it
@@ -78,13 +81,15 @@ export const useCartStore = create<CartState>()(
         );
       },
 
-      removeItem: (userId, id) => {
+      removeItem: (userId, id, size) => {
         const { byUser } = get();
 
         set({
           byUser: {
             ...byUser,
-            [userId]: (byUser[userId] ?? []).filter((item) => item.id !== id),
+            [userId]: (byUser[userId] ?? []).filter(
+              (item) => !(item.id === id && item.size === size)
+            ),
           },
         });
       },
@@ -94,13 +99,15 @@ export const useCartStore = create<CartState>()(
         set({ byUser: { ...byUser, [userId]: [] } });
       },
 
-      updateQuantity: (userId, id, action) => {
+      updateQuantity: (userId, id, action, size) => {
         const { byUser } = get();
         const list = byUser[userId] ?? [];
 
         const updatedItems = list.map((item) => {
           //If product doesn't match id, we return it as it is
-          if (item.id !== id) return item;
+          if (item.id !== id || item.size !== size) return item;
+
+          console.log(size);
 
           let newQuantity = item.quantity || 1;
 
@@ -119,13 +126,15 @@ export const useCartStore = create<CartState>()(
         set({ byUser: { ...byUser, [userId]: updatedItems } });
       },
 
-      totalOfProduct: (userId, id) => {
+      totalOfProduct: (userId, id, size) => {
         //Find the item that matches the id
         const { byUser } = get();
 
         const list = byUser[userId] ?? [];
 
-        const item = list.find((product) => product.id === id);
+        const item = list.find(
+          (product) => product.id === id && product.size === size
+        );
 
         //If item exists, calculate total. If not, returns 0
         return item ? item.price * (item.quantity || 1) : 0;
