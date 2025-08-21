@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { ProductFormData } from "../schema";
-import { uploadImages } from "@/lib/strapi/upload-images";
-import { createProduct } from "@/lib/strapi/upload-product";
+import { uploadImages } from "@/lib/actions/upload-images";
+import { createProduct } from "@/lib/actions/upload-product";
 import { Session } from "next-auth";
 
 export function useCreateProduct(session: Session) {

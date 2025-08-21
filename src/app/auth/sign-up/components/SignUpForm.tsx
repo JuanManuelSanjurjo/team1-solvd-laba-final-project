@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Box } from "@mui/material";
 import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
-import signUp from "@/actions/sign-up";
+import signUp from "@/lib/actions/sign-up";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { signUpSchema, SignUpFormData, SignUpResponse } from "../types";

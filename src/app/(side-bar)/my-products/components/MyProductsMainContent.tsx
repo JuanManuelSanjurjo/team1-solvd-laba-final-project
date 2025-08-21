@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Box } from "@mui/material";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
-import { fetchUserProducts } from "@/lib/strapi/fetch-user-products";
+import { fetchUserProducts } from "@/lib/actions/fetch-user-products";
 import { MyProduct } from "@/types/product";
 import { useQuery } from "@tanstack/react-query";
 import CardContainer from "@/components/cards/CardContainer";

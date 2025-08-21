@@ -4,7 +4,7 @@ import { render, screen, fireEvent, waitFor } from "../../../utils/test-utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import forgotPassword, {
   ForgotPasswordResponse,
-} from "@/actions/forgot-password";
+} from "@/lib/actions/forgot-password";
 import ForgotPasswordForm from "@/app/auth/forgot-password/components/ForgotPasswordForm";
 import authMocks from "__tests__/mocks/auth";
 

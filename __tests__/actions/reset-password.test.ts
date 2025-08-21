@@ -1,4 +1,4 @@
-import resetPassword from "@/actions/reset-password";
+import resetPassword from "@/lib/actions/reset-password";
 import {
   TEST_API_URLS,
   HTTP_METHODS,

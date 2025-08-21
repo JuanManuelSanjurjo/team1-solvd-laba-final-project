@@ -9,7 +9,7 @@ import Toast from "@/components/Toast";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Session } from "next-auth";
-import { updateUser } from "@/actions/update-user";
+import { updateUser } from "@/lib/actions/update-user";
 import { useSession } from "next-auth/react";
 import {
   updateProfileSchema,

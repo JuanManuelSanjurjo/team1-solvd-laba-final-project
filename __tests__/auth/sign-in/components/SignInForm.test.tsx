@@ -38,7 +38,7 @@ jest.mock("next/link", () => {
   };
 });
 
-import signInAction from "@/actions/sign-in";
+import signInAction from "@/lib/actions/sign-in";
 import { useRouter } from "next/navigation";
 import authMocks from "__tests__/mocks/auth";
 import { SignInResponse } from "@/app/auth/sign-in/types";

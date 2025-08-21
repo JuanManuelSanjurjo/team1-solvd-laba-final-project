@@ -7,7 +7,7 @@ import Input from "@/components/FormElements/Input";
 import Button from "@/components/Button";
 import forgotPassword, {
   ForgotPasswordResponse,
-} from "@/actions/forgot-password";
+} from "@/lib/actions/forgot-password";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordSchema, ForgotPasswordFormData } from "../types";

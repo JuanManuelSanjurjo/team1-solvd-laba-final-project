@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProductsBySearch } from "@/lib/strapi/fetch-products-by-search";
+import { fetchProductsBySearch } from "@/lib/actions/fetch-products-by-search";
 import useDebounce from "@/hooks/useDebounce";
 
 /**

@@ -147,7 +147,7 @@ export const ProductFormFields = ({
           errorMessage={errors.description?.message ?? ""}
           multiline
           fullWidth
-          sx={{ height: "320px", alignItems: "flex-start" }}
+          sx={{ height: "320px", alignItems: "flex-start", padding: 0 }}
         />
         <AiButton
           variant="contained"

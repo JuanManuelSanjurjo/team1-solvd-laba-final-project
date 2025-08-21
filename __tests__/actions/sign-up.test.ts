@@ -1,4 +1,4 @@
-import signUp from "@/actions/sign-up";
+import signUp from "@/lib/actions/sign-up";
 import {
   TEST_API_URLS,
   HTTP_METHODS,

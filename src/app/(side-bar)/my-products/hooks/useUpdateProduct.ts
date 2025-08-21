@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { uploadImages } from "@/lib/strapi/upload-images";
+import { uploadImages } from "@/lib/actions/upload-images";
 import { ProductFormData } from "../add-product/schema";
-import { updateProduct } from "@/lib/strapi/update-product";
-import { deleteImage } from "@/lib/strapi/delete-image";
+import { updateProduct } from "@/lib/actions/update-product";
+import { deleteImage } from "@/lib/actions/delete-image";
 import { getQueryClient } from "@/lib/get-query-client";
 import { Session } from "next-auth";
 

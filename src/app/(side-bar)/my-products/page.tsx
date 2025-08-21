@@ -1,9 +1,9 @@
-import { fetchBrands } from "@/lib/strapi/fetch-brands";
+import { fetchBrands } from "@/lib/actions/fetch-brands";
 import MyProductsBanner from "./components/MyProductsBanner";
 import MyProductsMainContent from "./components/MyProductsMainContent";
-import { fetchColors } from "@/lib/strapi/fetch-colors";
-import { fetchSizes } from "@/lib/strapi/fetch-sizes";
-import { fetchCategories } from "@/lib/strapi/fetch-categories";
+import { fetchColors } from "@/lib/actions/fetch-colors";
+import { fetchSizes } from "@/lib/actions/fetch-sizes";
+import { fetchCategories } from "@/lib/actions/fetch-categories";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 

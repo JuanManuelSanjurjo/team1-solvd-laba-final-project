@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import signUp from "@/actions/sign-up";
+import signUp from "@/lib/actions/sign-up";
 import SignUpForm from "@/app/auth/sign-up/components/SignUpForm";
 import {
   render,

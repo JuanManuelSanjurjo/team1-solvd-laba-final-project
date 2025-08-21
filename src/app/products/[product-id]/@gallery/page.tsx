@@ -1,6 +1,6 @@
 import Gallery from "../components/gallery/Gallery";
 import { normalizeImages } from "@/lib/normalizers/product-normalizers";
-import { getProductImages } from "@/lib/strapi/get-product-images";
+import { getProductImages } from "@/lib/actions/get-product-images";
 
 /**
  * GalleryPage

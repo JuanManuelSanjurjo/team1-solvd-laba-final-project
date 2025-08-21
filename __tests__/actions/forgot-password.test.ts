@@ -1,4 +1,4 @@
-import forgotPassword from "@/actions/forgot-password";
+import forgotPassword from "@/lib/actions/forgot-password";
 import {
   TEST_API_URLS,
   HTTP_METHODS,

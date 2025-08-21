@@ -8,7 +8,7 @@ import Button from "@/components/Button";
 import resetPassword, {
   ResetPasswordPayload,
   ResetPasswordResponse,
-} from "@/actions/reset-password";
+} from "@/lib/actions/reset-password";
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";

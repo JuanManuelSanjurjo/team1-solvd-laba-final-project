@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ForgotPasswordPage from "@/app/auth/forgot-password/page";
 import forgotPassword, {
   ForgotPasswordResponse,
-} from "@/actions/forgot-password";
+} from "@/lib/actions/forgot-password";
 import authMocks from "__tests__/mocks/auth";
 
 jest.mock("@/actions/forgot-password");

@@ -1,11 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { AddProductForm } from "./components/AddProductForm";
-import { fetchBrands } from "@/lib/strapi/fetch-brands";
-import { fetchColors } from "@/lib/strapi/fetch-colors";
-import { fetchSizes } from "@/lib/strapi/fetch-sizes";
+import { fetchBrands } from "@/lib/actions/fetch-brands";
+import { fetchColors } from "@/lib/actions/fetch-colors";
+import { fetchSizes } from "@/lib/actions/fetch-sizes";
 import Button from "@/components/Button";
 import { Metadata } from "next";
-import { fetchCategories } from "@/lib/strapi/fetch-categories";
+import { fetchCategories } from "@/lib/actions/fetch-categories";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
