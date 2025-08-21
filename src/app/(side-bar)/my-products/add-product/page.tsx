@@ -6,12 +6,20 @@ import { fetchSizes } from "@/lib/strapi/fetch-sizes";
 import Button from "@/components/Button";
 import { Metadata } from "next";
 import { fetchCategories } from "@/lib/strapi/fetch-categories";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: `Add new product | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
 };
 
 export default async function AddProduct() {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/auth/login");
+  }
+
   const [brandOptions, colorOptions, sizeOptions, categoryOptions] =
     await Promise.all([
       fetchBrands(),
@@ -39,6 +47,7 @@ export default async function AddProduct() {
       </Box>
 
       <AddProductForm
+        session={session}
         colorOptions={colorOptions}
         brandOptions={brandOptions}
         sizeOptions={sizeOptions}

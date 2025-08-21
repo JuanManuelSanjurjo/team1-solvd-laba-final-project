@@ -51,6 +51,7 @@ export default function RecentlyViewed({ session }: { session: Session }) {
         <CardContainer>
           {recentlyViewed.map((product) => (
             <Card
+              session={session}
               product={product}
               key={product.id}
               overlayAction="cardButtonAddToCart"

@@ -2,13 +2,13 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Typography } from "@mui/material";
-import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
 import { useState } from "react";
 import { ProductFormData, productSchema } from "../schema";
 import { useCreateProduct } from "../hooks/useCreateProduct";
 import { ProductFormFields } from "./ProductFormFields";
+import { Session } from "next-auth";
 import Toast from "@/components/Toast";
 import { AlertProps } from "@mui/material";
 
@@ -16,6 +16,7 @@ import { AlertProps } from "@mui/material";
  * Props for AddProductForm component.
  *
  * @typedef AddProductFormProps
+ * @property {Session} session - Session object containing user information.
  * @property {Array<{ value: number; label: string }>} brandOptions - Options for the Brand select input.
  * @property {Array<{ value: number; label: string }>} colorOptions - Options for the Color select input.
  * @property {Array<{ value: number; label: number }>} sizeOptions - Options for the Sizes selection.
@@ -24,6 +25,7 @@ import { AlertProps } from "@mui/material";
  */
 
 interface AddProductFormProps {
+  session: Session;
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
@@ -41,12 +43,12 @@ interface AddProductFormProps {
  */
 
 export const AddProductForm: React.FC<AddProductFormProps> = ({
+  session,
   brandOptions,
   colorOptions,
   sizeOptions,
   categoryOptions,
 }) => {
-  const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const {
     register,
@@ -73,7 +75,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
   });
   const selectedSizes = watch("sizes");
 
-  const { mutateAsync: handleCreateProduct } = useCreateProduct();
+  const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
 
   const [toastOpen, setToastOpen] = useState(false);
   const [toastContent, setToastContent] = useState({
@@ -176,6 +178,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
           Product images
         </Typography>
         <ImagePreviewerUploader
+          session={session}
           onFilesChange={setImageFiles}
           reset={imageFiles.length === 0}
         />

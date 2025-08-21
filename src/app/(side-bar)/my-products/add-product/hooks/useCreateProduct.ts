@@ -2,11 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { ProductFormData } from "../schema";
 import { uploadImages } from "@/lib/strapi/upload-images";
 import { createProduct } from "@/lib/strapi/upload-product";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
-export function useCreateProduct() {
-  const { data: session } = useSession();
-  const token = session?.user.jwt;
+export function useCreateProduct(session: Session) {
+  const token = session.user.jwt;
+
   return useMutation({
     mutationFn: async ({
       data,

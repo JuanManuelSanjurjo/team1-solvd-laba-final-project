@@ -3,6 +3,7 @@
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
 import { Box } from "@mui/material";
+("");
 import { useWishlistStore } from "@/store/wishlist";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
@@ -51,6 +52,7 @@ export default function Wishlist({ session }: { session: Session }) {
         <CardContainer length={wishList.length}>
           {wishList.map((product) => (
             <Card
+              session={session}
               product={product}
               key={product.id}
               topAction="cardButtonWishList"

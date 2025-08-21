@@ -4,6 +4,8 @@ import MyProductsMainContent from "./components/MyProductsMainContent";
 import { fetchColors } from "@/lib/strapi/fetch-colors";
 import { fetchSizes } from "@/lib/strapi/fetch-sizes";
 import { fetchCategories } from "@/lib/strapi/fetch-categories";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 /**
  * MyProducts
@@ -16,6 +18,12 @@ import { fetchCategories } from "@/lib/strapi/fetch-categories";
  * @returns {JSX.Element} The main content of the My Products page.
  */
 export default async function MyProductsPage() {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/auth/login");
+  }
+
   const [brandOptions, colorOptions, sizeOptions, categoryOptions] =
     await Promise.all([
       fetchBrands(),
@@ -27,6 +35,7 @@ export default async function MyProductsPage() {
     <>
       <MyProductsBanner />
       <MyProductsMainContent
+        session={session}
         colorOptions={colorOptions}
         brandOptions={brandOptions}
         sizeOptions={sizeOptions}

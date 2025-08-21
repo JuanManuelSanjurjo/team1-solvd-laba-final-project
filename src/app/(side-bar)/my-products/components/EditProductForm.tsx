@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { ProductFormData, productSchema } from "../add-product/schema";
 import { useForm } from "react-hook-form";
@@ -12,11 +11,13 @@ import { MyProduct } from "@/types/product";
 import { useUpdateProduct } from "../hooks/useUpdateProduct";
 import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
 import { urlToFile } from "@/lib/url-utils";
+import { Session } from "next-auth";
 
 /**
  * Props for the EditProductForm component.
  *
  * @interface EditProductFormProps
+ * @property {Session} session - The session object containing user information.
  * @property {{ value: number, label: string }[]} brandOptions - Options for the Brand select input.
  * @property {{ value: number, label: string }[]} colorOptions - Options for the Color select input.
  * @property {{ value: number, label: number }[]} sizeOptions - Options for the Sizes selection.
@@ -27,6 +28,7 @@ import { urlToFile } from "@/lib/url-utils";
  */
 
 interface EditProductFormProps {
+  session: Session;
   brandOptions: { value: number; label: string }[];
   colorOptions: { value: number; label: string }[];
   sizeOptions: { value: number; label: number }[];
@@ -62,6 +64,7 @@ interface EditProductFormProps {
  */
 
 export const EditProductForm: React.FC<EditProductFormProps> = ({
+  session,
   brandOptions,
   colorOptions,
   sizeOptions,
@@ -71,7 +74,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   onSuccess,
   onNotify,
 }) => {
-  const { data: session } = useSession();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existentImages, setExistentImages] = useState<string[]>(
     product.images ? product.images.map((image) => image.url) : []
@@ -99,8 +101,11 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
     },
   });
 
-  const { mutateAsync: handleUpdateProduct } = useUpdateProduct(product.id);
-  const { mutateAsync: handleCreateProduct } = useCreateProduct();
+  const { mutateAsync: handleUpdateProduct } = useUpdateProduct(
+    product.id,
+    session
+  );
+  const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
 
   const selectedSizes = watch("sizes");
 
@@ -212,6 +217,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           Product images
         </Typography>
         <ImagePreviewerUploader
+          session={session}
           onFilesChange={setImageFiles}
           initialPreviews={
             product.images ? product.images.map((image) => image.url) : []

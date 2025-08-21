@@ -5,10 +5,11 @@ import { HeartSlash, Heart } from "iconsax-react";
 import { JSX } from "react";
 import { useWishlistStore } from "@/store/wishlist";
 import cardProduct from "./types/cardProduct";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 type CardButtonWishListProps = {
   product: cardProduct;
+  session: Session | null;
 };
 
 /**
@@ -22,9 +23,8 @@ type CardButtonWishListProps = {
 
 export default function CardButtonWishList({
   product,
+  session,
 }: CardButtonWishListProps): JSX.Element {
-  const { data: session } = useSession();
-
   const userId = String(session?.user.id);
   const byUser = useWishlistStore((state) => state.byUser);
   const addToWishList = useWishlistStore((state) => state.addToWishList);
