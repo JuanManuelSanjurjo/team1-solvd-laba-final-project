@@ -14,6 +14,7 @@ import { useCartStore } from "@/store/cartStore";
 type QuantityHandlerProps = {
   quantity: number;
   id: number;
+  userId: string;
 };
 
 /**

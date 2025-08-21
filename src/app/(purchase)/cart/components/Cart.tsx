@@ -106,6 +106,7 @@ export default function Cart({ userId }: CartProps) {
                 quantity={item?.quantity}
                 productTitle={item?.name}
                 image={item?.image || "Loading"}
+                userId={userId}
               />
               {!isMobile && <Divider />}
             </React.Fragment>

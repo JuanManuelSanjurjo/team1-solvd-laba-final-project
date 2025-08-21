@@ -93,11 +93,14 @@ export const useCartStore = create<CartState>()(
           //If product doesn't match id, we return it as it is
           if (item.id !== id) return item;
 
+          let newQuantity = item.quantity || 1;
+
           //If item matches id, we perform the correspondin action
-          const newQuantity =
-            action === "add"
-              ? (item.quantity || 1) + 1
-              : (item.quantity || 1) - 1;
+          if (action === "add") {
+            newQuantity++;
+          } else if (action === "minus") {
+            newQuantity--;
+          }
 
           //Returns updated product. Minimum of 1 item
           return { ...item, quantity: newQuantity > 0 ? newQuantity : 1 };

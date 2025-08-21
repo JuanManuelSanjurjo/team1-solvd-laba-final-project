@@ -16,6 +16,7 @@ type CartCardProps = {
   productTitle: string;
   gender: string;
   image: string;
+  userId: string;
 };
 
 /**
@@ -37,6 +38,7 @@ const CartCard = ({
   productTitle,
   gender,
   image,
+  userId,
   ...moreProps
 }: CartCardProps): JSX.Element => {
   const removeItem = useCartStore((state) => state.removeItem);
@@ -89,7 +91,7 @@ const CartCard = ({
 
         <Grid size={2}>
           <Typography variant="h3" sx={{ fontSize: { xs: 12, sm: 30 } }}>
-            ${totalOfProduct(id)}
+            ${totalOfProduct(userId, id)}
           </Typography>
         </Grid>
 
@@ -104,7 +106,7 @@ const CartCard = ({
           }}
         >
           <Grid sx={{ display: "flex" }}>
-            <QuantityHandler quantity={quantity} id={id} />
+            <QuantityHandler quantity={quantity} id={id} userId={userId} />
 
             <Button
               onClick={() => setConfirmationModalOpened(true)}
