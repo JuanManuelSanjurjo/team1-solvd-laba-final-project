@@ -13,7 +13,7 @@ jest.mock("next-auth/react", () => ({
   signIn: jest.fn(),
 }));
 
-jest.mock("@/actions/sign-in", () => ({
+jest.mock("@/lib/actions/sign-in", () => ({
   __esModule: true,
   default: jest.fn(),
 }));

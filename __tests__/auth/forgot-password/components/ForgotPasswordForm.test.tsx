@@ -8,7 +8,7 @@ import forgotPassword, {
 import ForgotPasswordForm from "@/app/auth/forgot-password/components/ForgotPasswordForm";
 import authMocks from "__tests__/mocks/auth";
 
-jest.mock("@/actions/forgot-password");
+jest.mock("@/lib/actions/forgot-password");
 const mockforgotPassword = forgotPassword as jest.MockedFunction<
   typeof forgotPassword
 >;

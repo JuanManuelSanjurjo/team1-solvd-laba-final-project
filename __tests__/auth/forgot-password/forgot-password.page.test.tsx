@@ -13,7 +13,7 @@ import forgotPassword, {
 } from "@/lib/actions/forgot-password";
 import authMocks from "__tests__/mocks/auth";
 
-jest.mock("@/actions/forgot-password");
+jest.mock("@/lib/actions/forgot-password");
 const mockForgotPassword = forgotPassword as jest.MockedFunction<
   typeof forgotPassword
 >;

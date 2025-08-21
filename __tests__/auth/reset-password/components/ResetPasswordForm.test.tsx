@@ -6,7 +6,7 @@ import ResetPasswordForm from "@/app/auth/reset-password/components/ResetPasswor
 import { useSearchParams } from "next/navigation";
 import authMocks from "__tests__/mocks/auth";
 
-jest.mock("@/actions/reset-password");
+jest.mock("@/lib/actions/reset-password");
 const mockResetPassword = resetPassword as jest.MockedFunction<
   typeof resetPassword
 >;

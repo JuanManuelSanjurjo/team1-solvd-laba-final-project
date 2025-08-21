@@ -12,7 +12,7 @@ import {
 import { SignUpResponse } from "@/app/auth/sign-up/types";
 import authMocks from "__tests__/mocks/auth";
 
-jest.mock("@/actions/sign-up");
+jest.mock("@/lib/actions/sign-up");
 const mockSignUp = signUp as jest.MockedFunction<typeof signUp>;
 
 const MOCK_USER_RESPONSE = {

@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignUpPage from "@/app/auth/sign-up/page";
 import signUp from "@/lib/actions/sign-up";
 
-jest.mock("@/actions/sign-up");
+jest.mock("@/lib/actions/sign-up");
 const mockSignUp = signUp as jest.MockedFunction<typeof signUp>;
 
 jest.mock("next/link", () => {
