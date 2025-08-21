@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useToastStore } from "./toastStore";
-
 import type { CartItem, CartState } from "@/app/(purchase)/cart/types/types";
 
 export const useCartStore = create<CartState>()(
@@ -21,7 +20,7 @@ export const useCartStore = create<CartState>()(
           return;
         }
 
-        if (!item.size) {
+        if (!item.size || item.size === 0) {
           useToastStore.getState().show({
             severity: "error",
             message: "Please select a size before adding to cart",

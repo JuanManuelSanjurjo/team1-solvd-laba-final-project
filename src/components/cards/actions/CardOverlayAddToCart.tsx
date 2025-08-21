@@ -27,7 +27,7 @@ export default function CardOverlayAddToCart({
   userId,
 }: CardOverlayAddToCardProps): JSX.Element {
   const [showModal, setShowModal] = useState(false);
-  const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const [selectedSize, setSelectedSize] = useState<number>(0);
 
   const addItem = useCartStore((state) => state.addItem);
 
@@ -99,14 +99,14 @@ export default function CardOverlayAddToCart({
         onPrimary={handleConfirmAdd}
       >
         <Select
-    name="size"
-    label="Size"
-    placeholder="Choose your size"
-    required
-    options={(product.sizes ?? []).map((s) => ({ label: String(s), value: s }))}
-    value={selectedSize ?? ""}
-    onChange={(e) => setSelectedSize(Number(e.target.value))}
-  />
+          name="size"
+          label="Size"
+          placeholder="Choose your size"
+          required
+          options={[]}
+          value={selectedSize ?? ""}
+          onChange={(e) => setSelectedSize(Number(e.target.value))}
+        />
       </SizeSelectorModal>
     </Box>
   );

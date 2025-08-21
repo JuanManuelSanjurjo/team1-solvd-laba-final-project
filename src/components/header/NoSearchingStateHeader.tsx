@@ -1,4 +1,4 @@
-import { Box, Typography, Tooltip, Button } from "@mui/material";
+import { Box, Typography, Tooltip, Button, Badge } from "@mui/material";
 import { Bag, SearchNormal } from "iconsax-react";
 import { SearchBar } from "@/components/SearchBar";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
@@ -8,6 +8,7 @@ import DesktopProfileMenu from "./DesktopProfileMenu";
 import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import Link from "next/link";
 import { Session } from "next-auth";
+import { useCartStore } from "@/store/cartStore";
 
 /**
  * NoSearchingStateHeader
@@ -33,6 +34,9 @@ export default function NoSearchingStateHeader({
   handleToggleDrawer: () => void;
 }) {
   const { isMobile, isDesktop } = useMediaBreakpoints();
+  const totalItems = useCartStore((state) =>
+    state.totalItems(session?.user?.id)
+  );
 
   const isAuthenticated = Boolean(session);
 
@@ -84,7 +88,14 @@ export default function NoSearchingStateHeader({
           {isAuthenticated && (
             <Tooltip title={"Cart"}>
               <Link href="/cart" style={{ display: "flex" }}>
-                <Bag style={{ width: bagIconSize }} color="#292d32" />
+                <Badge
+                  badgeContent={totalItems}
+                  color="primary"
+                  overlap="circular"
+                  invisible={totalItems === 0}
+                >
+                  <Bag style={{ width: bagIconSize }} color="#292d32" />
+                </Badge>
               </Link>
             </Tooltip>
           )}
