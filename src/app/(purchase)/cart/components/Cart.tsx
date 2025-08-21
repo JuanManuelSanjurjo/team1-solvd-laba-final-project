@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import CartCard from "./CartCard";
 import { useCartStore } from "@/store/cartStore";
+import { CartItem } from "../types";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
 import CheckoutSummary from "../../components/CheckoutSummary";
@@ -31,7 +32,7 @@ type CartProps = {
 export default function Cart({ userId }: CartProps) {
   const byUser = useCartStore((state) => state.byUser);
 
-  const cartItems = userId ? byUser[userId] ?? [] : [];
+  const cartItems: CartItem[] = userId ? byUser[userId] ?? [] : [];
 
   console.log(cartItems);
 
