@@ -1,12 +1,12 @@
 "use client";
 import { Box, Typography, Stack } from "@mui/material";
 import { BagTick } from "iconsax-react";
-import { useState } from "react";
-import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
-import { useCartStore } from "@/store/cart-store";
 import CardProduct from "./types";
-import Select from "@/components/form-elements/Select";
 import { Session } from "next-auth";
+import { useState } from "react";
+import { useCartStore } from "@/store/cartStore";
+import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
+import Select from "@/components/form-elements/Select";
 /**
  * CardOverlayAddToCart
  *
