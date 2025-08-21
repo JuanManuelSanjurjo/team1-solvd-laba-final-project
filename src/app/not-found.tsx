@@ -4,13 +4,16 @@ import { JSX } from "react";
 import ErrorPageFloatingContent from "@/components/errors/ErrorPageFloatingContent";
 
 export default function NotFound(): JSX.Element {
+  const textContent =
+    "The page you were looking for doesn't exist. Try going back or searching for other products.";
   return (
     <Box
       position="relative"
-      height={"100vh"}
+      height={{ xs: "95vh", md: "100vh" }}
       overflow="hidden"
       display="flex"
       flexDirection={{ xs: "column-reverse", md: "row" }}
+      sx={{ marginTop: { xs: "60px", sm: "90px", md: 0 } }}
     >
       {/* White background */}
       <Box
@@ -53,7 +56,11 @@ export default function NotFound(): JSX.Element {
         }}
       />
       {/* Floating content */}
-      <ErrorPageFloatingContent />
+      <ErrorPageFloatingContent
+        textContent={textContent}
+        title="Error 404"
+        type="not-found"
+      />
     </Box>
   );
 }

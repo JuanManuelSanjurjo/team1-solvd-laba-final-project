@@ -3,7 +3,15 @@ import { Box, Typography, Button } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function ErrorPageFloatingContent() {
+export default function ErrorPageFloatingContent({
+  textContent,
+  title,
+  type,
+}: {
+  textContent: string;
+  title: string;
+  type: "not-found" | "error";
+}) {
   const router = useRouter();
   return (
     <Box
@@ -12,8 +20,7 @@ export default function ErrorPageFloatingContent() {
         xs: "50%",
         md: "8%",
       }}
-      height="100%"
-      padding="40px 16px"
+      padding="30px 16px"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -34,7 +41,7 @@ export default function ErrorPageFloatingContent() {
     >
       <Box
         maxWidth={{ xs: 320, md: "45%" }}
-        height="100%"
+        height="94%"
         position="relative"
         sx={{
           display: "flex",
@@ -55,7 +62,7 @@ export default function ErrorPageFloatingContent() {
           fontSize={{ xs: 30, md: 45 }}
           sx={{
             "&::after": {
-              content: '"..."',
+              content: type === "error" ? '"..."' : '""',
               display: {
                 xs: "none",
                 md: "inline",
@@ -63,27 +70,29 @@ export default function ErrorPageFloatingContent() {
             },
           }}
         >
-          We lost that page
+          {title}
         </Typography>
         <Typography
           variant="body1"
           fontSize={{ xs: 12, md: 20 }}
           mb={2}
           sx={{
-            color: { xs: "white", md: "text.secondary" },
+            color:
+              type === "error"
+                ? { xs: "white", md: "text.secondary" }
+                : "text.secondary",
             marginTop: "20px",
             position: {
               xs: "absolute",
               md: "initial",
             },
             top: {
-              xs: "70%",
+              xs: type === "error" ? "75%" : "8%",
               md: "initial",
             },
           }}
         >
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-          nonummy nibh euismod tincidunt ut laoreet dolore magna
+          {textContent}
         </Typography>
         <Box
           sx={{

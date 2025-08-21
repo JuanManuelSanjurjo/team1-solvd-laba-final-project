@@ -4,13 +4,17 @@ import ErrorPageFloatingContent from "@/components/errors/ErrorPageFloatingConte
 import { Box } from "@mui/material";
 
 export default function Error(): JSX.Element {
+  const textContent =
+    "We couldn't find the page you were looking for. Try going back or search for other products.";
+
   return (
     <Box
       position="relative"
-      height={"100vh"}
+      height={{ xs: "95vh", md: "100vh" }}
       overflow="hidden"
       display="flex"
       flexDirection={{ xs: "column-reverse", md: "row" }}
+      sx={{ marginTop: { xs: "60px", sm: "90px", md: 0 } }}
     >
       {/* White background */}
       <Box
@@ -47,7 +51,6 @@ export default function Error(): JSX.Element {
         width={"100%"}
         height={140}
         sx={{
-          backgroundColor: "#d6d7d9",
           display: {
             xs: "block",
             md: "none",
@@ -55,7 +58,11 @@ export default function Error(): JSX.Element {
         }}
       />
       {/* Floating content */}
-      <ErrorPageFloatingContent />
+      <ErrorPageFloatingContent
+        textContent={textContent}
+        title="We lost that page"
+        type="error"
+      />
     </Box>
   );
 }
