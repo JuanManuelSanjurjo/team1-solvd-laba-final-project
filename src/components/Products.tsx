@@ -95,7 +95,6 @@ export default function Products({
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: isMobile ? "74%" : drawerWidth,
-            // set top/height so paper doesn't exceed viewport
             top: {
               xs: "0px",
               sm: "90px",
@@ -109,7 +108,6 @@ export default function Products({
             boxSizing: "border-box",
             backgroundColor: "rgba(255,255,255,1)",
             borderRight: "none",
-            // remove the earlier height: "100%" + marginTop combination
             overflowY: "auto",
             overflowX: "hidden",
           },
