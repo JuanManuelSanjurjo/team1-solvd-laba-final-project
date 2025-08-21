@@ -298,16 +298,17 @@ export default function CheckoutForm() {
               <PaymentElement options={options} />
             </Box>
           </Box>
+
+          {!cartIsEmpty && (
+            <Box sx={{ marginTop: "80px" }}>
+              <CheckoutSummary
+                buttonText="Confirm & Pay"
+                buttonAction={handleSubmit(onSubmit)}
+              />
+            </Box>
+          )}
         </form>
       </FormProvider>
-      {!cartIsEmpty && (
-        <Box sx={{ marginTop: "80px" }}>
-          <CheckoutSummary
-            buttonText="Confirm & Pay"
-            buttonAction={() => handleSubmit(onSubmit)()}
-          />{" "}
-        </Box>
-      )}
     </Box>
   );
 }
