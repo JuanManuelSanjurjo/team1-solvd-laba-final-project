@@ -100,7 +100,6 @@ export default function NoSearchingStateHeader({
                 >
                   <Bag style={{ width: bagIconSize }} color="#292d32" />
                 </Badge>
-                <Typography></Typography>
               </Link>
             </Tooltip>
           )}
