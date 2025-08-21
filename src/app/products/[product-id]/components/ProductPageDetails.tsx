@@ -10,6 +10,8 @@ import { NormalizedProduct } from "@/types/product-types";
 import cardProduct from "@/components/cards/actions/types/cardProduct";
 import { useRecentlyViewedStore } from "@/store/recentlyviewed";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { useCartStore } from "@/store/cartStore";
 
 /**
  * ProductPageDetails
@@ -25,9 +27,13 @@ import { useSession } from "next-auth/react";
 
 export default function ProductPageDetails({
   product,
+  userId,
 }: {
   product: NormalizedProduct;
+  userId: string;
 }): JSX.Element {
+  const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
+
   const cardProductInfo: cardProduct = useMemo(
     () => ({
       id: product.id,
@@ -57,6 +63,32 @@ export default function ProductPageDetails({
     cardProductInfo,
   ]);
 
+  const toggleSize = (size: number) => {
+    setSelectedSizes((prev) =>
+      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
+    );
+  };
+  const addItem = useCartStore((state) => state.addItem);
+
+  const handleAddToCart = () => {
+
+    if (!userId) {
+      return;
+    }
+
+    selectedSizes.forEach((size) => {
+      addItem(userId, {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images?.[0]?.url,
+        gender: product.gender,
+        size,
+        quantity: 1,
+      });
+    });
+  };
+
   return (
     <Box
       maxWidth={"520px"}
@@ -68,8 +100,16 @@ export default function ProductPageDetails({
       }}
     >
       <ProdcuctMainData product={product} />
-      <ProductSizes product={product} />
-      <ProductPageButtons product={product} cardProductInfo={cardProductInfo} />
+      <ProductSizes
+        product={product}
+        toggleSize={toggleSize}
+        selectedSizes={selectedSizes}
+      />
+      <ProductPageButtons
+        onAddToCart={handleAddToCart}
+        product={product}
+        cardProductInfo={cardProductInfo}
+      />
       <ProductDescription product={product} />
     </Box>
   );

@@ -17,8 +17,12 @@ import { JSX } from "react";
  */
 export default function ProductSizes({
   product,
+  selectedSizes,
+  toggleSize,
 }: {
   product: NormalizedProduct;
+  selectedSizes: number[];
+  toggleSize: (size: number) => void;
 }): JSX.Element {
   return (
     <>
@@ -41,10 +45,12 @@ export default function ProductSizes({
         >
           {product.sizes?.map(({ value, id }) => (
             <ShoeSizeOption
-              size={value}
               key={id}
+              size={value}
               disabled={false}
-              onToggle={() => {}}
+              checked={selectedSizes.includes(value)}
+              onToggle={toggleSize}
+              value={value}
             />
           ))}
         </Box>

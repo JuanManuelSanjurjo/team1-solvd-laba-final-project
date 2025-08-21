@@ -21,11 +21,19 @@ export const useCartStore = create<CartState>()(
           return;
         }
 
+        if (!item.size) {
+          useToastStore.getState().show({
+            severity: "error",
+            message: "Please select a size before adding to cart",
+          });
+          return;
+        }
+
         const currentItems = byUser[userId] ?? [];
 
         //Search if any product in cart matches the one that is being added
         const itemAlreadyInCart = currentItems.find(
-          (product) => product.id === item.id
+          (product) => product.id === item.id && product.size === item.size
         );
 
         //If product is already added to the cart we add 1 item to that existing element in cart
@@ -33,21 +41,22 @@ export const useCartStore = create<CartState>()(
           set({
             byUser: {
               ...byUser,
-              [userId]: currentItems.map((prod) =>
-                prod.id === item.id
-                  ? { ...prod, quantity: (prod.quantity || 1) + 1 }
-                  : prod
+              [userId]: currentItems.map((product) =>
+                product.id === item.id && product.size === item.size
+                  ? { ...product, quantity: (product.quantity || 1) + 1 }
+                  : product
               ),
             },
           });
 
-          //If product isn't already in cart we add it
           console.log("Added item to product existing in cart", currentItems);
           useToastStore.getState().show({
             severity: "success",
             message: "Added item to product existing in cart",
           });
         } else {
+          //If product isn't already in cart we add it
+
           set({
             byUser: {
               ...byUser,

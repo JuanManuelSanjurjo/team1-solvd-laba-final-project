@@ -99,7 +99,7 @@ export default function Cart({ userId }: CartProps) {
             Cart
           </Typography>
           {cartItems.map((item) => (
-            <React.Fragment key={item.id}>
+            <React.Fragment key={item.id + item.size}>
               <CartCard
                 id={item?.id}
                 gender={item?.gender || ""}

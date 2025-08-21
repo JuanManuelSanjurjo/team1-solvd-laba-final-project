@@ -31,8 +31,11 @@ export default function CartCardImage({
     >
       <Box
         component="img"
-        src={image}
+        src={image || "/assets/images/placeholders/70x70.svg"}
         alt={`product-img`}
+        onError={(e) => {
+          e.currentTarget.src = "/assets/images/placeholders/70x70.svg";
+        }}
         sx={{
           objectFit: "cover",
           objectPosition: "center",

@@ -21,9 +21,11 @@ import { useSession } from "next-auth/react";
 export default function ProductPageButtons({
   product,
   cardProductInfo,
+  onAddToCart,
 }: {
   product: NormalizedProduct;
   cardProductInfo: cardProduct;
+  onAddToCart: () => void;
 }): JSX.Element {
   const { data: session, status } = useSession();
   const userId = session?.user?.id;
@@ -31,7 +33,7 @@ export default function ProductPageButtons({
   const byUser = useWishlistStore((state) => state.byUser);
   const addToWishList = useWishlistStore((state) => state.addToWishList);
   const removeFromWishList = useWishlistStore(
-    (state) => state.removeFromWishList,
+    (state) => state.removeFromWishList
   );
 
   if (!userId) {
@@ -55,7 +57,11 @@ export default function ProductPageButtons({
             Add to wishlist
           </Button>
         )}
-        <Button disabled={status !== "authenticated"} variant="contained">
+        <Button
+          onClick={onAddToCart}
+          disabled={status !== "authenticated"}
+          variant="contained"
+        >
           Add to cart
         </Button>
       </Box>
@@ -101,7 +107,11 @@ export default function ProductPageButtons({
           {wishlistButtonText}
         </Button>
       )}
-      <Button disabled={status !== "authenticated"} variant="contained">
+      <Button
+        onClick={onAddToCart}
+        disabled={status !== "authenticated"}
+        variant="contained"
+      >
         Add to cart
       </Button>
     </Box>
