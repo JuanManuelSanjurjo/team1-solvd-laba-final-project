@@ -1,5 +1,5 @@
-import cardProduct from "@/components/cards/actions/types/cardProduct";
-import { useWishlistStore } from "@/store/wishlist";
+import cardProduct from "@/components/cards/actions/types";
+import { useWishlistStore } from "@/store/wishlist-store";
 
 type MockedWishlistStore = {
   wishList: cardProduct[];

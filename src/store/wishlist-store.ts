@@ -1,4 +1,4 @@
-import cardProduct from "@/components/cards/actions/types/cardProduct";
+import cardProduct from "@/components/cards/actions/types";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 

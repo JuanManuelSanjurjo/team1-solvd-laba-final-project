@@ -1,9 +1,9 @@
-import { useWishlistStore } from "@/store/wishlist";
+import { useWishlistStore } from "@/store/wishlist-store";
 import {
   mockCardProduct,
   mockCardProduct2,
 } from "__tests__/mocks/shared/mock-product-card";
-import CardProduct from "@/components/cards/actions/types/cardProduct";
+import CardProduct from "@/components/cards/actions/types";
 
 const checkLocalStorage = (expectedWishlist: CardProduct[]) => {
   const storedData = JSON.parse(

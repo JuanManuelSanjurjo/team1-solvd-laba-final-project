@@ -1,5 +1,5 @@
 import { ProductFilters, PaginatedProducts } from "@/types/product";
-import { fetchProducts } from "@/lib/strapi/fetch-products";
+import { fetchProducts } from "@/lib/actions/fetch-products";
 import { useQuery } from "@tanstack/react-query";
 
 type useQueryPagedProductsProps = {

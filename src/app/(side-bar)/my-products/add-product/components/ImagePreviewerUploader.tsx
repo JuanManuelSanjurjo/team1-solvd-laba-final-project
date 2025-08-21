@@ -3,6 +3,7 @@
 import Card from "@/components/cards/Card";
 import CardContainer from "@/components/cards/CardContainer";
 import CardDragAndDrop from "@/components/cards/CardDragAndDrop";
+import { Session } from "next-auth";
 import { useState, useCallback, useEffect, useMemo } from "react";
 
 /**
@@ -10,6 +11,7 @@ import { useState, useCallback, useEffect, useMemo } from "react";
  * @property {function} onFilesChange - Callback triggered whenever files are added. Receives the current list of selected files.
  */
 interface ImagePreviewUploaderProps {
+  session: Session | null;
   onFilesChange: (files: File[]) => void;
   initialPreviews?: string[];
   onPreviewsChange?: (previews: string[]) => void;
@@ -27,6 +29,7 @@ interface ImagePreviewUploaderProps {
 type Preview = { url: string; file?: File };
 
 export default function ImagePreviewerUploader({
+  session,
   onFilesChange,
   initialPreviews = [],
   onPreviewsChange,
@@ -67,6 +70,7 @@ export default function ImagePreviewerUploader({
       <CardDragAndDrop onFileAdd={handleAddFile} />
       {previews.map((preview, idx) => (
         <Card
+          session={session}
           key={idx}
           image={preview.url}
           overlayAction="cardOverlayDelete"

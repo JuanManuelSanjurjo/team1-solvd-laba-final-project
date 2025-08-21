@@ -9,7 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import CartCard from "./components/CartCard";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cart-store";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
 import CheckoutSummary from "../components/CheckoutSummary";

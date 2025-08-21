@@ -7,14 +7,14 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 import { Box, FormHelperText } from "@mui/material";
-import Input from "@/components/FormElements/Input";
-import Select from "@/components/FormElements/Select";
+import Input from "@/components/form-elements/Input";
+import Select from "@/components/form-elements/Select";
 import ShoeSizeOption from "@/app/products/[product-id]/components/ShoeSizeOption";
 import { Danger } from "iconsax-react";
-import { ProductFormData } from "../schema";
+import { ProductFormData } from "../types";
 import AiButton from "@/components/AiButton";
 import { useState } from "react";
-import { generateDescription } from "@/lib/ai/generateDescription";
+import { generateDescription } from "@/lib/ai/generate-description";
 
 interface ProductFormFieldsProps {
   register: UseFormRegister<ProductFormData>;
@@ -147,7 +147,7 @@ export const ProductFormFields = ({
           errorMessage={errors.description?.message ?? ""}
           multiline
           fullWidth
-          sx={{ height: "320px", alignItems: "flex-start" }}
+          sx={{ height: "320px", alignItems: "flex-start", padding: 0 }}
         />
         <AiButton
           variant="contained"

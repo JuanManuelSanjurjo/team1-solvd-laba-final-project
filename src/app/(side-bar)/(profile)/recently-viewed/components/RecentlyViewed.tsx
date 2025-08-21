@@ -1,7 +1,7 @@
 "use client";
 import Card from "@/components/cards/Card";
 import CardContainer from "@/components/cards/CardContainer";
-import { useRecentlyViewedStore } from "@/store/recentlyviewed";
+import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
 import { Box } from "@mui/material";
 import { useCallback } from "react";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
@@ -51,6 +51,7 @@ export default function RecentlyViewed({ session }: { session: Session }) {
         <CardContainer>
           {recentlyViewed.map((product) => (
             <Card
+              session={session}
               product={product}
               key={product.id}
               overlayAction="cardButtonAddToCart"

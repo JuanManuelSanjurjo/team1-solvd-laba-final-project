@@ -10,16 +10,17 @@ import { useSearchParams } from "next/navigation";
 import { getFiltersFromSearchParams } from "@/lib/get-filters-from-search-params";
 import { hasActiveFilters } from "@/lib/filter-utils";
 import Card from "@/components/cards/Card";
-import { FilterSideBar } from "./FiltersSideBar";
-import SkeletonCardContainer from "../../../components/skeletons/products/SkeletonCardContainer";
+import { FilterSideBar } from "../app/products/components/FiltersSideBar";
+import SkeletonCardContainer from "./skeletons/products/SkeletonCardContainer";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { normalizeProductCard } from "@/lib/normalizers/normalize-product-card";
 import { PRODUCTS_PER_PAGE } from "@/lib/constants/globals";
-import useQueryPagedProducts from "../hooks/useQueryPageProducts";
+import useQueryPagedProducts from "../app/products/hooks/useQueryPageProducts";
 import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
 
-export default function HomeClient() {
+export default function Products({ session }: { session: Session | null }) {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -340,6 +341,7 @@ export default function HomeClient() {
                     {normalizeProductCard(products || []).map(
                       (product, index) => (
                         <Card
+                          session={session}
                           product={product}
                           topAction="cardButtonWishList"
                           overlayAction="cardOverlayAddToCard"

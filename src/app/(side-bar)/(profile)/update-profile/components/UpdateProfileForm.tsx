@@ -3,13 +3,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AlertProps, Box, Typography } from "@mui/material";
-import Input from "@/components/FormElements/Input";
+import Input from "@/components/form-elements/Input";
 import Button from "@/components/Button";
 import Toast from "@/components/Toast";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Session } from "next-auth";
-import { updateUser } from "@/actions/update-user";
+import { updateUser } from "@/lib/actions/update-user";
 import { useSession } from "next-auth/react";
 import {
   updateProfileSchema,
