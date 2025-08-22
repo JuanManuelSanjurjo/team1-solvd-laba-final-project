@@ -8,7 +8,7 @@ import { InputProps } from "@/types/form";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckoutSummary from "../../components/CheckoutSummary";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cart-store";
 
 import { checkoutSchema, type CheckoutFormValues } from "../types";
 

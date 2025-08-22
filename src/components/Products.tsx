@@ -39,7 +39,6 @@ export default function Products({
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
-  const userId = session?.user.id;
 
   const filters = useMemo(
     () => getFiltersFromSearchParams(searchParams),
