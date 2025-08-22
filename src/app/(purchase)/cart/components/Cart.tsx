@@ -9,12 +9,11 @@ import {
   Box,
 } from "@mui/material";
 import CartCard from "./CartCard";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cart-store";
 import { CartItem } from "../types";
 import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
 import CheckoutSummary from "../../components/CheckoutSummary";
-// import Link from "next/link";
 import { Link } from "@mui/material";
 
 /**

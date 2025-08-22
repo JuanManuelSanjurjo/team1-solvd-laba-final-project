@@ -8,7 +8,7 @@ import DesktopProfileMenu from "./DesktopProfileMenu";
 import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import Link from "next/link";
 import { Session } from "next-auth";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cart-store";
 
 /**
  * NoSearchingStateHeader

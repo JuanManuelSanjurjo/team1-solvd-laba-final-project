@@ -372,7 +372,6 @@ export default function Products({
                           overlayAction="cardOverlayAddToCard"
                           key={index}
                           overlay={true}
-                          userId={userId}
                         />
                       )
                     )}

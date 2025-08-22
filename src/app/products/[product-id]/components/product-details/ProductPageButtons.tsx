@@ -28,7 +28,6 @@ export default function ProductPageButtons({
   cardProductInfo: cardProduct;
   onAddToCart: () => void;
   session: Session | null;
-  onAddToCart: () => void;
 }): JSX.Element {
   const isLoggedIn = Boolean(session?.user);
   const userId = session?.user?.id;

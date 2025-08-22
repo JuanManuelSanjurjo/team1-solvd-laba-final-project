@@ -11,7 +11,7 @@ import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
 import { Session } from "next-auth";
 import CardProduct from "@/components/cards/actions/types";
 import { useState } from "react";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cart-store";
 
 /**
  * ProductPageDetails

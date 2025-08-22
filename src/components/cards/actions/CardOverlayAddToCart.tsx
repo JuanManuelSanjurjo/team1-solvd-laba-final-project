@@ -4,9 +4,10 @@ import { BagTick } from "iconsax-react";
 import CardProduct from "./types";
 import { Session } from "next-auth";
 import { useState } from "react";
-import { useCartStore } from "@/store/cartStore";
 import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
 import Select from "@/components/form-elements/Select";
+import { useCartStore } from "@/store/cart-store";
+
 /**
  * CardOverlayAddToCart
  *
