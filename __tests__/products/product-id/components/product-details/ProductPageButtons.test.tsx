@@ -8,7 +8,7 @@ import {
 } from "__tests__/mocks/shared/mock-product-card";
 import { Session } from "next-auth";
 
-jest.mock("@/store/wishlist", () => ({
+jest.mock("@/store/wishlist-store", () => ({
   useWishlistStore: jest.fn(),
 }));
 
