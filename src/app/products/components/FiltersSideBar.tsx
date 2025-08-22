@@ -12,11 +12,19 @@ import { useState } from "react";
 interface FilterSideBarProps {
   hideDrawer: () => void;
   paginationTotal?: number;
+  brandOptions: { value: number; label: string }[];
+  colorOptions: { value: number; label: string }[];
+  sizeOptions: { value: number; label: number }[];
+  categoryOptions: { value: number; label: string }[];
 }
 
 export const FilterSideBar: React.FC<FilterSideBarProps> = ({
   hideDrawer,
   paginationTotal,
+  colorOptions,
+  sizeOptions,
+  categoryOptions,
+  brandOptions,
 }: FilterSideBarProps) => {
   const { isMobile } = useMediaBreakpoints();
   const searchParams = useSearchParams();
@@ -56,7 +64,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
 
   const handlePriceCommit = (
     _: Event | React.SyntheticEvent,
-    newValue: number | number[],
+    newValue: number | number[]
   ) => {
     if (!Array.isArray(newValue)) return;
 
@@ -133,25 +141,25 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
           onChange={() => handleFilterChange("genre", "Men")}
         />
       </FiltersSection>
-      <FiltersSection label="Kids">
-        <FilterCheckbox
-          label="Boys"
-          checked={searchParams.getAll("gender").includes("Boys")}
-          onChange={() => handleFilterChange("gender", "Boys")}
-        />
-        <FilterCheckbox
-          label="Girls"
-          checked={searchParams.getAll("gender").includes("Girls")}
-          onChange={() => handleFilterChange("gender", "Girls")}
-        />
+      <FiltersSection label="Category">
+        {categoryOptions.map((category, idx) => (
+          <FilterCheckbox
+            key={idx}
+            label={category.label.toString()}
+            checked={searchParams.getAll("categories").includes(category.label)}
+            onChange={() => handleFilterChange("categories", category.label)}
+          />
+        ))}
       </FiltersSection>
       <FiltersSection label="Size">
-        {[38, 39, 40, 41, 42, 43, 44].map((size) => (
+        {sizeOptions.map((size, idx) => (
           <FilterCheckbox
-            key={size}
-            label={size.toString()}
-            checked={searchParams.getAll("size").includes(size.toString())}
-            onChange={() => handleFilterChange("size", size.toString())}
+            key={idx}
+            label={size.label.toString()}
+            checked={searchParams
+              .getAll("size")
+              .includes(size.label.toString())}
+            onChange={() => handleFilterChange("size", size.label.toString())}
           />
         ))}
       </FiltersSection>
@@ -159,36 +167,16 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
         <Box sx={{ paddingRight: { xs: "30px" }, marginBottom: "36px" }}>
           <SearchBar size="small" fullWidth />
         </Box>
-        <FilterCheckbox
-          label="Adidas"
-          checked={searchParams.getAll("brand").includes("Adidas")}
-          onChange={() => handleFilterChange("brand", "Adidas")}
-        />
-        <FilterCheckbox
-          label="Asics"
-          checked={searchParams.getAll("brand").includes("Asics")}
-          onChange={() => handleFilterChange("brand", "Asics")}
-        />
-        <FilterCheckbox
-          label="New Balance"
-          checked={searchParams.getAll("brand").includes("New Balance")}
-          onChange={() => handleFilterChange("brand", "New Balance")}
-        />
-        <FilterCheckbox
-          label="Nike"
-          checked={searchParams.getAll("brand").includes("Nike")}
-          onChange={() => handleFilterChange("brand", "Nike")}
-        />
-        <FilterCheckbox
-          label="Puma"
-          checked={searchParams.getAll("brand").includes("Puma")}
-          onChange={() => handleFilterChange("brand", "Puma")}
-        />
-        <FilterCheckbox
-          label="Reebok"
-          checked={searchParams.getAll("brand").includes("Reebok")}
-          onChange={() => handleFilterChange("brand", "Reebok")}
-        />
+        {brandOptions.map((brand, idx) => {
+          return (
+            <FilterCheckbox
+              key={idx}
+              label={brand.label}
+              checked={searchParams.getAll("brand").includes(brand.label)}
+              onChange={() => handleFilterChange("brand", brand.label)}
+            />
+          );
+        })}
       </FiltersSection>
       <FiltersSection label="Price">
         <Slider
@@ -203,21 +191,16 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
         />
       </FiltersSection>
       <FiltersSection label="Color">
-        <FilterCheckbox
-          label="Black"
-          checked={searchParams.getAll("color").includes("Black")}
-          onChange={() => handleFilterChange("color", "Black")}
-        />
-        <FilterCheckbox
-          label="Gray"
-          checked={searchParams.getAll("color").includes("Gray")}
-          onChange={() => handleFilterChange("color", "Gray")}
-        />
-        <FilterCheckbox
-          label="White"
-          checked={searchParams.getAll("color").includes("White")}
-          onChange={() => handleFilterChange("color", "White")}
-        />
+        {colorOptions.map((color, idx) => {
+          return (
+            <FilterCheckbox
+              key={idx}
+              label={color.label}
+              checked={searchParams.getAll("color").includes(color.label)}
+              onChange={() => handleFilterChange("color", color.label)}
+            />
+          );
+        })}
       </FiltersSection>
     </Box>
   );

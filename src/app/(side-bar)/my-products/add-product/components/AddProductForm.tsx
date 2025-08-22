@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { Box, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
@@ -49,6 +50,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
   sizeOptions,
   categoryOptions,
 }) => {
+  const router = useRouter();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const {
     register,
@@ -56,6 +58,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
     control,
     setValue,
     getValues,
+    setError,
     watch,
     reset,
     formState: { errors },
@@ -85,6 +88,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
 
   const handleCloseToast = () => {
     setToastOpen(false);
+    router.push("/my-products");
   };
 
   const toggleSize = (size: number) => {
@@ -166,6 +170,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
           toggleSize={toggleSize}
           setValue={setValue}
           getValues={getValues}
+          setError={setError}
         />
       </Box>
       <Box sx={{ flex: 1 }}>
