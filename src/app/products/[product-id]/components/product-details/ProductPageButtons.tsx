@@ -64,7 +64,6 @@ export default function ProductPageButtons({
           disabled={!isLoggedIn}
           variant="contained"
         >
-        <Button disabled={!isLoggedIn} variant="contained">
           Add to cart
         </Button>
       </Box>
