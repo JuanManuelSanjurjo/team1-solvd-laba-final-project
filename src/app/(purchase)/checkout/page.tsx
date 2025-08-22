@@ -6,4 +6,6 @@ export default async function CheckoutPage() {
   const userId = session?.user?.id ?? "";
 
   return <Checkout userId={userId} />;
-}
+
+
+

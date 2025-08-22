@@ -109,6 +109,7 @@ export default function ProductPageDetails({
       />
       <ProductPageButtons
         onAddToCart={handleAddToCart}
+
         product={product}
         session={session}
         cardProductInfo={cardProductInfo}

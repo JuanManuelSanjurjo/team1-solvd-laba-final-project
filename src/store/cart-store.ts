@@ -32,6 +32,7 @@ export const useCartStore = create<CartState>()(
         //Search if any product in cart matches the one that is being added
         const itemAlreadyInCart = currentItems.find(
           (product) => product.id === item.id && product.size === item.size
+
         );
 
         //If product is already added to the cart we add 1 item to that existing element in cart
@@ -68,6 +69,7 @@ export const useCartStore = create<CartState>()(
             severity: "success",
             message: "Added item to cart",
           });
+
           console.log("Added item to cart", currentItems);
         }
       },
@@ -116,6 +118,7 @@ export const useCartStore = create<CartState>()(
             newQuantity--;
           }
 
+
           //Returns updated product. Minimum of 1 item
           return { ...item, quantity: newQuantity > 0 ? newQuantity : 1 };
         });
@@ -133,6 +136,7 @@ export const useCartStore = create<CartState>()(
         const item = list.find(
           (product) => product.id === id && product.size === size
         );
+
 
         //If item exists, calculate total. If not, returns 0
         return item ? item.price * (item.quantity || 1) : 0;
@@ -163,6 +167,7 @@ export const useCartStore = create<CartState>()(
         const subtotal = get().subtotal(userId);
         const taxes = get().taxes(userId);
         const shipping = get().shipping(userId);
+
         return subtotal + taxes + shipping;
       },
     }),
@@ -170,6 +175,7 @@ export const useCartStore = create<CartState>()(
       name: "cart-storage-v2", // clave en localStorage
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ byUser: state.byUser }),
+
     }
   )
 );

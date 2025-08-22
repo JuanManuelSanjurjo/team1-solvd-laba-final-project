@@ -10,6 +10,7 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState } from "react";
 import { useCartStore } from "@/store/cart-store";
 
+
 type CartCardProps = {
   id: number;
   quantity: number;
