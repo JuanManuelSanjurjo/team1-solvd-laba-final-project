@@ -30,6 +30,7 @@ export default function ProductDescription({
           wordBreak: "break-word",
           fontSize: { xs: "14px", sm: "16px", md: "16px" },
         }}
+        data-testid="product-description"
       >
         {product?.description}
       </Typography>

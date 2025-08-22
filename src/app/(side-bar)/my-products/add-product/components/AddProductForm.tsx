@@ -122,6 +122,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
         message: "Product added successfully!",
       });
       setToastOpen(true);
+      router.push("/my-products");
     } catch (err) {
       console.log(err);
       setToastContent({

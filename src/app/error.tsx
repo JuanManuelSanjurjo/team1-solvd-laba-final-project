@@ -30,6 +30,7 @@ export default function Error(): JSX.Element {
       />
       {/* image background */}
       <Box
+        data-testid="error-background"
         component="div"
         sx={{
           position: "relative",
@@ -47,6 +48,7 @@ export default function Error(): JSX.Element {
       />{" "}
       {/* Extra tile for xs breakpoint*/}
       <Box
+        data-testid="error-extra-tile"
         display={{ xs: "block", md: "none" }}
         width={"100%"}
         height={140}

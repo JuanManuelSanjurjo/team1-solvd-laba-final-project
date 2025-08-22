@@ -10,7 +10,7 @@ type MockedWishlistStore = {
 };
 
 export const setupMockWishlistStore = (
-  byUser: Record<string, cardProduct[]> = { "123": [] }
+  byUser: Record<string, cardProduct[]> = { "123": [] },
 ) => {
   const mockAddToWishList = jest.fn();
   const mockRemoveFromWishList = jest.fn();
@@ -26,8 +26,10 @@ export const setupMockWishlistStore = (
   };
 
   (useWishlistStore as unknown as jest.Mock).mockImplementation(
-    (selector?: (state: MockedWishlistStore) => any) =>
-      typeof selector === "function" ? selector(mockStoreState) : mockStoreState
+    (selector?: (state: MockedWishlistStore) => unknown) =>
+      typeof selector === "function"
+        ? selector(mockStoreState)
+        : mockStoreState,
   );
 
   return {

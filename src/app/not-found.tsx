@@ -25,6 +25,7 @@ export default function NotFound(): JSX.Element {
       />
       {/* image background */}
       <Box
+        data-testid="not-found-background"
         component="div"
         sx={{
           position: "relative",
@@ -48,6 +49,7 @@ export default function NotFound(): JSX.Element {
       />{" "}
       {/* Extra tile for xs breakpoint*/}
       <Box
+        data-testid="not-found-extra-tile"
         display={{ xs: "block", md: "none" }}
         width={"100%"}
         height={140}
