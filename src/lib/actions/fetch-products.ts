@@ -84,6 +84,8 @@ export async function fetchProducts(
     );
   }
 
+  baseUrl.searchParams.append(`filters[teamName][$in]`, "team-1");
+
   const response = await fetch(baseUrl.toString());
   if (!response.ok) throw new Error("Network response was not ok");
   const json = await response.json();

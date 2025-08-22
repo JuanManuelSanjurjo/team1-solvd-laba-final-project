@@ -43,12 +43,7 @@ export default function AiButton({
       {...props}
     >
       {isLoading ? (
-        <Image
-          src="/assets/logo/logo-orange.svg"
-          alt="Logo"
-          width={22}
-          height={22}
-        />
+        <Image src="/assets/logo/logo.svg" alt="Logo" width={22} height={22} />
       ) : (
         "Use AI suggestion"
       )}

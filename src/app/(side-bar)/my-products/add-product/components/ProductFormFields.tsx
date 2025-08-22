@@ -5,6 +5,7 @@ import {
   FieldErrors,
   UseFormGetValues,
   UseFormSetValue,
+  UseFormSetError,
 } from "react-hook-form";
 import { Box, FormHelperText } from "@mui/material";
 import Input from "@/components/form-elements/Input";
@@ -28,7 +29,10 @@ interface ProductFormFieldsProps {
   toggleSize: (size: number) => void;
   getValues: UseFormGetValues<ProductFormData>;
   setValue: UseFormSetValue<ProductFormData>;
+  setError: UseFormSetError<ProductFormData>;
 }
+
+const CONFIDENCE_THRESHOLD = 0.6;
 
 export const ProductFormFields = ({
   register,
@@ -41,6 +45,7 @@ export const ProductFormFields = ({
   selectedSizes,
   toggleSize,
   getValues,
+  setError,
   setValue,
 }: ProductFormFieldsProps) => {
   const [loading, setLoading] = useState(false);
@@ -51,8 +56,28 @@ export const ProductFormFields = ({
 
     setLoading(true);
     try {
-      const aiDescription = await generateDescription(name);
-      setValue("description", aiDescription);
+      setValue("description", "");
+
+      const aiResponse = await generateDescription(name);
+      if (aiResponse.isBranded === false) {
+        setError("description", {
+          type: "manual",
+          message:
+            "AI detected this product name is likely not branded. Please review the product name.",
+        });
+      } else if (
+        typeof aiResponse.confidence === "number" &&
+        aiResponse.confidence < CONFIDENCE_THRESHOLD
+      ) {
+        setError("description", {
+          type: "manual",
+          message: `AI is uncertain about branding (confidence ${(
+            aiResponse.confidence * 100
+          ).toFixed(0)}%). Please verify the product name.`,
+        });
+      } else {
+        setValue("description", aiResponse.description);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -144,7 +169,7 @@ export const ProductFormFields = ({
           label="Description"
           name="description"
           required
-          errorMessage={errors.description?.message ?? ""}
+          errorMessage={""}
           multiline
           fullWidth
           sx={{ height: "320px", alignItems: "flex-start", padding: 0 }}
@@ -162,6 +187,12 @@ export const ProductFormFields = ({
           }}
         />
       </Box>
+      {errors.description?.message && (
+        <FormHelperText sx={{ color: "#FE645E", marginTop: "-10px" }}>
+          <Danger color="#FE645E" size="16" style={{ marginRight: "6px" }} />
+          {errors.description?.message}
+        </FormHelperText>
+      )}
       <Box
         sx={{
           display: "grid",

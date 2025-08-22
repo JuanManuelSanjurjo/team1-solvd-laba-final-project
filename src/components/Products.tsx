@@ -20,7 +20,21 @@ import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 
-export default function Products({ session }: { session: Session | null }) {
+interface ProductsProps {
+  session: Session | null;
+  brandOptions: { value: number; label: string }[];
+  colorOptions: { value: number; label: string }[];
+  sizeOptions: { value: number; label: number }[];
+  categoryOptions: { value: number; label: string }[];
+}
+
+export default function Products({
+  session,
+  brandOptions,
+  colorOptions,
+  sizeOptions,
+  categoryOptions,
+}: ProductsProps) {
   const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -35,6 +49,7 @@ export default function Products({ session }: { session: Session | null }) {
     () => searchParams.get("searchTerm"),
     [searchParams]
   );
+
   const {
     data: products,
     pagination,
@@ -81,16 +96,21 @@ export default function Products({ session }: { session: Session | null }) {
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: isMobile ? "74%" : drawerWidth,
-            marginTop: {
+            top: {
               xs: "0px",
               sm: "90px",
               md: "120px",
             },
+            height: {
+              xs: "100vh",
+              sm: "calc(100vh - 90px)",
+              md: "calc(100vh - 120px)",
+            },
             boxSizing: "border-box",
             backgroundColor: "rgba(255,255,255,1)",
             borderRight: "none",
-            height: "100%",
             overflowY: "auto",
+            overflowX: "hidden",
           },
         }}
       >
@@ -99,6 +119,10 @@ export default function Products({ session }: { session: Session | null }) {
           hideDrawer={() => {
             setFiltersOpen(!filtersOpen);
           }}
+          categoryOptions={categoryOptions}
+          colorOptions={colorOptions}
+          brandOptions={brandOptions}
+          sizeOptions={sizeOptions}
         />
       </Drawer>
       <Box

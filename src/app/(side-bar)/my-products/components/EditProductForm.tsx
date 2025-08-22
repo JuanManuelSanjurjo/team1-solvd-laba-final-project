@@ -84,6 +84,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
     control,
     setValue,
     getValues,
+    setError,
     watch,
     formState: { errors },
   } = useForm<ProductFormData>({
@@ -205,6 +206,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           toggleSize={toggleSize}
           getValues={getValues}
           setValue={setValue}
+          setError={setError}
         />
       </Box>
       <Box sx={{ flex: 1 }}>
