@@ -70,6 +70,8 @@ export default function CardButtonWishList({
         color="currentColor"
         className="bg"
         variant={isInWisList ? "Bold" : "Outline"}
+        data-testid="heart-icon"
+        data-variant={isInWisList ? "Bold" : "Outline"}
       />
     </Box>
   );
