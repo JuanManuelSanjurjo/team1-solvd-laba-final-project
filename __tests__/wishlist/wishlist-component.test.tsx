@@ -61,7 +61,7 @@ function setupStoreMock(
 ) {
   const removeInactiveProducts =
     opts.removeInactiveProducts ??
-    jest.fn((userId: string, ids: number[]) => {});
+    jest.fn((_userId: string, _ids: number[]) => {});
   const state = {
     byUser: opts.byUser ?? {},
     removeInactiveProducts,
