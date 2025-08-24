@@ -7,7 +7,7 @@ import {
   UseFormSetValue,
   UseFormSetError,
 } from "react-hook-form";
-import { Box, FormHelperText } from "@mui/material";
+import { AlertProps, Box, FormHelperText } from "@mui/material";
 import Input from "@/components/form-elements/Input";
 import Select from "@/components/form-elements/Select";
 import ShoeSizeOption from "@/app/products/[product-id]/components/ShoeSizeOption";
@@ -16,6 +16,8 @@ import { ProductFormData } from "../types";
 import AiButton from "@/components/AiButton";
 import { useState } from "react";
 import { generateDescription } from "@/lib/ai/generate-description";
+import Toast from "@/components/Toast";
+import { getLabelFromOptions } from "@/lib/ai/ai-utils";
 
 interface ProductFormFieldsProps {
   register: UseFormRegister<ProductFormData>;
@@ -45,23 +47,39 @@ export const ProductFormFields = ({
   selectedSizes,
   toggleSize,
   getValues,
-  setError,
   setValue,
 }: ProductFormFieldsProps) => {
   const [loading, setLoading] = useState(false);
 
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastContent, setToastContent] = useState({
+    severity: "" as AlertProps["severity"],
+    message: "",
+  });
+
+  const handleCloseToast = () => {
+    setToastOpen(false);
+  };
+
   const handleGenerate = async () => {
-    const name = getValues("name");
-    if (!name) return;
+    const values = getValues();
+    if (!values) return;
 
     setLoading(true);
     try {
       setValue("description", "");
-
-      const aiResponse = await generateDescription(name);
+      const aiResponse = await generateDescription({
+        name: values.name,
+        brand: getLabelFromOptions(brandOptions, values.brand),
+        category: getLabelFromOptions(categoryOptions, values.categories),
+        color: getLabelFromOptions(colorOptions, values.color),
+        gender: values.gender === 3 ? "women" : "man",
+        description: values.description,
+      });
       if (aiResponse.isBranded === false) {
-        setError("description", {
-          type: "manual",
+        setToastOpen(true);
+        setToastContent({
+          severity: "error",
           message:
             "AI detected this product name is likely not branded. Please review the product name.",
         });
@@ -69,14 +87,20 @@ export const ProductFormFields = ({
         typeof aiResponse.confidence === "number" &&
         aiResponse.confidence < CONFIDENCE_THRESHOLD
       ) {
-        setError("description", {
-          type: "manual",
+        setToastOpen(true);
+        setToastContent({
+          severity: "error",
           message: `AI is uncertain about branding (confidence ${(
             aiResponse.confidence * 100
           ).toFixed(0)}%). Please verify the product name.`,
         });
       } else {
         setValue("description", aiResponse.description);
+        setToastOpen(true);
+        setToastContent({
+          severity: "success",
+          message: "Description generated succesfully",
+        });
       }
     } catch (error) {
       console.error(error);
@@ -227,6 +251,13 @@ export const ProductFormFields = ({
           {errors.sizes?.message}
         </FormHelperText>
       )}
+      <Toast
+        open={toastOpen}
+        onClose={handleCloseToast}
+        severity={toastContent.severity}
+        message={toastContent.message}
+        autoHideDuration={4000}
+      />
     </>
   );
 };
