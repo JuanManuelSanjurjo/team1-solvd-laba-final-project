@@ -35,7 +35,11 @@ export default function Products({
   sizeOptions,
   categoryOptions,
 }: ProductsProps) {
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
+  const { isMobile, isDesktop } = useMediaBreakpoints();
+
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(() =>
+    isDesktop ? true : false
+  );
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
@@ -73,8 +77,6 @@ export default function Products({
     newSearchParams.set("page", page.toString());
     router.push(`?${newSearchParams.toString()}`);
   }
-
-  const { isMobile, isDesktop } = useMediaBreakpoints();
 
   const drawerWidth = isDesktop ? 320 : 240;
   const drawerVariant = isMobile ? "temporary" : "persistent";
