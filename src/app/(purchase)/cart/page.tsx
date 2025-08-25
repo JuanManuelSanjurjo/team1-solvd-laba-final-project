@@ -14,10 +14,6 @@ import ProductsEmptyState from "@/components/ProductsEmptyState";
 import { useRouter } from "next/navigation";
 import CheckoutSummary from "../components/CheckoutSummary";
 
-export const metadata = {
-  title: "Shopping Cart",
-};
-
 /**
  * Checkout page component that displays a list of products in the cart.
  * Each product can have its quantity increased or decreased using the provided handlers.
