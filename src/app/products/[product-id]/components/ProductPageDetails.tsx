@@ -38,17 +38,17 @@ export default function ProductPageDetails({
       price: product.price,
       gender: product.gender,
     }),
-    [product]
+    [product],
   );
 
   const isLoggedIn = Boolean(session?.user);
 
   const addToRecentlyViewed = useRecentlyViewedStore(
-    (state) => state.addToRecentlyViewed
+    (state) => state.addToRecentlyViewed,
   );
 
   useEffect(() => {
-    if (isLoggedIn) return;
+    if (!isLoggedIn) return;
     const userId = session?.user?.id ? String(session.user.id) : null;
     if (!userId) return;
     addToRecentlyViewed(userId, cardProductInfo);
