@@ -52,11 +52,6 @@ export default function NoSearchingStateHeader({
         <Link href="/">
           <LogoBlackSvg />
         </Link>
-        {isDesktop && (
-          <Typography variant="body1" color="text.primary" fontWeight={600}>
-            Products
-          </Typography>
-        )}
       </Box>
 
       <Box
