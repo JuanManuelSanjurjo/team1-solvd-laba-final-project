@@ -15,7 +15,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
 
 /**
@@ -172,12 +172,7 @@ export default function CheckoutForm({ orderId }: { orderId: string }) {
   const {
     handleSubmit,
     formState: { errors },
-    watch,
   } = methods;
-
-  useEffect(() => {
-    console.log(watch());
-  }, [watch()]);
 
   const onSubmit = async (data: CheckoutFormValues) => {
     if (!stripe || !elements) return;
