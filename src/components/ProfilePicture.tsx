@@ -51,6 +51,7 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
             height: width,
             cursor: "pointer",
             border: border ? "5px solid white" : "none",
+            backgroundColor: "white",
           }}
         />
       </Tooltip>
