@@ -19,6 +19,7 @@ import { getQueryStringFromFilters } from "@/lib/get-query-string-from-filters";
  * @returns {Promise<any[]>} - A promise that resolves to an array of filtered product data from the API.
  * @throws {Error} - Throws an error if the network response is not OK.
  */
+
 export async function fetchProducts(
   filters: ProductFilters,
   pageNumber: number,
@@ -83,8 +84,8 @@ export async function fetchProducts(
       filters.priceMax.toString()
     );
   }
-
-  baseUrl.searchParams.append(`filters[teamName][$in]`, "team-1");
+  console.log(baseUrl);
+  //baseUrl.searchParams.append(`filters[teamName][$in]`, "team-1");
 
   const response = await fetch(baseUrl.toString());
   if (!response.ok) throw new Error("Network response was not ok");

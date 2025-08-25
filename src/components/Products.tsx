@@ -19,6 +19,7 @@ import useQueryPagedProducts from "../app/products/hooks/useQueryPageProducts";
 import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
+import RecommendationPopup from "@/app/products/components/RecommendationPopUp";
 
 interface ProductsProps {
   session: Session | null;

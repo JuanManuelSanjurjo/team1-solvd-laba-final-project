@@ -4,6 +4,7 @@ import { fetchSizes } from "@/lib/actions/fetch-sizes";
 import { fetchColors } from "@/lib/actions/fetch-colors";
 import { fetchBrands } from "@/lib/actions/fetch-brands";
 import Products from "@/components/Products";
+import RecommendationPopup from "./components/RecommendationPopUp";
 
 export const metadata = {
   title: "Products",
@@ -21,12 +22,16 @@ export default async function ProductsPage() {
     ]);
 
   return (
-    <Products
-      brandOptions={brandOptions}
-      colorOptions={colorOptions}
-      sizeOptions={sizeOptions}
-      categoryOptions={categoryOptions}
-      session={session}
-    />
+    <>
+      <RecommendationPopup userId={session?.user?.id ?? "guest"} />
+
+      <Products
+        brandOptions={brandOptions}
+        colorOptions={colorOptions}
+        sizeOptions={sizeOptions}
+        categoryOptions={categoryOptions}
+        session={session}
+      />
+    </>
   );
 }

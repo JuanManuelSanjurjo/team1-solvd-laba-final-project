@@ -41,3 +41,20 @@ export function normalizeMyProductCard(products: MyProduct[]) {
     gender: product.gender?.name ?? "No gender",
   }));
 }
+
+export function normalizeFullProduct(product: Product) {
+  return {
+    id: product.id,
+    image:
+      product.attributes.images.data?.[0]?.attributes?.url ||
+      "/assets/images/placeholders/400x400.svg",
+    name: product.attributes.name,
+    price: product.attributes.price,
+    gender: product.attributes.gender?.data?.attributes?.name ?? "No gender",
+    brand: product.attributes.brand?.data?.attributes?.name ?? "No brand",
+    color: product.attributes.color?.data?.attributes?.name ?? "No brand",
+    category:
+      product.attributes.categories?.data?.[0]?.attributes?.name ??
+      "No category",
+  };
+}

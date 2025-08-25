@@ -19,6 +19,29 @@ export interface Product {
         };
       };
     };
+    brand: {
+      data: {
+        attributes: {
+          name: string;
+        };
+      };
+    };
+    color: {
+      data: {
+        attributes: {
+          name: string;
+        };
+      };
+    };
+    categories: {
+      data:
+        | {
+            attributes: {
+              name: string;
+            };
+          }[]
+        | null;
+    };
     sizes: {
       data: {
         id: number;
