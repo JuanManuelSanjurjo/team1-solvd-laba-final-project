@@ -37,7 +37,7 @@ export default function CardContainer({
           xs: "repeat(2, 1fr)",
           md: "repeat(auto-fit, minmax(240px, 300px))",
         },
-        gap: { xs: "32px", md: "67px" },
+        gap: { xs: "50px 32px", md: "67px" },
       }}
     >
       {children}
