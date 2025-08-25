@@ -2,10 +2,10 @@
 
 import { Box } from "@mui/material";
 import ProductSizes from "./ProductSizes";
-import ProdcuctMainData from "./product-details/ProductMainData";
+import ProductMainData from "./product-details/ProductMainData";
 import ProductDescription from "./product-details/ProductDescription";
 import ProductPageButtons from "./product-details/ProductPageButtons";
-import { JSX, useEffect, useMemo } from "react";
+import { JSX, useEffect } from "react";
 import { NormalizedProduct } from "@/types/product-types";
 import cardProduct from "@/components/cards/actions/types";
 import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
@@ -30,47 +30,50 @@ export default function ProductPageDetails({
   product: NormalizedProduct;
   session: Session | null;
 }): JSX.Element {
-  const cardProductInfo: cardProduct = useMemo(
-    () => ({
-      id: product.id,
-      image: product.images?.[0]?.url || "https://placehold.co/400",
-      name: product.name,
-      price: product.price,
-      gender: product.gender,
-    }),
-    [product]
-  );
+  const cardProductInfo: cardProduct = {
+    id: product.id,
+    image: product.images?.[0]?.url || "https://placehold.co/400",
+    name: product.name,
+    price: product.price,
+    gender: product.gender,
+  };
 
-  const isLoggedIn = Boolean(session?.user);
+  const isLoggedIn = Boolean(session?.user?.email);
+  const userId = session?.user?.id ? String(session.user.id) : undefined;
 
   const addToRecentlyViewed = useRecentlyViewedStore(
     (state) => state.addToRecentlyViewed
   );
 
   useEffect(() => {
-    if (isLoggedIn) return;
-    const userId = session?.user?.id ? String(session.user.id) : null;
-    if (!userId) return;
-    addToRecentlyViewed(userId, cardProductInfo);
+    if (isLoggedIn && userId) {
+      addToRecentlyViewed(userId, cardProductInfo);
+    }
   }, [
     isLoggedIn,
-    session?.user?.id,
+    userId,
     product.id,
     addToRecentlyViewed,
-    cardProductInfo,
+    product.name,
+    product.price,
+    product.gender,
+    product.images?.[0]?.url,
   ]);
 
   return (
     <Box
-      maxWidth={"520px"}
       width="100%"
       sx={{
+        maxWidth: {
+          xs: "100%",
+          md: "520px",
+        },
         display: "flex",
         flexDirection: "column",
         gap: 2,
       }}
     >
-      <ProdcuctMainData product={product} />
+      <ProductMainData product={product} />
       <ProductSizes product={product} />
       <ProductPageButtons
         product={product}

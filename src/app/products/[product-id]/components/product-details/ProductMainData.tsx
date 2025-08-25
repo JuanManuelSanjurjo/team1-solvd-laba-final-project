@@ -36,6 +36,10 @@ export default function ProductMainData({
           variant="h1"
           sx={{
             fontWeight: 500,
+            fontSize: {
+              xs: "24px",
+              md: "53px",
+            },
           }}
         >
           {product?.name}
