@@ -369,7 +369,7 @@ export default function Products({
                           session={session}
                           product={product}
                           topAction="cardButtonWishList"
-                          overlayAction="cardOverlayAddToCard"
+                          overlayAction="cardOverlayAddToCart"
                           key={index}
                           overlay={true}
                         />

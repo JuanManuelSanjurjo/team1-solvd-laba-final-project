@@ -95,7 +95,7 @@ export default function Card({
             {overlayAction && (
               <CardActionWrapperCenter
                 action={
-                  overlayAction === "cardOverlayAddToCard" ? (
+                  overlayAction === "cardOverlayAddToCart" ? (
                     <CardOverlayAddToCart
                       product={{
                         id: product?.id ?? 0,

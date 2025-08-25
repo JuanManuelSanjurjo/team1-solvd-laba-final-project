@@ -38,7 +38,7 @@ jest.mock("@/components/skeletons/products/SkeletonCardContainer", () => () => (
 ));
 jest.mock(
   "@/app/(side-bar)/(profile)/components/ProfileHeaderTitle",
-  () => (props: any) => <h1 data-testid="title">{props.children}</h1>
+  () => (props: any) => <h1 data-testid="title">{props.children}</h1>,
 );
 jest.mock("@/components/MyProductsEmptyState", () => (props: any) => (
   <button data-testid="empty-go-products" onClick={props.onClick}>
@@ -56,7 +56,7 @@ function setupStoreMock(
   opts: {
     byUser?: Record<string, cardProduct[]>;
     removeInactiveProducts?: jest.Mock;
-  } = {}
+  } = {},
 ) {
   const removeInactiveProducts =
     opts.removeInactiveProducts ??
@@ -69,7 +69,7 @@ function setupStoreMock(
 
   asMock(useRecentlyViewedStore).mockImplementation(
     (selector?: (s: any) => any) =>
-      typeof selector === "function" ? selector(state) : state
+      typeof selector === "function" ? selector(state) : state,
   );
   return { removeInactiveProducts };
 }
@@ -136,7 +136,7 @@ describe("RecentlyViewed", () => {
     expect(cards[0]).toHaveAttribute("data-id", "1");
     expect(cards[0]).toHaveAttribute(
       "data-overlayaction",
-      "cardButtonAddToCart"
+      "cardOverlayAddToCart",
     );
   });
 
