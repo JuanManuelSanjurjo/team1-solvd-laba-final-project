@@ -18,6 +18,19 @@ import {
 import { useEffect, useState } from "react";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
 
+/**
+ * CheckoutForm component used to handle the full checkout process including:
+ * - Personal and shipping information inputs
+ * - Stripe payment integration via `PaymentElement`
+ * - Form validation using React Hook Form and Zod
+ *
+ * Submits payment data to Stripe and redirects to a thank-you page on success.
+ *
+ * @component
+ * @param {{ orderId: string }} props - The ID of the current order, used for the return URL after successful payment.
+ * @returns {JSX.Element} A complete checkout form with payment, personal, and shipping sections.
+ */
+
 /* Inputs */
 
 type CheckoutInputProps = Omit<InputProps, "name"> & {
