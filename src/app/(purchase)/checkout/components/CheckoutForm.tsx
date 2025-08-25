@@ -2,16 +2,14 @@
 
 import { Typography, Box, Grid, Divider } from "@mui/material";
 // import PaymentInfo from "./PaymentInfo";
-import Input from "@/components/FormElements/Input";
+import Input from "@/components/form-elements/Input";
 import { InputProps } from "@/types/form";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cart-store";
 import CheckoutSummary from "../../components/CheckoutSummary";
-import {
-  checkoutSchema,
-  type CheckoutFormValues,
-} from "../validation/checkoutSchema";
+
+import { checkoutSchema, type CheckoutFormValues } from "../types";
 import {
   PaymentElement,
   useStripe,
@@ -320,7 +318,7 @@ export default function CheckoutForm({ orderId }: { orderId: string }) {
       {!cartIsEmpty && (
         <Box sx={{ marginTop: "80px" }}>
           <CheckoutSummary
-            buttonText="Confirm & Pay"
+            buttonText={!loading ? "Confirm & Pay" : "Processing..."}
             buttonAction={handleSubmit(onSubmit)}
           />
         </Box>

@@ -16,7 +16,6 @@ export default function Checkout() {
   );
   const total = useCartStore((s) => s.total());
   const [orderId, setOrderId] = useState<string>("");
-  const [error, setError] = useState<string>();
 
   useEffect(() => {
     fetch("/api/checkout/create-intent", {
