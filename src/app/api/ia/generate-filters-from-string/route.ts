@@ -1,31 +1,24 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
-import { normalizeFullProduct } from "@/lib/normalizers/normalize-product-card";
-import { getFullProduct } from "@/lib/actions/get-full-product";
 import { fetchBrands } from "@/lib/actions/fetch-brands";
 import { fetchColors } from "@/lib/actions/fetch-colors";
 import { fetchSizes } from "@/lib/actions/fetch-sizes";
 import { fetchCategories } from "@/lib/actions/fetch-categories";
+import { fetchGenders } from "@/lib/actions/fetch-genders";
 import { filtersToQueryString } from "@/lib/ai/filters-to-query-string";
 import { aiLabelsToFilters } from "@/lib/ai/ai-labels-to-filters";
-import { fetchGenders } from "@/lib/actions/fetch-genders";
 import { validateAIResponse } from "@/lib/ai/validate-ai-response";
-
-type ReqBody = { ids: number[] };
 
 export async function POST(req: Request) {
   try {
-    const body: ReqBody = await req.json();
-    const { ids } = body;
-    if (!ids || !ids.length) {
-      return NextResponse.json({ recommendations: [] });
+    const basePrompt = await req.json();
+    if (!basePrompt) {
+      return NextResponse.json(
+        { error: "Some required field is missing" },
+        { status: 400 }
+      );
     }
-
-    const details = await Promise.all(
-      ids.map((id) => getFullProduct(String(id)))
-    );
-
     const [
       brandOptions,
       colorOptions,
@@ -55,47 +48,31 @@ export async function POST(req: Request) {
     const genderLabels = genderOptions
       .map((o: { label: string; value: number }) => o.label)
       .join(", ");
-    const products = details.map((product) =>
-      normalizeFullProduct(product.data)
-    );
 
-    console.log(products);
+    const prompt = `You convert natural-language shopping queries into a strict JSON filter object.
+Always return arrays for brands, colors, categories, and sizes (even if only one item is present).
+Only include values that exist in the provided options. If a requested value is not present, omit it.
+Prefer exact option labels; do not invent new labels.
+Prices are numbers (no currency symbols). If the user says "under X", use price_max = X.
+If "over X", use price_min = X. If a range is present, set both price_min and price_max.
+Keep explain_short as a tiny summary if helpful (<= 140 chars) or empty.
 
-    const prompt = `
-You are a product-recommendation assistant. 
-Input: an array of products the user recently viewed...
-Return: filters for products that are **similar but not the exact same.** 
+example input: "I want an Adidas or Nike shoes, casual, with a 42 size, color black, and with a price of no more than 100"
 
-These are the available colors, brands, categories, sizes and genders:
-OPTIONS\nBrands: ${brandLabels}\nColors: ${colorLabels}\nSizes: ${sizeLabels}\nCategories: ${categoryLabels}\n Genders: ${genderLabels}\n
-
-You should return the 2 most repeated brands on the input, and suggest one (Only brands available on Brand Options with the EXACT same label). 
-You should return the 2 most repeated colors on the input, and suggest one neighbor color (Only colors available on Color Options with the EXACT same label). 
-You should return the 2 most repeated sizes on the input, and suggest one  (Only sizes available on Sizes Options with the EXACT same label). 
-You should return the 2 most repeated categories on the input, and suggest one (Only categories available on Category Options with the EXACT same label).
-You should return only the most repeated genre (Only Genres available on Genre Options with the EXACT same label).
-
-Price range should vary by at least ±50 dollars, and it would be based on the range of the recently viewed products. 
-
-OUTPUT EXAMPLE: 
-{
-  "brands": ["Adidas","Nike"],         
-  "categories": ["Casual"],              
-  "price_min": 0,                   
-  "price_max": 0,                        
-  "genders":["Women"]
-  "colors": ["Black","White"],        
-  "sizes": [42,43],                     
+example output:{
+  "brands": ["Adidas","Nike"],        
+  "categories": ["Casual"],           
+  "price_min": 0,                      
+  "price_max": 100,                      
+  "colors": ["Black"], 
+  "genders": []     
+  "sizes": [42],                     
   "explain_short": "one-line reasoning"
 }
 
-Input:
-${JSON.stringify(products, null, 2)}
 
-Produce only valid JSON that conforms exactly to the schema above.
-`;
-
-    console.log("-----> INPUT ", JSON.stringify(products, null, 2));
+OPTIONS\nBrands: ${brandLabels}\nColors: ${colorLabels}\nSizes: ${sizeLabels}\nCategories: ${categoryLabels}\n Genders: ${genderLabels}\n
+USER_QUERY\n"""${basePrompt}"""`;
 
     const aiResp = await generateText({
       model: google("gemini-2.5-flash"),
@@ -109,9 +86,12 @@ Produce only valid JSON that conforms exactly to the schema above.
 
     const cleaned = textPart.replace(/```json|```/g, "").trim();
 
+    console.log("cleaned--->", cleaned);
+
     let parsed: any;
     try {
       parsed = JSON.parse(cleaned);
+      console.log("paresed--->", parsed);
     } catch (err) {
       console.error("Failed to parse AI response:", err);
     }
@@ -124,23 +104,23 @@ Produce only valid JSON that conforms exactly to the schema above.
       genders: genderOptions,
     });
 
+    console.log("validated response--->", validated);
+
     const filters = aiLabelsToFilters(validated);
+
+    console.log("built in filters--->", filters);
 
     console.log("AI filters:", filters);
 
     const redirectUrl = filtersToQueryString(filters);
 
     console.log("Redirect URL:", redirectUrl);
-
-    return NextResponse.json({
-      redirectUrl,
-      ai: {
-        ...validated,
-        explain_short: validated.explain_short ?? "",
-      },
-    });
+    return NextResponse.json(
+      { redirectUrl: redirectUrl, explain_short: validated.explain_short },
+      { status: 200 }
+    );
   } catch (err: any) {
-    console.error("recommendations error", err);
+    console.error("error generating filters", err);
     return NextResponse.json({ redirectUrl: "/", ai: null }, { status: 500 });
   }
 }

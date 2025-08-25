@@ -51,6 +51,12 @@ export async function generateDescription({
     body: JSON.stringify({ name, brand, category, color, gender, description }),
   });
 
+  const rest = await fetch("/api/ia/recommendations", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids: [2878, 2920, 2921, 2937, 2975] }),
+  });
+
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: "unknown" }));
     throw new Error(err?.error || "Failed to generate structured description");
