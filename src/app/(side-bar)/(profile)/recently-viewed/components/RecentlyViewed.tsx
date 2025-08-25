@@ -54,7 +54,8 @@ export default function RecentlyViewed({ session }: { session: Session }) {
               session={session}
               product={product}
               key={product.id}
-              overlayAction="cardButtonAddToCart"
+              overlayAction="cardOverlayAddToCard"
+              topAction="addToWishList"
             />
           ))}
         </CardContainer>
