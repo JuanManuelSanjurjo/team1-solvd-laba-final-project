@@ -1,97 +1,104 @@
-"use client";
-import { Typography, Stack } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Typography, Stack, Box } from "@mui/material";
 import Button from "@/components/Button";
 import Link from "next/link";
 
 export default function ThankYou() {
-  const theme = useTheme();
   return (
     <>
-      {/* <Header></Header> */}
-      <Stack
-        direction={{ xs: "column", md: "row" }}
-        spacing={{ xs: 4, md: 13 }}
-        alignItems={{ xs: "center", md: "stretch" }}
+      <Box
         sx={{
-          marginTop: {
-            xs: "60px",
-            lg: "90px",
-            xl: "120px",
-          },
-          marginLeft: {
-            xs: "16px",
-            lg: "160px",
-            xl: "196px",
-          },
-
-          marginRight: {
-            xs: "16px",
-            lg: "256px",
-            xl: "294px",
-          },
+          display: "flex",
+          height: "100vh",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "60px",
+          padding: { xs: "180px 20px", md: "160px" },
         }}
       >
         <Stack
           direction="column"
-          alignItems="flex-start"
+          alignItems="center"
+          flexGrow={1}
+          display="flex"
           sx={{
-            flexGrow: 1,
-            width: "100%",
-            maxWidth: { md: "767px", xl: "800px" },
+            order: { xs: 1, md: 2 },
           }}
         >
-          <Typography
-            sx={{
-              fontSize: { xs: "40px", md: "90px", xl: "140px" },
-              fontWeight: "900",
-              color: theme.palette.text.primary,
-              lineHeight: 1,
-              whiteSpace: "nowrap",
-              flexShrink: 0,
-              mt: { xs: "60px", md: "70px", xl: "80px" },
-            }}
-          >
-            THANK YOU
-          </Typography>
-
           <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
+            component="img"
+            src="/assets/images/thankyou-image.png"
+            alt="delivery-image"
             sx={{
-              whiteSpace: "nowrap",
-              flexShrink: 0,
-              overflow: "hidden",
+              height: "auto",
+              display: "block",
+              maxWidth: { xs: "200px", sm: "300px", lg: "350px", xl: "493px" },
             }}
-          >
+          />
+        </Stack>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "start",
+            flexDirection: "column",
+            gap: { xs: "20px", md: "80px" },
+            flexGrow: 1,
+            width: "100%",
+            order: { xs: 2, md: 1 },
+          }}
+        >
+          <Box>
             <Typography
               sx={{
-                fontSize: { xs: "28px", md: "36px", xl: "48px" },
-                fontWeight: "300",
-                fontStyle: "italic",
-                color: theme.palette.text.primary,
+                fontSize: { xs: "40px", md: "90px", xl: "140px" },
+                fontWeight: "900",
+                color: "text.primary",
+                lineHeight: 1,
+                whiteSpace: "nowrap",
+                flexShrink: 0,
               }}
             >
-              for your order
+              THANK YOU
             </Typography>
-            <Typography
+
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
               sx={{
-                fontSize: { xs: "28px", md: "36px", xl: "48px" },
-                fontWeight: "500",
-                color: theme.palette.error.main,
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+                overflow: "hidden",
               }}
             >
-              #9082372
-            </Typography>
-          </Stack>
+              <Typography
+                sx={{
+                  fontSize: { xs: "28px", md: "36px", xl: "48px" },
+                  fontWeight: "300",
+                  fontStyle: "italic",
+                  color: "text.primary",
+                }}
+              >
+                for your order
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: { xs: "28px", md: "36px", xl: "48px" },
+                  fontWeight: "500",
+                  color: "error.main",
+                }}
+              >
+                #9082372
+              </Typography>
+            </Stack>
+          </Box>
 
           <Typography
             sx={{
               fontSize: { xs: "12px", md: "18px", xl: "24px" },
               fontWeight: "300",
-              color: theme.palette.text.secondary,
-              mt: { xs: "27px", md: "67px", xl: "77px" },
+              color: "text.secondary",
             }}
           >
             Your order has been received and is currently being processed. You
@@ -103,7 +110,6 @@ export default function ThankYou() {
             spacing={3.625}
             sx={{
               width: "100%",
-              mt: { xs: "25px", md: "65px", xl: "95px" },
             }}
           >
             <Button
@@ -129,29 +135,8 @@ export default function ThankYou() {
               Continue shopping
             </Button>
           </Stack>
-        </Stack>
-
-        <Stack
-          direction="column"
-          justifyContent={{ lg: "flex-start", xl: "flex-end" }}
-          alignItems="center"
-          flexGrow={1}
-          flexBasis={{ xs: "100%", md: "50%" }}
-          display={{ xs: "none", sm: "none", md: "none", lg: "flex" }}
-        >
-          <Stack
-            component="img"
-            src="/assets/images/thankyou-image.png"
-            alt="delivery-image"
-            sx={{
-              height: "auto",
-              display: "block",
-              maxWidth: { xs: "250px", lg: "350px", xl: "493px" },
-              mt: { md: "80px", xl: "244px" },
-            }}
-          />
-        </Stack>
-      </Stack>
+        </Box>
+      </Box>
     </>
   );
 }
