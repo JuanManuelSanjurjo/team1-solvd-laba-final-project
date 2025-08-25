@@ -28,7 +28,7 @@ export default function Checkout() {
         setClientSecret(data.clientSecret);
         setOrderId(data.orderId);
       });
-  }, []);
+  }, [total]);
 
   const options = {
     clientSecret,
