@@ -6,16 +6,22 @@ export default function SkeletonCardContainer() {
   return (
     <Box
       sx={{
-        paddingBlock: 5,
+        paddingBlock: 4.5,
         display: "grid",
-        justifyContent: "center",
+        justifyContent: !PRODUCTS_PER_PAGE
+          ? "space-around"
+          : {
+              xs: PRODUCTS_PER_PAGE > 1 ? "space-around" : "flex-start",
+              md: PRODUCTS_PER_PAGE > 2 ? "space-around" : "flex-start",
+            },
+
         justifyItems: "center",
         alignItems: "center",
         gridTemplateColumns: {
           xs: "repeat(2, 1fr)",
           md: "repeat(auto-fit, minmax(240px, 300px))",
         },
-        gap: { xs: 0, md: "67px" },
+        gap: { xs: "32px", md: "67px" },
       }}
     >
       {Array.from({ length: PRODUCTS_PER_PAGE }).map((_, i) => (

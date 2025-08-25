@@ -42,11 +42,11 @@ export default function Products({
 
   const filters = useMemo(
     () => getFiltersFromSearchParams(searchParams),
-    [searchParams]
+    [searchParams],
   );
   const searchTerm = useMemo(
     () => searchParams.get("searchTerm"),
-    [searchParams]
+    [searchParams],
   );
 
   const {
@@ -74,9 +74,8 @@ export default function Products({
     router.push(`?${newSearchParams.toString()}`);
   }
 
-  const { isMobile, isDesktop } = useMediaBreakpoints();
+  const { isMobile } = useMediaBreakpoints();
 
-  const drawerWidth = isDesktop ? 320 : 240;
   const drawerVariant = isMobile ? "temporary" : "persistent";
   const drawerAnchor = isMobile ? "right" : "left";
 
@@ -91,11 +90,11 @@ export default function Products({
           keepMounted: true,
         }}
         sx={{
-          width: isMobile ? "auto" : drawerWidth,
+          width: { xs: 240, md: 320 },
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
-            width: isMobile ? "74%" : drawerWidth,
-            top: {
+            width: { xs: 240, md: 320 },
+            marginTop: {
               xs: "0px",
               sm: "90px",
               md: "120px",
@@ -126,9 +125,11 @@ export default function Products({
       </Drawer>
       <Box
         sx={{
-          width:
-            !isMobile && filtersOpen ? `calc(100% - ${drawerWidth}px)` : "100%",
-          marginLeft: !isMobile && filtersOpen ? `${drawerWidth}px` : 0,
+          width: {
+            xs: filtersOpen ? "100%" : "100%",
+            md: filtersOpen ? `calc(100% - 320px)` : "100%",
+          },
+          marginLeft: { xs: 0, md: filtersOpen ? `320px` : 0 },
           transition: "margin 0.3s ease, width 0.3s ease",
           marginTop: {
             xs: "60px",
@@ -236,8 +237,7 @@ export default function Products({
                   />
                 </Box>
               </Box>
-            ) : // ? "Search results for " + "'" + searchTerm + "'"
-            hasActiveFilters(filters) ? (
+            ) : hasActiveFilters(filters) ? (
               "Search results"
             ) : (
               " Products List"
@@ -261,17 +261,13 @@ export default function Products({
           >
             {isMobile && (
               <Box sx={{ display: "flex", maxWidth: "65%" }}>
-                {/* <Typography */}
-                {/*   variant="body1" */}
-                {/*   color="text.secondary" */}
-                {/*   marginBottom="8px" */}
-                {/* ></Typography> */}
                 <Typography
                   variant="h5"
                   color="text.primary"
                   sx={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    paddingBlock: { xs: 2, md: 0 },
                   }}
                 >
                   {searchTerm
@@ -311,6 +307,7 @@ export default function Products({
                 <>
                   <Typography
                     sx={{
+                      paddingBlock: { xs: 2, md: 0 },
                       typography: {
                         xs: "body2",
                         sm: "body2",
@@ -372,7 +369,7 @@ export default function Products({
                           key={index}
                           overlay={true}
                         />
-                      )
+                      ),
                     )}
                   </CardContainer>
                   {pagination ? (

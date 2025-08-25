@@ -9,7 +9,7 @@ type MockedRecentlyViewedStore = {
 };
 
 export const setupMockRecentlyViewedStore = (
-  byUser: Record<string, cardProduct[]> = { "123": [] }
+  byUser: Record<string, cardProduct[]> = { "123": [] },
 ) => {
   const mockAddToRecentlyViewed = jest.fn();
   const mockClearRecentlyViewed = jest.fn();
@@ -22,9 +22,11 @@ export const setupMockRecentlyViewedStore = (
     removeInactiveProducts: mockRemoveInactiveProducts,
   };
 
-  (useRecentlyViewedStore as any).mockImplementation(
-    (selector: (state: MockedRecentlyViewedStore) => any) =>
-      typeof selector === "function" ? selector(mockStoreState) : mockStoreState
+  (useRecentlyViewedStore as unknown as jest.Mock).mockImplementation(
+    (selector: (state: MockedRecentlyViewedStore) => unknown) =>
+      typeof selector === "function"
+        ? selector(mockStoreState)
+        : mockStoreState,
   );
 
   return {

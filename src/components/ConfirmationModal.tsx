@@ -118,6 +118,7 @@ export default function ConfirmationModal({
         </DialogContent>
         <DialogActions
           sx={{
+            gap: { xs: "12px", md: "30px" },
             px: "32px",
             pb: "32px",
             pt: "0",

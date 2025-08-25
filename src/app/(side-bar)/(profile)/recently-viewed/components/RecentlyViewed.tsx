@@ -21,7 +21,7 @@ export default function RecentlyViewed({ session }: { session: Session }) {
   const byUser = useRecentlyViewedStore((state) => state.byUser);
   const isHydrated = useClientHydrated();
   const removeInactiveProducts = useRecentlyViewedStore(
-    (state) => state.removeInactiveProducts
+    (state) => state.removeInactiveProducts,
   );
 
   const recentlyViewed = byUser[userId] ?? [];
@@ -32,7 +32,7 @@ export default function RecentlyViewed({ session }: { session: Session }) {
 
   const loading = useCleanUpGhostProducts(
     isHydrated ? recentlyViewed.map((prod) => prod.id) : [],
-    (inactive) => removeInactiveProducts(userId, inactive)
+    (inactive) => removeInactiveProducts(userId, inactive),
   );
 
   if (!isHydrated || loading) {
@@ -48,7 +48,7 @@ export default function RecentlyViewed({ session }: { session: Session }) {
     <>
       <ProfileHeaderTitle>Recently Viewed</ProfileHeaderTitle>
       {recentlyViewed.length > 0 ? (
-        <CardContainer>
+        <CardContainer length={recentlyViewed.length}>
           {recentlyViewed.map((product) => (
             <Card
               session={session}

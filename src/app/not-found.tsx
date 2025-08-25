@@ -4,13 +4,16 @@ import { JSX } from "react";
 import ErrorPageFloatingContent from "@/components/errors/ErrorPageFloatingContent";
 
 export default function NotFound(): JSX.Element {
+  const text =
+    "The page you were looking for doesn't exist. Try going back or searching for other products.";
   return (
     <Box
       position="relative"
-      height={"100vh"}
+      height={{ xs: "95vh", md: "100vh" }}
       overflow="hidden"
       display="flex"
       flexDirection={{ xs: "column-reverse", md: "row" }}
+      sx={{ marginTop: { xs: "60px", sm: "90px", md: 0 } }}
     >
       {/* White background */}
       <Box
@@ -22,6 +25,7 @@ export default function NotFound(): JSX.Element {
       />
       {/* image background */}
       <Box
+        data-testid="not-found-background"
         component="div"
         sx={{
           position: "relative",
@@ -45,6 +49,7 @@ export default function NotFound(): JSX.Element {
       />{" "}
       {/* Extra tile for xs breakpoint*/}
       <Box
+        data-testid="not-found-extra-tile"
         display={{ xs: "block", md: "none" }}
         width={"100%"}
         height={140}
@@ -53,7 +58,11 @@ export default function NotFound(): JSX.Element {
         }}
       />
       {/* Floating content */}
-      <ErrorPageFloatingContent />
+      <ErrorPageFloatingContent
+        text={text}
+        title="Error 404"
+        type="not-found"
+      />
     </Box>
   );
 }
