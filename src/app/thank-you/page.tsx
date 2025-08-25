@@ -2,6 +2,10 @@ import { Typography, Stack, Box } from "@mui/material";
 import Button from "@/components/Button";
 import Link from "next/link";
 
+export const metadata = {
+  title: "Thank You",
+};
+
 export default function ThankYou() {
   return (
     <>

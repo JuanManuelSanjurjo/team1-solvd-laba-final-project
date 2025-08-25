@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import ProfileHeaderTitle from "../components/ProfileHeaderTitle";
 
 export const metadata: Metadata = {
-  title: `Order History | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+  title: "Order History",
 };
 
 export default function OrderHistory() {
