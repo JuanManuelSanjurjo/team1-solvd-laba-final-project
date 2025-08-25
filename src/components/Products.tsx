@@ -368,8 +368,8 @@ export default function Products({
                         <Card
                           session={session}
                           product={product}
-                          topAction="cardButtonWishList"
-                          overlayAction="cardOverlayAddToCart"
+                          topAction={session ? "cardButtonWishList" : ""}
+                          overlayAction={session ? "cardOverlayAddToCart" : ""}
                           key={index}
                           overlay={true}
                         />
