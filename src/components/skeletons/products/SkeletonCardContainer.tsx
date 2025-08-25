@@ -5,6 +5,7 @@ import { PRODUCTS_PER_PAGE } from "@/lib/constants/globals";
 export default function SkeletonCardContainer() {
   return (
     <Box
+      data-testid="skeleton-card-container"
       sx={{
         paddingBlock: 4.5,
         display: "grid",

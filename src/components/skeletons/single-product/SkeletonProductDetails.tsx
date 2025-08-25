@@ -18,6 +18,7 @@ export default function SkeletonProductDetails() {
         flexDirection: "column",
         gap: 2,
       }}
+      data-testid="skeleton-product-details"
     >
       {/* Title and Price */}
       <Box>
