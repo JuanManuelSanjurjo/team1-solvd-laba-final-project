@@ -30,12 +30,12 @@ export default function Wishlist({ session }: { session: Session }) {
     router.push("/products");
   }, [router]);
 
-  useCleanUpGhostProducts(
+  const loading = useCleanUpGhostProducts(
     isHydrated ? wishList.map((prod) => prod.id) : [],
     (inactive) => removeInactiveProducts(userId, inactive)
   );
 
-  if (!isHydrated) {
+  if (!isHydrated || loading) {
     return (
       <>
         <ProfileHeaderTitle>My wishlist</ProfileHeaderTitle>

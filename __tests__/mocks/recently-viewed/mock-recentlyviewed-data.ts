@@ -2,21 +2,24 @@ import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
 import cardProduct from "@/components/cards/actions/types";
 
 type MockedRecentlyViewedStore = {
-  recentlyViewed: cardProduct[];
-  addToRecentlyViewed: (product: cardProduct) => void;
-  clearRecentlyViewed: () => void;
+  byUser: Record<string, cardProduct[]>;
+  addToRecentlyViewed: (userId: string, product: cardProduct) => void;
+  clearRecentlyViewed: (userId: string) => void;
+  removeInactiveProducts: (userId: string, ids: number[]) => void;
 };
 
 export const setupMockRecentlyViewedStore = (
-  initialState: MockedRecentlyViewedStore["recentlyViewed"] = []
+  byUser: Record<string, cardProduct[]> = { "123": [] }
 ) => {
   const mockAddToRecentlyViewed = jest.fn();
   const mockClearRecentlyViewed = jest.fn();
+  const mockRemoveInactiveProducts = jest.fn();
 
   const mockStoreState: MockedRecentlyViewedStore = {
-    recentlyViewed: initialState,
+    byUser,
     addToRecentlyViewed: mockAddToRecentlyViewed,
     clearRecentlyViewed: mockClearRecentlyViewed,
+    removeInactiveProducts: mockRemoveInactiveProducts,
   };
 
   (useRecentlyViewedStore as any).mockImplementation(
@@ -24,5 +27,9 @@ export const setupMockRecentlyViewedStore = (
       typeof selector === "function" ? selector(mockStoreState) : mockStoreState
   );
 
-  return { mockAddToRecentlyViewed, mockClearRecentlyViewed };
+  return {
+    mockAddToRecentlyViewed,
+    mockClearRecentlyViewed,
+    mockRemoveInactiveProducts,
+  };
 };
