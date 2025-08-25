@@ -24,7 +24,7 @@ export default function CardContainer({
   return (
     <Box
       sx={{
-        paddingBlock: 4.5,
+        paddingBlock: { xs: 1, md: 4.5 },
         display: "grid",
         justifyContent: !length
           ? "space-around"

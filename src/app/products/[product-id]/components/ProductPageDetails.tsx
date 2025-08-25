@@ -46,6 +46,7 @@ export default function ProductPageDetails({
 
   return (
     <Box
+      data-testid="product-page-details"
       width="100%"
       sx={{
         maxWidth: {
