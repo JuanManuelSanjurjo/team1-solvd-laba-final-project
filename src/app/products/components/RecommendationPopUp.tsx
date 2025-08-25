@@ -137,8 +137,12 @@ export default function RecommendationPopup({ userId }: { userId?: string }) {
                   query.data?.redirectUrl ?? ""
                 );
               } catch {}
-              setDismissed(true);
-              router.push(query.data?.redirectUrl ?? "/");
+              console.log("--->", query.data?.redirectUrl);
+              router.push(
+                query.data?.redirectUrl
+                  ? `/products${query.data?.redirectUrl}`
+                  : "/"
+              );
             }}
             sx={{ ml: 1 }}
           >
