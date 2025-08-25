@@ -4,7 +4,7 @@ import { JSX } from "react";
 import ErrorPageFloatingContent from "@/components/errors/ErrorPageFloatingContent";
 
 export default function NotFound(): JSX.Element {
-  const textContent =
+  const text =
     "The page you were looking for doesn't exist. Try going back or searching for other products.";
   return (
     <Box
@@ -59,7 +59,7 @@ export default function NotFound(): JSX.Element {
       />
       {/* Floating content */}
       <ErrorPageFloatingContent
-        textContent={textContent}
+        text={text}
         title="Error 404"
         type="not-found"
       />

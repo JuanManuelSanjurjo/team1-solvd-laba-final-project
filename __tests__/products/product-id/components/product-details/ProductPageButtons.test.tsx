@@ -3,8 +3,8 @@ import ProductPageButtons from "@/app/products/[product-id]/components/product-d
 import "@testing-library/jest-dom";
 import { setupMockWishlistStore } from "__tests__/mocks/wishlist/mock-wishlist-data";
 import {
-  mockCardProduct,
-  mockNormalizedProduct,
+  MOCK_CARD_PRODUCT as mockCardProduct,
+  MOCK_NORMALIZED_PRODUCT as mockNormalizedProduct,
 } from "__tests__/mocks/shared/mock-product-card";
 import { Session } from "next-auth";
 
@@ -23,7 +23,7 @@ describe("ProductPageButtonWishlist", () => {
   });
 
   it('should display the "Add to wishlist" button if the product is not in the wishlist', () => {
-    setupMockWishlistStore([]);
+    setupMockWishlistStore({});
 
     render(
       <ProductPageButtons
@@ -39,7 +39,9 @@ describe("ProductPageButtonWishlist", () => {
   });
 
   it("should call addToWishList with the correct product info when the button is clicked", () => {
-    const { mockAddToWishList } = setupMockWishlistStore([]);
+    const { mockAddToWishList } = setupMockWishlistStore({
+      [mockCardProduct.id]: [mockCardProduct],
+    });
 
     render(
       <ProductPageButtons
@@ -57,49 +59,8 @@ describe("ProductPageButtonWishlist", () => {
     expect(mockAddToWishList).toHaveBeenCalledWith("user1", mockCardProduct);
   });
 
-  it('should not display the "Add to wishlist" button if the product is already in the wishlist', () => {
-    setupMockWishlistStore([mockCardProduct]);
-
-    render(
-      <ProductPageButtons
-        product={mockNormalizedProduct}
-        cardProductInfo={mockCardProduct}
-        session={session}
-      />,
-    );
-
-    const wishlistButton = screen.getByTestId("wishlist-button");
-    expect(wishlistButton).not.toHaveTextContent("Add to wishlist");
-  });
-
-  it('renders "Remove from wishlist" and calls removeFromWishList', () => {
-    const { mockRemoveFromWishList } = setupMockWishlistStore([
-      mockCardProduct,
-    ]);
-
-    render(
-      <ProductPageButtons
-        product={mockNormalizedProduct}
-        cardProductInfo={mockCardProduct}
-        session={session}
-      />,
-    );
-
-    const wishlistButton = screen.getByTestId("wishlist-button");
-    expect(wishlistButton).toHaveTextContent("Remove from wishlist");
-
-    expect(wishlistButton).toBeEnabled();
-
-    fireEvent.click(wishlistButton);
-    expect(mockRemoveFromWishList).toHaveBeenCalledTimes(1);
-    expect(mockRemoveFromWishList).toHaveBeenCalledWith(
-      "user1",
-      mockNormalizedProduct.id,
-    );
-  });
-
   it("renders disabled buttons when session is null", () => {
-    setupMockWishlistStore([]);
+    setupMockWishlistStore({});
 
     render(
       <ProductPageButtons

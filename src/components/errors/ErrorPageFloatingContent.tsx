@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function ErrorPageFloatingContent({
-  textContent,
+  text,
   title,
   type,
 }: {
-  textContent: string;
+  text: string;
   title: string;
   type: "not-found" | "error";
 }) {
@@ -93,7 +93,7 @@ export default function ErrorPageFloatingContent({
             },
           }}
         >
-          {textContent}
+          {text}
         </Typography>
         <Box
           sx={{

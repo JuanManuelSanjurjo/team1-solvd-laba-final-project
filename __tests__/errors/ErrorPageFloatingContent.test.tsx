@@ -20,7 +20,7 @@ describe("ErrorPageFloatingContent", () => {
     render(
       <ErrorPageFloatingContent
         title="Page not found"
-        textContent="The page you are looking for does not exist."
+        text="The page you are looking for does not exist."
         type="not-found"
       />,
     );
@@ -35,7 +35,7 @@ describe("ErrorPageFloatingContent", () => {
     render(
       <ErrorPageFloatingContent
         title="Something went wrong"
-        textContent="Try again later"
+        text="Try again later"
         type="error"
       />,
     );
@@ -48,7 +48,7 @@ describe("ErrorPageFloatingContent", () => {
     render(
       <ErrorPageFloatingContent
         title="Error"
-        textContent="Some error happened"
+        text="Some error happened"
         type="error"
       />,
     );
@@ -61,7 +61,7 @@ describe("ErrorPageFloatingContent", () => {
     render(
       <ErrorPageFloatingContent
         title="Not found"
-        textContent="Page missing"
+        text="Page missing"
         type="not-found"
       />,
     );

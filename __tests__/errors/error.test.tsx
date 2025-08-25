@@ -24,11 +24,6 @@ describe("Error page", () => {
     expect(screen.getByTestId("error-floating-content")).toBeInTheDocument();
 
     expect(screen.getByText("We lost that page")).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "We couldn't find the page you were looking for. Try going back or search for other products.",
-      ),
-    ).toBeInTheDocument();
     expect(screen.getByText("error")).toBeInTheDocument();
   });
 

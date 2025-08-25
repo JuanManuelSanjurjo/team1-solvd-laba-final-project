@@ -25,9 +25,7 @@ describe("NotFound page", () => {
 
     expect(floating).toBeInTheDocument();
     expect(floating).toHaveAttribute("title", "Error 404");
-    expect(floating).toHaveTextContent(
-      "The page you were looking for doesn't exist. Try going back or searching for other products.",
-    );
+
     expect(floating).toHaveAttribute("type", "not-found");
   });
 

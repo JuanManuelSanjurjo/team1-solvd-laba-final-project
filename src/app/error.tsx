@@ -4,7 +4,7 @@ import ErrorPageFloatingContent from "@/components/errors/ErrorPageFloatingConte
 import { Box } from "@mui/material";
 
 export default function Error(): JSX.Element {
-  const textContent =
+  const text =
     "We couldn't find the page you were looking for. Try going back or search for other products.";
 
   return (
@@ -61,7 +61,7 @@ export default function Error(): JSX.Element {
       />
       {/* Floating content */}
       <ErrorPageFloatingContent
-        textContent={textContent}
+        text={text}
         title="We lost that page"
         type="error"
       />

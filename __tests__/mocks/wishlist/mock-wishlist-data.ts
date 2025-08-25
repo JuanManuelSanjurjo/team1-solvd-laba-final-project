@@ -10,7 +10,7 @@ type MockedWishlistStore = {
 };
 
 export const setupMockWishlistStore = (
-  byUser: Record<string, cardProduct[]> = { "123": [] },
+  byUser: Record<string, cardProduct[]>,
 ) => {
   const mockAddToWishList = jest.fn();
   const mockRemoveFromWishList = jest.fn();
