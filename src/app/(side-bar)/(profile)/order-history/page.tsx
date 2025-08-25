@@ -1,5 +1,5 @@
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
-import MyProductsEmptyState from "@/components/MyProductsEmptyState";
+import ProductsEmptyState from "@/components/ProductsEmptyState";
 import { Box } from "@mui/material";
 import { Metadata } from "next";
 import ProfileHeaderTitle from "../components/ProfileHeaderTitle";
@@ -21,7 +21,7 @@ export default function OrderHistory() {
           height: "100%",
         }}
       >
-        <MyProductsEmptyState
+        <ProductsEmptyState
           title="You don't have any orders yet"
           subtitle="Start shooping checkout products available!"
           icon={LogoBlackSvg}

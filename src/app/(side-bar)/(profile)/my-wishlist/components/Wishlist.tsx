@@ -4,7 +4,7 @@ import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
 import { Box } from "@mui/material";
 import { useWishlistStore } from "@/store/wishlist-store";
-import MyProductsEmptyState from "@/components/MyProductsEmptyState";
+import ProductsEmptyState from "@/components/ProductsEmptyState";
 import { useRouter } from "next/navigation";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import { Session } from "next-auth";
@@ -68,7 +68,7 @@ export default function Wishlist({ session }: { session: Session }) {
             height: "100%",
           }}
         >
-          <MyProductsEmptyState
+          <ProductsEmptyState
             title="You don't have any products in wishlist yet"
             subtitle="Add products from products page using the heart icon."
             buttonText="Go to products"

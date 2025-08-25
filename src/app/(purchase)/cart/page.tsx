@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import CartCard from "./components/CartCard";
 import { useCartStore } from "@/store/cart-store";
-import MyProductsEmptyState from "@/components/MyProductsEmptyState";
+import ProductsEmptyState from "@/components/ProductsEmptyState";
 import { useRouter } from "next/navigation";
 import CheckoutSummary from "../components/CheckoutSummary";
 
@@ -30,8 +30,6 @@ export default function Checkout() {
 
   const cartIsEmpty = cartItems.length === 0;
 
-  console.log("cart: ", cartItems);
-
   function visitProducts() {
     router.push("/products");
   }
@@ -50,7 +48,7 @@ export default function Checkout() {
             marginTop: "5rem",
           }}
         >
-          <MyProductsEmptyState
+          <ProductsEmptyState
             title="You don't have any products yet"
             subtitle="Post can contain video, images and text."
             buttonText="Add Product"

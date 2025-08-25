@@ -4,7 +4,7 @@ import CardContainer from "@/components/cards/CardContainer";
 import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
 import { Box } from "@mui/material";
 import { useCallback } from "react";
-import MyProductsEmptyState from "@/components/MyProductsEmptyState";
+import ProductsEmptyState from "@/components/ProductsEmptyState";
 import { useRouter } from "next/navigation";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
 import { Session } from "next-auth";
@@ -68,7 +68,7 @@ export default function RecentlyViewed({ session }: { session: Session }) {
             height: "100%",
           }}
         >
-          <MyProductsEmptyState
+          <ProductsEmptyState
             title="You haven't viewed any products yet"
             subtitle="View available products in the products page."
             buttonText="Go to products"
