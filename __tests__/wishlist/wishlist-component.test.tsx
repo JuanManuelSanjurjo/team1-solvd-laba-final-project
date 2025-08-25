@@ -41,7 +41,7 @@ jest.mock(
   "@/app/(side-bar)/(profile)/components/ProfileHeaderTitle",
   () => (props: any) => <h1 data-testid="title">{props.children}</h1>
 );
-jest.mock("@/components/MyProductsEmptyState", () => (props: any) => (
+jest.mock("@/components/ProductsEmptyState", () => (props: any) => (
   <button data-testid="empty-go-products" onClick={props.onClick}>
     {props.buttonText}
   </button>
