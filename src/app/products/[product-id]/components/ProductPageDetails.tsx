@@ -5,23 +5,11 @@ import ProductSizes from "./ProductSizes";
 import ProductMainData from "./product-details/ProductMainData";
 import ProductDescription from "./product-details/ProductDescription";
 import ProductPageButtons from "./product-details/ProductPageButtons";
-import { JSX, useEffect } from "react";
+import { JSX, useEffect, useMemo } from "react";
 import { NormalizedProduct } from "@/types/product-types";
 import cardProduct from "@/components/cards/actions/types";
 import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
 import { Session } from "next-auth";
-
-/**
- * ProductPageDetails
- *
- * This component is a detailed view of a product. It displays the product's name, description, price, and sizes.
- *
- * @param {NormalizedProduct} props.product - The product data to be displayed.
- * @returns {JSX.Element} The product details component.
- *
- * @example
- * <ProductPageDetails product={product} />
- */
 
 export default function ProductPageDetails({
   product,
@@ -30,13 +18,18 @@ export default function ProductPageDetails({
   product: NormalizedProduct;
   session: Session | null;
 }): JSX.Element {
-  const cardProductInfo: cardProduct = {
-    id: product.id,
-    image: product.images?.[0]?.url || "https://placehold.co/400",
-    name: product.name,
-    price: product.price,
-    gender: product.gender,
-  };
+  const productImageUrl = product.images?.[0]?.url;
+
+  const cardProductInfo: cardProduct = useMemo(
+    () => ({
+      id: product.id,
+      image: productImageUrl || "https://placehold.co/400",
+      name: product.name,
+      price: product.price,
+      gender: product.gender,
+    }),
+    [product.id, productImageUrl, product.name, product.price, product.gender]
+  );
 
   const isLoggedIn = Boolean(session?.user?.email);
   const userId = session?.user?.id ? String(session.user.id) : undefined;
@@ -49,16 +42,7 @@ export default function ProductPageDetails({
     if (isLoggedIn && userId) {
       addToRecentlyViewed(userId, cardProductInfo);
     }
-  }, [
-    isLoggedIn,
-    userId,
-    product.id,
-    addToRecentlyViewed,
-    product.name,
-    product.price,
-    product.gender,
-    product.images?.[0]?.url,
-  ]);
+  }, [isLoggedIn, userId, addToRecentlyViewed, cardProductInfo]);
 
   return (
     <Box

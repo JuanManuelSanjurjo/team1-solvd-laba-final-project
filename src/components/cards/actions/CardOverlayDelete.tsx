@@ -1,8 +1,7 @@
 "use client";
 import { Box } from "@mui/material";
 import { Trash } from "iconsax-react";
-import { useState, JSX } from "react";
-import ConfirmationModal from "@/components/ConfirmationModal";
+import { JSX } from "react";
 
 /**
  * CardOverlayDelete

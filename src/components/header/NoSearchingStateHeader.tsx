@@ -1,4 +1,4 @@
-import { Box, Typography, Tooltip, Button } from "@mui/material";
+import { Box, Tooltip, Button } from "@mui/material";
 import { Bag, SearchNormal } from "iconsax-react";
 import { SearchBar } from "@/components/SearchBar";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";

@@ -30,13 +30,13 @@ export async function generateMetadata({
         images: product.images?.[0]?.url ? [product.images[0].url] : [],
       },
     };
-  } catch (error) {
+  } catch {
     return {
       title: "Product Not Found",
     };
   }
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
+export default function ProductPage() {
   return null;
 }
