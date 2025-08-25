@@ -90,7 +90,6 @@ export default function Products({
           keepMounted: true,
         }}
         sx={{
-          width: { xs: 240, md: 320 },
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: { xs: 240, md: 320 },
@@ -126,10 +125,15 @@ export default function Products({
       <Box
         sx={{
           width: {
-            xs: filtersOpen ? "100%" : "100%",
+            xs: "100%",
+            sm: filtersOpen ? "calc(100% - 240px)" : "100%",
             md: filtersOpen ? `calc(100% - 320px)` : "100%",
           },
-          marginLeft: { xs: 0, md: filtersOpen ? `320px` : 0 },
+          marginLeft: {
+            xs: 0,
+            sm: filtersOpen ? "240px" : 0,
+            md: filtersOpen ? `320px` : 0,
+          },
           transition: "margin 0.3s ease, width 0.3s ease",
           marginTop: {
             xs: "60px",
