@@ -15,6 +15,7 @@ import MyProductsEmptyState from "@/components/MyProductsEmptyState";
 import { useRouter } from "next/navigation";
 import CheckoutSummary from "../../components/CheckoutSummary";
 import { Link } from "@mui/material";
+import { useCallback } from "react";
 
 /**
  * Checkout page component that displays a list of products in the cart.
@@ -33,17 +34,15 @@ export default function Cart({ userId }: CartProps) {
 
   const cartItems: CartItem[] = userId ? byUser[userId] ?? [] : [];
 
-  console.log(cartItems);
-
   const theme = useTheme();
   const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const cartIsEmpty = cartItems.length === 0;
 
-  function visitProducts() {
+  const visitProducts = useCallback(() => {
     router.push("/products");
-  }
+  }, [router]);
 
   if (cartIsEmpty) {
     return (
@@ -77,50 +76,49 @@ export default function Cart({ userId }: CartProps) {
     );
   }
 
-  if (cartItems.length > 0)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: {
-            xs: "column",
-            lg: "row",
-          },
-          paddingInline: "20px",
-          marginTop: "80px",
-          justifyContent: "space-around",
-        }}
-      >
-        <Box sx={{ marginTop: "80px" }}>
-          <Link href="/products" sx={{ color: "#494949" }}>
-            Back to products
-          </Link>
-          <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
-            Cart
-          </Typography>
-          {cartItems.map((item) => (
-            <React.Fragment key={item.id + item.size}>
-              <CartCard
-                id={item?.id}
-                gender={item?.gender || ""}
-                quantity={item?.quantity}
-                productTitle={item?.name}
-                image={item?.image || "Loading"}
-                size={item.size || 0}
-                userId={userId}
-              />
-              {!isMobile && <Divider />}
-            </React.Fragment>
-          ))}{" "}
-        </Box>
-
-        <Box sx={{ marginTop: "80px" }}>
-          <CheckoutSummary
-            buttonText="Checkout"
-            buttonAction={() => router.push("/checkout")}
-            userId={userId}
-          />
-        </Box>
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: {
+          xs: "column",
+          lg: "row",
+        },
+        paddingInline: "20px",
+        marginTop: "80px",
+        justifyContent: "space-around",
+      }}
+    >
+      <Box sx={{ marginTop: "80px" }}>
+        <Link href="/products" sx={{ color: "#494949" }}>
+          Back to products
+        </Link>
+        <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
+          Cart
+        </Typography>
+        {cartItems.map((item) => (
+          <React.Fragment key={item.id + item.size}>
+            <CartCard
+              id={item?.id}
+              gender={item?.gender || ""}
+              quantity={item?.quantity}
+              productTitle={item?.name}
+              image={item?.image}
+              size={item.size || 0}
+              userId={userId}
+            />
+            {!isMobile && <Divider />}
+          </React.Fragment>
+        ))}{" "}
       </Box>
-    );
+
+      <Box sx={{ marginTop: "80px" }}>
+        <CheckoutSummary
+          buttonText="Checkout"
+          buttonAction={() => router.push("/checkout")}
+          userId={userId}
+        />
+      </Box>
+    </Box>
+  );
 }
