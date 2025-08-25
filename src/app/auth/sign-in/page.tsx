@@ -9,7 +9,7 @@ import SignInForm from "./components/SignInForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: `Sign In | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+  title: "Sign In",
 };
 
 export default function SignIn() {

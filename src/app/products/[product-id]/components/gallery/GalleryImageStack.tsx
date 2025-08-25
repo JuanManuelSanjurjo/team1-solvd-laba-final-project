@@ -43,11 +43,8 @@ export default function GalleryImageStack({
         },
         maxHeight: "100%",
         maxWidth: "100%",
-        padding: {
-          xs: "8px 0",
-          md: "0 8px",
-        },
-        overflow: "auto",
+        overflowY: "hidden",
+        overflowX: "auto",
         scrollbarWidth: "none",
         msOverflowStyle: "none",
         "&::-webkit-scrollbar": {

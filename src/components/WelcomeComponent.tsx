@@ -64,7 +64,7 @@ const WelcomeComponent = ({ src, name }: WelcomeComponentProps) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
-            maxWidth: "180px",
+            maxWidth: { xs: "90%", lg: "180px" },
           }}
         >
           {name}

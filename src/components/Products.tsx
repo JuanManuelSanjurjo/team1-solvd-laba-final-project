@@ -12,7 +12,7 @@ import { hasActiveFilters } from "@/lib/filter-utils";
 import Card from "@/components/cards/Card";
 import { FilterSideBar } from "../app/products/components/FiltersSideBar";
 import SkeletonCardContainer from "./skeletons/products/SkeletonCardContainer";
-import MyProductsEmptyState from "@/components/MyProductsEmptyState";
+import ProductsEmptyState from "@/components/ProductsEmptyState";
 import { normalizeProductCard } from "@/lib/normalizers/normalize-product-card";
 import { PRODUCTS_PER_PAGE } from "@/lib/constants/globals";
 import useQueryPagedProducts from "../app/products/hooks/useQueryPageProducts";
@@ -35,18 +35,22 @@ export default function Products({
   sizeOptions,
   categoryOptions,
 }: ProductsProps) {
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(true);
+  const { isMobile, isDesktop } = useMediaBreakpoints();
+
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(() =>
+    isDesktop ? true : false
+  );
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
 
   const filters = useMemo(
     () => getFiltersFromSearchParams(searchParams),
-    [searchParams],
+    [searchParams]
   );
   const searchTerm = useMemo(
     () => searchParams.get("searchTerm"),
-    [searchParams],
+    [searchParams]
   );
 
   const {
@@ -73,8 +77,6 @@ export default function Products({
     newSearchParams.set("page", page.toString());
     router.push(`?${newSearchParams.toString()}`);
   }
-
-  const { isMobile } = useMediaBreakpoints();
 
   const drawerVariant = isMobile ? "temporary" : "persistent";
   const drawerAnchor = isMobile ? "right" : "left";
@@ -240,7 +242,7 @@ export default function Products({
             ) : hasActiveFilters(filters) ? (
               "Search results"
             ) : (
-              " Products List"
+              " Products"
             )}
           </Typography>
           <Box
@@ -351,7 +353,7 @@ export default function Products({
                     marginTop: "25vh",
                   }}
                 >
-                  <MyProductsEmptyState
+                  <ProductsEmptyState
                     title="No products match this search"
                     subtitle="Try another search or remove some filters!"
                   />
@@ -369,7 +371,7 @@ export default function Products({
                           key={index}
                           overlay={true}
                         />
-                      ),
+                      )
                     )}
                   </CardContainer>
                   {pagination ? (

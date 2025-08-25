@@ -25,7 +25,7 @@ export default function ProductLayout({
   gallery,
 }: ProductLayoutProps) {
   return (
-    <Box marginBlock="100px" paddingInline={{ xs: 4, xl: 0 }}>
+    <Box marginBlock="80px" paddingInline={{ xs: 2.5, xl: 0 }}>
       <Box
         sx={{
           display: "flex",
