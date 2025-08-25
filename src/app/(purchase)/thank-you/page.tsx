@@ -6,7 +6,15 @@ export const metadata = {
   title: "Thank You",
 };
 
-export default function ThankYou() {
+export default async function ThankYou({
+  searchParams,
+}: {
+  searchParams: Promise<{ orderId: string }>;
+}) {
+  const { orderId } = await searchParams;
+
+  console.log(orderId);
+
   return (
     <>
       <Box
@@ -92,8 +100,9 @@ export default function ThankYou() {
                   fontWeight: "500",
                   color: "error.main",
                 }}
+                title={orderId}
               >
-                #9082372
+                {orderId}
               </Typography>
             </Stack>
           </Box>

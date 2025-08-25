@@ -78,8 +78,6 @@ export const useCartStore = create<CartState>()(
           return sum + get().totalOfProduct(item.id);
         }, 0);
 
-        console.log("Subtotal: ", result);
-
         return result;
       },
 

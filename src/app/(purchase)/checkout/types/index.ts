@@ -36,19 +36,9 @@ export const shippingInfoSchema = z.object({
   address: z.string().min(5, "Enter a full address"),
 });
 
-export const paymentInfoSchema = z.object({
-  cardNumber: z.string().regex(/^\d{13,19}$/, "Enter a valid card number"),
-  expDate: z
-    .string()
-    .trim()
-    .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Format must be MM/YY"),
-  cvc: z.string().regex(/^\d{3,4}$/, "CVC"),
-});
-
 export const checkoutSchema = z.object({
   ...personalInfoSchema.shape,
   ...shippingInfoSchema.shape,
-  ...paymentInfoSchema.shape,
 });
 
 export type CheckoutFormValues = z.infer<typeof checkoutSchema>;

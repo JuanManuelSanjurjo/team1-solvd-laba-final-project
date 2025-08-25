@@ -112,7 +112,12 @@ const CheckoutSummary = ({ buttonText, buttonAction }: checkoutSummary) => {
         </Typography>
       </Box>
 
-      <Button onClick={buttonAction} variant="contained" size="medium">
+      <Button
+        type="submit"
+        onClick={buttonAction}
+        variant="contained"
+        size="medium"
+      >
         {buttonText}
       </Button>
     </Box>
