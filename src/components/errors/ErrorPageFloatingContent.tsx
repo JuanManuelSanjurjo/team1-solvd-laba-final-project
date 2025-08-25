@@ -81,7 +81,8 @@ export default function ErrorPageFloatingContent({
               type === "error"
                 ? { xs: "white", md: "text.secondary" }
                 : "text.secondary",
-            marginTop: "20px",
+            marginTop: { xs: 0, md: "20px" },
+            fontWeight: 500,
             position: {
               xs: "absolute",
               md: "initial",
