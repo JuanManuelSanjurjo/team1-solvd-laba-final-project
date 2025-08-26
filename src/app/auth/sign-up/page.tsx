@@ -10,7 +10,7 @@ import SignUpForm from "./components/SignUpForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: `Register | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+  title: "Register",
 };
 
 export default function SignUp() {

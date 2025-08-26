@@ -52,6 +52,7 @@ const FilterCheckbox: React.FC<FilterCheckboxProps> = ({
         "&:last-of-type": {
           marginBottom: 0,
         },
+        paddingLeft: "10px",
       }}
     >
       <FormControlLabel

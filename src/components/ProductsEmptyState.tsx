@@ -10,9 +10,9 @@ type MyProductsEmptyStateProps = {
 };
 
 /**
- * MyProductsEmptyState
+ * ProductsEmptyState
  *
- * This component renders an empty state for the My Products page.
+ * This component renders an empty state for the Products page.
  * It displays a bag icon, a message, and a button to add a product.
  *
  * @property {string} title - The title of the empty state.
@@ -23,7 +23,7 @@ type MyProductsEmptyStateProps = {
  *
  * @returns {JSX.Element} An empty state for the My Products page.
  */
-export default function MyProductsEmptyState({
+export default function ProductsEmptyState({
   title,
   subtitle,
   buttonText,

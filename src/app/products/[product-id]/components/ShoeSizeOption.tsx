@@ -83,6 +83,7 @@ export default function ShoeSizeOption({
           onClick={() => {
             if (!disabled) onToggle(value);
           }}
+          data-testid="shoe-size-option"
         >
           EU-{size}
         </Box>

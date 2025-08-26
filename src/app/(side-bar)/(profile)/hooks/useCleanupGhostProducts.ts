@@ -20,27 +20,26 @@ export function useCleanUpGhostProducts(
   removeInactive: (inactiveIds: number[]) => void
 ) {
   const prevSignature = useRef<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (ids.length === 0) return;
     const signature = idsSignature(ids);
     if (signature === prevSignature.current) return;
     prevSignature.current = signature;
-    let cancelled = false;
+    setLoading(true);
     (async () => {
       try {
         const activeIds = await fetchActiveProductsIds(ids);
-        if (cancelled) return;
         const activeSet = new Set(activeIds);
         const inactive = ids.filter((id) => !activeSet.has(id));
         if (inactive.length) removeInactive(inactive);
       } catch (e) {
         console.error("Error cleaning inactive products:", e);
+      } finally {
+        setLoading(false);
       }
     })();
-
-    return () => {
-      cancelled = true;
-    };
   }, [ids, removeInactive]);
+  return loading;
 }

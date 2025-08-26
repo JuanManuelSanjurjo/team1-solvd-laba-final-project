@@ -1,13 +1,13 @@
 "use client";
 import FilterCheckbox from "@/components/FilterCheckBox";
-import { Box, Slider, Typography } from "@mui/material";
-import { SearchBar } from "@/components/SearchBar";
+import { Box, Slider, Typography, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { FiltersSection } from "./FiltersSection";
 import CurrentFilters from "./CurrentFilters";
 import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { FilterSectionWithSearch } from "./FilterSectionWithSearch";
 
 interface FilterSideBarProps {
   hideDrawer: () => void;
@@ -64,7 +64,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
 
   const handlePriceCommit = (
     _: Event | React.SyntheticEvent,
-    newValue: number | number[]
+    newValue: number | number[],
   ) => {
     if (!Array.isArray(newValue)) return;
 
@@ -75,6 +75,11 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
     params.set("priceMax", max.toString());
 
     router.replace(`?${params.toString()}`);
+  };
+
+  const handleClearAllFilters = () => {
+    setPriceRange([0, 500]);
+    router.replace("/products");
   };
 
   return (
@@ -116,13 +121,19 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
             </Typography>
           </>
         ) : (
-          <Box onClick={hideDrawer} sx={{ marginBottom: "36px" }}>
+          <Box
+            onClick={hideDrawer}
+            sx={{
+              marginBottom: "20px",
+            }}
+          >
             <CloseIcon
               sx={{
                 width: "20px",
                 height: "20px",
                 color: "rgba(73, 73, 73, 1)",
                 marginRight: "14px",
+                cursor: "pointer",
               }}
             />
           </Box>
@@ -163,25 +174,17 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
           />
         ))}
       </FiltersSection>
-      <FiltersSection label="Brand">
-        <Box sx={{ paddingRight: { xs: "30px" }, marginBottom: "36px" }}>
-          <SearchBar size="small" fullWidth />
-        </Box>
-        {brandOptions.map((brand, idx) => {
-          return (
-            <FilterCheckbox
-              key={idx}
-              label={brand.label}
-              checked={searchParams.getAll("brand").includes(brand.label)}
-              onChange={() => handleFilterChange("brand", brand.label)}
-            />
-          );
-        })}
-      </FiltersSection>
+      <FilterSectionWithSearch
+        label="Brand"
+        filterKey="brand"
+        options={brandOptions}
+        placeholder="Search brand..."
+        onFilterChange={handleFilterChange}
+      />
       <FiltersSection label="Price">
         <Slider
           value={priceRange}
-          sx={{ width: "95%" }}
+          sx={{ width: "94%" }}
           onChange={handlePriceChange}
           onChangeCommitted={handlePriceCommit}
           valueLabelDisplay="auto"
@@ -190,18 +193,45 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
           step={10}
         />
       </FiltersSection>
-      <FiltersSection label="Color">
-        {colorOptions.map((color, idx) => {
-          return (
-            <FilterCheckbox
-              key={idx}
-              label={color.label}
-              checked={searchParams.getAll("color").includes(color.label)}
-              onChange={() => handleFilterChange("color", color.label)}
-            />
-          );
-        })}
-      </FiltersSection>
+      <FilterSectionWithSearch
+        label="Color"
+        filterKey="color"
+        options={colorOptions}
+        placeholder="Search color..."
+        checked={(value) => searchParams.getAll("color").includes(value)}
+        onFilterChange={handleFilterChange}
+      />
+
+      <Box
+        sx={{
+          paddingLeft: { xs: "30px", md: "40px" },
+          paddingRight: { xs: "30px", md: "40px" },
+          paddingTop: "20px",
+          paddingBottom: { xs: "30px", md: "40px" },
+        }}
+      >
+        {isMobile && (
+          <CurrentFilters
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+          />
+        )}
+        <Button
+          variant="outlined"
+          fullWidth
+          onClick={handleClearAllFilters}
+          sx={{
+            borderColor: "theme.primary",
+            color: "theme.primary",
+            "&:hover": {
+              borderColor: "theme.primary",
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
+            },
+          }}
+        >
+          Clear All Filters
+        </Button>
+      </Box>
     </Box>
   );
 };

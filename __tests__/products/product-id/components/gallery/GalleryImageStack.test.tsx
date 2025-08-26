@@ -29,7 +29,6 @@ describe("GalleryImageStack Component", () => {
       />,
     );
 
-    // Check that all images are rendered
     mockImages.forEach((image) => {
       expect(screen.getByAltText(image.alt)).toBeInTheDocument();
     });
@@ -46,10 +45,8 @@ describe("GalleryImageStack Component", () => {
       />,
     );
 
-    // Click the second thumbnail
     fireEvent.click(screen.getByAltText("Image 2"));
 
-    // Check that setCurrent was called with the correct index
     expect(mockSetCurrent).toHaveBeenCalledWith(1);
   });
 
@@ -64,11 +61,8 @@ describe("GalleryImageStack Component", () => {
       />,
     );
 
-    // Find all thumbnails
     const thumbnails = screen.getAllByRole("img");
 
-    // The second thumbnail (index 1) should have the active border
-    // Note: We can't easily test the exact styling in JSDOM, but we can check that the elements exist
     expect(thumbnails).toHaveLength(3);
   });
 });

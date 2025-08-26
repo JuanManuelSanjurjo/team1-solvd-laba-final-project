@@ -1,8 +1,7 @@
 "use client";
 import { Box } from "@mui/material";
 import { Trash } from "iconsax-react";
-import { useState, JSX } from "react";
-import ConfirmationModal from "@/components/ConfirmationModal";
+import { JSX } from "react";
 
 /**
  * CardOverlayDelete
@@ -21,13 +20,6 @@ interface CardOverlayDeleteProps {
 export default function CardOverlayDelete({
   onDeletePreview,
 }: CardOverlayDeleteProps): JSX.Element {
-  const [showModal, setShowModal] = useState(false);
-
-  function handleClose(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setShowModal(false);
-  }
-
   return (
     <Box
       className="overlay"
@@ -66,17 +58,6 @@ export default function CardOverlayDelete({
           }}
         />
       </Box>
-      <ConfirmationModal
-        showModal={showModal}
-        onClose={handleClose}
-        title="Are you sure to delete selected item?"
-        text="Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."
-        primaryBtn="Delete"
-        secondaryBtn="Cancel"
-        onPrimary={() => {
-          console.log("Deleting");
-        }}
-      />
     </Box>
   );
 }

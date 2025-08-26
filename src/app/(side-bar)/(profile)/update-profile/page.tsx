@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import ProfileHeaderTitle from "../components/ProfileHeaderTitle";
 
 export const metadata: Metadata = {
-  title: `Profile | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+  title: "Profile",
 };
 
 export default async function UpdateProfile() {

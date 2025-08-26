@@ -78,7 +78,8 @@ export default function Gallery({
               alt={`main-img-${current}`}
               sx={{
                 aspectRatio: {
-                  xs: "4/3",
+                  xs: "1/1",
+                  sm: "4/3",
                 },
                 height: {
                   xs: "100%",

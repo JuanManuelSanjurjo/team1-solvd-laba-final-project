@@ -33,18 +33,18 @@ export default function CardButtonWishList({
   );
 
   const wishList = byUser[userId] ?? [];
-  const isInWisList = wishList.some((prod) => prod.id === product.id);
+  const isInWishList = wishList.some((prod) => prod.id === product.id);
 
   const handleToggle = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (isInWisList) {
+    if (isInWishList) {
       removeFromWishList(userId, product.id);
     } else {
       addToWishList(userId, product);
     }
   };
 
-  const IconComponent = isInWisList ? HeartSlash : Heart;
+  const IconComponent = isInWishList ? HeartSlash : Heart;
 
   return (
     <Box
@@ -69,7 +69,9 @@ export default function CardButtonWishList({
         size="32"
         color="currentColor"
         className="bg"
-        variant={isInWisList ? "Bold" : "Outline"}
+        variant={isInWishList ? "Bold" : "Outline"}
+        data-testid="heart-icon"
+        data-variant={isInWishList ? "Bold" : "Outline"}
       />
     </Box>
   );

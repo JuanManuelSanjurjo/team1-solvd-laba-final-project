@@ -1,6 +1,6 @@
 import cardProduct from "@/components/cards/actions/types";
 
-export const mockCardProduct: cardProduct = {
+export const MOCK_CARD_PRODUCT: cardProduct = {
   id: 1,
   name: "Mock snicker",
   price: 100,
@@ -8,7 +8,7 @@ export const mockCardProduct: cardProduct = {
   gender: "Men's shoes",
 };
 
-export const mockCardProduct2: cardProduct = {
+export const MOCK_CARD_PRODUCT_2: cardProduct = {
   id: 2,
   name: "Mock snicker 2",
   price: 150,
@@ -16,9 +16,9 @@ export const mockCardProduct2: cardProduct = {
   gender: "Women's shoes",
 };
 
-export const arrayCardProduct: cardProduct[] = [
-  mockCardProduct,
-  mockCardProduct2,
+export const MOCK_ARRAY_CARD_PRODUCT: cardProduct[] = [
+  MOCK_CARD_PRODUCT,
+  MOCK_CARD_PRODUCT_2,
   {
     id: 3,
     name: "Mock snicker 3",
@@ -77,7 +77,7 @@ export const arrayCardProduct: cardProduct[] = [
   },
 ];
 
-export const mockNormalizedProduct = {
+export const MOCK_NORMALIZED_PRODUCT = {
   id: 1,
   name: "Mock snicker",
   price: 100,
@@ -87,3 +87,7 @@ export const mockNormalizedProduct = {
   color: "Blue",
   sizes: [{ id: 1, value: 42 }],
 };
+
+export const MOCK_USER_ID = "123";
+
+export const MOCK_USER_ID_2 = "456";

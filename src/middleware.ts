@@ -14,16 +14,17 @@ export default auth((req) => {
   const token = req.auth;
   const { pathname, origin } = req.nextUrl;
   const isPublicRoute = publicRoutes.includes(pathname);
+  const isAuthRoute = pathname.startsWith("/auth/");
 
   if (pathname === "/") {
-    return NextResponse.rewrite(new URL("/products", origin));
+    return NextResponse.redirect(new URL("/products", origin));
   }
 
   if (!token && !isPublicRoute) {
     return NextResponse.redirect(new URL("/auth/sign-in", origin));
   }
 
-  if (token && isPublicRoute) {
+  if (token && isAuthRoute) {
     return NextResponse.redirect(new URL("/products", origin));
   }
 

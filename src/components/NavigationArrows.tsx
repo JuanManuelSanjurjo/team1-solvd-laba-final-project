@@ -26,7 +26,7 @@ const StyledBox = styled(Box)(
     backgroundColor: variant === "product_card" ? "#fff" : "unset",
     borderRadius: "100%",
     cursor: "pointer",
-  })
+  }),
 );
 
 /**
@@ -67,11 +67,19 @@ export default function NavigationArrows({
           gap: variant === "product_card" ? "16px" : "32px",
         }}
       >
-        <StyledBox variant={variant} onClick={handlePrev}>
-          <ArrowLeft2 style={{ padding: "5px" }} color="#0d0d0d" />
+        <StyledBox
+          variant={variant}
+          onClick={handlePrev}
+          data-testid="prev-arrow"
+        >
+          <ArrowLeft2 style={{ padding: "5px" }} size={24} color="#0d0d0d" />
         </StyledBox>
-        <StyledBox variant={variant} onClick={handleNext}>
-          <ArrowRight2 style={{ padding: "5px" }} color="#0d0d0d" />
+        <StyledBox
+          variant={variant}
+          onClick={handleNext}
+          data-testid="next-arrow"
+        >
+          <ArrowRight2 style={{ padding: "5px" }} size={24} color="#0d0d0d" />
         </StyledBox>
       </Box>
     </Box>

@@ -1,10 +1,11 @@
 "use client";
-import { Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem, AlertProps } from "@mui/material";
 import { useState } from "react";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { Session } from "next-auth";
+import Toast from "../Toast";
 
 /**
  * DesktopProfileMenu
@@ -22,6 +23,23 @@ export default function DesktopProfileMenu({
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+  const [open, setOpen] = useState(false);
+  const [toastContent, setToastContent] = useState({
+    severity: "" as AlertProps["severity"],
+    message: "",
+  });
+  const handleToastClose = () => {
+    setOpen(false);
+  };
+
+  const handleLogout = () => {
+    setToastContent({
+      severity: "success",
+      message: "Logging out...",
+    });
+    setOpen(true);
+    signOut();
+  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -31,6 +49,12 @@ export default function DesktopProfileMenu({
   };
   return (
     <>
+      <Toast
+        open={open}
+        onClose={handleToastClose}
+        severity={toastContent.severity}
+        message={toastContent.message}
+      />
       <ProfilePicture
         width={24}
         alt={session?.user?.username}
@@ -77,7 +101,7 @@ export default function DesktopProfileMenu({
         <MenuItem onClick={handleClose} component={Link} href="/update-profile">
           Settings
         </MenuItem>
-        <MenuItem onClick={() => signOut()}>Log out</MenuItem>
+        <MenuItem onClick={handleLogout}>Log out</MenuItem>
       </Menu>
     </>
   );
