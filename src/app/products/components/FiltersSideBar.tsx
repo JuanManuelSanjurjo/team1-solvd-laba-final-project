@@ -64,7 +64,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
 
   const handlePriceCommit = (
     _: Event | React.SyntheticEvent,
-    newValue: number | number[]
+    newValue: number | number[],
   ) => {
     if (!Array.isArray(newValue)) return;
 
@@ -133,6 +133,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
                 height: "20px",
                 color: "rgba(73, 73, 73, 1)",
                 marginRight: "14px",
+                cursor: "pointer",
               }}
             />
           </Box>
@@ -183,7 +184,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
       <FiltersSection label="Price">
         <Slider
           value={priceRange}
-          sx={{ width: "95%" }}
+          sx={{ width: "94%" }}
           onChange={handlePriceChange}
           onChangeCommitted={handlePriceCommit}
           valueLabelDisplay="auto"

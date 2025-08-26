@@ -61,9 +61,7 @@ export default function Card({
     <Box
       sx={{
         position: "relative",
-        "&:hover .overlay": {
-          opacity: 1,
-        },
+        transition: "opacity 0.2s ease",
         height: { xs: 210, md: 445 },
         width: {
           xs: 152,
@@ -71,6 +69,12 @@ export default function Card({
         },
         display: "flex",
         flexDirection: "column",
+        "&:hover ": {
+          opacity: 0.8,
+        },
+        "&:hover .overlay": {
+          opacity: 1,
+        },
       }}
     >
       <Link href={`/products/${product?.id}`}>
@@ -95,7 +99,7 @@ export default function Card({
             {overlayAction && (
               <CardActionWrapperCenter
                 action={
-                  overlayAction === "cardOverlayAddToCard" ? (
+                  overlayAction === "cardOverlayAddToCart" ? (
                     <CardOverlayAddToCart
                       product={{
                         id: product?.id ?? 0,

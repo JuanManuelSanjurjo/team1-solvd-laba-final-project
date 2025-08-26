@@ -1,11 +1,17 @@
 import { ReactNode } from "react";
 import { Container, Box } from "@mui/material";
+import { Metadata } from "next";
 
 interface ProductLayoutProps {
   children?: ReactNode;
   productDetails: ReactNode;
   gallery: ReactNode;
 }
+
+export const metadata: Metadata = {
+  title: "Product Page",
+  description: "Product Page",
+};
 
 /**
  * ProductLayout

@@ -72,14 +72,14 @@ export default function NavigationArrows({
           onClick={handlePrev}
           data-testid="prev-arrow"
         >
-          <ArrowLeft2 style={{ padding: "5px" }} color="#0d0d0d" />
+          <ArrowLeft2 style={{ padding: "5px" }} size={24} color="#0d0d0d" />
         </StyledBox>
         <StyledBox
           variant={variant}
           onClick={handleNext}
           data-testid="next-arrow"
         >
-          <ArrowRight2 style={{ padding: "5px" }} color="#0d0d0d" />
+          <ArrowRight2 style={{ padding: "5px" }} size={24} color="#0d0d0d" />
         </StyledBox>
       </Box>
     </Box>
