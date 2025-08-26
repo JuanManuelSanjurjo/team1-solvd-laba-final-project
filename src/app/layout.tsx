@@ -13,6 +13,9 @@ export const metadata: Metadata = {
     template: "%s | Shoes Shop",
     default: "Shoes Shop",
   },
+  icons: {
+    icon: "/assets/logo/logo-orange.svg",
+  },
   description: "Shoes Shop - Your one-stop shop for all your shoe needs",
   keywords: ["shoes", "clothing", "ecommerce"],
   authors: [{ name: "Shoes Shop" }],
