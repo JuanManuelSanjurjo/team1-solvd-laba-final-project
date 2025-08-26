@@ -6,6 +6,7 @@ import { worksans, nunitosans } from "@/style/fonts";
 import { Header } from "@/components/header/Header";
 import ProvidersFactory from "@/providers/ProvidersFactory";
 import { auth } from "@/auth";
+import ToastHost from "@/components/ToastHost";
 
 export const metadata: Metadata = {
   title: {
@@ -39,6 +40,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${worksans.variable} ${nunitosans.variable}`}>
         <ProvidersFactory>
+          <ToastHost />
           <main>
             <Header session={session} />
             {/* We'll update this component next */}

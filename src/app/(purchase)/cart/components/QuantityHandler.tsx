@@ -14,6 +14,8 @@ import { useCartStore } from "@/store/cart-store";
 type QuantityHandlerProps = {
   quantity: number;
   id: number;
+  userId: string;
+  size: number;
 };
 
 /**
@@ -29,7 +31,12 @@ type QuantityHandlerProps = {
  * @returns {JSX.Element} A responsive UI for handling product quantity adjustments.
  */
 
-const QuantityHandler = ({ quantity, id }: QuantityHandlerProps) => {
+const QuantityHandler = ({
+  quantity,
+  id,
+  userId,
+  size,
+}: QuantityHandlerProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const updateQuantity = useCartStore((state) => state.updateQuantity);
@@ -71,14 +78,14 @@ const QuantityHandler = ({ quantity, id }: QuantityHandlerProps) => {
             }}
           >
             <ProductQuantityButton
-              onClick={() => updateQuantity(id, "minus")}
+              onClick={() => updateQuantity(userId, id, "minus", size)}
               operation="Minus"
             />
             <Typography variant="body1" color="#494949">
               {quantity}
             </Typography>
             <ProductQuantityButton
-              onClick={() => updateQuantity(id, "add")}
+              onClick={() => updateQuantity(userId, id, "add", size)}
               operation="Add"
             />
           </Box>
@@ -98,14 +105,14 @@ const QuantityHandler = ({ quantity, id }: QuantityHandlerProps) => {
       }}
     >
       <ProductQuantityButton
-        onClick={() => updateQuantity(id, "minus")}
+        onClick={() => updateQuantity(userId, id, "minus", size)}
         operation="Minus"
       />
       <Typography variant="h4" color="#494949">
         {quantity}
       </Typography>
       <ProductQuantityButton
-        onClick={() => updateQuantity(id, "add")}
+        onClick={() => updateQuantity(userId, id, "add", size)}
         operation="Add"
       />
       <Typography variant="h4" color="#494949">

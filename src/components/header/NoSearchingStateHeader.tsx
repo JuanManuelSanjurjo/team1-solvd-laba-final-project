@@ -1,4 +1,4 @@
-import { Box, Tooltip, Button } from "@mui/material";
+import { Box, Tooltip, Button, Badge } from "@mui/material";
 import { Bag, SearchNormal } from "iconsax-react";
 import { SearchBar } from "@/components/SearchBar";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
@@ -8,6 +8,7 @@ import DesktopProfileMenu from "./DesktopProfileMenu";
 import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import Link from "next/link";
 import { Session } from "next-auth";
+import { useCartStore } from "@/store/cart-store";
 
 /**
  * NoSearchingStateHeader
@@ -34,6 +35,13 @@ export default function NoSearchingStateHeader({
 }) {
   const { isMobile, isDesktop } = useMediaBreakpoints();
 
+  let userId: string;
+
+  if (session) {
+    userId = session.user.id;
+  }
+
+  const totalItems = useCartStore((state) => state.totalItems(userId || ""));
   const isAuthenticated = Boolean(session);
 
   const itemGap = isMobile || !session ? 2 : 5;
@@ -79,7 +87,14 @@ export default function NoSearchingStateHeader({
           {isAuthenticated && (
             <Tooltip title={"Cart"}>
               <Link href="/cart" style={{ display: "flex" }}>
-                <Bag style={{ width: bagIconSize }} color="#292d32" />
+                <Badge
+                  badgeContent={totalItems}
+                  color="primary"
+                  overlap="circular"
+                  invisible={totalItems === 0}
+                >
+                  <Bag style={{ width: bagIconSize }} color="#292d32" />
+                </Badge>
               </Link>
             </Tooltip>
           )}

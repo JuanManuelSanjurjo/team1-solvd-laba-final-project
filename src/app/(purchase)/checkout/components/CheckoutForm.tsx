@@ -1,13 +1,13 @@
 "use client";
 
 import { Typography, Box, Grid, Divider } from "@mui/material";
-// import PaymentInfo from "./PaymentInfo";
 import Input from "@/components/form-elements/Input";
 import { InputProps } from "@/types/form";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCartStore } from "@/store/cart-store";
 import CheckoutSummary from "../../components/CheckoutSummary";
+import { CartItem } from "../../cart/types";
 
 import { checkoutSchema, type CheckoutFormValues } from "../types";
 import {
@@ -155,8 +155,16 @@ const defaultValues = {
   address: "123 Main Street, Apt 4B",
 };
 
-export default function CheckoutForm({ orderId }: { orderId: string }) {
-  const cartItems = useCartStore((state) => state.items);
+export default function CheckoutForm({
+  orderId,
+  userId,
+}: {
+  orderId: string;
+  userId: string;
+}) {
+  const byUser = useCartStore((state) => state.byUser);
+  const cartItems: CartItem[] = userId ? byUser[userId] ?? [] : [];
+
   const cartIsEmpty = cartItems.length === 0;
 
   const stripe = useStripe();
@@ -328,6 +336,7 @@ export default function CheckoutForm({ orderId }: { orderId: string }) {
           <CheckoutSummary
             buttonText={!loading ? "Confirm & Pay" : "Processing..."}
             buttonAction={handleSubmit(onSubmit)}
+            userId={userId}
           />
         </Box>
       )}

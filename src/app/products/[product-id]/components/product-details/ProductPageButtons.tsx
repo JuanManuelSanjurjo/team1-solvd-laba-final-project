@@ -21,10 +21,12 @@ import { Session } from "next-auth";
 export default function ProductPageButtons({
   product,
   cardProductInfo,
+  onAddToCart,
   session,
 }: {
   product: NormalizedProduct;
   cardProductInfo: cardProduct;
+  onAddToCart: () => void;
   session: Session | null;
 }): JSX.Element {
   const isLoggedIn = Boolean(session?.user);
@@ -57,7 +59,11 @@ export default function ProductPageButtons({
             Add to wishlist
           </Button>
         )}
-        <Button disabled={!isLoggedIn} variant="contained">
+        <Button
+          onClick={onAddToCart}
+          disabled={!isLoggedIn}
+          variant="contained"
+        >
           Add to cart
         </Button>
       </Box>
@@ -104,7 +110,7 @@ export default function ProductPageButtons({
           {wishlistButtonText}
         </Button>
       )}
-      <Button disabled={!isLoggedIn} variant="contained">
+      <Button onClick={onAddToCart} disabled={!isLoggedIn} variant="contained">
         Add to cart
       </Button>
     </Box>

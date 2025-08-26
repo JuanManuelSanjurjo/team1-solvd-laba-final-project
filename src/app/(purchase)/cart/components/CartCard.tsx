@@ -6,7 +6,10 @@ import { Trash } from "iconsax-react";
 // import Image from "next/image"; //Add later. There is an issue with the external url not being add into next.config.js
 import QuantityHandler from "./QuantityHandler";
 import CartCardImage from "./CartCardImage";
-import { useCartStore } from "@/store/cart-store"; // ruta a tu store
+import ConfirmationModal from "@/components/ConfirmationModal";
+import { useState } from "react";
+import { useCartStore } from "@/store/cart-store";
+
 
 type CartCardProps = {
   id: number;
@@ -14,6 +17,8 @@ type CartCardProps = {
   productTitle: string;
   gender: string;
   image: string;
+  userId: string;
+  size: number;
 };
 
 /**
@@ -35,10 +40,14 @@ const CartCard = ({
   productTitle,
   gender,
   image,
+  size,
+  userId,
   ...moreProps
 }: CartCardProps): JSX.Element => {
   const removeItem = useCartStore((state) => state.removeItem);
   const totalOfProduct = useCartStore((state) => state.totalOfProduct);
+
+  const [ConfirmationModalOpened, setConfirmationModalOpened] = useState(false);
 
   return (
     <Box
@@ -69,6 +78,15 @@ const CartCard = ({
           >
             {gender}&apos;s Shoes
           </Typography>
+          <Typography
+            variant="subtitle1"
+            sx={(theme) => ({
+              color: theme.palette.text.secondary,
+              marginTop: "4px",
+            })}
+          >
+            EU{size}
+          </Typography>
 
           <Typography
             sx={(theme) => ({
@@ -85,7 +103,7 @@ const CartCard = ({
 
         <Grid size={2}>
           <Typography variant="h3" sx={{ fontSize: { xs: 12, sm: 30 } }}>
-            ${totalOfProduct(id)}
+            ${totalOfProduct(userId, id, size)}
           </Typography>
         </Grid>
 
@@ -100,10 +118,15 @@ const CartCard = ({
           }}
         >
           <Grid sx={{ display: "flex" }}>
-            <QuantityHandler quantity={quantity} id={id} />
+            <QuantityHandler
+              quantity={quantity}
+              id={id}
+              userId={userId}
+              size={size}
+            />
 
             <Button
-              onClick={() => removeItem(id)}
+              onClick={() => setConfirmationModalOpened(true)}
               sx={{
                 color: "#8B8E93",
                 fontSize: { xs: 12, sm: 24 },
@@ -117,6 +140,16 @@ const CartCard = ({
           </Grid>
         </Grid>
       </Grid>
+
+      <ConfirmationModal
+        showModal={ConfirmationModalOpened}
+        onClose={() => setConfirmationModalOpened(false)}
+        onPrimary={() => removeItem(userId, id, size)}
+        title="Delete product from cart"
+        text="Are you sure you want to delete this product from the cart?"
+        secondaryBtn="No, keep product"
+        primaryBtn="Yes, delete"
+      />
     </Box>
   );
 };

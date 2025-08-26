@@ -40,6 +40,7 @@ type CardProps = {
  * @param overlayAction - Action to show in the center overlay (e.g., "CardOverlayAddToCard").
  * @param overlay - Currently unused (reserved for future positioning logic).
  * @param showText - Whether to show text details if a product is passed.
+ * @param userId - Id of the user authenticated
  * @returns {JSX.Element}
  */
 
@@ -101,6 +102,7 @@ export default function Card({
                 action={
                   overlayAction === "cardOverlayAddToCart" ? (
                     <CardOverlayAddToCart
+                      session={session}
                       product={{
                         id: product?.id ?? 0,
                         image: product?.image,

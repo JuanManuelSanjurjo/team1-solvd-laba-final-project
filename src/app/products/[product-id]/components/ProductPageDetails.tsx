@@ -7,9 +7,11 @@ import ProductDescription from "./product-details/ProductDescription";
 import ProductPageButtons from "./product-details/ProductPageButtons";
 import { JSX, useEffect, useMemo } from "react";
 import { NormalizedProduct } from "@/types/product-types";
-import cardProduct from "@/components/cards/actions/types";
 import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
 import { Session } from "next-auth";
+import cardProduct from "@/components/cards/actions/types";
+import { useState } from "react";
+import { useCartStore } from "@/store/cart-store";
 
 export default function ProductPageDetails({
   product,
@@ -18,6 +20,8 @@ export default function ProductPageDetails({
   product: NormalizedProduct;
   session: Session | null;
 }): JSX.Element {
+  const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
+
   const productImageUrl = product.images?.[0]?.url;
 
   const cardProductInfo: cardProduct = useMemo(
@@ -44,6 +48,33 @@ export default function ProductPageDetails({
     }
   }, [isLoggedIn, userId, addToRecentlyViewed, cardProductInfo]);
 
+  const toggleSize = (size: number) => {
+    setSelectedSizes((prev) =>
+      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
+    );
+  };
+  const addItem = useCartStore((state) => state.addItem);
+
+  const handleAddToCart = () => {
+    const userId = session?.user?.id ? String(session.user.id) : null;
+
+    if (!userId) {
+      return;
+    }
+
+    selectedSizes.forEach((size) => {
+      addItem(userId, {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images?.[0]?.url,
+        gender: product.gender,
+        size,
+        quantity: 1,
+      });
+    });
+  };
+
   return (
     <Box
       data-testid="product-page-details"
@@ -59,8 +90,13 @@ export default function ProductPageDetails({
       }}
     >
       <ProductMainData product={product} />
-      <ProductSizes product={product} />
+      <ProductSizes
+        product={product}
+        toggleSize={toggleSize}
+        selectedSizes={selectedSizes}
+      />
       <ProductPageButtons
+        onAddToCart={handleAddToCart}
         product={product}
         session={session}
         cardProductInfo={cardProductInfo}

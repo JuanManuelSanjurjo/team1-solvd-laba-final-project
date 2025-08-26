@@ -1,9 +1,11 @@
 "use client";
 import { Box, Typography, Stack } from "@mui/material";
 import { BagTick } from "iconsax-react";
-import ConfirmationModal from "@/components/ConfirmationModal";
-import { useState, JSX } from "react";
-import cardProduct from "./types";
+import CardProduct from "./types";
+import { Session } from "next-auth";
+import { useState } from "react";
+import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
+import Select from "@/components/form-elements/Select";
 import { useCartStore } from "@/store/cart-store";
 
 /**
@@ -13,17 +15,21 @@ import { useCartStore } from "@/store/cart-store";
  * Is passed to the Card component to be rendered on top of the image.
  * Opens a confirmation modal with a message asking the user to confirm adding the item to the cart.
  *
- * @returns {JSX.Element} with the card add to cart component.
  */
 
 type CardOverlayAddToCardProps = {
-  product: cardProduct;
+  product: CardProduct;
+  session: Session | null;
 };
 
 export default function CardOverlayAddToCart({
   product,
-}: CardOverlayAddToCardProps): JSX.Element {
+  session,
+}: CardOverlayAddToCardProps) {
   const [showModal, setShowModal] = useState(false);
+  const [selectedSize, setSelectedSize] = useState<number>(0);
+
+  const userId = session?.user.id;
 
   const addItem = useCartStore((state) => state.addItem);
 
@@ -35,13 +41,19 @@ export default function CardOverlayAddToCart({
   function handleConfirmAdd(e: React.MouseEvent) {
     e?.stopPropagation();
     e?.preventDefault();
-    addItem({
+
+    if (!userId) {
+      return;
+    }
+
+    addItem(userId, {
       id: product.id,
       image: product.image,
       name: product.name,
       price: product.price,
       quantity: 1,
       gender: product.gender,
+      size: selectedSize,
     });
 
     setShowModal(false);
@@ -79,15 +91,25 @@ export default function CardOverlayAddToCart({
           Add to cart
         </Typography>
       </Stack>
-      <ConfirmationModal
+      <SizeSelectorModal
         showModal={showModal}
         onClose={handleClose}
-        title="Add to cart?"
-        text="Are you sure you want to add this item to your cart?"
+        title="Select a size"
+        text=""
         primaryBtn="Add"
         secondaryBtn="Cancel"
         onPrimary={handleConfirmAdd}
-      />
+      >
+        <Select
+          name="size"
+          label="Size"
+          placeholder="Choose your size"
+          required
+          options={[]}
+          value={selectedSize ?? ""}
+          onChange={(e) => setSelectedSize(Number(e.target.value))}
+        />
+      </SizeSelectorModal>
     </Box>
   );
 }

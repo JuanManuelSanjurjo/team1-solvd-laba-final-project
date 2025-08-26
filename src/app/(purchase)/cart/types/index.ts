@@ -3,19 +3,26 @@ export interface CartItem {
   image: string | undefined;
   name: string;
   price: number;
-  quantity: number;
+  size: number;
   gender: string | undefined;
+  quantity: number;
 }
 
 export interface CartState {
-  items: CartItem[];
-  addItem: (item: CartItem) => void;
-  removeItem: (id: number) => void;
-  clearCart: () => void;
-  updateQuantity: (id: number, action: "add" | "minus") => void;
-  totalOfProduct: (id: number) => number;
-  subtotal: () => number;
-  taxes: () => number;
-  shipping: () => number;
-  total: () => number;
+  byUser: Record<string, CartItem[]>;
+  addItem: (userId: string, item: CartItem) => void;
+  removeItem: (userId: string, id: number, size: number) => void;
+  totalItems: (userId: string) => number;
+  clearCart: (userId: string) => void;
+  updateQuantity: (
+    userId: string,
+    id: number,
+    action: "add" | "minus",
+    size: number
+  ) => void;
+  totalOfProduct: (userId: string, id: number, size: number) => number;
+  subtotal: (userId: string) => number;
+  taxes: (userId: string) => number;
+  shipping: (userId: string) => number;
+  total: (userId: string) => number;
 }
