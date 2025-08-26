@@ -4,7 +4,7 @@ import CardImage from "./CardImage";
 import CardActionWrapperTopRight from "./wrappers/CardActionWrapperTopRight";
 import CardActionWrapperCenter from "./wrappers/CardActionWrapperCenter";
 import { JSX } from "react";
-import cardProduct from "./actions/types";
+import CardProduct from "./actions/types";
 import CardButtonMenu from "./actions/CardButtonMenu";
 import CardButtonWishList from "./actions/CardButtonWishList";
 import CardOverlayAddToCart from "./actions/CardOverlayAddToCart";
@@ -13,7 +13,7 @@ import { Session } from "next-auth";
 
 type CardProps = {
   session: Session | null;
-  product?: cardProduct;
+  product?: CardProduct;
   image?: string;
   topAction?: string;
   overlayAction?: string;
@@ -105,6 +105,7 @@ export default function Card({
                         name: product?.name ?? "",
                         price: product?.price ?? 0,
                         gender: product?.gender,
+                        sizes: product?.sizes,
                       }}
                     />
                   ) : (

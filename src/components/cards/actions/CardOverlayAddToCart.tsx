@@ -6,8 +6,7 @@ import { useState } from "react";
 import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
 import Select from "@/components/form-elements/Select";
 import { useCartStore } from "@/store/cart-store";
-import CardProductSizes from "./types/card-product-sizes";
-
+import CardProduct from "./types";
 /**
  * CardOverlayAddToCart
  *
@@ -18,7 +17,7 @@ import CardProductSizes from "./types/card-product-sizes";
  */
 
 type CardOverlayAddToCardProps = {
-  product: CardProductSizes;
+  product: CardProduct;
   session: Session | null;
 };
 
@@ -27,13 +26,11 @@ export default function CardOverlayAddToCart({
   session,
 }: CardOverlayAddToCardProps) {
   const [showModal, setShowModal] = useState(false);
-  const [selectedSize, setSelectedSize] = useState<number>(0);
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
 
   const userId = session?.user.id;
 
   const addItem = useCartStore((state) => state.addItem);
-
-  console.log("product", product);
 
   function handleClose(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -112,7 +109,7 @@ export default function CardOverlayAddToCart({
           label="Size"
           placeholder="Choose your size"
           required
-          options={[]}
+          options={product.sizes}
           value={selectedSize ?? ""}
           onChange={(e) => setSelectedSize(Number(e.target.value))}
         />

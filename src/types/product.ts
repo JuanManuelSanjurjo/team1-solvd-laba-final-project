@@ -19,8 +19,17 @@ export interface Product {
         };
       };
     };
+    sizes: {
+      data: {
+        id: number;
+        attributes: {
+          value: number;
+        };
+      }[];
+    };
   };
 }
+
 export type PaginatedProducts = {
   data: Product[];
   meta: {

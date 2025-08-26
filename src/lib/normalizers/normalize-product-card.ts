@@ -14,6 +14,7 @@ import { MyProduct, Product } from "@/types/product";
  *   name: string;
  *   price: number;
  *   gender: string;
+ *  sizes: number[]
  * }>} - A normalized array of objects ready for display in the product card UI.
  */
 
@@ -26,8 +27,10 @@ export function normalizeProductCard(products: Product[]) {
     name: product.attributes.name,
     price: product.attributes.price,
     gender: product.attributes.gender?.data?.attributes?.name ?? "No gender",
+    sizes: product.attributes.sizes.data.map((size) => size.attributes.value),
   }));
 }
+
 export function normalizeMyProductCard(products: MyProduct[]) {
   return products.map((product) => ({
     id: product.id,
