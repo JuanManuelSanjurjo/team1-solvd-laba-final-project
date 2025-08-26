@@ -47,7 +47,7 @@ export default function Select({
           </Box>
         )}
       </Typography>
-      <MuiSelect variant="outlined" {...props}>
+      <MuiSelect displayEmpty variant="outlined" {...props}>
         <MenuItem disabled value="">
           {placeholder}
         </MenuItem>

@@ -7,6 +7,7 @@ import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
 import Select from "@/components/form-elements/Select";
 import { useCartStore } from "@/store/cart-store";
 import CardProduct from "./types";
+import { useToastStore } from "@/store/toastStore";
 /**
  * CardOverlayAddToCart
  *
@@ -44,6 +45,14 @@ export default function CardOverlayAddToCart({
     e?.preventDefault();
 
     if (!userId) {
+      return;
+    }
+
+    if (!selectedSize) {
+      useToastStore.getState().show({
+        severity: "error",
+        message: "Please select a size before adding to cart",
+      });
       return;
     }
 
@@ -109,7 +118,7 @@ export default function CardOverlayAddToCart({
           label="Size"
           placeholder="Choose your size"
           required
-          options={product.sizes}
+          options={product.sizes ?? []}
           value={selectedSize ?? ""}
           onChange={(e) => setSelectedSize(Number(e.target.value))}
         />

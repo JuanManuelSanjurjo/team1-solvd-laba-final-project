@@ -13,8 +13,6 @@ export default async function ThankYou({
 }) {
   const { orderId } = await searchParams;
 
-  console.log(orderId);
-
   return (
     <>
       <Box
