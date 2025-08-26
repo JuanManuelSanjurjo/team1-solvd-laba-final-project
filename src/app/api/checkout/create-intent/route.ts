@@ -10,8 +10,6 @@ interface CreatePaymentIntentRequest {
 export async function POST(req: Request) {
   const stripe = getStripe();
 
-  console.log({ stripe });
-
   const session = await auth();
 
   if (!session?.user?.id) {
