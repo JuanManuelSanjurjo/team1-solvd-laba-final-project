@@ -144,11 +144,18 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
     } else {
       try {
         let filesToUpload: File[] = [...imageFiles];
+
         if (product.images?.length) {
-          const duplicatedFiles = await Promise.all(
-            product.images.map((img) => urlToFile(img.url))
+          const imagesToKeep = product.images.filter((img) =>
+            existentImages.includes(img.url)
           );
-          filesToUpload = [...filesToUpload, ...duplicatedFiles];
+
+          if (imagesToKeep.length) {
+            const duplicatedFiles = await Promise.all(
+              imagesToKeep.map((img) => urlToFile(img.url))
+            );
+            filesToUpload = [...filesToUpload, ...duplicatedFiles];
+          }
         }
 
         await handleCreateProduct({
