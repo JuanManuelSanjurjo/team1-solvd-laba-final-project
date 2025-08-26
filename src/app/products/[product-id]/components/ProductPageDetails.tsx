@@ -2,28 +2,16 @@
 
 import { Box } from "@mui/material";
 import ProductSizes from "./ProductSizes";
-import ProdcuctMainData from "./product-details/ProductMainData";
+import ProductMainData from "./product-details/ProductMainData";
 import ProductDescription from "./product-details/ProductDescription";
 import ProductPageButtons from "./product-details/ProductPageButtons";
 import { JSX, useEffect, useMemo } from "react";
 import { NormalizedProduct } from "@/types/product-types";
 import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
 import { Session } from "next-auth";
-import CardProduct from "@/components/cards/actions/types";
+import cardProduct from "@/components/cards/actions/types";
 import { useState } from "react";
 import { useCartStore } from "@/store/cart-store";
-
-/**
- * ProductPageDetails
- *
- * This component is a detailed view of a product. It displays the product's name, description, price, and sizes.
- *
- * @param {NormalizedProduct} props.product - The product data to be displayed.
- * @returns {JSX.Element} The product details component.
- *
- * @example
- * <ProductPageDetails product={product} />
- */
 
 export default function ProductPageDetails({
   product,
@@ -33,36 +21,31 @@ export default function ProductPageDetails({
   session: Session | null;
 }): JSX.Element {
   const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
+  const productImageUrl = product.images?.[0]?.url;
 
-  const cardProductInfo: CardProduct = useMemo(
+  const cardProductInfo: cardProduct = useMemo(
     () => ({
       id: product.id,
-      image: product.images?.[0]?.url || "https://placehold.co/400",
+      image: productImageUrl || "https://placehold.co/400",
       name: product.name,
       price: product.price,
       gender: product.gender,
     }),
-    [product]
+    [product.id, productImageUrl, product.name, product.price, product.gender]
   );
 
-  const isLoggedIn = Boolean(session?.user);
+  const isLoggedIn = Boolean(session?.user?.email);
+  const userId = session?.user?.id ? String(session.user.id) : undefined;
 
   const addToRecentlyViewed = useRecentlyViewedStore(
     (state) => state.addToRecentlyViewed
   );
 
   useEffect(() => {
-    if (isLoggedIn) return;
-    const userId = session?.user?.id ? String(session.user.id) : null;
-    if (!userId) return;
-    addToRecentlyViewed(userId, cardProductInfo);
-  }, [
-    isLoggedIn,
-    session?.user?.id,
-    product.id,
-    addToRecentlyViewed,
-    cardProductInfo,
-  ]);
+    if (isLoggedIn && userId) {
+      addToRecentlyViewed(userId, cardProductInfo);
+    }
+  }, [isLoggedIn, userId, addToRecentlyViewed, cardProductInfo]);
 
   const toggleSize = (size: number) => {
     setSelectedSizes((prev) =>
@@ -93,15 +76,19 @@ export default function ProductPageDetails({
 
   return (
     <Box
-      maxWidth={"520px"}
+      data-testid="product-page-details"
       width="100%"
       sx={{
+        maxWidth: {
+          xs: "100%",
+          md: "520px",
+        },
         display: "flex",
         flexDirection: "column",
         gap: 2,
       }}
     >
-      <ProdcuctMainData product={product} />
+      <ProductMainData product={product} />
       <ProductSizes
         product={product}
         toggleSize={toggleSize}
@@ -109,7 +96,6 @@ export default function ProductPageDetails({
       />
       <ProductPageButtons
         onAddToCart={handleAddToCart}
-
         product={product}
         session={session}
         cardProductInfo={cardProductInfo}

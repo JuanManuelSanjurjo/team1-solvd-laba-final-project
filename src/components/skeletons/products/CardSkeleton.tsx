@@ -4,6 +4,7 @@ import { JSX } from "react";
 export default function CardSkeleton(): JSX.Element {
   return (
     <Box
+      data-testid="card-skeleton"
       sx={{
         height: { xs: 210, md: 375 },
         width: {

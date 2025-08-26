@@ -141,7 +141,7 @@ export default function CardButtonMenu({
         showModal={showModal}
         onClose={handleCloseModal}
         title="Are you sure to delete selected item?"
-        text="Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur."
+        text="Please confirm this action before proceeding. Once deleted, this item will no longer be available."
         primaryBtn="Delete"
         secondaryBtn="Cancel"
         onPrimary={handleConfirmDelete}

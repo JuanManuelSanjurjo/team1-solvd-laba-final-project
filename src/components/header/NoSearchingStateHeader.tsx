@@ -1,4 +1,4 @@
-import { Box, Typography, Tooltip, Button, Badge } from "@mui/material";
+import { Box, Tooltip, Button, Badge } from "@mui/material";
 import { Bag, SearchNormal } from "iconsax-react";
 import { SearchBar } from "@/components/SearchBar";
 import { LogoBlackSvg } from "@/components/LogoBlackSvg";
@@ -60,11 +60,6 @@ export default function NoSearchingStateHeader({
         <Link href="/">
           <LogoBlackSvg />
         </Link>
-        {isDesktop && (
-          <Typography variant="body1" color="text.primary" fontWeight={600}>
-            Products
-          </Typography>
-        )}
       </Box>
 
       <Box

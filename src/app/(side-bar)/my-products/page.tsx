@@ -7,6 +7,10 @@ import { fetchCategories } from "@/lib/actions/fetch-categories";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: "My Products",
+};
+
 /**
  * MyProducts
  *

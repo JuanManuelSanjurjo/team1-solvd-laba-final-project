@@ -105,6 +105,7 @@ export default function ProductPageButtons({
           disabled={!isLoggedIn}
           variant="outlined"
           onClick={handleWishlistClick}
+          data-testid="wishlist-button"
         >
           {wishlistButtonText}
         </Button>

@@ -12,7 +12,11 @@ import SkeletonProductDetails from "./SkeletonProductDetails";
 
 export default function ProductPageSkeleton() {
   return (
-    <Box marginBlock="100px" paddingInline={{ xs: 4, xl: 0 }}>
+    <Box
+      marginBlock="100px"
+      paddingInline={{ xs: 4, xl: 0 }}
+      data-testid="skeleton-product-page"
+    >
       <Box
         sx={{
           display: "flex",

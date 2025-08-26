@@ -25,7 +25,8 @@ export const useWishlistStore = create<WishlistStore>()(
 
       removeFromWishList: (userId, id) => {
         const { byUser } = get();
-        const list = byUser[userId] ?? [];
+        const list = byUser[userId];
+        if (!list || list.length === 0) return;
         set({
           byUser: {
             ...byUser,
@@ -36,12 +37,15 @@ export const useWishlistStore = create<WishlistStore>()(
 
       clearWishList: (userId) => {
         const { byUser } = get();
+        const list = byUser[userId];
+        if (!list || list.length === 0) return;
         set({ byUser: { ...byUser, [userId]: [] } });
       },
 
       removeInactiveProducts: (userId, ids) => {
         const { byUser } = get();
-        const list = byUser[userId] ?? [];
+        const list = byUser[userId];
+        if (!list || list.length === 0 || !ids?.length) return;
         const toRemove = new Set(ids);
         set({
           byUser: {

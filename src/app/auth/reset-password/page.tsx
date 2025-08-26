@@ -10,7 +10,7 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: `Reset Password | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+  title: "Reset Password",
 };
 
 function ResetPasswordWrapper() {

@@ -17,7 +17,10 @@ export const updateProfileSchema = z.object({
   email: z.email("Invalid email address"),
   phoneNumber: z
     .string()
-    .min(10, "Phone number must be at least 10 characters")
+    .regex(
+      /^[+]?[1-9]\d{1,14}$/,
+      "Please enter a valid phone number (e.g., +1234567890 or 1234567890)"
+    )
     .optional(),
 });
 
