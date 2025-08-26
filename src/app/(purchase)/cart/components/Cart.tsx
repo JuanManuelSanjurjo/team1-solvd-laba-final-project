@@ -11,7 +11,7 @@ import {
 import CartCard from "./CartCard";
 import { useCartStore } from "@/store/cart-store";
 import { CartItem } from "../types";
-import MyProductsEmptyState from "@/components/MyProductsEmptyState";
+import ProductsEmptyState from "@/components/ProductsEmptyState";
 import { useRouter } from "next/navigation";
 import CheckoutSummary from "../../components/CheckoutSummary";
 import { Link } from "@mui/material";
@@ -66,7 +66,7 @@ export default function Cart({ userId }: CartProps) {
             marginTop: "5rem",
           }}
         >
-          <MyProductsEmptyState
+          <ProductsEmptyState
             title="You don't have any products yet"
             subtitle="Browse our products and find your perfect pair!"
             buttonText="Add Product"
