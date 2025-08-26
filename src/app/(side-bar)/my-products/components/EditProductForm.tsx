@@ -1,31 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { ProductFormData, productSchema } from "../add-product/types";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ProductFormFields } from "../add-product/components/ProductFormFields";
 import { Box, Typography } from "@mui/material";
-import ImagePreviewerUploader from "../add-product/components/ImagePreviewerUploader";
-import { MyProduct } from "@/types/product";
-import { useUpdateProduct } from "../hooks/useUpdateProduct";
-import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
-import { urlToFile } from "@/lib/url-utils";
 import { Session } from "next-auth";
-
-/**
- * Props for the EditProductForm component.
- *
- * @interface EditProductFormProps
- * @property {Session} session - The session object containing user information.
- * @property {{ value: number, label: string }[]} brandOptions - Options for the Brand select input.
- * @property {{ value: number, label: string }[]} colorOptions - Options for the Color select input.
- * @property {{ value: number, label: number }[]} sizeOptions - Options for the Sizes selection.
- * @property {MyProduct} product  - The details of an existent product.
- * @property {String} mode  - Defines if we are going to delete or duplicate a product.
- * @property {()=> void} onSuccess  - onSuccess action.
- * @property {(msg:string , sev: "success" | "error")=>} onNotify  - onNotify action.
- */
+import { ProductFormFields } from "../add-product/components/ProductFormFields";
+import ImagePreviewerUploader from "../add-product/components/ImagePreviewerUploader";
+import { urlToFile } from "@/lib/url-utils";
+import { useProductForm } from "../hooks/useProductForm";
+import { useImagePreviews } from "../hooks/useImagePreviews";
+import { useCreateProduct } from "../add-product/hooks/useCreateProduct";
+import { useUpdateProduct } from "../hooks/useUpdateProduct";
+import { ProductFormData } from "../add-product/types";
+import { MyProduct } from "@/types/product";
+import { useToastStore } from "@/store/toastStore";
 
 interface EditProductFormProps {
   session: Session;
@@ -38,30 +24,6 @@ interface EditProductFormProps {
   onSuccess: () => void;
 }
 
-/**
- * A form component for editing or duplicating an existing product.
- *
- * - Uses `react-hook-form` with a Zod schema resolver for validation.
- * - Handles both "edit" (update existing product) and "duplicate" (create new product) modes.
- * - Provides image management (upload, delete).
- * - Displays success/error feedback via Toast component.
- *
- * @component
- * @param {EditProductFormProps} props - Props for configuring the form.
- * @returns {JSX.Element} The rendered product form UI.
- *
- * @example
- * <EditProductForm
- *   brandOptions={[{ value: 1, label: "Nike" }]}
- *   colorOptions={[{ value: 1, label: "Red" }]}
- *   sizeOptions={[{ value: 42, label: 42 }]}
- *   product={myProduct}
- *   mode="edit"
- *   onSuccess={() => console.log("Updated!")}
- *   onNotify={handleNotify}
- * />
- */
-
 export const EditProductForm: React.FC<EditProductFormProps> = ({
   session,
   brandOptions,
@@ -72,10 +34,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   mode,
   onSuccess,
 }) => {
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [existentImages, setExistentImages] = useState<string[]>(
-    product.images ? product.images.map((image) => image.url) : []
-  );
   const {
     register,
     handleSubmit,
@@ -83,73 +41,70 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
     setValue,
     getValues,
     setError,
-    watch,
-    formState: { errors },
-  } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
-    defaultValues: {
-      name: product.name,
-      color: product.color.id,
-      gender: product.gender.id,
-      brand: product.brand.id,
-      price: product.price,
-      categories: product.categories[0].id,
-      description: product.description,
-      sizes: product?.sizes?.map((size) => size.id),
-      userID: 0,
-    },
+    errors,
+    selectedSizes,
+    toggleSize,
+  } = useProductForm({
+    name: product.name,
+    color: product.color.id,
+    gender: product.gender.id,
+    brand: product.brand.id,
+    price: product.price,
+    categories: product.categories?.[0]?.id,
+    description: product.description,
+    sizes: product?.sizes?.map((s) => s.id),
+    userID: 0,
   });
 
+  const initialUrls = product.images ? product.images.map((i) => i.url) : [];
+  const previews = useImagePreviews(initialUrls);
+
+  const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
   const { mutateAsync: handleUpdateProduct } = useUpdateProduct(
     product.id,
-    session
+    session,
+    { autoDeleteImages: true }
   );
-  const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
-
-  const selectedSizes = watch("sizes");
-
-  const toggleSize = (size: number) => {
-    const currentSizes = selectedSizes || [];
-    const newSizes = currentSizes.includes(size)
-      ? currentSizes.filter((s) => s !== size)
-      : [...currentSizes, size];
-    setValue("sizes", newSizes);
-  };
 
   const onSubmit = async (data: ProductFormData) => {
     const userID = parseInt(session?.user.id ?? "0", 10);
 
-    const remainingExistentImages = product.images
+    const remainingExistentImageIds = product.images
       ? product.images
-          .filter((image) => existentImages.includes(image.url))
-          .map((image) => image.id)
+          .filter((img) => previews.getRemainingUrls().includes(img.url))
+          .map((img) => img.id)
       : [];
 
     const imagesToDelete =
-      product.images &&
-      product.images
-        .map((img) => img.id)
-        .filter((id) => !remainingExistentImages.includes(id));
+      product.images && product.images.length
+        ? product.images
+            .map((img) => img.id)
+            .filter((id) => !remainingExistentImageIds.includes(id))
+        : [];
 
     if (mode === "edit") {
       try {
         await handleUpdateProduct({
           data: { ...data, userID },
-          imageFiles,
-          existentImages: remainingExistentImages,
+          imageFiles: previews.getNewFiles(),
+          existentImages: remainingExistentImageIds,
           imagesToDelete,
         });
         onSuccess?.();
-      } catch {}
+      } catch (e) {
+        useToastStore.getState().show({
+          severity: "error",
+          message: "Failed to update product",
+        });
+      }
     } else {
       try {
-        let filesToUpload: File[] = [...imageFiles];
+        let filesToUpload: File[] = [...previews.getNewFiles()];
 
         if (product.images?.length) {
           const imagesToKeep = product.images.filter((img) =>
-            existentImages.includes(img.url)
+            previews.getRemainingUrls().includes(img.url)
           );
-
           if (imagesToKeep.length) {
             const duplicatedFiles = await Promise.all(
               imagesToKeep.map((img) => urlToFile(img.url))
@@ -161,9 +116,16 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         await handleCreateProduct({
           data: { ...data, userID },
           imageFiles: filesToUpload,
+          remainingExistentImages: [],
         });
-        onSuccess();
-      } catch {}
+
+        onSuccess?.();
+      } catch (e) {
+        useToastStore.getState().show({
+          severity: "error",
+          message: "Failed to duplicate product",
+        });
+      }
     }
   };
 
@@ -182,13 +144,8 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         sx={{
           display: "flex",
           flexDirection: "column",
-          maxWidth: {
-            md: "426px",
-          },
-          width: {
-            md: "50%",
-            sm: "100%",
-          },
+          maxWidth: { md: "426px" },
+          width: { md: "50%", sm: "100%" },
           gap: "24px",
         }}
         onSubmit={handleSubmit(onSubmit)}
@@ -208,6 +165,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           setError={setError}
         />
       </Box>
+
       <Box sx={{ flex: 1 }}>
         <Typography
           component="label"
@@ -219,11 +177,13 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         </Typography>
         <ImagePreviewerUploader
           session={session}
-          onFilesChange={setImageFiles}
-          initialPreviews={
-            product.images ? product.images.map((image) => image.url) : []
+          onFilesChange={previews.setImageFiles}
+          initialPreviews={previews.getRemainingUrls()}
+          onPreviewsChange={previews.setExistentImages}
+          reset={
+            previews.getNewFiles().length === 0 &&
+            previews.getRemainingUrls().length === 0
           }
-          onPreviewsChange={setExistentImages}
         />
       </Box>
     </Box>
