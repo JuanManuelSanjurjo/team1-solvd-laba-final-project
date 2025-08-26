@@ -3,6 +3,10 @@ import { ProductFilters } from "../get-filters-from-search-params";
 export function filtersToQueryString(filters: Partial<ProductFilters>) {
   const params = new URLSearchParams();
 
+  if (typeof filters.searchTerm === "string" && filters.searchTerm.length > 0) {
+    params.set("searchTerm", filters.searchTerm);
+  }
+
   if (Array.isArray(filters.brands) && filters.brands.length) {
     filters.brands.forEach((b) => params.append("brand", String(b)));
   }

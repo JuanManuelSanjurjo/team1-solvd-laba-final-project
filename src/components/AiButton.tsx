@@ -8,11 +8,13 @@ import Image from "next/image";
 interface AiButtonProps extends MuiButtonProps {
   isLoading?: boolean;
   onGenerate?: () => void;
+  label: string;
 }
 
 export default function AiButton({
   isLoading = false,
   onGenerate,
+  label,
   ...props
 }: AiButtonProps): JSX.Element {
   return (
@@ -33,7 +35,7 @@ export default function AiButton({
       endIcon={
         isLoading ? null : (
           <Image
-            src="/assets/logo/logo.svg"
+            src={"/assets/logo/logo.svg"}
             alt="Logo"
             width={22}
             height={22}
@@ -45,7 +47,7 @@ export default function AiButton({
       {isLoading ? (
         <Image src="/assets/logo/logo.svg" alt="Logo" width={22} height={22} />
       ) : (
-        "Use AI suggestion"
+        <>{label}</>
       )}
     </Button>
   );

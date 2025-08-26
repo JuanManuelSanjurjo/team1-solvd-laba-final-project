@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchProductsBySearch } from "@/lib/actions/fetch-products-by-search";
 import useDebounce from "@/hooks/useDebounce";
+import { generateFiltersFromString } from "@/lib/ai/generate-filters-from-string";
 
 /**
  * useHeaderSearch
@@ -20,6 +21,7 @@ export default function useHeaderSearch() {
   const debouncedSearchInput = useDebounce(searchInput, 300);
   const [isSearching, setIsSearching] = useState(false);
   const [open, setOpen] = useState(false);
+
   const toggleSearch = () => {
     setIsSearching(!isSearching);
     setSearchInput("");
@@ -38,6 +40,24 @@ export default function useHeaderSearch() {
     enabled: isSearching && debouncedSearchInput.length > 1,
     staleTime: 10 * 1000,
   });
+
+  const mutation = useMutation({
+    mutationFn: (q: string) => generateFiltersFromString(q),
+    onSuccess: (data) => {
+      setIsSearching(false);
+      setSearchInput("");
+      router.push(`products${data.redirectUrl}`);
+    },
+    onError: (err: any) => {
+      console.error("Failed to generate filters:", err);
+    },
+  });
+
+  async function generateFiltersWithAI() {
+    const q = searchInput?.trim();
+    if (!q) return;
+    mutation.mutate(q);
+  }
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -70,5 +90,8 @@ export default function useHeaderSearch() {
     setOpen,
     handleEscapeKey,
     searchResults,
+    generateFiltersWithAI,
+    aiLoading: mutation.isPending,
+    aiError: mutation.error,
   };
 }

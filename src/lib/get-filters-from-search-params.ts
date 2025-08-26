@@ -24,7 +24,7 @@ export type ProductFilters = {
  */
 
 export function getFiltersFromSearchParams(
-  searchParams: URLSearchParams,
+  searchParams: URLSearchParams
 ): ProductFilters {
   const sizeFilters = searchParams.getAll("size");
   const brandFilters = searchParams.getAll("brand");

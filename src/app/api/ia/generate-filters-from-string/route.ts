@@ -56,6 +56,7 @@ Prefer exact option labels; do not invent new labels.
 Prices are numbers (no currency symbols). If the user says "under X", use price_max = X.
 If "over X", use price_min = X. If a range is present, set both price_min and price_max.
 Keep explain_short as a tiny summary if helpful (<= 140 chars) or empty.
+If something seems to be a shoe name, you should add it as a search param trying to fix typos if there is some.
 
 example input: "I want an Adidas or Nike shoes, casual, with a 42 size, color black, and with a price of no more than 100"
 
@@ -66,7 +67,8 @@ example output:{
   "price_max": 100,                      
   "colors": ["Black"], 
   "genders": []     
-  "sizes": [42],                     
+  "sizes": [42], 
+  "searchTerm": "",                      
   "explain_short": "one-line reasoning"
 }
 

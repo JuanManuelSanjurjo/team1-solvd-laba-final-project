@@ -14,5 +14,10 @@ export function aiLabelsToFilters(ai: any): ProductFilters {
   if (typeof ai.price_min === "number") filters.priceMin = ai.price_min;
   if (typeof ai.price_max === "number") filters.priceMax = ai.price_max;
 
+  // add searchTerm if present and non-empty
+  if (typeof ai.searchTerm === "string" && ai.searchTerm.trim().length > 0) {
+    filters.searchTerm = ai.searchTerm.trim();
+  }
+
   return filters as ProductFilters;
 }
