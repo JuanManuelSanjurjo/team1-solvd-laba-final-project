@@ -25,11 +25,14 @@ export const useRecentlyViewedStore = create<RecentlyViewedStore>()(
 
       clearRecentlyViewed: (userId) => {
         const { byUser } = get();
+        const list = byUser[userId];
+        if (!list || list.length === 0) return;
         set({ byUser: { ...byUser, [userId]: [] } });
       },
       removeInactiveProducts: (userId, ids) => {
         const { byUser } = get();
-        const list = byUser[userId] ?? [];
+        const list = byUser[userId];
+        if (!list || list.length === 0 || !ids?.length) return;
         const toRemove = new Set(ids);
         set({
           byUser: {

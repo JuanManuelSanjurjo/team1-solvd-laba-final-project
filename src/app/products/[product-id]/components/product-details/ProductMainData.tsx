@@ -36,6 +36,11 @@ export default function ProductMainData({
           variant="h1"
           sx={{
             fontWeight: 500,
+            fontSize: {
+              xs: "24px",
+              md: "53px",
+            },
+            wordBreak: "break-word",
           }}
         >
           {product?.name}
@@ -57,6 +62,7 @@ export default function ProductMainData({
         sx={{
           fontWeight: 500,
           lineHeight: "24px",
+          wordBreak: "break-word",
         }}
       >
         {product?.color}

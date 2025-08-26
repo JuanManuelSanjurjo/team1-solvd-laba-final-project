@@ -1,11 +1,17 @@
 import { ReactNode } from "react";
 import { Container, Box } from "@mui/material";
+import { Metadata } from "next";
 
 interface ProductLayoutProps {
   children?: ReactNode;
   productDetails: ReactNode;
   gallery: ReactNode;
 }
+
+export const metadata: Metadata = {
+  title: "Product Page",
+  description: "Product Page",
+};
 
 /**
  * ProductLayout
@@ -25,7 +31,7 @@ export default function ProductLayout({
   gallery,
 }: ProductLayoutProps) {
   return (
-    <Box marginBlock="100px" paddingInline={{ xs: 4, xl: 0 }}>
+    <Box marginBlock="80px" paddingInline={{ xs: 2.5, xl: 0 }}>
       <Box
         sx={{
           display: "flex",

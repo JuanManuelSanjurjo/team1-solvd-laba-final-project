@@ -3,7 +3,7 @@ export interface CartItem {
   image: string | undefined;
   name: string;
   price: number;
-  size: number | null;
+  size: number;
   gender: string | undefined;
   quantity: number;
 }

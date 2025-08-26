@@ -9,7 +9,7 @@ import { Box, Skeleton } from "@mui/material";
 
 export default function SkeletonGallery() {
   return (
-    <Box width="100%">
+    <Box width="100%" data-testid="skeleton-gallery">
       <Box
         display="flex"
         maxWidth={{ xs: "100%", md: 680 }}

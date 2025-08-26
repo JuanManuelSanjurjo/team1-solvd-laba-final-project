@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Box } from "@mui/material";
-import MyProductsEmptyState from "@/components/MyProductsEmptyState";
+import ProductsEmptyState from "@/components/ProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
 import { fetchUserProducts } from "@/lib/actions/fetch-user-products";
 import { MyProduct } from "@/types/product";
@@ -133,7 +133,7 @@ export default function MyProductsMainContent({
           ))}
         </CardContainer>
       ) : (
-        <MyProductsEmptyState
+        <ProductsEmptyState
           title="You don't have any products yet"
           subtitle="Post can contain video, images and text"
           buttonText="Add Product"

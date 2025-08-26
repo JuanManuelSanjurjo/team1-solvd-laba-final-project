@@ -12,6 +12,9 @@ const StyledBox = styled(Box)(({ theme }) => ({
   wordBreak: "keep-all",
   borderRadius: 4,
   cursor: "pointer",
+  "&:hover": {
+    backgroundColor: "rgba(150, 150, 150, 0.2)",
+  },
 }));
 
 type FilterChipProps = {

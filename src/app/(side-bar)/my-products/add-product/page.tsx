@@ -10,7 +10,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: `Add new product | ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+  title: "Add new product",
 };
 
 export default async function AddProduct() {
