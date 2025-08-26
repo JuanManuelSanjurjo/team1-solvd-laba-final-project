@@ -96,6 +96,7 @@ export default function Cart({ userId }: CartProps) {
         <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
           Cart
         </Typography>
+        
         {cartItems.map((item) => (
           <React.Fragment key={item.id + item.size}>
             <CartCard

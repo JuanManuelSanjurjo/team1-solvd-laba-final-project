@@ -146,7 +146,7 @@ const CartCard = ({
         onPrimary={() => removeItem(userId, id, size)}
         title="Delete product from cart"
         text="Are you sure you want to delete this product from the cart?"
-        secondaryBtn="No, keep product"
+        secondaryBtn="No, keep"
         primaryBtn="Yes, delete"
       />
     </Box>

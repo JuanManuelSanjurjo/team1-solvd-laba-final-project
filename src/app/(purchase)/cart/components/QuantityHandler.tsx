@@ -67,14 +67,16 @@ const QuantityHandler = ({
         >
           Quantity
         </AccordionSummary>
-        <AccordionDetails
-          sx={{ position: "absolute", right: 0, paddingInline: 0 }}
-        >
+        <AccordionDetails sx={{ position: "absolute", right: 0, padding: 0 }}>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               gap: "9px",
+              backgroundColor: "#ffffff",
+              padding: ".5rem",
+              borderRadius: ".5rem",
+              boxShadow: "4px 4px 10px #49494927",
             }}
           >
             <ProductQuantityButton

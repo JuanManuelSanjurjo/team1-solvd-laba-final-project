@@ -10,5 +10,7 @@ export default async function CartPage() {
     redirect("/auth/log-in");
   }
 
+  await new Promise((res) => setTimeout(res, 3000));
+
   return <Cart userId={userId} />;
 }
