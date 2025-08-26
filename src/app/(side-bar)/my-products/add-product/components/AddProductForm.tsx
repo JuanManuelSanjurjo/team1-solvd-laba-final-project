@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 import { Box, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ProductFormData, productSchema } from "../types";
 import { useCreateProduct } from "../hooks/useCreateProduct";
 import { ProductFormFields } from "./ProductFormFields";
 import { Session } from "next-auth";
-import Toast from "@/components/Toast";
-import { AlertProps } from "@mui/material";
+
+import { useToastStore } from "@/store/toastStore";
 
 /**
  * Props for AddProductForm component.
@@ -80,17 +80,6 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
 
   const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "" as AlertProps["severity"],
-    message: "",
-  });
-
-  const handleCloseToast = () => {
-    setToastOpen(false);
-    router.push("/my-products");
-  };
-
   const toggleSize = (size: number) => {
     const currentSizes = selectedSizes || [];
     const newSizes = currentSizes.includes(size)
@@ -117,20 +106,8 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
 
       setImageFiles([]);
 
-      setToastContent({
-        severity: "success",
-        message: "Product added successfully!",
-      });
-      setToastOpen(true);
       router.push("/my-products");
-    } catch (err) {
-      console.log(err);
-      setToastContent({
-        severity: "error",
-        message: "Failed to add product.",
-      });
-      setToastOpen(true);
-    }
+    } catch {}
   };
 
   return (
@@ -189,13 +166,6 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
           reset={imageFiles.length === 0}
         />
       </Box>
-      <Toast
-        open={toastOpen}
-        onClose={handleCloseToast}
-        severity={toastContent.severity}
-        message={toastContent.message}
-        autoHideDuration={4000}
-      />
     </Box>
   );
 };

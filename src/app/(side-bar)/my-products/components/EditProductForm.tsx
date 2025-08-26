@@ -36,7 +36,6 @@ interface EditProductFormProps {
   product: MyProduct;
   mode: "edit" | "duplicate";
   onSuccess: () => void;
-  onNotify: (message: string, sev: "success" | "error") => void;
 }
 
 /**
@@ -72,7 +71,6 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   product,
   mode,
   onSuccess,
-  onNotify,
 }) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existentImages, setExistentImages] = useState<string[]>(
@@ -141,11 +139,8 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           existentImages: remainingExistentImages,
           imagesToDelete,
         });
-        onNotify("Product updated successfully!", "success");
         onSuccess?.();
-      } catch {
-        onNotify("Failed to update product.", "error");
-      }
+      } catch {}
     } else {
       try {
         let filesToUpload: File[] = [...imageFiles];
@@ -160,11 +155,8 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
           data: { ...data, userID },
           imageFiles: filesToUpload,
         });
-        onNotify("Product added successfully!", "success");
         onSuccess();
-      } catch {
-        onNotify("Failed to add product.", "error");
-      }
+      } catch {}
     }
   };
 

@@ -61,24 +61,6 @@ export default function MyProductsMainContent({
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState<{
-    message: string;
-    severity: "success" | "error";
-  }>({
-    message: "",
-    severity: "success",
-  });
-
-  const handleCloseToast = () => {
-    setToastOpen(false);
-  };
-
-  const handleNotify = (message: string, severity: "success" | "error") => {
-    setToastContent({ message, severity });
-    setToastOpen(true);
-  };
-
   const { data, isPending } = useQuery<MyProduct[], Error>({
     queryKey: ["user-products", userId],
     queryFn: () => {
@@ -161,7 +143,6 @@ export default function MyProductsMainContent({
             product={selectedProduct ?? products[0]}
             mode={formMode}
             onSuccess={() => setEditModalOpen(false)}
-            onNotify={handleNotify}
           />
           <Box
             sx={{ width: "100%", display: "flex", justifyContent: "center" }}
@@ -182,13 +163,6 @@ export default function MyProductsMainContent({
           </Box>
         </EditProductModalWrapper>
       )}
-      <Toast
-        open={toastOpen}
-        onClose={handleCloseToast}
-        severity={toastContent.severity}
-        message={toastContent.message}
-        autoHideDuration={4000}
-      />
     </Box>
   );
 }

@@ -5,6 +5,7 @@ import { deleteImage } from "@/lib/actions/delete-image";
 import { deleteProduct } from "@/lib/actions/delete-product";
 import { useMutation } from "@tanstack/react-query";
 import { Session } from "next-auth";
+import { useToastStore } from "@/store/toastStore";
 
 type DeletePayload = {
   productId: number;
@@ -38,9 +39,17 @@ export function useDeleteProduct(session: Session) {
       queryClient.invalidateQueries({
         queryKey: ["user-products", session?.user.id],
       });
+      useToastStore.getState().show({
+        severity: "success",
+        message: "Product deleted succesfully",
+      });
     },
 
     onError: (err) => {
+      useToastStore.getState().show({
+        severity: "error",
+        message: "Failed to delete product",
+      });
       console.error("useDeleteProduct - mutation failed:", err);
     },
   });

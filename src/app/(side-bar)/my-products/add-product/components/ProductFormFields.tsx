@@ -18,6 +18,7 @@ import { useState } from "react";
 import { generateDescription } from "@/lib/ai/generate-description";
 import Toast from "@/components/Toast";
 import { getLabelFromOptions } from "@/lib/ai/ai-utils";
+import { useToastStore } from "@/store/toastStore";
 
 interface ProductFormFieldsProps {
   register: UseFormRegister<ProductFormData>;
@@ -51,16 +52,6 @@ export const ProductFormFields = ({
 }: ProductFormFieldsProps) => {
   const [loading, setLoading] = useState(false);
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "" as AlertProps["severity"],
-    message: "",
-  });
-
-  const handleCloseToast = () => {
-    setToastOpen(false);
-  };
-
   const handleGenerate = async () => {
     const values = getValues();
     if (!values) return;
@@ -77,8 +68,7 @@ export const ProductFormFields = ({
         description: values.description,
       });
       if (aiResponse.isBranded === false) {
-        setToastOpen(true);
-        setToastContent({
+        useToastStore.getState().show({
           severity: "error",
           message:
             "AI detected this product name is likely not branded. Please review the product name.",
@@ -87,8 +77,7 @@ export const ProductFormFields = ({
         typeof aiResponse.confidence === "number" &&
         aiResponse.confidence < CONFIDENCE_THRESHOLD
       ) {
-        setToastOpen(true);
-        setToastContent({
+        useToastStore.getState().show({
           severity: "error",
           message: `AI is uncertain about branding (confidence ${(
             aiResponse.confidence * 100
@@ -96,8 +85,7 @@ export const ProductFormFields = ({
         });
       } else {
         setValue("description", aiResponse.description);
-        setToastOpen(true);
-        setToastContent({
+        useToastStore.getState().show({
           severity: "success",
           message: "Description generated succesfully",
         });
@@ -204,6 +192,7 @@ export const ProductFormFields = ({
           }}
         />
         <AiButton
+          label="Use AI "
           variant="contained"
           size="small"
           isLoading={loading}
@@ -251,13 +240,6 @@ export const ProductFormFields = ({
           {errors.sizes?.message}
         </FormHelperText>
       )}
-      <Toast
-        open={toastOpen}
-        onClose={handleCloseToast}
-        severity={toastContent.severity}
-        message={toastContent.message}
-        autoHideDuration={4000}
-      />
     </>
   );
 };
