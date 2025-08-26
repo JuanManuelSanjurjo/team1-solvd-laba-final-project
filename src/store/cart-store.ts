@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useToastStore } from "./toastStore";
 import type { CartItem, CartState } from "@/app/(purchase)/cart/types";
+
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({

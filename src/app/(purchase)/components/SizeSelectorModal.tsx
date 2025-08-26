@@ -58,6 +58,7 @@ export default function SizeSelectorModal({
       aria-labelledby="customized-dialog-title"
       open={showModal}
       maxWidth={false}
+      onClick={(e) => e.stopPropagation()}
       sx={{
         "& .MuiPaper-root": {
           margin: 0,

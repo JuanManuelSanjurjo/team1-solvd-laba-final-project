@@ -1,12 +1,12 @@
 "use client";
 import { Box, Typography, Stack } from "@mui/material";
 import { BagTick } from "iconsax-react";
-import CardProduct from "./types";
 import { Session } from "next-auth";
 import { useState } from "react";
 import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
 import Select from "@/components/form-elements/Select";
 import { useCartStore } from "@/store/cart-store";
+import CardProductSizes from "./types/card-product-sizes";
 
 /**
  * CardOverlayAddToCart
@@ -18,7 +18,7 @@ import { useCartStore } from "@/store/cart-store";
  */
 
 type CardOverlayAddToCardProps = {
-  product: CardProduct;
+  product: CardProductSizes;
   session: Session | null;
 };
 
@@ -33,8 +33,12 @@ export default function CardOverlayAddToCart({
 
   const addItem = useCartStore((state) => state.addItem);
 
+  console.log("product", product);
+
   function handleClose(event: React.SyntheticEvent) {
     event.preventDefault();
+    event.stopPropagation();
+
     setShowModal(false);
   }
 
@@ -60,37 +64,40 @@ export default function CardOverlayAddToCart({
   }
 
   return (
-    <Box
-      sx={{
-        color: "#292D32",
-        cursor: "pointer",
-        ".bg": {
-          backgroundColor: "rgba(255,255,255,50%)",
-          p: 2,
-          borderRadius: 1000,
-        },
-        "&:hover .bg": {
-          backgroundColor: "rgba(255,255,255,75%)",
-        },
-      }}
-    >
-      <Stack
-        className="bg"
+    <>
+      {" "}
+      <Box
         sx={{
-          alignItems: "center",
-          justifyContent: "center",
-          aspectRatio: "1/1",
-        }}
-        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-          e.preventDefault();
-          setShowModal(true);
+          color: "#292D32",
+          cursor: "pointer",
+          ".bg": {
+            backgroundColor: "rgba(255,255,255,50%)",
+            p: 2,
+            borderRadius: 1000,
+          },
+          "&:hover .bg": {
+            backgroundColor: "rgba(255,255,255,75%)",
+          },
         }}
       >
-        <BagTick size="20" color="#494949" />
-        <Typography variant="caption" sx={{ fontSize: 8 }}>
-          Add to cart
-        </Typography>
-      </Stack>
+        <Stack
+          className="bg"
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            aspectRatio: "1/1",
+          }}
+          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+            e.preventDefault();
+            setShowModal(true);
+          }}
+        >
+          <BagTick size="20" color="#494949" />
+          <Typography variant="caption" sx={{ fontSize: 8 }}>
+            Add to cart
+          </Typography>
+        </Stack>
+      </Box>
       <SizeSelectorModal
         showModal={showModal}
         onClose={handleClose}
@@ -110,6 +117,6 @@ export default function CardOverlayAddToCart({
           onChange={(e) => setSelectedSize(Number(e.target.value))}
         />
       </SizeSelectorModal>
-    </Box>
+    </>
   );
 }
