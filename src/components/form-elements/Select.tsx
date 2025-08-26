@@ -13,13 +13,17 @@ import {
  * @component
  * @param {MuiSelectProps} props - All props supported by MUI's Select component
  */
+type Option = {
+  label: string;
+  value: string | number;
+};
 
 type SelectProps = {
   name: string;
   label: string;
   required?: boolean;
   placeholder: string;
-  options: number[];
+  options: Option[];
 } & MuiSelectProps;
 
 export default function Select({
@@ -52,8 +56,8 @@ export default function Select({
           {placeholder}
         </MenuItem>
         {options.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
           </MenuItem>
         ))}
       </MuiSelect>
