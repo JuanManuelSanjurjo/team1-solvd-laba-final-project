@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getStripe } from "@/lib/get-stripe";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -7,8 +8,8 @@ interface CreatePaymentIntentRequest {
 }
 
 export async function POST(req: Request) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-  
+  const stripe = getStripe();
+
   const session = await auth();
 
   if (!session?.user?.id) {

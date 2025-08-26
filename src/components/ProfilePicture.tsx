@@ -43,17 +43,18 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
   return (
     <Box onClick={onClick}>
       <Tooltip title={alt}>
-        <Avatar
-          src={src}
-          alt={alt}
-          sx={{
-            width,
-            height: width,
-            cursor: "pointer",
-            border: border ? "5px solid white" : "none",
-            backgroundColor: "white",
-          }}
-        />
+        <Box sx={{ backgroundColor: "#f3f3f3ff", borderRadius: "100%" }}>
+          <Avatar
+            src={src}
+            alt={alt}
+            sx={{
+              width,
+              height: width,
+              cursor: "pointer",
+              border: border ? "5px solid white" : "none",
+            }}
+          />
+        </Box>
       </Tooltip>
     </Box>
   );
