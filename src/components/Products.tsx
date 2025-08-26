@@ -81,8 +81,6 @@ export default function Products({
   const drawerVariant = isMobile ? "temporary" : "persistent";
   const drawerAnchor = isMobile ? "right" : "left";
 
-  console.log("products", products);
-
   return (
     <>
       <Drawer
