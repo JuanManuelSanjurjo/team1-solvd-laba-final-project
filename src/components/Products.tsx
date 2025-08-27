@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Drawer, Typography } from "@mui/material";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import PaginationComponent from "@/components/PaginationComponent";
 import SkeletonPagination from "@/components/SkeletonPagination";
@@ -37,21 +37,23 @@ export default function Products({
 }: ProductsProps) {
   const { isMobile, isDesktop } = useMediaBreakpoints();
 
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(() =>
-    isDesktop ? true : false
-  );
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(() => false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
 
   const filters = useMemo(
     () => getFiltersFromSearchParams(searchParams),
-    [searchParams]
+    [searchParams],
   );
   const searchTerm = useMemo(
     () => searchParams.get("searchTerm"),
-    [searchParams]
+    [searchParams],
   );
+
+  useEffect(() => {
+    setFiltersOpen(isDesktop);
+  }, [isDesktop]);
 
   const {
     data: products,
@@ -375,7 +377,7 @@ export default function Products({
                           key={index}
                           overlay={true}
                         />
-                      )
+                      ),
                     )}
                   </CardContainer>
                   {pagination ? (
