@@ -37,8 +37,6 @@ export default function ProductSizes({
           sx={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, 85px)",
-            // justifyContent:
-            //   product.sizes?.length > 3 ? "space-between" : "flex-start",
             alignItems: "center",
             gap: {
               xs: 1,
