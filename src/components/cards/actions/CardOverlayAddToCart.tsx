@@ -68,10 +68,6 @@ export default function CardOverlayAddToCart({
 
     setShowModal(false);
   }
-  const sizes = [38, 39, 40].map((n) => ({
-    label: n.toString(),
-    value: n,
-  }));
 
   return (
     <>
@@ -122,7 +118,12 @@ export default function CardOverlayAddToCart({
           label="Size"
           placeholder="Choose your size"
           required
-          options={sizes}
+          options={
+            product.sizes?.map((n) => ({
+              label: n.toString(),
+              value: n,
+            })) || []
+          }
           value={selectedSize ?? ""}
           onChange={(e) => setSelectedSize(Number(e.target.value))}
         />
