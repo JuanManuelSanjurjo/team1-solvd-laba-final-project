@@ -72,6 +72,10 @@ export type ProductFilters = {
   categories?: string[];
   priceMin?: number;
   priceMax?: number;
+  user?: {
+    userId: string;
+    token: string;
+  };
 };
 
 export interface MyProduct {

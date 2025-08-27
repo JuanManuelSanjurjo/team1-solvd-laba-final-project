@@ -74,6 +74,12 @@ export async function fetchProducts(
     });
   }
 
+  if (filters.colors) {
+    filters.colors.forEach((color, index) => {
+      baseUrl.searchParams.append(`filters[color][name][$in][${index}]`, color);
+    });
+  }
+
   if (filters.priceMin !== undefined && filters.priceMax !== undefined) {
     baseUrl.searchParams.append(
       "filters[price][$between]",
@@ -85,9 +91,19 @@ export async function fetchProducts(
     );
   }
   console.log(baseUrl);
-  //baseUrl.searchParams.append(`filters[teamName][$in]`, "team-1");
+  baseUrl.searchParams.append(`filters[teamName][$in]`, "team-1");
 
-  const response = await fetch(baseUrl.toString());
+  const headers: HeadersInit = {};
+  if (filters.user?.userId && filters.user?.token) {
+    baseUrl.searchParams.append(
+      "filters[userID][id][$eq]",
+      filters.user.userId
+    );
+    headers["Authorization"] = `Bearer ${filters.user.token}`;
+    console.log("--->", headers);
+  }
+
+  const response = await fetch(baseUrl.toString(), { headers });
   if (!response.ok) throw new Error("Network response was not ok");
   const json = await response.json();
   return json;

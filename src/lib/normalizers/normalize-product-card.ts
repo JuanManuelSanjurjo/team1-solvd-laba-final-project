@@ -58,3 +58,61 @@ export function normalizeFullProduct(product: Product) {
       "No category",
   };
 }
+
+function normalizeProductToMyProduct(item: any): MyProduct {
+  const id = item.id ?? item?.attributes?.id ?? 0;
+  const attributes = item.attributes ?? item;
+
+  const images =
+    attributes.images?.data?.map((img: any) => {
+      const image = img.attributes ?? {};
+      const url =
+        image.url ||
+        image.formats?.thumbnail?.url ||
+        image.formats?.small?.url ||
+        image.formats?.medium?.url ||
+        "";
+      return { id: img.id, url };
+    }) ?? [];
+
+  const categories =
+    attributes.categories?.data?.map((c: any) => ({
+      id: c.id,
+      name: c.attributes?.name ?? "",
+    })) ?? [];
+
+  const brand = attributes.brand?.data
+    ? { id: attributes.brand.data.id }
+    : { id: 0 };
+  const color = attributes.color?.data
+    ? { id: attributes.color.data.id }
+    : { id: 0 };
+
+  const gender = attributes.gender?.data
+    ? {
+        id: attributes.gender.data.id,
+        name: attributes.gender.data.attributes?.name ?? "",
+      }
+    : { id: 0, name: "No gender" };
+
+  const sizes =
+    attributes.sizes?.data?.map((s: any) => ({
+      id: s.id,
+    })) ?? [];
+
+  return {
+    id,
+    name: attributes.name ?? "",
+    price:
+      typeof attributes.price === "number"
+        ? attributes.price
+        : Number(attributes.price ?? 0),
+    description: attributes.description ?? "",
+    categories,
+    gender,
+    images,
+    sizes,
+    brand,
+    color,
+  };
+}

@@ -3,6 +3,8 @@ import { fetchProducts } from "@/lib/actions/fetch-products";
 import { useQuery } from "@tanstack/react-query";
 
 type useQueryPagedProductsProps = {
+  userId?: string;
+  token?: string;
   filters: ProductFilters;
   pageNumber: number;
   pageSize: number;
@@ -27,6 +29,8 @@ type useQueryPagedProductsProps = {
  * @returns {Object} The data from the search term query or the filter search query.
  */
 export default function useQueryPagedProducts({
+  userId,
+  token,
   filters,
   pageNumber,
   pageSize,

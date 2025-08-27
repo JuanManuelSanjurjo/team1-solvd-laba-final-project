@@ -61,7 +61,7 @@ export default function MyProductsMainContent({
 
   const deleteMutation = useDeleteProduct({
     session,
-    setPage, // pass the setter directly
+    setPage,
     currentPage: page,
     productsLength: products.length,
   });
