@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { JSX } from "react";
 
 type CartCardImageProps = {
-  image: string;
+  image: string | undefined;
 };
 
 /**

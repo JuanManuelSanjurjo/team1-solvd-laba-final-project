@@ -10,13 +10,12 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState } from "react";
 import { useCartStore } from "@/store/cart-store";
 
-
 type CartCardProps = {
   id: number;
   quantity: number;
   productTitle: string;
   gender: string;
-  image: string;
+  image: string | undefined;
   userId: string;
   size: number;
 };
@@ -147,7 +146,7 @@ const CartCard = ({
         onPrimary={() => removeItem(userId, id, size)}
         title="Delete product from cart"
         text="Are you sure you want to delete this product from the cart?"
-        secondaryBtn="No, keep product"
+        secondaryBtn="No, keep"
         primaryBtn="Yes, delete"
       />
     </Box>

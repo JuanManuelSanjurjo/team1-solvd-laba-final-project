@@ -1,13 +1,13 @@
 "use client";
 import { Box, Typography, Stack } from "@mui/material";
 import { BagTick } from "iconsax-react";
-import CardProduct from "./types";
 import { Session } from "next-auth";
 import { useState } from "react";
 import SizeSelectorModal from "@/app/(purchase)/components/SizeSelectorModal";
 import Select from "@/components/form-elements/Select";
 import { useCartStore } from "@/store/cart-store";
-
+import CardProduct from "./types";
+import { useToastStore } from "@/store/toastStore";
 /**
  * CardOverlayAddToCart
  *
@@ -27,7 +27,7 @@ export default function CardOverlayAddToCart({
   session,
 }: CardOverlayAddToCardProps) {
   const [showModal, setShowModal] = useState(false);
-  const [selectedSize, setSelectedSize] = useState<number>(0);
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
 
   const userId = session?.user.id;
 
@@ -35,6 +35,8 @@ export default function CardOverlayAddToCart({
 
   function handleClose(event: React.SyntheticEvent) {
     event.preventDefault();
+    event.stopPropagation();
+
     setShowModal(false);
   }
 
@@ -43,6 +45,14 @@ export default function CardOverlayAddToCart({
     e?.preventDefault();
 
     if (!userId) {
+      return;
+    }
+
+    if (!selectedSize) {
+      useToastStore.getState().show({
+        severity: "error",
+        message: "Please select a size before adding to cart",
+      });
       return;
     }
 
@@ -60,37 +70,40 @@ export default function CardOverlayAddToCart({
   }
 
   return (
-    <Box
-      sx={{
-        color: "#292D32",
-        cursor: "pointer",
-        ".bg": {
-          backgroundColor: "rgba(255,255,255,50%)",
-          p: 2,
-          borderRadius: 1000,
-        },
-        "&:hover .bg": {
-          backgroundColor: "rgba(255,255,255,75%)",
-        },
-      }}
-    >
-      <Stack
-        className="bg"
+    <>
+      {" "}
+      <Box
         sx={{
-          alignItems: "center",
-          justifyContent: "center",
-          aspectRatio: "1/1",
-        }}
-        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-          e.preventDefault();
-          setShowModal(true);
+          color: "#292D32",
+          cursor: "pointer",
+          ".bg": {
+            backgroundColor: "rgba(255,255,255,50%)",
+            p: 2,
+            borderRadius: 1000,
+          },
+          "&:hover .bg": {
+            backgroundColor: "rgba(255,255,255,75%)",
+          },
         }}
       >
-        <BagTick size="20" color="#494949" />
-        <Typography variant="caption" sx={{ fontSize: 8 }}>
-          Add to cart
-        </Typography>
-      </Stack>
+        <Stack
+          className="bg"
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            aspectRatio: "1/1",
+          }}
+          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+            e.preventDefault();
+            setShowModal(true);
+          }}
+        >
+          <BagTick size="20" color="#494949" />
+          <Typography variant="caption" sx={{ fontSize: 8 }}>
+            Add to cart
+          </Typography>
+        </Stack>
+      </Box>
       <SizeSelectorModal
         showModal={showModal}
         onClose={handleClose}
@@ -105,11 +118,16 @@ export default function CardOverlayAddToCart({
           label="Size"
           placeholder="Choose your size"
           required
-          options={[]}
+          options={
+            product.sizes?.map((n) => ({
+              label: n.toString(),
+              value: n,
+            })) || []
+          }
           value={selectedSize ?? ""}
           onChange={(e) => setSelectedSize(Number(e.target.value))}
         />
       </SizeSelectorModal>
-    </Box>
+    </>
   );
 }

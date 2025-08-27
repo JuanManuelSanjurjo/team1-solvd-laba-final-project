@@ -9,6 +9,7 @@ import useMediaBreakpoints from "@/hooks/useMediaBreakpoints";
 import Link from "next/link";
 import { Session } from "next-auth";
 import { useCartStore } from "@/store/cart-store";
+import { useState, useEffect } from "react";
 
 /**
  * NoSearchingStateHeader
@@ -43,6 +44,11 @@ export default function NoSearchingStateHeader({
 
   const totalItems = useCartStore((state) => state.totalItems(userId || ""));
   const isAuthenticated = Boolean(session);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const itemGap = isMobile || !session ? 2 : 5;
   const bagIconSize = isMobile ? 20 : 24;
@@ -87,14 +93,20 @@ export default function NoSearchingStateHeader({
           {isAuthenticated && (
             <Tooltip title={"Cart"}>
               <Link href="/cart" style={{ display: "flex" }}>
-                <Badge
-                  badgeContent={totalItems}
-                  color="primary"
-                  overlap="circular"
-                  invisible={totalItems === 0}
-                >
-                  <Bag style={{ width: bagIconSize }} color="#292d32" />
-                </Badge>
+                {!hasMounted ? (
+                  <>
+                    <Bag style={{ width: bagIconSize }} color="#292d32" />
+                  </>
+                ) : (
+                  <Badge
+                    badgeContent={totalItems}
+                    color="primary"
+                    overlap="circular"
+                    invisible={totalItems === 0}
+                  >
+                    <Bag style={{ width: bagIconSize }} color="#292d32" />
+                  </Badge>
+                )}
               </Link>
             </Tooltip>
           )}

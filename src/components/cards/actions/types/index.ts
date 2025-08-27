@@ -4,4 +4,5 @@ export default interface CardProduct {
   name: string;
   price: number;
   gender?: string;
+  sizes?: number[];
 }
