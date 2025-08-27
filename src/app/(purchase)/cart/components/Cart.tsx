@@ -32,7 +32,7 @@ type CartProps = {
 export default function Cart({ userId }: CartProps) {
   const byUser = useCartStore((state) => state.byUser);
 
-  const cartItems: CartItem[] = userId ? byUser[userId] ?? [] : [];
+  const cartItems: CartItem[] = userId ? (byUser[userId] ?? []) : [];
 
   const theme = useTheme();
   const router = useRouter();
@@ -96,7 +96,6 @@ export default function Cart({ userId }: CartProps) {
         <Typography variant="h2" sx={{ fontSize: { xs: 30, md: 45 } }}>
           Cart
         </Typography>
-        
         {cartItems.map((item) => (
           <React.Fragment key={item.id + item.size}>
             <CartCard
