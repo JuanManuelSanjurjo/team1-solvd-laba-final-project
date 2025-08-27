@@ -1,11 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import ProductsEmptyState from "@/components/ProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
-import { fetchUserProducts } from "@/lib/actions/fetch-user-products";
 import { MyProduct } from "@/types/product";
-import { useQuery } from "@tanstack/react-query";
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
 import SkeletonCardContainer from "@/components/skeletons/products/SkeletonCardContainer";
@@ -16,8 +14,9 @@ import { EditProductForm } from "./EditProductForm";
 import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
 import { useRouter } from "next/navigation";
-import Toast from "@/components/Toast";
 import { Session } from "next-auth";
+import PaginationComponent from "@/components/PaginationComponent";
+import useQueryUserProductsPaged from "../hooks/useQueryUserProductsPaged";
 
 interface MyProductsMainContentProps {
   session: Session;
@@ -27,17 +26,6 @@ interface MyProductsMainContentProps {
   categoryOptions: { value: number; label: string }[];
 }
 
-/**
- * MyProductsMainContent
- *
- * This component renders the main content of the My Products page.
- * It includes a header, a list of products, and an empty state.
- *
- * @component
- *
- * @returns {JSX.Element} The main content of the My Products page.
- */
-
 export default function MyProductsMainContent({
   session,
   brandOptions,
@@ -45,12 +33,7 @@ export default function MyProductsMainContent({
   sizeOptions,
   categoryOptions,
 }: MyProductsMainContentProps) {
-  const deleteMutation = useDeleteProduct(session);
   const router = useRouter();
-
-  const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
-    deleteMutation.mutate({ productId, imageIds });
-  };
 
   const userId = session?.user?.id;
   const token = session?.user?.jwt;
@@ -61,16 +44,31 @@ export default function MyProductsMainContent({
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
 
-  const { data, isPending } = useQuery<MyProduct[], Error>({
-    queryKey: ["user-products", userId],
-    queryFn: () => {
-      if (!userId || !token) throw new Error("User not authenticated");
-      return fetchUserProducts(parseInt(userId), token);
-    },
-    enabled: !!userId && !!token,
+  const [page, setPage] = useState<number>(1);
+  const [pageSize] = useState<number>(16);
+
+  const { products, pagination, isPending, isLoading } =
+    useQueryUserProductsPaged({
+      userId,
+      token,
+      pageNumber: page,
+      pageSize,
+    });
+
+  const handleSetPage = () => {
+    setPage(0);
+  };
+
+  const deleteMutation = useDeleteProduct({
+    session,
+    setPage, // pass the setter directly
+    currentPage: page,
+    productsLength: products.length,
   });
 
-  const products = data ?? [];
+  const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
+    deleteMutation.mutate({ productId, imageIds });
+  };
 
   return (
     <Box
@@ -82,38 +80,50 @@ export default function MyProductsMainContent({
       }}
     >
       <MyProductsHeader isEmpty={products ? products.length === 0 : false} />
-      {isPending ? (
+
+      {isPending || isLoading ? (
         <SkeletonCardContainer />
-      ) : products.length > 0 ? (
-        <CardContainer length={products.length}>
-          {normalizeMyProductCard(products).map((product, index) => (
-            <Card
-              session={session}
-              product={product}
-              topAction="cardButtonMenu"
-              key={index}
-              overlay={true}
-              onEdit={() => {
-                setSelectedProduct(products[index]);
-                setFormMode("edit");
-                setEditModalOpen(true);
-              }}
-              onDuplicate={() => {
-                setSelectedProduct(products[index]);
-                setFormMode("duplicate");
-                setEditModalOpen(true);
-              }}
-              onDelete={() => {
-                handleDeleteProduct(
-                  product.id,
-                  products[index].images
-                    ? products[index].images.map((image) => image.id)
-                    : []
-                );
-              }}
-            />
-          ))}
-        </CardContainer>
+      ) : products && products.length > 0 ? (
+        <>
+          <CardContainer length={products.length}>
+            {normalizeMyProductCard(products).map((product, index) => (
+              <Card
+                session={session}
+                product={product}
+                topAction="cardButtonMenu"
+                key={product.id ?? index}
+                overlay={true}
+                onEdit={() => {
+                  setSelectedProduct(products[index]);
+                  setFormMode("edit");
+                  setEditModalOpen(true);
+                }}
+                onDuplicate={() => {
+                  setSelectedProduct(products[index]);
+                  setFormMode("duplicate");
+                  setEditModalOpen(true);
+                }}
+                onDelete={() => {
+                  handleDeleteProduct(
+                    product.id,
+                    products[index].images
+                      ? products[index].images.map((image) => image.id)
+                      : []
+                  );
+                }}
+              />
+            ))}
+          </CardContainer>
+
+          {/* pagination */}
+          {pagination ? (
+            <Box
+              sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}
+            >
+              <PaginationComponent pagination={pagination} setPage={setPage} />
+            </Box>
+          ) : null}
+        </>
       ) : (
         <ProductsEmptyState
           title="You don't have any products yet"
@@ -122,6 +132,7 @@ export default function MyProductsMainContent({
           onClick={() => router.push("/my-products/add-product")}
         />
       )}
+
       {editModalOpen && (
         <EditProductModalWrapper
           open={editModalOpen}

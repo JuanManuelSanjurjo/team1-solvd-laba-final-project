@@ -1,4 +1,3 @@
-// hooks/useProductForm.ts
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductFormData, productSchema } from "../add-product/types";
