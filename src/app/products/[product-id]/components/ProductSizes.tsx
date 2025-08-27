@@ -33,13 +33,13 @@ export default function ProductSizes({
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, 82px)",
-            justifyContent:
-              product.sizes?.length > 3 ? "space-between" : "flex-start",
+            gridTemplateColumns: "repeat(auto-fit, 85px)",
+            // justifyContent:
+            //   product.sizes?.length > 3 ? "space-between" : "flex-start",
             alignItems: "center",
             gap: {
               xs: 1,
-              md: 3,
+              md: 2.9,
             },
           }}
         >

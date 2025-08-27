@@ -46,12 +46,16 @@ export default function Gallery({
   }, [current]);
 
   return (
-    <Box display="flex" sx={{ justifyContent: "center", alignItems: "center" }}>
+    <Box
+      display="flex"
+      sx={{ justifyContent: "center", alignItems: "center", width: "100%" }}
+    >
       <Box
         m={0}
         display="flex"
-        maxWidth={{ xs: "100%", md: 680 }}
-        maxHeight={630}
+        width="100%"
+        maxWidth={680}
+        maxHeight="auto"
         boxShadow={0}
         sx={{
           aspectRatio: "1/0.9",
@@ -70,7 +74,22 @@ export default function Gallery({
           containerRef={containerRef}
         />
 
-        <Box flex={1} position="relative" display="flex" flexDirection="column">
+        <Box
+          flex={1}
+          position="relative"
+          display="flex"
+          flexDirection="column"
+          sx={{
+            width: {
+              xs: "100%",
+              md: "588px",
+            },
+            height: {
+              xs: "100%",
+              md: "630px",
+            },
+          }}
+        >
           <Fade in={true} key={images[current].url} timeout={500}>
             <Box
               component="img"
@@ -79,15 +98,23 @@ export default function Gallery({
               sx={{
                 aspectRatio: {
                   xs: "1/1",
-                  sm: "4/3",
-                },
-                height: {
-                  xs: "100%",
-                  lg: "630px",
+                  md: "4/3",
                 },
                 width: {
                   xs: "100%",
-                  lg: "588px",
+                  md: "588px",
+                },
+                height: {
+                  xs: "100%",
+                  md: "630px",
+                },
+                maxHeight: {
+                  xs: "100%",
+                  md: "630px",
+                },
+                maxWidth: {
+                  xs: "100%",
+                  md: "588px",
                 },
                 objectFit: "cover",
                 borderRadius: 0,
