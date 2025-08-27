@@ -7,22 +7,20 @@ import { getQueryClient } from "@/lib/get-query-client";
 import { Session } from "next-auth";
 import { useToastStore } from "@/store/toastStore";
 
-export function useUpdateProduct(
-  productId: number,
-  session: Session,
-  options?: { autoDeleteImages?: boolean } // new optional flag
-) {
+export function useUpdateProduct(session: Session) {
   const queryClient = getQueryClient();
   const token = session?.user.jwt;
   if (!token) throw new Error("User not authenticated (missing token)");
 
   return useMutation({
     mutationFn: async ({
+      productId,
       data,
       imageFiles,
       existentImages,
       imagesToDelete = [],
     }: {
+      productId: number;
       data: ProductFormData;
       imageFiles: File[];
       existentImages: number[];
@@ -39,11 +37,7 @@ export function useUpdateProduct(
 
       await updateProduct(productId, payload, token);
 
-      if (
-        options?.autoDeleteImages &&
-        imagesToDelete &&
-        imagesToDelete.length > 0
-      ) {
+      if (imagesToDelete && imagesToDelete.length > 0) {
         await Promise.all(
           imagesToDelete.map(async (imageId) => {
             try {

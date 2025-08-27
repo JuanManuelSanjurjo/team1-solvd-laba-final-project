@@ -36,6 +36,7 @@ export default function MyProductsHeader({
             xs: 30,
             md: 40,
           },
+          marginBottom: "20px",
         }}
       >
         My Products

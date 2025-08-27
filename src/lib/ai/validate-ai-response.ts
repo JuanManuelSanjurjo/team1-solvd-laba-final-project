@@ -1,5 +1,17 @@
+interface AiResponseParsed {
+  brands: string[];
+  categories: string[];
+  price_min: number | undefined;
+  price_max: number | undefined;
+  colors: string[];
+  genders: string[];
+  sizes: number[];
+  searchTerm: string;
+  explain_short: string;
+}
+
 export function validateAIResponse(
-  aiResp: any,
+  aiResp: AiResponseParsed,
   options: {
     brands: { label: string; value: number }[];
     colors: { label: string; value: number }[];

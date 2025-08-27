@@ -23,7 +23,7 @@ interface UseEditProductFormReturn extends UseFormReturn<ProductFormData> {
   existentImages: string[];
   setExistentImages: (previews: string[]) => void;
   toggleSize: (size: number) => void;
-  submit: () => Promise<void> | void; // already wrapped with handleSubmit
+  submit: () => Promise<void> | void;
   selectedSizes: number[] | undefined;
 }
 
@@ -48,26 +48,14 @@ export function useEditProductForm({
     },
   });
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    getValues,
-    setError,
-    watch,
-    formState: { errors },
-  } = form;
+  const { handleSubmit, setValue, watch } = form;
 
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existentImages, setExistentImages] = useState<string[]>(
     product.images ? product.images.map((image) => image.url) : []
   );
 
-  const { mutateAsync: updateProductMutate } = useUpdateProduct(
-    product.id,
-    session
-  );
+  const { mutateAsync: updateProductMutate } = useUpdateProduct(session);
   const { mutateAsync: createProductMutate } = useCreateProduct(session);
 
   const selectedSizes = watch("sizes");
@@ -98,6 +86,7 @@ export function useEditProductForm({
     if (mode === "edit") {
       try {
         await updateProductMutate({
+          productId: product.id,
           data: { ...data, userID },
           imageFiles,
           existentImages: remainingExistentImages,

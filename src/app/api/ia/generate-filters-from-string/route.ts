@@ -19,6 +19,7 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
     const [
       brandOptions,
       colorOptions,
@@ -81,19 +82,13 @@ USER_QUERY\n"""${basePrompt}"""`;
       prompt,
     });
 
-    const text = aiResp.content.find((c) => c.type === "text")?.text ?? "";
-    console.log(text);
-
     const textPart = aiResp.content.find((c) => c.type === "text")?.text ?? "";
 
     const cleaned = textPart.replace(/```json|```/g, "").trim();
 
-    console.log("cleaned--->", cleaned);
-
-    let parsed: any;
+    let parsed;
     try {
       parsed = JSON.parse(cleaned);
-      console.log("paresed--->", parsed);
     } catch (err) {
       console.error("Failed to parse AI response:", err);
     }
@@ -106,23 +101,16 @@ USER_QUERY\n"""${basePrompt}"""`;
       genders: genderOptions,
     });
 
-    console.log("validated response--->", validated);
-
     const filters = aiLabelsToFilters(validated);
-
-    console.log("built in filters--->", filters);
-
-    console.log("AI filters:", filters);
 
     const redirectUrl = filtersToQueryString(filters);
 
-    console.log("Redirect URL:", redirectUrl);
     return NextResponse.json(
       { redirectUrl: redirectUrl, explain_short: validated.explain_short },
       { status: 200 }
     );
-  } catch (err: any) {
+  } catch (err) {
     console.error("error generating filters", err);
-    return NextResponse.json({ redirectUrl: "/", ai: null }, { status: 500 });
+    return NextResponse.json({ redirectUrl: "/" }, { status: 500 });
   }
 }

@@ -59,24 +59,19 @@ export function normalizeFullProduct(product: Product) {
   };
 }
 
-function normalizeProductToMyProduct(item: any): MyProduct {
-  const id = item.id ?? item?.attributes?.id ?? 0;
+export function normalizeProductToMyProduct(item: Product): MyProduct {
+  const id = item.id;
   const attributes = item.attributes ?? item;
 
   const images =
-    attributes.images?.data?.map((img: any) => {
+    attributes.images?.data?.map((img) => {
       const image = img.attributes ?? {};
-      const url =
-        image.url ||
-        image.formats?.thumbnail?.url ||
-        image.formats?.small?.url ||
-        image.formats?.medium?.url ||
-        "";
+      const url = image.url;
       return { id: img.id, url };
     }) ?? [];
 
   const categories =
-    attributes.categories?.data?.map((c: any) => ({
+    attributes.categories?.data?.map((c) => ({
       id: c.id,
       name: c.attributes?.name ?? "",
     })) ?? [];
@@ -96,17 +91,14 @@ function normalizeProductToMyProduct(item: any): MyProduct {
     : { id: 0, name: "No gender" };
 
   const sizes =
-    attributes.sizes?.data?.map((s: any) => ({
+    attributes.sizes?.data?.map((s) => ({
       id: s.id,
     })) ?? [];
 
   return {
     id,
     name: attributes.name ?? "",
-    price:
-      typeof attributes.price === "number"
-        ? attributes.price
-        : Number(attributes.price ?? 0),
+    price: attributes.price,
     description: attributes.description ?? "",
     categories,
     gender,

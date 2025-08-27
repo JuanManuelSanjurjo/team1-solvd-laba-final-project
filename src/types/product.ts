@@ -3,9 +3,11 @@ export interface Product {
   attributes: {
     name: string;
     price: number;
+    description: string;
     images: {
       data:
         | {
+            id: number;
             attributes: {
               url: string;
             };
@@ -14,6 +16,7 @@ export interface Product {
     };
     gender: {
       data: {
+        id: number;
         attributes: {
           name: string;
         };
@@ -21,6 +24,7 @@ export interface Product {
     };
     brand: {
       data: {
+        id: number;
         attributes: {
           name: string;
         };
@@ -28,6 +32,7 @@ export interface Product {
     };
     color: {
       data: {
+        id: number;
         attributes: {
           name: string;
         };
@@ -36,6 +41,7 @@ export interface Product {
     categories: {
       data:
         | {
+            id: number;
             attributes: {
               name: string;
             };
@@ -43,12 +49,14 @@ export interface Product {
         | null;
     };
     sizes: {
-      data: {
-        id: number;
-        attributes: {
-          value: number;
-        };
-      }[];
+      data:
+        | {
+            id: number;
+            attributes: {
+              value: number;
+            };
+          }[]
+        | null;
     };
   };
 }

@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { useMemo, useState } from "react";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ProductsEmptyState from "@/components/ProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
 import { MyProduct } from "@/types/product";
@@ -13,10 +13,13 @@ import Button from "@/components/Button";
 import { EditProductForm } from "./EditProductForm";
 import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Session } from "next-auth";
 import PaginationComponent from "@/components/PaginationComponent";
 import useQueryUserProductsPaged from "../hooks/useQueryUserProductsPaged";
+import useSearchMyProducts from "../hooks/useSearchMyProducts";
+import { SearchBar } from "@/components/SearchBar";
+import { Add } from "iconsax-react";
 
 interface MyProductsMainContentProps {
   session: Session;
@@ -34,6 +37,11 @@ export default function MyProductsMainContent({
   categoryOptions,
 }: MyProductsMainContentProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchTerm = useMemo(
+    () => searchParams.get("searchTerm"),
+    [searchParams]
+  );
 
   const userId = session?.user?.id;
   const token = session?.user?.jwt;
@@ -44,8 +52,21 @@ export default function MyProductsMainContent({
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
 
-  const [page, setPage] = useState<number>(1);
-  const [pageSize] = useState<number>(16);
+  const {
+    searchInput,
+    handleSearchInputChange,
+    handleSearchSubmit,
+    deleteSearchTerm,
+  } = useSearchMyProducts();
+
+  const pageSize = 16;
+  const page = Number(searchParams.get("page") ?? 1);
+
+  function handleSetPage(page: number) {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set("page", page.toString());
+    router.push(`?${newSearchParams.toString()}`);
+  }
 
   const { products, pagination, isPending, isLoading } =
     useQueryUserProductsPaged({
@@ -53,15 +74,12 @@ export default function MyProductsMainContent({
       token,
       pageNumber: page,
       pageSize,
+      searchQuery: searchTerm ?? "",
     });
-
-  const handleSetPage = () => {
-    setPage(0);
-  };
 
   const deleteMutation = useDeleteProduct({
     session,
-    setPage,
+    setPage: handleSetPage,
     currentPage: page,
     productsLength: products.length,
   });
@@ -69,6 +87,10 @@ export default function MyProductsMainContent({
   const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
     deleteMutation.mutate({ productId, imageIds });
   };
+
+  const isMdUp = useMediaQuery(useTheme().breakpoints.up("lg"), {
+    noSsr: true,
+  });
 
   return (
     <Box
@@ -80,6 +102,80 @@ export default function MyProductsMainContent({
       }}
     >
       <MyProductsHeader isEmpty={products ? products.length === 0 : false} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: { xs: "flex-start", lg: "space-between" },
+          gap: "30px",
+          alignItems: "center",
+          flexDirection: { xs: "column", lg: "row" },
+          marginTop: "30px",
+          marginBottom: "20px",
+        }}
+      >
+        <SearchBar
+          size="medium"
+          placeholder="Search your products"
+          onChange={handleSearchInputChange}
+          onSubmit={handleSearchSubmit}
+          fullWidth={isMdUp ? false : true}
+          value={searchInput}
+        />
+        {searchTerm && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 1,
+            }}
+          >
+            <Typography
+              sx={{
+                typography: {
+                  xs: "h4",
+                  md: "h3",
+                },
+              }}
+              color="text.primary"
+            >
+              Search results for
+            </Typography>
+            <Box
+              sx={{
+                backgroundColor: "rgba(150,150,150,0.1)",
+                borderRadius: 1,
+                display: "flex",
+                gap: 1,
+                alignItems: "center",
+                maxWidth: "100%",
+              }}
+            >
+              <Typography
+                title={searchTerm}
+                sx={{
+                  typography: {
+                    xs: "h4",
+                    md: "h3",
+                  },
+                  paddingInline: 1,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {searchTerm}
+              </Typography>
+              <Add
+                color="rgba(92, 92, 92, 1)"
+                size={24}
+                style={{ transform: "rotate(45deg)", cursor: "pointer" }}
+                onClick={deleteSearchTerm}
+              />
+            </Box>
+          </Box>
+        )}
+      </Box>
 
       {isPending || isLoading ? (
         <SkeletonCardContainer />
@@ -115,12 +211,14 @@ export default function MyProductsMainContent({
             ))}
           </CardContainer>
 
-          {/* pagination */}
           {pagination ? (
             <Box
               sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}
             >
-              <PaginationComponent pagination={pagination} setPage={setPage} />
+              <PaginationComponent
+                pagination={pagination}
+                setPage={handleSetPage}
+              />
             </Box>
           ) : null}
         </>

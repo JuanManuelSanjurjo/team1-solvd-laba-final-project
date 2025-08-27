@@ -10,7 +10,6 @@ import NoSearchingStateHeader from "./NoSearchingStateHeader";
 import { usePathname } from "next/navigation";
 import SearchResultsPreview from "./SearchResultsPreview";
 import { Session } from "next-auth";
-import AiButton from "../AiButton";
 
 const excludedPaths = [
   "/auth/sign-in",

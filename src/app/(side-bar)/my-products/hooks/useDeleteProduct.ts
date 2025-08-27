@@ -6,7 +6,6 @@ import { deleteProduct } from "@/lib/actions/delete-product";
 import { useMutation } from "@tanstack/react-query";
 import { Session } from "next-auth";
 import { useToastStore } from "@/store/toastStore";
-import { product } from "@/mocks/product";
 
 type DeletePayload = {
   productId: number;

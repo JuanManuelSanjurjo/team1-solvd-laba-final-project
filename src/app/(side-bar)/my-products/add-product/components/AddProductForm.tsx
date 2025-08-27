@@ -6,7 +6,6 @@ import { Session } from "next-auth";
 import { ProductFormFields } from "./ProductFormFields";
 import ImagePreviewerUploader from "./ImagePreviewerUploader";
 
-import { useToastStore } from "@/store/toastStore";
 import { useProductForm } from "../../hooks/useProductForm";
 import { useImagePreviews } from "../../hooks/useImagePreviews";
 import { useCreateProduct } from "../hooks/useCreateProduct";
@@ -72,12 +71,7 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
 
       previews.reset();
       router.push("/my-products");
-    } catch (e) {
-      useToastStore.getState().show({
-        severity: "error",
-        message: "Failed to add product",
-      });
-    }
+    } catch {}
   };
 
   return (

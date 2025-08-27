@@ -5,6 +5,7 @@ import { ProductFormData } from "../add-product/types";
 
 export function useProductMutations(session: Session) {
   const createMutation = useCreateProduct(session);
+  const updateMutation = useUpdateProduct(session);
 
   const createProduct = async ({
     data,
@@ -35,8 +36,8 @@ export function useProductMutations(session: Session) {
     existentImages: number[];
     imagesToDelete?: number[];
   }) => {
-    const updateMutation = useUpdateProduct(productId, session);
     return updateMutation.mutateAsync({
+      productId,
       data,
       imageFiles,
       existentImages,

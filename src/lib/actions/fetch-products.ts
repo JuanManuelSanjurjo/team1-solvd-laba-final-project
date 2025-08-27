@@ -74,12 +74,6 @@ export async function fetchProducts(
     });
   }
 
-  if (filters.colors) {
-    filters.colors.forEach((color, index) => {
-      baseUrl.searchParams.append(`filters[color][name][$in][${index}]`, color);
-    });
-  }
-
   if (filters.priceMin !== undefined && filters.priceMax !== undefined) {
     baseUrl.searchParams.append(
       "filters[price][$between]",

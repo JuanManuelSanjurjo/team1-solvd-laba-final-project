@@ -6,23 +6,13 @@ import RecommendationIcon from "@mui/icons-material/Lightbulb";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
+import { fetchRecommendations } from "@/lib/ai/generate-filter-recommendations";
 
-type RecsApiResponse = {
+interface RecsApiResponse {
   redirectUrl?: string;
   ai?: {
     explain_short?: string;
   } | null;
-};
-
-async function fetchRecommendations(ids: number[]) {
-  const res = await fetch("/api/ia/recommendations", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ids }),
-  });
-  if (!res.ok) throw new Error("Failed to fetch recommendations");
-  const json: RecsApiResponse = await res.json();
-  return json;
 }
 
 const FIVE_MIN = 1000 * 60 * 5;
@@ -52,19 +42,18 @@ export default function RecommendationPopup({ userId }: { userId?: string }) {
       if (!raw) return null;
       const parsed = JSON.parse(raw) as { ts: number; data: RecsApiResponse };
       if (Date.now() - parsed.ts < FIVE_MIN) return parsed.data;
-      console.log(parsed.data);
       return null;
     } catch {
       return null;
     }
-  }, [storageKey, ids.join(",")]);
+  }, [storageKey]);
 
   const queryKey = ["recommendations", userId ?? "guest"];
 
   const query = useQuery({
     queryKey,
     queryFn: () => fetchRecommendations(ids),
-    enabled: ids.length > 0 && !cachedInitialData,
+    enabled: ids.length > 4 && !cachedInitialData,
     initialData: cachedInitialData ?? undefined,
     staleTime: FIVE_MIN,
     gcTime: FIVE_MIN,
@@ -137,7 +126,6 @@ export default function RecommendationPopup({ userId }: { userId?: string }) {
                   query.data?.redirectUrl ?? ""
                 );
               } catch {}
-              console.log("--->", query.data?.redirectUrl);
               router.push(
                 query.data?.redirectUrl
                   ? `/products${query.data?.redirectUrl}`
@@ -153,12 +141,6 @@ export default function RecommendationPopup({ userId }: { userId?: string }) {
             size="small"
             onClick={() => {
               setDismissed(true);
-              try {
-                sessionStorage.setItem(
-                  "recs_shown_for",
-                  query.data?.redirectUrl ?? ""
-                );
-              } catch {}
             }}
             sx={{ ml: 1 }}
           >

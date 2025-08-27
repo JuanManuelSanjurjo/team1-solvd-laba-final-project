@@ -55,11 +55,10 @@ export async function POST(req: Request) {
     const genderLabels = genderOptions
       .map((o: { label: string; value: number }) => o.label)
       .join(", ");
+
     const products = details.map((product) =>
       normalizeFullProduct(product.data)
     );
-
-    console.log(products);
 
     const prompt = `
 You are a product-recommendation assistant. 
@@ -95,21 +94,16 @@ ${JSON.stringify(products, null, 2)}
 Produce only valid JSON that conforms exactly to the schema above.
 `;
 
-    console.log("-----> INPUT ", JSON.stringify(products, null, 2));
-
     const aiResp = await generateText({
       model: google("gemini-2.5-flash"),
       prompt,
     });
 
-    const text = aiResp.content.find((c) => c.type === "text")?.text ?? "";
-    console.log(text);
-
     const textPart = aiResp.content.find((c) => c.type === "text")?.text ?? "";
 
     const cleaned = textPart.replace(/```json|```/g, "").trim();
 
-    let parsed: any;
+    let parsed;
     try {
       parsed = JSON.parse(cleaned);
     } catch (err) {
@@ -126,11 +120,7 @@ Produce only valid JSON that conforms exactly to the schema above.
 
     const filters = aiLabelsToFilters(validated);
 
-    console.log("AI filters:", filters);
-
     const redirectUrl = filtersToQueryString(filters);
-
-    console.log("Redirect URL:", redirectUrl);
 
     return NextResponse.json({
       redirectUrl,
@@ -139,8 +129,8 @@ Produce only valid JSON that conforms exactly to the schema above.
         explain_short: validated.explain_short ?? "",
       },
     });
-  } catch (err: any) {
+  } catch (err) {
     console.error("recommendations error", err);
-    return NextResponse.json({ redirectUrl: "/", ai: null }, { status: 500 });
+    return NextResponse.json({ redirectUrl: "/" }, { status: 500 });
   }
 }

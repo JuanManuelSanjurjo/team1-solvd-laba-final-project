@@ -7,7 +7,7 @@ import {
   UseFormSetValue,
   UseFormSetError,
 } from "react-hook-form";
-import { AlertProps, Box, FormHelperText } from "@mui/material";
+import { Box, FormHelperText } from "@mui/material";
 import Input from "@/components/form-elements/Input";
 import Select from "@/components/form-elements/Select";
 import ShoeSizeOption from "@/app/products/[product-id]/components/ShoeSizeOption";
@@ -16,7 +16,6 @@ import { ProductFormData } from "../types";
 import AiButton from "@/components/AiButton";
 import { useState } from "react";
 import { generateDescription } from "@/lib/ai/generate-description";
-import Toast from "@/components/Toast";
 import { getLabelFromOptions } from "@/lib/ai/ai-utils";
 import { useToastStore } from "@/store/toastStore";
 

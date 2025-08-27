@@ -60,11 +60,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   const previews = useImagePreviews(initialUrls);
 
   const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
-  const { mutateAsync: handleUpdateProduct } = useUpdateProduct(
-    product.id,
-    session,
-    { autoDeleteImages: true }
-  );
+  const { mutateAsync: handleUpdateProduct } = useUpdateProduct(session);
 
   const onSubmit = async (data: ProductFormData) => {
     const userID = parseInt(session?.user.id ?? "0", 10);
@@ -85,13 +81,14 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
     if (mode === "edit") {
       try {
         await handleUpdateProduct({
+          productId: product.id,
           data: { ...data, userID },
           imageFiles: previews.getNewFiles(),
           existentImages: remainingExistentImageIds,
           imagesToDelete,
         });
         onSuccess?.();
-      } catch (e) {
+      } catch {
         useToastStore.getState().show({
           severity: "error",
           message: "Failed to update product",
@@ -120,7 +117,7 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         });
 
         onSuccess?.();
-      } catch (e) {
+      } catch {
         useToastStore.getState().show({
           severity: "error",
           message: "Failed to duplicate product",

@@ -37,15 +37,16 @@ export function getQueryStringFromFilters(
       }
     })
     .join("&");
-
-  const populate = populateFields
-    .map((field) => {
-      const parts = field.split(".");
-      if (parts.length === 1) return "";
-      const [relation, subfield] = parts;
-      return `populate[${relation}][fields][0]=${subfield}`;
-    })
-    .join("&");
+  const populate =
+    !populateFields.includes("all") &&
+    populateFields
+      .map((field) => {
+        const parts = field.split(".");
+        if (parts.length === 1) return "";
+        const [relation, subfield] = parts;
+        return `populate[${relation}][fields][0]=${subfield}`;
+      })
+      .join("&");
 
   const url = `${
     process.env.NEXT_PUBLIC_API_URL
