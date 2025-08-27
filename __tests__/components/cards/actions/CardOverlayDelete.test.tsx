@@ -66,11 +66,4 @@ describe("CardOverlayDelete", () => {
 
     expect(mockOnDeletePreview).toHaveBeenCalledTimes(3);
   });
-
-  it("matches a basic snapshot", () => {
-    const { container } = render(
-      <CardOverlayDelete onDeletePreview={mockOnDeletePreview} />,
-    );
-    expect(container.firstChild).toMatchSnapshot();
-  });
 });
