@@ -15,6 +15,7 @@ export default function SkeletonGallery() {
         maxWidth={{ xs: "100%", md: 680 }}
         maxHeight={630}
         sx={{
+          margin: "0 auto",
           aspectRatio: "1/0.9",
           flexDirection: {
             xs: "column-reverse",
