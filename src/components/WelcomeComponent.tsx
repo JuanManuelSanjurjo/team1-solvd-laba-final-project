@@ -36,7 +36,6 @@ const WelcomeComponent = ({ src, name }: WelcomeComponentProps) => {
       gap={2}
       mb={2}
       sx={{
-        // mt: { xs: 3, md: 4.7 },
         mb: 4,
         ml: { xs: 2, lg: 5 },
       }}
