@@ -25,6 +25,7 @@ import SidebarIcon from "./SideBarIcon";
 import WelcomeComponent from "./WelcomeComponent";
 import { signOut } from "next-auth/react";
 import { Session } from "next-auth";
+import { useToastStore } from "@/store/toastStore";
 
 const navItems = [
   {
@@ -105,6 +106,7 @@ const AuthenticatedSidebar = ({
   width,
 }: AuthenticatedSidebarProps): JSX.Element => {
   const pathname = usePathname();
+  const { show } = useToastStore();
 
   const drawerWidth = {
     md: 240,
@@ -114,6 +116,10 @@ const AuthenticatedSidebar = ({
   const sidebarWidth = width || drawerWidth;
 
   const handleLogout = () => {
+    show({
+      severity: "success",
+      message: "Logging out...",
+    });
     signOut();
   };
   return (

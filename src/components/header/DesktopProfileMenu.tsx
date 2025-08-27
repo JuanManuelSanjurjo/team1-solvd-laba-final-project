@@ -1,11 +1,11 @@
 "use client";
-import { Menu, MenuItem, AlertProps } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { Session } from "next-auth";
-import Toast from "../Toast";
+import { useToastStore } from "@/store/toastStore";
 
 /**
  * DesktopProfileMenu
@@ -23,21 +23,13 @@ export default function DesktopProfileMenu({
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const [open, setOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "" as AlertProps["severity"],
-    message: "",
-  });
-  const handleToastClose = () => {
-    setOpen(false);
-  };
+  const { show } = useToastStore();
 
   const handleLogout = () => {
-    setToastContent({
+    show({
       severity: "success",
       message: "Logging out...",
     });
-    setOpen(true);
     signOut();
   };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -49,12 +41,6 @@ export default function DesktopProfileMenu({
   };
   return (
     <>
-      <Toast
-        open={open}
-        onClose={handleToastClose}
-        severity={toastContent.severity}
-        message={toastContent.message}
-      />
       <ProfilePicture
         width={24}
         alt={session?.user?.username}
