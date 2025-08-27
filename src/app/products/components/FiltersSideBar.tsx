@@ -184,7 +184,10 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
       <FiltersSection label="Price">
         <Slider
           value={priceRange}
-          sx={{ width: "94%" }}
+          sx={{
+            width: { xs: "83%", md: "88%" },
+            marginLeft: "10px",
+          }}
           onChange={handlePriceChange}
           onChangeCommitted={handlePriceCommit}
           valueLabelDisplay="auto"
