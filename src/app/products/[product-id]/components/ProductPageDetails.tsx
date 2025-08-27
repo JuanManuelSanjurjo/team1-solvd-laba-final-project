@@ -91,6 +91,7 @@ export default function ProductPageDetails({
     >
       <ProductMainData product={product} />
       <ProductSizes
+        session={session}
         product={product}
         toggleSize={toggleSize}
         selectedSizes={selectedSizes}
