@@ -255,7 +255,7 @@ export default function Products({
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
+              justifyContent: isMobile ? "space-between" : "flex-end",
               padding: {
                 xs: "0 20px",
                 sm: "0 30px",
@@ -267,23 +267,35 @@ export default function Products({
               },
             }}
           >
-            {isMobile && (
-              <Box sx={{ display: "flex", maxWidth: "65%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                maxWidth: "65%",
+                backgroundColor: "rgba(150,150,150,0.1)",
+                borderRadius: 1,
+                justifyContent: "space-between",
+                gap: 1,
+                alignItems: "center",
+              }}
+              onClick={deleteSearchTerm}
+            >
+              {searchTerm && isMobile && (
                 <Typography
                   variant="h5"
                   color="text.primary"
                   sx={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    paddingBlock: { xs: 2, md: 0 },
+                    padding: { xs: "4px", md: 0 },
                   }}
                 >
                   {searchTerm
                     ? `${searchTerm} (${pagination?.total || 0})`
-                    : ""}
+                    : ""}{" "}
+                  &#x2715;{" "}
                 </Typography>
-              </Box>
-            )}
+              )}
+            </Box>
             <Box
               onClick={() => {
                 setFiltersOpen(!filtersOpen);
