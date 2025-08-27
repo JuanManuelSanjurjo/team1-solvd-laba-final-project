@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import ShoeSizeOption from "./ShoeSizeOption";
 import { NormalizedProduct } from "@/types/product-types";
 import { JSX } from "react";
+import { Session } from "next-auth";
 
 /**
  * ShoeSizeOptionContainer
@@ -19,10 +20,12 @@ export default function ProductSizes({
   product,
   selectedSizes,
   toggleSize,
+  session,
 }: {
   product: NormalizedProduct;
   selectedSizes: number[];
   toggleSize: (size: number) => void;
+  session: Session | null;
 }): JSX.Element {
   return (
     <>
@@ -33,13 +36,11 @@ export default function ProductSizes({
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, 82px)",
-            justifyContent:
-              product.sizes?.length > 3 ? "space-between" : "flex-start",
+            gridTemplateColumns: "repeat(auto-fit, 85px)",
             alignItems: "center",
             gap: {
               xs: 1,
-              md: 3,
+              md: 2.9,
             },
           }}
         >
@@ -47,7 +48,7 @@ export default function ProductSizes({
             <ShoeSizeOption
               key={id}
               size={value}
-              disabled={false}
+              disabled={session?.user?.id ? false : true}
               checked={selectedSizes.includes(value)}
               onToggle={toggleSize}
               value={value}

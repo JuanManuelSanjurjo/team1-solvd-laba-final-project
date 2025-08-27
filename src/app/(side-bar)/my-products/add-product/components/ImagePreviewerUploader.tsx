@@ -1,10 +1,10 @@
 "use client";
 
-import Card from "@/components/cards/Card";
 import CardContainer from "@/components/cards/CardContainer";
 import CardDragAndDrop from "@/components/cards/CardDragAndDrop";
 import { Session } from "next-auth";
 import { useState, useCallback, useEffect, useMemo } from "react";
+import RemovableImage from "./RemovableImage";
 
 /**
  * Props for the ImagePreviewerUploader component.
@@ -29,14 +29,13 @@ interface ImagePreviewUploaderProps {
 type Preview = { url: string; file?: File };
 
 export default function ImagePreviewerUploader({
-  session,
   onFilesChange,
   initialPreviews = [],
   onPreviewsChange,
   reset,
 }: ImagePreviewUploaderProps) {
   const [previews, setPreviews] = useState<Preview[]>(
-    initialPreviews.map((url) => ({ url }))
+    initialPreviews.map((url) => ({ url })),
   );
 
   const stableOnPreviewsChange = useMemo(() => {
@@ -69,13 +68,11 @@ export default function ImagePreviewerUploader({
     <CardContainer>
       <CardDragAndDrop onFileAdd={handleAddFile} />
       {previews.map((preview, idx) => (
-        <Card
-          session={session}
+        <RemovableImage
           key={idx}
           image={preview.url}
           overlayAction="cardOverlayDelete"
           onDeletePreview={() => handleDeletePreview(idx)}
-          showText={false}
         />
       ))}
     </CardContainer>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Drawer, Typography } from "@mui/material";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import PaginationComponent from "@/components/PaginationComponent";
 import SkeletonPagination from "@/components/SkeletonPagination";
@@ -37,21 +37,23 @@ export default function Products({
 }: ProductsProps) {
   const { isMobile, isDesktop } = useMediaBreakpoints();
 
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(() =>
-    isDesktop ? true : false
-  );
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(() => false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
 
   const filters = useMemo(
     () => getFiltersFromSearchParams(searchParams),
-    [searchParams]
+    [searchParams],
   );
   const searchTerm = useMemo(
     () => searchParams.get("searchTerm"),
-    [searchParams]
+    [searchParams],
   );
+
+  useEffect(() => {
+    setFiltersOpen(isDesktop);
+  }, [isDesktop]);
 
   const {
     data: products,
@@ -253,7 +255,7 @@ export default function Products({
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
+              justifyContent: isMobile ? "space-between" : "flex-end",
               padding: {
                 xs: "0 20px",
                 sm: "0 30px",
@@ -265,23 +267,35 @@ export default function Products({
               },
             }}
           >
-            {isMobile && (
-              <Box sx={{ display: "flex", maxWidth: "65%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                maxWidth: "65%",
+                backgroundColor: "rgba(150,150,150,0.1)",
+                borderRadius: 1,
+                justifyContent: "space-between",
+                gap: 1,
+                alignItems: "center",
+              }}
+              onClick={deleteSearchTerm}
+            >
+              {searchTerm && isMobile && (
                 <Typography
                   variant="h5"
                   color="text.primary"
                   sx={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    paddingBlock: { xs: 2, md: 0 },
+                    padding: { xs: "4px", md: 0 },
                   }}
                 >
                   {searchTerm
                     ? `${searchTerm} (${pagination?.total || 0})`
-                    : ""}
+                    : ""}{" "}
+                  &#x2715;{" "}
                 </Typography>
-              </Box>
-            )}
+              )}
+            </Box>
             <Box
               onClick={() => {
                 setFiltersOpen(!filtersOpen);
@@ -375,7 +389,7 @@ export default function Products({
                           key={index}
                           overlay={true}
                         />
-                      )
+                      ),
                     )}
                   </CardContainer>
                   {pagination ? (

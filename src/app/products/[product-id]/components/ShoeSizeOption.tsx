@@ -28,6 +28,7 @@ const baseStyles = {
   textAlign: "center",
   cursor: "pointer",
   border: "1px solid #494949",
+  width: "85px",
 };
 
 const stateStyles = {

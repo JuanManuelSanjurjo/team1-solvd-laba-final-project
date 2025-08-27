@@ -30,7 +30,7 @@ export default function ProductSizes({
           data-testid="product-sizes"
           sx={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, 82px)",
+            gridTemplateColumns: "repeat(auto-fit, 85px)",
             justifyContent:
               product.sizes?.length > 3 ? "space-between" : "flex-start",
             alignItems: "center",

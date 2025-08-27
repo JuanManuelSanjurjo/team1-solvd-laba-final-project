@@ -172,7 +172,12 @@ export const ProductFormFields = ({
           errorMessage={""}
           multiline
           fullWidth
-          sx={{ height: "320px", alignItems: "flex-start", padding: 0 }}
+          sx={{
+            minHeight: "320px",
+            alignItems: "flex-start",
+            padding: 0,
+            paddingBottom: 6,
+          }}
         />
         <AiButton
           variant="contained"

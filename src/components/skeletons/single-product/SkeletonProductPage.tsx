@@ -35,13 +35,14 @@ export default function ProductPageSkeleton() {
             maxWidth: { xs: "95%", md: 1300 },
             display: "flex",
             justifyContent: "center",
+            justifyItems: "center",
             alignItems: {
               xs: "center",
-              md: "flex-start",
+              lg: "flex-start",
             },
             flexDirection: {
               xs: "column",
-              md: "row",
+              lg: "row",
             },
             gap: "100px",
           }}

@@ -148,8 +148,8 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
         />
         <FilterCheckbox
           label="Men"
-          checked={searchParams.getAll("genre").includes("Men")}
-          onChange={() => handleFilterChange("genre", "Men")}
+          checked={searchParams.getAll("gender").includes("Men")}
+          onChange={() => handleFilterChange("gender", "Men")}
         />
       </FiltersSection>
       <FiltersSection label="Category">
@@ -184,7 +184,10 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
       <FiltersSection label="Price">
         <Slider
           value={priceRange}
-          sx={{ width: "94%" }}
+          sx={{
+            width: { xs: "83%", md: "88%" },
+            marginLeft: "10px",
+          }}
           onChange={handlePriceChange}
           onChangeCommitted={handlePriceCommit}
           valueLabelDisplay="auto"

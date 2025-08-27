@@ -1,8 +1,25 @@
 import { auth } from "@/auth";
 import ProductPageDetails from "../components/ProductPageDetails";
 import { normalizeProduct } from "@/lib/normalizers/product-normalizers";
+import { getProductName } from "@/lib/actions/get-product-name";
 import { getProductDetails } from "@/lib/actions/get-product-details";
+import { Metadata } from "next";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ "product-id": string }>;
+}): Promise<Metadata> {
+  const product = await params;
+  const { data } = await getProductName(product["product-id"]);
+
+  return {
+    title: data?.attributes?.name
+      ? `Products | ${data.attributes.name}`
+      : "Product | Details",
+    description: "Product details",
+  };
+}
 /**
  * SingleProduct
  *

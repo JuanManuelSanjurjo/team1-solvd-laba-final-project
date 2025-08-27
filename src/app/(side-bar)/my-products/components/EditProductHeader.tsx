@@ -46,11 +46,10 @@ export function EditProductHeader({ onClose, title }: EditProductHeaderProps) {
         color="text.secondary"
         sx={{ marginBottom: "40px" }}
       >
-        Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
-        laying out print, graphic or web designs. The passage is attributed to
-        an unknown typesetter in the 15th century who is thought to have
-        scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a
-        type specimen book. It usually begins with:
+        Easily add new footwear products to your store. Provide all the key
+        details—name, size, price, and images—to keep your catalog fresh and
+        attractive. The more complete your product info, the easier it is for
+        customers to find what they love.
       </Typography>
     </Box>
   );
