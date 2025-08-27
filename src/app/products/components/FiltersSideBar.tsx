@@ -148,8 +148,8 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
         />
         <FilterCheckbox
           label="Men"
-          checked={searchParams.getAll("genre").includes("Men")}
-          onChange={() => handleFilterChange("genre", "Men")}
+          checked={searchParams.getAll("gender").includes("Men")}
+          onChange={() => handleFilterChange("gender", "Men")}
         />
       </FiltersSection>
       <FiltersSection label="Category">
