@@ -22,4 +22,4 @@ export type OrderInfo = {
   status: OrderStatus;
 };
 
-export type OrderStatus = 'shipped' | 'cancelled' | 'received';
+export type OrderStatus = "succeeded" | "pending" | "failed";

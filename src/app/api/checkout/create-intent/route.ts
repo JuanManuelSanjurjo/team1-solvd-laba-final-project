@@ -5,6 +5,12 @@ import Stripe from "stripe";
 
 interface CreatePaymentIntentRequest {
   amount: number;
+  customer: string;
+  items: {
+    id: number;
+    quantity: number;
+    price: number;
+  }[];
 }
 
 export async function POST(req: Request) {
@@ -18,9 +24,7 @@ export async function POST(req: Request) {
 
   try {
     const body: CreatePaymentIntentRequest = await req.json();
-    const { amount } = body;
-
-    console.log("body", body);
+    const { amount, items, customer } = body;
 
     if (typeof amount !== "number" || !isFinite(amount) || amount <= 0) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
@@ -29,9 +33,11 @@ export async function POST(req: Request) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100),
       currency: "usd",
+      customer: customer,
       automatic_payment_methods: { enabled: true },
       metadata: {
         strapi_user_id: session?.user?.id,
+        items: JSON.stringify(items),
       },
     });
 

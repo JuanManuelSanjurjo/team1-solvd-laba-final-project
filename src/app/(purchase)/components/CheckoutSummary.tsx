@@ -27,12 +27,14 @@ type checkoutSummary = {
   buttonText: string;
   buttonAction(): void;
   userId: string;
+  disabled: boolean;
 };
 
 const CheckoutSummary = ({
   buttonText,
   buttonAction,
   userId,
+  disabled,
 }: checkoutSummary) => {
   const subtotal = useCartStore((state) => state.subtotal(userId));
   const total = useCartStore((state) => state.total(userId));
@@ -122,6 +124,7 @@ const CheckoutSummary = ({
         onClick={buttonAction}
         variant="contained"
         size="medium"
+        disabled={disabled}
       >
         {buttonText}
       </Button>

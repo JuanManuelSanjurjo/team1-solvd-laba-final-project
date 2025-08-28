@@ -11,5 +11,5 @@ export default async function CheckoutPage() {
     redirect("/auth/sign-in");
   }
 
-  return <Checkout userId={userId} />;
+  return <Checkout session={session} />;
 }

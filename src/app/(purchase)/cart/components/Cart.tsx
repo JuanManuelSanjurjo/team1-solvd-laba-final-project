@@ -32,7 +32,7 @@ type CartProps = {
 export default function Cart({ userId }: CartProps) {
   const byUser = useCartStore((state) => state.byUser);
 
-  const cartItems: CartItem[] = userId ? (byUser[userId] ?? []) : [];
+  const cartItems: CartItem[] = userId ? byUser[userId] ?? [] : [];
 
   const theme = useTheme();
   const router = useRouter();
@@ -117,6 +117,7 @@ export default function Cart({ userId }: CartProps) {
           buttonText="Checkout"
           buttonAction={() => router.push("/checkout")}
           userId={userId}
+          disabled={cartIsEmpty}
         />
       </Box>
     </Box>
