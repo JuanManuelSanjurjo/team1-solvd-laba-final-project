@@ -50,6 +50,7 @@ export default function SearchingStateHeader({
         fullWidth={isMobile ? true : false}
       />
       <Box
+        data-testid="close-icon"
         position={isMobile ? "relative" : "absolute"}
         right={isMobile ? 0 : 40}
         sx={{

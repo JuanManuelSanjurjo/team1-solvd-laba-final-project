@@ -11,7 +11,7 @@ import {
  * @returns {NormalizedProduct} The normalized product data.
  */
 export function normalizeProduct(
-  product: ProductApiResponse
+  product: ProductApiResponse,
 ): NormalizedProduct {
   return {
     id: product.id,
@@ -24,7 +24,7 @@ export function normalizeProduct(
       alt: img.attributes.name || `Product ${img.id} image`,
     })),
     sizes:
-      product.attributes?.sizes?.data.map((size) => ({
+      product.attributes?.sizes?.data?.map((size) => ({
         id: size.id,
         value: size.attributes.value,
       })) || [],
