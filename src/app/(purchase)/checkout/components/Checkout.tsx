@@ -78,6 +78,7 @@ export default function Checkout({ session }: { session: Session }) {
     };
 
     initializeCheckout();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, total, session.user.email]);
 
   const options: StripeElementsOptions = {
