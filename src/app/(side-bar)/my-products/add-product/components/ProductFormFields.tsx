@@ -16,6 +16,8 @@ import { ProductFormData } from "../types";
 import AiButton from "@/components/AiButton";
 import { useState } from "react";
 import { generateDescription } from "@/lib/ai/generate-description";
+import { getLabelFromOptions } from "@/lib/ai/ai-utils";
+import { useToastStore } from "@/store/toastStore";
 
 interface ProductFormFieldsProps {
   register: UseFormRegister<ProductFormData>;
@@ -45,23 +47,28 @@ export const ProductFormFields = ({
   selectedSizes,
   toggleSize,
   getValues,
-  setError,
   setValue,
 }: ProductFormFieldsProps) => {
   const [loading, setLoading] = useState(false);
 
   const handleGenerate = async () => {
-    const name = getValues("name");
-    if (!name) return;
+    const values = getValues();
+    if (!values) return;
 
     setLoading(true);
     try {
       setValue("description", "");
-
-      const aiResponse = await generateDescription(name);
+      const aiResponse = await generateDescription({
+        name: values.name,
+        brand: getLabelFromOptions(brandOptions, values.brand),
+        category: getLabelFromOptions(categoryOptions, values.categories),
+        color: getLabelFromOptions(colorOptions, values.color),
+        gender: values.gender === 3 ? "women" : "man",
+        description: values.description,
+      });
       if (aiResponse.isBranded === false) {
-        setError("description", {
-          type: "manual",
+        useToastStore.getState().show({
+          severity: "error",
           message:
             "AI detected this product name is likely not branded. Please review the product name.",
         });
@@ -69,14 +76,18 @@ export const ProductFormFields = ({
         typeof aiResponse.confidence === "number" &&
         aiResponse.confidence < CONFIDENCE_THRESHOLD
       ) {
-        setError("description", {
-          type: "manual",
+        useToastStore.getState().show({
+          severity: "error",
           message: `AI is uncertain about branding (confidence ${(
             aiResponse.confidence * 100
           ).toFixed(0)}%). Please verify the product name.`,
         });
       } else {
         setValue("description", aiResponse.description);
+        useToastStore.getState().show({
+          severity: "success",
+          message: "Description generated succesfully",
+        });
       }
     } catch (error) {
       console.error(error);
@@ -180,6 +191,7 @@ export const ProductFormFields = ({
           }}
         />
         <AiButton
+          label="Use AI "
           variant="contained"
           size="small"
           isLoading={loading}

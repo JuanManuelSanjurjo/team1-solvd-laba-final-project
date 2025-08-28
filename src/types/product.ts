@@ -3,9 +3,11 @@ export interface Product {
   attributes: {
     name: string;
     price: number;
+    description: string;
     images: {
       data:
         | {
+            id: number;
             attributes: {
               url: string;
             };
@@ -14,18 +16,47 @@ export interface Product {
     };
     gender: {
       data: {
+        id: number;
         attributes: {
           name: string;
         };
       };
     };
-    sizes: {
+    brand: {
       data: {
         id: number;
         attributes: {
-          value: number;
+          name: string;
         };
-      }[];
+      };
+    };
+    color: {
+      data: {
+        id: number;
+        attributes: {
+          name: string;
+        };
+      };
+    };
+    categories: {
+      data:
+        | {
+            id: number;
+            attributes: {
+              name: string;
+            };
+          }[]
+        | null;
+    };
+    sizes: {
+      data:
+        | {
+            id: number;
+            attributes: {
+              value: number;
+            };
+          }[]
+        | null;
     };
   };
 }
@@ -49,6 +80,10 @@ export type ProductFilters = {
   categories?: string[];
   priceMin?: number;
   priceMax?: number;
+  user?: {
+    userId: string;
+    token: string;
+  };
 };
 
 export interface MyProduct {

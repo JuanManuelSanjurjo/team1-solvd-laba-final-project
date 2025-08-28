@@ -33,6 +33,7 @@ interface SearchBarProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   focus?: boolean;
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
+  value?: string;
 }
 
 const sizeStyles = {
@@ -73,6 +74,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   focus = false,
   onChange,
   onSubmit,
+  value,
 }) => {
   const style = sizeStyles[size];
 
@@ -100,6 +102,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           placeholder={placeholder}
           onChange={onChange}
           autoFocus={focus}
+          value={value}
           sx={{
             flex: 1,
             fontSize: style.fontSize,

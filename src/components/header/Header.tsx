@@ -54,6 +54,8 @@ export const Header = ({
     handleToggleDrawer,
     open,
     searchResults,
+    generateFiltersWithAI,
+    aiLoading,
   } = useHeaderSearch();
   const pathname = usePathname();
   const { isMobile, isTablet } = useMediaBreakpoints();
@@ -83,12 +85,14 @@ export const Header = ({
         }}
       >
         {isSearching ? (
-          <SearchingStateHeader
-            isSearching={isSearching}
-            handleSearchInputChange={handleSearchInputChange}
-            handleSearchSubmit={handleSearchSubmit}
-            toggleSearch={toggleSearch}
-          />
+          <>
+            <SearchingStateHeader
+              isSearching={isSearching}
+              handleSearchInputChange={handleSearchInputChange}
+              handleSearchSubmit={handleSearchSubmit}
+              toggleSearch={toggleSearch}
+            />
+          </>
         ) : (
           <NoSearchingStateHeader
             toggleSearch={toggleSearch}
@@ -102,6 +106,8 @@ export const Header = ({
         <SearchResultsPreview
           products={searchResults}
           setIsSearching={setIsSearching}
+          generateFiltersWithAi={generateFiltersWithAI}
+          aiLoading={aiLoading}
         />
       )}
 

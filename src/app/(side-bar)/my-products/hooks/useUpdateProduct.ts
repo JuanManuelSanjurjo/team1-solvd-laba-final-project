@@ -5,19 +5,22 @@ import { updateProduct } from "@/lib/actions/update-product";
 import { deleteImage } from "@/lib/actions/delete-image";
 import { getQueryClient } from "@/lib/get-query-client";
 import { Session } from "next-auth";
+import { useToastStore } from "@/store/toastStore";
 
-export function useUpdateProduct(productId: number, session: Session) {
+export function useUpdateProduct(session: Session) {
   const queryClient = getQueryClient();
   const token = session?.user.jwt;
   if (!token) throw new Error("User not authenticated (missing token)");
 
   return useMutation({
     mutationFn: async ({
+      productId,
       data,
       imageFiles,
       existentImages,
       imagesToDelete = [],
     }: {
+      productId: number;
       data: ProductFormData;
       imageFiles: File[];
       existentImages: number[];
@@ -39,8 +42,11 @@ export function useUpdateProduct(productId: number, session: Session) {
           imagesToDelete.map(async (imageId) => {
             try {
               await deleteImage(imageId, token);
-            } catch (err) {
-              console.error(`Failed to delete image ${imageId}:`, err);
+            } catch {
+              useToastStore.getState().show({
+                severity: "error",
+                message: `Failed to delete image ${imageId}`,
+              });
             }
           })
         );
@@ -49,6 +55,16 @@ export function useUpdateProduct(productId: number, session: Session) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user-products", session?.user.id],
+      });
+      useToastStore.getState().show({
+        severity: "success",
+        message: "Product edited succesfully",
+      });
+    },
+    onError: () => {
+      useToastStore.getState().show({
+        severity: "error",
+        message: "Failed to edit product",
       });
     },
   });

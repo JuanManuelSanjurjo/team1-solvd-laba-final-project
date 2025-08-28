@@ -3,10 +3,13 @@ import SearchResultItem from "./SearchResultItem";
 import { Box, Typography } from "@mui/material";
 import { normalizeProductCard } from "@/lib/normalizers/normalize-product-card";
 import { Bag } from "iconsax-react";
+import AiButton from "../AiButton";
 
 type SearchResultsPreviewProps = {
   products: Product[];
   setIsSearching: (value: boolean) => void;
+  aiLoading: boolean;
+  generateFiltersWithAi: () => void;
 };
 
 /**
@@ -26,6 +29,8 @@ type SearchResultsPreviewProps = {
 export default function SearchResultsPreview({
   products,
   setIsSearching,
+  aiLoading,
+  generateFiltersWithAi,
 }: SearchResultsPreviewProps) {
   return (
     <>
@@ -56,20 +61,36 @@ export default function SearchResultsPreview({
               sx={{
                 padding: 8,
                 display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
                 justifyContent: "center",
                 alignItems: "center",
-                gap: 2,
+                gap: 4,
               }}
             >
-              <Bag size={20} color="#292d32" />
-              <Typography
-                variant="subtitle2"
-                sx={(theme) => ({
-                  color: theme.palette.text.secondary,
-                })}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
               >
-                No results found
-              </Typography>
+                <Bag size={20} color="#292d32" />
+                <Typography
+                  variant="subtitle2"
+                  sx={(theme) => ({
+                    color: theme.palette.text.secondary,
+                  })}
+                >
+                  No results found
+                </Typography>
+              </Box>
+              <AiButton
+                onGenerate={generateFiltersWithAi}
+                isLoading={aiLoading}
+                size="small"
+                label="Use smart search"
+              />
             </Box>
           )}
         </>

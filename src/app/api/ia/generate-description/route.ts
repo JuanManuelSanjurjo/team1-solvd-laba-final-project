@@ -39,33 +39,37 @@ import { GeneratedProductDescriptionSchema } from "@/types/ai";
 
 export async function POST(req: Request) {
   try {
-    const { name } = await req.json();
-    if (!name) {
+    const { name, brand, category, description, genre } = await req.json();
+    if (!name && !brand && !category && description && genre) {
       return NextResponse.json(
-        { error: "Product name is required" },
+        { error: "Some required field is missing" },
         { status: 400 }
       );
     }
-    const basePrompt = `You are a strict JSON generator. Input: a product title string.
+    const basePrompt = `You are a strict JSON generator.  
+You will receive a product object with the following fields: name, brand, category, description, and genre.  
 
-Task:
-1) Determine whether the title is a branded product. If so, set "isBranded": true, If not, set "isBranded": false.
-2) Provide a numeric confidence between 0 and 1 indicating how confident you are in brand detection.
-3) Generate a concise product description (no more than 300 characters).
+Your tasks:  
+1) Determine whether the product **appears to be branded** (use the name + brand). If branded, set "isBranded": true, otherwise false.  
+2) Provide a numeric confidence score between 0 and 1 for your brand detection decision.  
+3) Generate a **concise and improved product description** (≤ 300 characters).  
+   - Use the input description field only as a hint/context, but rephrase it in a more polished, marketing-ready way.  
+   - Incorporate brand, category, and genre naturally when relevant.  
 
-
-Return:
-Only a single JSON object EXACTLY matching this schema. No extra commentary, no markdown, nothing else.
+Return:  
+Only a single JSON object EXACTLY matching this schema (no text, no markdown, no commentary).  
 
 Schema example:
 {
   "name": "Nike Air Zoom Pegasus 39",
   "isBranded": true,
   "description": "Lightweight running shoe built for speed and comfort, featuring responsive cushioning.",
-  "confidence": 0.87,
+  "confidence": 0.87
 }
 
-Product title: "${name}".`;
+Input product:
+${JSON.stringify({ name, brand, category, description, genre })}
+`;
 
     const { text } = await generateText({
       model: groq("compound-beta"),

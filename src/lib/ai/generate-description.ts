@@ -28,13 +28,27 @@ import { GeneratedProductDescription } from "@/types/ai";
  * // }
  */
 
-export async function generateDescription(
-  name: string
-): Promise<GeneratedProductDescription> {
+interface GenerateDescriptionProps {
+  name: string;
+  brand: string;
+  category: string;
+  color: string;
+  gender: string;
+  description: string;
+}
+
+export async function generateDescription({
+  name,
+  brand,
+  category,
+  color,
+  gender,
+  description,
+}: GenerateDescriptionProps): Promise<GeneratedProductDescription> {
   const res = await fetch("/api/ia/generate-description", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name }),
+    body: JSON.stringify({ name, brand, category, color, gender, description }),
   });
 
   if (!res.ok) {

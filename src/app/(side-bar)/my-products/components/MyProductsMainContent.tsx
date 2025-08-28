@@ -1,11 +1,9 @@
 "use client";
-import { useState } from "react";
-import { Box } from "@mui/material";
+import { useMemo, useState } from "react";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ProductsEmptyState from "@/components/ProductsEmptyState";
 import MyProductsHeader from "./MyProductsHeader";
-import { fetchUserProducts } from "@/lib/actions/fetch-user-products";
 import { MyProduct } from "@/types/product";
-import { useQuery } from "@tanstack/react-query";
 import CardContainer from "@/components/cards/CardContainer";
 import Card from "@/components/cards/Card";
 import SkeletonCardContainer from "@/components/skeletons/products/SkeletonCardContainer";
@@ -15,9 +13,13 @@ import Button from "@/components/Button";
 import { EditProductForm } from "./EditProductForm";
 import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
-import { useRouter } from "next/navigation";
-import Toast from "@/components/Toast";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Session } from "next-auth";
+import PaginationComponent from "@/components/PaginationComponent";
+import useQueryUserProductsPaged from "../hooks/useQueryUserProductsPaged";
+import useSearchMyProducts from "../hooks/useSearchMyProducts";
+import { SearchBar } from "@/components/SearchBar";
+import { Add } from "iconsax-react";
 
 interface MyProductsMainContentProps {
   session: Session;
@@ -27,17 +29,6 @@ interface MyProductsMainContentProps {
   categoryOptions: { value: number; label: string }[];
 }
 
-/**
- * MyProductsMainContent
- *
- * This component renders the main content of the My Products page.
- * It includes a header, a list of products, and an empty state.
- *
- * @component
- *
- * @returns {JSX.Element} The main content of the My Products page.
- */
-
 export default function MyProductsMainContent({
   session,
   brandOptions,
@@ -45,12 +36,12 @@ export default function MyProductsMainContent({
   sizeOptions,
   categoryOptions,
 }: MyProductsMainContentProps) {
-  const deleteMutation = useDeleteProduct(session);
   const router = useRouter();
-
-  const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
-    deleteMutation.mutate({ productId, imageIds });
-  };
+  const searchParams = useSearchParams();
+  const searchTerm = useMemo(
+    () => searchParams.get("searchTerm"),
+    [searchParams]
+  );
 
   const userId = session?.user?.id;
   const token = session?.user?.jwt;
@@ -61,34 +52,45 @@ export default function MyProductsMainContent({
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [formMode, setFormMode] = useState<"edit" | "duplicate">("edit");
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState<{
-    message: string;
-    severity: "success" | "error";
-  }>({
-    message: "",
-    severity: "success",
+  const {
+    searchInput,
+    handleSearchInputChange,
+    handleSearchSubmit,
+    deleteSearchTerm,
+  } = useSearchMyProducts();
+
+  const pageSize = 16;
+  const page = Number(searchParams.get("page") ?? 1);
+
+  function handleSetPage(page: number) {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set("page", page.toString());
+    router.push(`?${newSearchParams.toString()}`);
+  }
+
+  const { products, pagination, isPending, isLoading } =
+    useQueryUserProductsPaged({
+      userId,
+      token,
+      pageNumber: page,
+      pageSize,
+      searchQuery: searchTerm ?? "",
+    });
+
+  const deleteMutation = useDeleteProduct({
+    session,
+    setPage: handleSetPage,
+    currentPage: page,
+    productsLength: products.length,
   });
 
-  const handleCloseToast = () => {
-    setToastOpen(false);
+  const handleDeleteProduct = (productId: number, imageIds: number[] = []) => {
+    deleteMutation.mutate({ productId, imageIds });
   };
 
-  const handleNotify = (message: string, severity: "success" | "error") => {
-    setToastContent({ message, severity });
-    setToastOpen(true);
-  };
-
-  const { data, isPending } = useQuery<MyProduct[], Error>({
-    queryKey: ["user-products", userId],
-    queryFn: () => {
-      if (!userId || !token) throw new Error("User not authenticated");
-      return fetchUserProducts(parseInt(userId), token);
-    },
-    enabled: !!userId && !!token,
+  const isMdUp = useMediaQuery(useTheme().breakpoints.up("lg"), {
+    noSsr: true,
   });
-
-  const products = data ?? [];
 
   return (
     <Box
@@ -100,38 +102,126 @@ export default function MyProductsMainContent({
       }}
     >
       <MyProductsHeader isEmpty={products ? products.length === 0 : false} />
-      {isPending ? (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: { xs: "flex-start", lg: "flex-start" },
+          gap: "30px",
+          alignItems: "center",
+          flexDirection: { xs: "column", lg: "row" },
+          marginTop: "30px",
+          marginBottom: "20px",
+        }}
+      >
+        <SearchBar
+          size="medium"
+          placeholder="Search your products"
+          onChange={handleSearchInputChange}
+          onSubmit={handleSearchSubmit}
+          fullWidth={isMdUp ? false : true}
+          value={searchInput}
+        />
+        {searchTerm && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 1,
+            }}
+          >
+            <Typography
+              sx={{
+                typography: {
+                  xs: "h4",
+                  md: "h3",
+                },
+              }}
+              color="text.primary"
+            >
+              Search results for
+            </Typography>
+            <Box
+              sx={{
+                backgroundColor: "rgba(150,150,150,0.1)",
+                borderRadius: 1,
+                display: "flex",
+                gap: 1,
+                alignItems: "center",
+                maxWidth: "100%",
+              }}
+            >
+              <Typography
+                title={searchTerm}
+                sx={{
+                  typography: {
+                    xs: "h4",
+                    md: "h3",
+                  },
+                  paddingInline: 1,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {searchTerm}
+              </Typography>
+              <Add
+                color="rgba(92, 92, 92, 1)"
+                size={24}
+                style={{ transform: "rotate(45deg)", cursor: "pointer" }}
+                onClick={deleteSearchTerm}
+              />
+            </Box>
+          </Box>
+        )}
+      </Box>
+
+      {isPending || isLoading ? (
         <SkeletonCardContainer />
-      ) : products.length > 0 ? (
-        <CardContainer length={products.length}>
-          {normalizeMyProductCard(products).map((product, index) => (
-            <Card
-              session={session}
-              product={product}
-              topAction="cardButtonMenu"
-              key={index}
-              overlay={true}
-              onEdit={() => {
-                setSelectedProduct(products[index]);
-                setFormMode("edit");
-                setEditModalOpen(true);
-              }}
-              onDuplicate={() => {
-                setSelectedProduct(products[index]);
-                setFormMode("duplicate");
-                setEditModalOpen(true);
-              }}
-              onDelete={() => {
-                handleDeleteProduct(
-                  product.id,
-                  products[index].images
-                    ? products[index].images.map((image) => image.id)
-                    : []
-                );
-              }}
-            />
-          ))}
-        </CardContainer>
+      ) : products && products.length > 0 ? (
+        <>
+          <CardContainer length={products.length}>
+            {normalizeMyProductCard(products).map((product, index) => (
+              <Card
+                session={session}
+                product={product}
+                topAction="cardButtonMenu"
+                key={product.id ?? index}
+                overlay={true}
+                onEdit={() => {
+                  setSelectedProduct(products[index]);
+                  setFormMode("edit");
+                  setEditModalOpen(true);
+                }}
+                onDuplicate={() => {
+                  setSelectedProduct(products[index]);
+                  setFormMode("duplicate");
+                  setEditModalOpen(true);
+                }}
+                onDelete={() => {
+                  handleDeleteProduct(
+                    product.id,
+                    products[index].images
+                      ? products[index].images.map((image) => image.id)
+                      : []
+                  );
+                }}
+              />
+            ))}
+          </CardContainer>
+
+          {pagination ? (
+            <Box
+              sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}
+            >
+              <PaginationComponent
+                pagination={pagination}
+                setPage={handleSetPage}
+              />
+            </Box>
+          ) : null}
+        </>
       ) : (
         <ProductsEmptyState
           title="You don't have any products yet"
@@ -140,6 +230,7 @@ export default function MyProductsMainContent({
           onClick={() => router.push("/my-products/add-product")}
         />
       )}
+
       {editModalOpen && (
         <EditProductModalWrapper
           open={editModalOpen}
@@ -161,7 +252,6 @@ export default function MyProductsMainContent({
             product={selectedProduct ?? products[0]}
             mode={formMode}
             onSuccess={() => setEditModalOpen(false)}
-            onNotify={handleNotify}
           />
           <Box
             sx={{ width: "100%", display: "flex", justifyContent: "center" }}
@@ -182,13 +272,6 @@ export default function MyProductsMainContent({
           </Box>
         </EditProductModalWrapper>
       )}
-      <Toast
-        open={toastOpen}
-        onClose={handleCloseToast}
-        severity={toastContent.severity}
-        message={toastContent.message}
-        autoHideDuration={4000}
-      />
     </Box>
   );
 }
