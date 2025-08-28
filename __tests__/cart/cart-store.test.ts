@@ -1,3 +1,12 @@
+const showMock = jest.fn();
+jest.mock("@/store/toastStore", () => ({
+  useToastStore: {
+    getState: () => ({
+      show: showMock,
+    }),
+  },
+}));
+
 import { act } from "@testing-library/react";
 import { useCartStore } from "@/store/cart-store";
 
@@ -13,6 +22,7 @@ const baseItem = {
 
 beforeEach(() => {
   useCartStore.setState({ byUser: {} });
+  showMock.mockClear();
 });
 
 /* Add Item */
@@ -421,5 +431,60 @@ describe("useCartStore - total", () => {
 
     const result = total(userId);
     expect(result).toBe(132); // subtotal 120 + taxes 12 + shipping 0
+  });
+});
+
+//Toast
+describe("useCartStore + toast integration", () => {
+  const userId = "user123";
+
+  test("should show error toast when adding item with no userId", () => {
+    const { addItem } = useCartStore.getState();
+
+    act(() => {
+      addItem("", baseItem);
+    });
+
+    expect(showMock).toHaveBeenCalledWith(
+      expect.objectContaining({ severity: "error" })
+    );
+  });
+
+  test("should show error toast when adding item without size", () => {
+    const { addItem } = useCartStore.getState();
+
+    act(() => {
+      addItem(userId, { ...baseItem, size: 0 });
+    });
+
+    expect(showMock).toHaveBeenCalledWith(
+      expect.objectContaining({ severity: "error" })
+    );
+  });
+
+  test("should show success toast when adding new item", () => {
+    const { addItem } = useCartStore.getState();
+
+    act(() => {
+      addItem(userId, baseItem);
+    });
+
+    expect(showMock).toHaveBeenCalledWith(
+      expect.objectContaining({ severity: "success" })
+    );
+  });
+
+  test("should show success toast when incrementing quantity of existing item", () => {
+    const { addItem } = useCartStore.getState();
+
+    act(() => {
+      addItem(userId, baseItem); //First time
+      addItem(userId, baseItem); // Second time
+    });
+
+    expect(showMock).toHaveBeenCalledTimes(2);
+    expect(showMock).toHaveBeenCalledWith(
+      expect.objectContaining({ severity: "success" })
+    );
   });
 });
