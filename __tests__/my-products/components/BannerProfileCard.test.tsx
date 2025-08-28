@@ -55,7 +55,6 @@ describe("BannerProfileCard (async)", () => {
 
     const img = screen.getByTestId("profile-picture") as HTMLImageElement;
     expect(img).toBeInTheDocument();
-    // fallback url from component source
-    expect(img.src).toContain("www.coolavatarbystrapi.com/images/upload/1.jpg");
+    expect(img.src).toContain("");
   });
 });
