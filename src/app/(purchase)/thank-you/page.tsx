@@ -4,6 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import checkOrderAuthor from "@/lib/actions/check-order-author";
+import CartReset from "@/app/(purchase)/components/CartReset";
 
 export const metadata = {
   title: "Thank You",
@@ -29,6 +30,7 @@ export default async function ThankYou({
 
   return (
     <>
+      {session?.user?.id && <CartReset userId={session.user.id} />}
       <Box
         sx={{
           display: "flex",
