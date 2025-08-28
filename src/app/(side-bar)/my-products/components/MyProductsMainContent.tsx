@@ -30,13 +30,28 @@ interface MyProductsMainContentProps {
 }
 
 /**
- * MyProductsMainContent component that renders the main content of the my products page.
- * Includes options to view products, add to cart, and remove from wishlist.
+ * Main content area for the "My Products" page.
+ *
+ * Displays a searchable, paginated, and editable list of the current user's products.
+ * Handles product CRUD operations (edit, duplicate, delete) and integrates with hooks for data fetching.
  *
  * @component
- * @param {MyProductsMainContentProps} props - The component props
- * @returns {JSX.Element} The rendered my products main content
+ *
+ * @param {Object} props Component props
+ * @param {Session} props.session Current authenticated user session (contains JWT).
+ * @param {{ value: number; label: string }[]} props.brandOptions List of available brand options.
+ * @param {{ value: number; label: string }[]} props.colorOptions List of available color options.
+ * @param {{ value: number; label: number }[]} props.sizeOptions List of available size options.
+ * @param {{ value: number; label: string }[]} props.categoryOptions List of available category options.
+ *
+ * @returns {JSX.Element} A responsive UI section that includes:
+ * - Search bar with clear functionality
+ * - Product grid (with skeleton loading state)
+ * - Empty state when no products exist
+ * - Pagination controls
+ * - Edit/Duplicate modal with form
  */
+
 export default function MyProductsMainContent({
   session,
   brandOptions,

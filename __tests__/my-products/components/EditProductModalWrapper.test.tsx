@@ -1,7 +1,3 @@
-/**
- * __tests__/my-products/components/EditProductModalWrapper.test.tsx
- */
-
 import React from "react";
 import { render, screen, waitFor, cleanup } from "@testing-library/react";
 import { EditProductModalWrapper } from "@/app/(side-bar)/my-products/components/EditProductModalWrapper";
@@ -23,14 +19,12 @@ describe("EditProductModalWrapper", () => {
 
     expect(screen.getByTestId("modal-child")).toBeInTheDocument();
 
-    // Close the modal
     rerender(
       <EditProductModalWrapper open={false} onClose={() => {}}>
         <Child />
       </EditProductModalWrapper>
     );
 
-    // Modal may remove children asynchronously; wait for it
     await waitFor(() => {
       expect(screen.queryByTestId("modal-child")).toBeNull();
     });

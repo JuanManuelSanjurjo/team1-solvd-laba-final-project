@@ -20,16 +20,21 @@ interface useDeleteProductProps {
 }
 
 /**
- * useDeleteProduct
+ * Hook to delete a product (and optionally its images)
  *
- * This hook handles the deletion of a product and its associated images.
- * It invalidates the product cache and shows a success or error toast message.
+ * Integrates with React Query to invalidate the user's product list
+ * and uses a toast store to provide success/error feedback.
  *
- * @component
+ * @param {Object} props Hook props
+ * @param {Session} props.session Current authenticated user session (contains JWT).
+ * @param {(page: number) => void} props.setPage Setter for current pagination page.
+ * @param {number} props.currentPage Current page number.
+ * @param {number} props.productsLength Number of products currently displayed.
  *
- * @param {useDeleteProductProps} props - The hook props
- * @returns {Mutation} The mutation object
+ * @returns {import("@tanstack/react-query").UseMutationResult<void, Error, { productId: number; imageIds?: number[] }>}
+ * React Query mutation object for deleting a product.
  */
+
 export function useDeleteProduct({
   session,
   setPage,

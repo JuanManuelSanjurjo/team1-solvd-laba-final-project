@@ -1,7 +1,3 @@
-/**
- * __tests__/my-products/components/EditProductHeader.test.tsx
- */
-
 import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { EditProductHeader } from "@/app/(side-bar)/my-products/components/EditProductHeader";
@@ -20,10 +16,8 @@ describe("EditProductHeader", () => {
       <EditProductHeader onClose={onClose} title={titleText} />
     );
 
-    // Title should render
     expect(screen.getByText(titleText)).toBeInTheDocument();
 
-    // CloseIcon renders an SVG — find it and click
     const svg = container.querySelector("svg");
     expect(svg).toBeTruthy();
 

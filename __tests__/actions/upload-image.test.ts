@@ -19,7 +19,6 @@ describe("uploadImages", () => {
       json: async () => responseBody,
     });
 
-    // create File(s) (jsdom environment supports File)
     const files = [new File(["a"], "a.png", { type: "image/png" })];
 
     const ids = await uploadImages(files);

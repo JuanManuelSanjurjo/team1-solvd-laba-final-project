@@ -17,6 +17,7 @@ import { useToastStore } from "@/store/toastStore";
 export function useCreateProduct(session: Session) {
   const token = session.user.jwt;
   const queryClient = getQueryClient();
+  if (!token) throw new Error("User not authenticated (missing token)");
 
   return useMutation({
     mutationFn: async ({

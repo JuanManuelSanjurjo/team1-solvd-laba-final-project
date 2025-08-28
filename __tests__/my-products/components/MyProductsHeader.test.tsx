@@ -1,7 +1,3 @@
-/**
- * __tests__/my-products/components/MyProductsHeader.test.tsx
- */
-
 import React from "react";
 import { render, screen, cleanup } from "@testing-library/react";
 import MyProductsHeader from "@/app/(side-bar)/my-products/components/MyProductsHeader";
@@ -15,7 +11,6 @@ describe("MyProductsHeader", () => {
   test("renders Add Product button when isEmpty is false", () => {
     render(<MyProductsHeader isEmpty={false} />);
 
-    // Button uses Next Link; it becomes an anchor element in test DOM
     const addButton = screen.getByRole("link", { name: /Add Product/i });
     expect(addButton).toBeInTheDocument();
     expect(addButton).toHaveAttribute("href", "/my-products/add-product");

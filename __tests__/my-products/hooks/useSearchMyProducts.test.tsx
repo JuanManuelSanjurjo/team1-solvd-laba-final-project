@@ -1,14 +1,3 @@
-/**
- * __tests__/my-products/hooks/useSearchMyProducts.test.tsx
- *
- * Tests the useSearchMyProducts hook:
- *  - handleSearchInputChange updates input
- *  - handleSearchSubmit builds query and calls router.push
- *  - deleteSearchTerm clears input and calls router.push
- *
- * We mock next/navigation's useRouter/useSearchParams/usePathname.
- */
-
 import React from "react";
 import { renderHook, act } from "@testing-library/react";
 import useSearchMyProducts from "@/app/(side-bar)/my-products/hooks/useSearchMyProducts";
@@ -48,7 +37,6 @@ describe("useSearchMyProducts", () => {
     const { result } = renderHook(() => useSearchMyProducts());
 
     act(() => {
-      // set internal state
       const fakeEvent = {
         target: { value: "shoes" },
       } as unknown as React.ChangeEvent<HTMLInputElement>;
@@ -56,7 +44,6 @@ describe("useSearchMyProducts", () => {
     });
 
     act(() => {
-      // create a fake form event
       const formEvent = {
         preventDefault: () => {},
       } as unknown as React.FormEvent<HTMLFormElement>;

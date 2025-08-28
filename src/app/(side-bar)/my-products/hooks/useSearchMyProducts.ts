@@ -3,15 +3,19 @@ import { useCallback, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 /**
- * useSearchMyProducts
+ * Custom hook for handling product search in "My Products" page.
  *
- * This hook handles the search functionality for the My Products page.
- * It allows users to search for products by name or description.
+ * Syncs the search term with the URL query parameters (`searchTerm`, `page`)
+ * and provides handlers for search input changes, form submission, and clearing the search.
  *
- * @component
- *
- * @returns {Object} The search state and functions
+ * @returns {Object} An object with:
+ * - `searchInput` {string} Current value of the search input.
+ * - `setSearchInput` {(value: string) => void} Setter for `searchInput`.
+ * - `handleSearchInputChange` {(e: React.ChangeEvent<HTMLInputElement>) => void} Input change handler.
+ * - `handleSearchSubmit` {(e: React.FormEvent<HTMLFormElement>) => void} Form submit handler, updates URL.
+ * - `deleteSearchTerm` {() => void} Removes `searchTerm` from URL and resets search input.
  */
+
 export default function useSearchMyProducts() {
   const router = useRouter();
   const searchParams = useSearchParams();

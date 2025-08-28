@@ -1,21 +1,25 @@
 import { ProductFilters } from "../get-filters-from-search-params";
 
 /**
- * @function
- * @param {Partial<ProductFilters>} filters - The filters object.
- * @returns {string} - The query string.
+ * Converts a partial ProductFilters object into a query string suitable for navigation.
+ *
+ * Rules:
+ *  - `searchTerm` maps to `searchTerm` query param (string).
+ *  - `brands` -> repeated `brand` params.
+ *  - `categories` -> repeated `categories` params.
+ *  - `colors` -> repeated `color` params.
+ *  - `sizes` -> repeated `size` params.
+ *  - `genders` -> repeated `gender` params.
+ *  - priceMin/priceMax are included only when both are numbers, priceMax > 0 and priceMax > priceMin.
+ *
+ * Returns the path `/?${qs}` if params exist or `/` when empty.
+ *
+ * @param {Partial<ProductFilters>} filters - The filters object to convert.
+ * @returns {string} A URL path beginning with `/` and containing the querystring when applicable.
  *
  * @example
- * const queryString = filtersToQueryString({
- *   searchTerm: "Search Term",
- *   brands: ["Brand1", "Brand2"],
- *   categories: ["Category1", "Category2"],
- *   colors: ["Red", "Blue"],
- *   sizes: [40, 42],
- *   genders: ["Men", "Women"],
- *   priceMin: 100,
- *   priceMax: 200,
- * });
+ * filtersToQueryString({ brands: ['Nike'], priceMin: 10, priceMax: 100 })
+ * // -> "/?brand=Nike&priceMin=10&priceMax=100"
  */
 export function filtersToQueryString(filters: Partial<ProductFilters>) {
   const params = new URLSearchParams();
@@ -40,10 +44,13 @@ export function filtersToQueryString(filters: Partial<ProductFilters>) {
     filters.genders.forEach((s) => params.append("gender", String(s)));
   }
 
-  if (typeof filters.priceMin === "number") {
+  if (
+    typeof filters.priceMin === "number" &&
+    typeof filters.priceMax === "number" &&
+    filters.priceMax > 0 &&
+    filters.priceMax > filters.priceMin
+  ) {
     params.set("priceMin", String(filters.priceMin));
-  }
-  if (typeof filters.priceMax === "number") {
     params.set("priceMax", String(filters.priceMax));
   }
 

@@ -17,16 +17,26 @@ interface UseQueryUserProductsPagedProps {
 }
 
 /**
- * useQueryUserProductsPaged
+ * Fetches a paginated list of products belonging to a specific user.
  *
- * This hook handles the query of user products paged.
- * It uses the react-query library to fetch the products from the server.
+ * Uses React Query to fetch products with filtering, searching, and pagination support.
+ * Normalizes the API product response into a `MyProduct` type for UI consumption.
  *
- * @component
+ * @param {Object} props Hook props
+ * @param {number|string|null} [props.userId] ID of the user whose products are being fetched.
+ * @param {string|null} [props.token] JWT token for authentication.
+ * @param {number} props.pageNumber Current page number.
+ * @param {number} props.pageSize Number of products per page.
+ * @param {string} [props.searchQuery] Optional search term.
  *
- * @param {UseQueryUserProductsPagedProps} props - The hook props
- * @returns {Object} The query state and functions
+ * @returns {Object} Hook state
+ * - `data` {PaginatedProducts | undefined} Full API response with pagination metadata.
+ * - `products` {MyProduct[]} Normalized product array.
+ * - `pagination` {PaginatedProducts["meta"]["pagination"] | undefined} Pagination metadata.
+ * - `isPending` {boolean} Whether query is currently fetching.
+ * - `isLoading` {boolean} Whether query is initially loading.
  */
+
 export default function useQueryUserProductsPaged({
   userId,
   token,

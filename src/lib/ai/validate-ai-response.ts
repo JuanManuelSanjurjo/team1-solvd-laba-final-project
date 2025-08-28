@@ -1,3 +1,18 @@
+/**
+ * Parsed shape expected from the AI filter-generation endpoint.
+ * This is not exported (local usage), but documents the fields used by the validator.
+ *
+ * @interface AiResponseParsed
+ * @property {string[]} brands - Suggested brand labels from AI.
+ * @property {string[]} categories - Suggested category labels from AI.
+ * @property {number | undefined} price_min - Suggested minimum price.
+ * @property {number | undefined} price_max - Suggested maximum price.
+ * @property {string[]} colors - Suggested color labels from AI.
+ * @property {string[]} genders - Suggested gender labels from AI.
+ * @property {number[]} sizes - Suggested numeric sizes from AI.
+ * @property {string} [searchTerm] - Optional free-text search term detected by AI.
+ * @property {string} [explain_short] - Optional short explanation from AI.
+ */
 interface AiResponseParsed {
   brands: string[];
   categories: string[];
@@ -6,40 +21,49 @@ interface AiResponseParsed {
   colors: string[];
   genders: string[];
   sizes: number[];
-  searchTerm: string;
-  explain_short: string;
+  searchTerm?: string;
+  explain_short?: string;
 }
 
 /**
- * @function
- * @param {AiResponseParsed} aiResp - The AI response to validate.
- * @param {Object} options - The options to use for validation.
- * @param {Object[]} options.brands - The brands to validate against.
- * @param {string} options.brands[].label - The label of the brand.
- * @param {number} options.brands[].value - The value of the brand.
- * @param {Object[]} options.colors - The colors to validate against.
- * @param {string} options.colors[].label - The label of the color.
- * @param {number} options.colors[].value - The value of the color.
- * @param {Object[]} options.sizes - The sizes to validate against.
- * @param {number} options.sizes[].label - The label of the size.
- * @param {number} options.sizes[].value - The value of the size.
- * @param {Object[]} options.categories - The categories to validate against.
- * @param {string} options.categories[].label - The label of the category.
- * @param {number} options.categories[].value - The value of the category.
- * @param {Object[]} options.genders - The genders to validate against.
- * @param {string} options.genders[].label - The label of the gender.
- * @param {number} options.genders[].value - The value of the gender.
- * @returns {AiResponseParsed} - The validated AI response.
+ * Validates and sanitizes the AI response against the current platform options.
+ *
+ * The function:
+ *  - filters brand/category/color/gender/size arrays to keep only labels that exist
+ *    in `options` (case-insensitive for labels; sizes compare on option.label),
+ *  - ensures price_min/price_max are numbers or undefined,
+ *  - clamps the `searchTerm` to a trimmed string of max 200 chars or empty string,
+ *  - returns the cleaned object ready to be converted into your UI filters.
+ *
+ * Note: this function does not mutate `options`.
+ *
+ * @param {AiResponseParsed | undefined | null} aiResp - Raw AI parsed response to validate.
+ * @param {object} options - The available options in the UI to validate against.
+ * @param {{label: string; value: number}[]} options.brands - Available brand labels.
+ * @param {{label: string; value: number}[]} options.colors - Available color labels.
+ * @param {{label: number; value: number}[]} options.sizes - Available size options (label is numeric).
+ * @param {{label: string; value: number}[]} options.categories - Available category labels.
+ * @param {{label: string; value: number}[]} options.genders - Available gender labels.
+ *
+ * @returns {object} Sanitized object with keys:
+ *  - brands: string[],
+ *  - colors: string[],
+ *  - categories: string[],
+ *  - sizes: number[],
+ *  - genders: string[],
+ *  - price_min?: number,
+ *  - price_max?: number,
+ *  - explain_short: string,
+ *  - searchTerm: string
  *
  * @example
- * const validatedResp = validateAIResponse(aiResp, {
- *   brands: [{ label: "Brand 1", value: 1 }],
- *   colors: [{ label: "Red", value: 1 }],
- *   sizes: [{ label: 10, value: 1 }],
- *   categories: [{ label: "Category 1", value: 1 }],
- *   genders: [{ label: "Male", value: 1 }],
+ * const result = validateAIResponse(aiResp, {
+ *   brands: [{label: 'Nike', value: 1}],
+ *   colors: [{label: 'Red', value: 1}],
+ *   sizes: [{label: 42, value: 1}],
+ *   categories: [{label: 'Running', value: 1}],
+ *   genders: [{label: 'Men', value: 1}],
  * });
- * console.log(validatedResp); // Output: { brands: ["Brand 1"], colors: ["Red"], sizes: [10], categories: ["Category 1"], genders: ["Male"], price_min: 100, price_max: 200, explain_short: "Red shoes", searchTerm: "red shoes" }
  */
 export function validateAIResponse(
   aiResp: AiResponseParsed,

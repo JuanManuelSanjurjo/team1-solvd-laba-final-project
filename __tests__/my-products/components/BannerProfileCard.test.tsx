@@ -1,7 +1,3 @@
-/**
- * __tests__/my-products/components/BannerProfileCard.test.tsx
- */
-
 import React from "react";
 import { render, screen, cleanup } from "@testing-library/react";
 
@@ -10,20 +6,17 @@ afterEach(() => {
   cleanup();
 });
 
-// Mock ProfilePicture before importing the component
 jest.mock("@/components/ProfilePicture", () => ({
   ProfilePicture: (props: any) => (
     <img data-testid="profile-picture" src={props.src} alt={props.alt} />
   ),
 }));
 
-// Create a mock for auth that we can control in tests
 const mockAuth = jest.fn();
 jest.mock("@/auth", () => ({
   auth: (...args: any[]) => mockAuth(...args),
 }));
 
-// Import the async component after mocks
 import BannerProfileCard from "@/app/(side-bar)/my-products/components/BannerProfileCard";
 
 describe("BannerProfileCard (async)", () => {
@@ -35,7 +28,6 @@ describe("BannerProfileCard (async)", () => {
       },
     });
 
-    // BannerProfileCard is an async server component exported as default
     const element = await BannerProfileCard();
     render(element);
 
@@ -43,7 +35,6 @@ describe("BannerProfileCard (async)", () => {
     expect(img).toBeInTheDocument();
     expect(img.src).toContain("https://cdn.example/avatar1.jpg");
 
-    // username should be rendered as text
     expect(screen.getByText("alice")).toBeInTheDocument();
   });
 

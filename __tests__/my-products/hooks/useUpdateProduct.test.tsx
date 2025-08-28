@@ -1,16 +1,7 @@
-/**
- * __tests__/useUpdateProduct.test.tsx
- *
- * Tests useUpdateProduct hook behavior (upload + update + delete image error handling).
- *
- * NOTE: adjust import paths if your files live elsewhere.
- */
-
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// toast store
 const toastShowMock = jest.fn();
 jest.mock("@/store/toastStore", () => ({
   useToastStore: {
@@ -18,7 +9,6 @@ jest.mock("@/store/toastStore", () => ({
   },
 }));
 
-// mock actions
 const uploadImagesMock = jest.fn();
 const updateProductMock = jest.fn();
 const deleteImageMock = jest.fn();
@@ -70,7 +60,7 @@ describe("useUpdateProduct hook", () => {
   test("uploads images, calls updateProduct, invalidates queries and shows success toast", async () => {
     uploadImagesMock.mockResolvedValueOnce([101]);
     updateProductMock.mockResolvedValueOnce(undefined);
-    deleteImageMock.mockResolvedValue(undefined); // will be called for imagesToDelete
+    deleteImageMock.mockResolvedValue(undefined);
 
     const session = { user: { id: "5", jwt: "tok" } } as any;
     const { getByTestId } = render(
@@ -99,7 +89,6 @@ describe("useUpdateProduct hook", () => {
   test("if deleteImage fails for some id, shows error toast for that id (but continues)", async () => {
     uploadImagesMock.mockResolvedValueOnce([]);
     updateProductMock.mockResolvedValueOnce(undefined);
-    // make deleteImage throw for id 300, succeed for 400
     deleteImageMock
       .mockImplementationOnce(() =>
         Promise.reject(new Error("fail delete 300"))
@@ -116,9 +105,7 @@ describe("useUpdateProduct hook", () => {
     fireEvent.click(getByTestId("call"));
 
     await waitFor(() => {
-      // update called
       expect(updateProductMock).toHaveBeenCalled();
-      // show error for the delete failure
       expect(toastShowMock).toHaveBeenCalledWith(
         expect.objectContaining({
           severity: "error",

@@ -3,16 +3,20 @@ import { useState } from "react";
 export type Preview = { url: string; file?: File };
 
 /**
- * useImagePreviews
+ * Hook: useImagePreviews
  *
- * This hook handles the preview of image files and their URLs.
- * It allows adding new image files, removing existing ones, and resetting the state.
+ * Manages local state for image previews split into two buckets: new `File` objects and existent remote URLs.
+ * Useful for forms that need to upload newly added files while keeping track of which remote images were left unchanged.
  *
- * @component
- *
- * @param {string[]} initialUrls - The initial URLs of the images
- * @returns {Object} The image preview state and functions
+ * @param {string[]} [initialUrls=[]] - Optional initial remote image URLs to seed `existentImages`.
+ * @returns {object} An object exposing:
+ * - `imageFiles` (File[]) and `setImageFiles`
+ * - `existentImages` (string[]) and `setExistentImages`
+ * - `reset()` to clear both lists
+ * - `getNewFiles()` returns the current File[] to upload
+ * - `getRemainingUrls()` returns the current existent image URLs
  */
+
 export function useImagePreviews(initialUrls: string[] = []) {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existentImages, setExistentImages] = useState<string[]>(

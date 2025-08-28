@@ -1,44 +1,50 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const toastShowMock = jest.fn();
-jest.mock("@/store/toastStore", () => ({
-  useToastStore: {
-    getState: () => ({ show: toastShowMock }),
-  },
-}));
-
-const uploadImagesMock = jest.fn();
-const createProductMock = jest.fn();
+import { useCreateProduct } from "@/app/(side-bar)/my-products/add-product/hooks/useCreateProduct";
 
 jest.mock("@/lib/actions/upload-images", () => ({
-  uploadImages: (...args: any[]) => uploadImagesMock(...args),
+  uploadImages: jest.fn(),
 }));
-
 jest.mock("@/lib/actions/upload-product", () => ({
-  createProduct: (...args: any[]) => createProductMock(...args),
+  createProduct: jest.fn(),
 }));
-
 jest.mock("@/lib/get-query-client", () => ({
   getQueryClient: jest.fn(),
 }));
+jest.mock("@/store/toastStore", () => ({
+  useToastStore: {
+    getState: jest.fn(),
+  },
+}));
 
-import { useCreateProduct } from "@/app/(side-bar)/my-products/add-product/hooks/useCreateProduct"; // adjust path if needed
+const uploadImagesMock = require("@/lib/actions/upload-images").uploadImages;
+const createProductMock = require("@/lib/actions/upload-product").createProduct;
+const getQueryClientMock = require("@/lib/get-query-client").getQueryClient;
+const toastShowMock = jest.fn();
 
 function TestHarness({ session }: { session: any }) {
   const mutation = useCreateProduct(session);
-
   return (
     <button
+      data-testid="call"
       onClick={() =>
-        mutation.mutateAsync({
-          data: { name: "Shoe", userID: 1 } as any,
-          imageFiles: [new File(["a"], "a.png", { type: "image/png" })],
-          remainingExistentImages: [],
+        mutation.mutate({
+          data: {
+            name: "Shirt",
+            color: 1,
+            gender: 2,
+            brand: 3,
+            categories: 4,
+            price: 20,
+            description: "desc",
+            sizes: [1, 2],
+            userID: 5,
+          },
+          imageFiles: [new File(["img"], "a.png", { type: "image/png" })],
+          remainingExistentImages: [11],
         })
       }
-      data-testid="call"
     >
       call
     </button>
@@ -46,23 +52,30 @@ function TestHarness({ session }: { session: any }) {
 }
 
 describe("useCreateProduct hook", () => {
-  let qc: QueryClient;
+  let queryClient: QueryClient;
+  let invalidateQueriesMock: jest.Mock;
+
   beforeEach(() => {
     jest.clearAllMocks();
-    qc = new QueryClient();
-    (
-      require("@/lib/get-query-client").getQueryClient as jest.Mock
-    ).mockReturnValue(qc);
+    queryClient = new QueryClient();
+    invalidateQueriesMock = jest.fn();
+
+    getQueryClientMock.mockReturnValue({
+      invalidateQueries: invalidateQueriesMock,
+    });
+    require("@/store/toastStore").useToastStore.getState.mockReturnValue({
+      show: toastShowMock,
+    });
   });
 
-  test("uploads images, calls createProduct, invalidates queries and shows toast", async () => {
+  test("uploads images, calls createProduct with correct args, invalidates queries and shows success toast", async () => {
     uploadImagesMock.mockResolvedValueOnce([101]);
     createProductMock.mockResolvedValueOnce(undefined);
 
     const session = { user: { id: "5", jwt: "tok" } } as any;
 
     const { getByTestId } = render(
-      <QueryClientProvider client={qc}>
+      <QueryClientProvider client={queryClient}>
         <TestHarness session={session} />
       </QueryClientProvider>
     );
@@ -70,15 +83,46 @@ describe("useCreateProduct hook", () => {
     fireEvent.click(getByTestId("call"));
 
     await waitFor(() => {
-      expect(uploadImagesMock).toHaveBeenCalled();
-      expect(createProductMock).toHaveBeenCalled();
-      expect(
-        require("@/lib/get-query-client").getQueryClient
-      ).toHaveBeenCalled();
+      expect(uploadImagesMock).toHaveBeenCalledWith(
+        expect.arrayContaining([expect.any(File)])
+      );
+      expect(createProductMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            name: "Shirt",
+            images: [101, 11],
+          }),
+        }),
+        "tok"
+      );
+      expect(invalidateQueriesMock).toHaveBeenCalledWith({
+        queryKey: ["user-products", "5"],
+      });
       expect(toastShowMock).toHaveBeenCalledWith(
         expect.objectContaining({
           severity: "success",
-          message: "Product added successfully!",
+        })
+      );
+    });
+  });
+
+  test("shows error toast on failure", async () => {
+    uploadImagesMock.mockRejectedValueOnce(new Error("upload fail"));
+
+    const session = { user: { id: "5", jwt: "tok" } } as any;
+
+    const { getByTestId } = render(
+      <QueryClientProvider client={queryClient}>
+        <TestHarness session={session} />
+      </QueryClientProvider>
+    );
+
+    fireEvent.click(getByTestId("call"));
+
+    await waitFor(() => {
+      expect(toastShowMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          severity: "error",
         })
       );
     });

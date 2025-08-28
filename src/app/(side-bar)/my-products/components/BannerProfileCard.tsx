@@ -12,6 +12,7 @@ import { auth } from "@/auth";
  *
  * @returns {JSX.Element} A banner with a profile picture and name.
  */
+
 export default async function BannerProfileCard() {
   const session = await auth();
 
