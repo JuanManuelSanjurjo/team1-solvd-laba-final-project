@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { fetchActiveProductsIds } from "@/lib/actions/fetch-active-products-ids";
-import { useCartStore } from "@/store/cart-store";
 
 /**
  * Custom hook that checks if the client has hydrated.

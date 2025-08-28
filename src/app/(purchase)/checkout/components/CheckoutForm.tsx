@@ -2,7 +2,6 @@
 
 import { Typography, Box, Grid, Divider } from "@mui/material";
 import Input from "@/components/form-elements/Input";
-import { InputProps } from "@/types/form";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCartStore } from "@/store/cart-store";
