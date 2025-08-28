@@ -6,7 +6,7 @@ import {
   waitFor,
   act,
 } from "../../utils/test-utils";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import ForgotPasswordPage from "@/app/auth/forgot-password/page";
 import forgotPassword, {
   ForgotPasswordResponse,
@@ -41,17 +41,9 @@ describe("Forgot Password Page", () => {
     jest.clearAllMocks();
   });
 
-  const renderWithQueryClient = (component: React.ReactElement) => {
-    return render(
-      <QueryClientProvider client={queryClient}>
-        {component}
-      </QueryClientProvider>
-    );
-  };
-
   describe("Rendering", () => {
     it("renders all page elements correctly", () => {
-      renderWithQueryClient(<ForgotPasswordPage />);
+      render(<ForgotPasswordPage />);
 
       expect(screen.getByRole("main")).toBeInTheDocument();
 
@@ -74,7 +66,7 @@ describe("Forgot Password Page", () => {
     });
 
     it("displays the logo", () => {
-      renderWithQueryClient(<ForgotPasswordPage />);
+      render(<ForgotPasswordPage />);
 
       expect(
         screen.getByRole("img", { name: /logo/i }) ||
@@ -85,7 +77,7 @@ describe("Forgot Password Page", () => {
 
   describe("Form Functionality", () => {
     it("validates email input", async () => {
-      renderWithQueryClient(<ForgotPasswordPage />);
+      render(<ForgotPasswordPage />);
 
       const emailInput = screen.getByLabelText(/e-mail/i);
       const submitButton = screen.getByRole("button", {
@@ -107,7 +99,7 @@ describe("Forgot Password Page", () => {
 
     it("submits form with valid email", async () => {
       mockForgotPassword.mockResolvedValueOnce(authMocks.success);
-      renderWithQueryClient(<ForgotPasswordPage />);
+      render(<ForgotPasswordPage />);
 
       const emailInput = screen.getByLabelText(/e-mail/i);
       const submitButton = screen.getByRole("button", {
@@ -128,7 +120,7 @@ describe("Forgot Password Page", () => {
 
     it("shows success message on successful submission", async () => {
       mockForgotPassword.mockResolvedValueOnce(authMocks.success);
-      renderWithQueryClient(<ForgotPasswordPage />);
+      render(<ForgotPasswordPage />);
 
       const emailInput = screen.getByLabelText(/e-mail/i);
       const submitButton = screen.getByRole("button", {
@@ -148,7 +140,7 @@ describe("Forgot Password Page", () => {
     it("shows error message on failed submission", async () => {
       const errorMessage = "Email not found";
       mockForgotPassword.mockRejectedValueOnce(new Error(errorMessage));
-      renderWithQueryClient(<ForgotPasswordPage />);
+      render(<ForgotPasswordPage />);
 
       const emailInput = screen.getByLabelText(/e-mail/i);
       const submitButton = screen.getByRole("button", {
@@ -177,7 +169,7 @@ describe("Forgot Password Page", () => {
 
       mockForgotPassword.mockReturnValueOnce(pendingPromise);
 
-      renderWithQueryClient(<ForgotPasswordPage />);
+      render(<ForgotPasswordPage />);
 
       const emailInput = screen.getByLabelText(/e-mail/i);
       const submitButton = screen.getByRole("button", {
@@ -205,7 +197,7 @@ describe("Forgot Password Page", () => {
 
   describe("Navigation", () => {
     it("has correct link to sign-in page", () => {
-      renderWithQueryClient(<ForgotPasswordPage />);
+      render(<ForgotPasswordPage />);
 
       const backToLoginLink = screen.getByRole("link", {
         name: /back to login/i,

@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "../../../utils/test-utils";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import resetPassword from "@/lib/actions/reset-password";
 import ResetPasswordForm from "@/app/auth/reset-password/components/ResetPasswordForm";
 import { useSearchParams } from "next/navigation";
@@ -22,19 +21,6 @@ const mockUseSearchParams = useSearchParams as jest.MockedFunction<
   typeof useSearchParams
 >;
 
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-};
-
 describe("ResetPasswordForm Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -44,8 +30,7 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("renders password input with correct attributes", () => {
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     expect(passwordInput).toHaveAttribute("type", "password");
@@ -54,8 +39,7 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("renders confirm password input with correct attributes", () => {
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
     expect(confirmPasswordInput).toHaveAttribute("type", "password");
@@ -64,8 +48,7 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("renders submit button with correct text and type", () => {
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const submitButton = screen.getByRole("button", {
       name: /reset password/i,
@@ -76,8 +59,7 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("renders form with proper structure", () => {
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const form = screen.getByRole("form") || document.querySelector("form");
     expect(form).toBeInTheDocument();
@@ -89,8 +71,7 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("has proper accessibility labels and structure", () => {
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
@@ -107,8 +88,7 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("renders all form elements in correct order", () => {
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const formElements = [
       screen.getByLabelText(/^Password\s*\*?$/i),
@@ -134,8 +114,7 @@ describe("ResetPasswordForm Component", () => {
       get: jest.fn().mockReturnValue(null),
     } as any);
 
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     expect(
       screen.getByText(
@@ -145,8 +124,7 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("shows validation error for short password", async () => {
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const submitButton = screen.getByRole("button", {
@@ -165,8 +143,7 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("shows validation error when passwords do not match", async () => {
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
@@ -189,8 +166,7 @@ describe("ResetPasswordForm Component", () => {
   it("submits form with valid data", async () => {
     mockResetPassword.mockResolvedValueOnce(authMocks.success);
 
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
@@ -216,8 +192,7 @@ describe("ResetPasswordForm Component", () => {
   it("shows success message on successful submission", async () => {
     mockResetPassword.mockResolvedValueOnce(authMocks.success);
 
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
@@ -240,8 +215,7 @@ describe("ResetPasswordForm Component", () => {
     const errorMessage = "Invalid reset code";
     mockResetPassword.mockRejectedValueOnce(new Error(errorMessage));
 
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
@@ -263,8 +237,7 @@ describe("ResetPasswordForm Component", () => {
   it("closes snackbar when close button is clicked", async () => {
     mockResetPassword.mockResolvedValueOnce(authMocks.success);
 
-    const Wrapper = createWrapper();
-    render(<ResetPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);

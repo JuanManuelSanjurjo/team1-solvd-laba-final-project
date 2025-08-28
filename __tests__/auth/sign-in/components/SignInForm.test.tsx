@@ -6,7 +6,6 @@ import {
   waitFor,
   act,
 } from "../../../utils/test-utils";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignInForm from "@/app/auth/sign-in/components/SignInForm";
 
 jest.mock("next-auth/react", () => ({
@@ -48,19 +47,6 @@ const mockSignInAction = signInAction as jest.MockedFunction<
 >;
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-};
-
 describe("SignInForm Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -73,10 +59,9 @@ describe("SignInForm Component", () => {
   describe("Form Submission", () => {
     it("submits form with valid data", async () => {
       mockSignInAction.mockResolvedValue(authMocks.success);
-      const Wrapper = createWrapper();
 
       await act(async () => {
-        render(<SignInForm />, { wrapper: Wrapper } as any);
+        render(<SignInForm />);
       });
 
       const emailInput = screen.getByLabelText(/e-mail/i);
@@ -105,10 +90,9 @@ describe("SignInForm Component", () => {
 
     it("shows success message and redirects on successful sign in", async () => {
       mockSignInAction.mockResolvedValue(authMocks.success);
-      const Wrapper = createWrapper();
 
       await act(async () => {
-        render(<SignInForm />, { wrapper: Wrapper } as any);
+        render(<SignInForm />);
       });
 
       const emailInput = screen.getByLabelText(/e-mail/i);
@@ -135,10 +119,9 @@ describe("SignInForm Component", () => {
     it("shows error message on failed sign in", async () => {
       const errorMessage = "Invalid credentials";
       mockSignInAction.mockRejectedValue(new Error(errorMessage));
-      const Wrapper = createWrapper();
 
       await act(async () => {
-        render(<SignInForm />, { wrapper: Wrapper } as any);
+        render(<SignInForm />);
       });
 
       const emailInput = screen.getByLabelText(/e-mail/i);
@@ -171,10 +154,8 @@ describe("SignInForm Component", () => {
 
       mockSignInAction.mockReturnValue(signInPromise);
 
-      const Wrapper = createWrapper();
-
       await act(async () => {
-        render(<SignInForm />, { wrapper: Wrapper } as any);
+        render(<SignInForm />);
       });
 
       const emailInput = screen.getByLabelText(/e-mail/i);
@@ -206,16 +187,14 @@ describe("SignInForm Component", () => {
 
   describe("Accessibility", () => {
     it("has proper form structure", () => {
-      const Wrapper = createWrapper();
-      render(<SignInForm />, { wrapper: Wrapper } as any);
+      render(<SignInForm />);
 
       const form = screen.getByRole("form") || document.querySelector("form");
       expect(form).toBeInTheDocument();
     });
 
     it("associates error messages with inputs", async () => {
-      const Wrapper = createWrapper();
-      render(<SignInForm />, { wrapper: Wrapper } as any);
+      render(<SignInForm />);
 
       const emailInput = screen.getByLabelText(/e-mail/i);
       fireEvent.change(emailInput, { target: { value: "invalid-email" } });

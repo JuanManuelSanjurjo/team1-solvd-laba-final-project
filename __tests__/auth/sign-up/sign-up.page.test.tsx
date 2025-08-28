@@ -6,7 +6,6 @@ import {
   waitFor,
   act,
 } from "../../utils/test-utils";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignUpPage from "@/app/auth/sign-up/page";
 import signUp from "@/lib/actions/sign-up";
 
@@ -31,29 +30,9 @@ jest.mock("next/image", () => {
 });
 
 describe("Sign Up Page", () => {
-  let queryClient: QueryClient;
-
-  beforeEach(() => {
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-      },
-    });
-    jest.clearAllMocks();
-  });
-
-  const renderWithQueryClient = (component: React.ReactElement) => {
-    return render(
-      <QueryClientProvider client={queryClient}>
-        {component}
-      </QueryClientProvider>
-    );
-  };
-
   describe("Rendering", () => {
     it("renders all page elements correctly", () => {
-      renderWithQueryClient(<SignUpPage />);
+      render(<SignUpPage />);
 
       expect(screen.getByRole("main")).toBeInTheDocument();
 
@@ -83,7 +62,7 @@ describe("Sign Up Page", () => {
     });
 
     it("displays the logo", () => {
-      renderWithQueryClient(<SignUpPage />);
+      render(<SignUpPage />);
 
       expect(
         screen.getByRole("img", { name: /logo/i }) ||
@@ -92,7 +71,7 @@ describe("Sign Up Page", () => {
     });
 
     it("renders testimonials component", () => {
-      renderWithQueryClient(<SignUpPage />);
+      render(<SignUpPage />);
 
       expect(screen.getByTestId("navigation-arrows")).toBeInTheDocument();
     });
@@ -101,13 +80,12 @@ describe("Sign Up Page", () => {
   describe("Form Integration", () => {
     it("submits form with valid data", async () => {
       const mockResponse = {
-        id: 1,
-        username: "testuser",
-        email: "test@example.com",
+        message: "User created successfully",
+        error: false,
       };
       mockSignUp.mockResolvedValue(mockResponse);
 
-      renderWithQueryClient(<SignUpPage />);
+      render(<SignUpPage />);
 
       const usernameInput = screen.getByLabelText(/username/i);
       const emailInput = screen.getByLabelText(/e-mail/i);
@@ -135,7 +113,7 @@ describe("Sign Up Page", () => {
     });
 
     it("displays validation errors for invalid inputs", async () => {
-      renderWithQueryClient(<SignUpPage />);
+      render(<SignUpPage />);
 
       const submitButton = screen.getByRole("button", { name: /sign up/i });
 
@@ -161,7 +139,7 @@ describe("Sign Up Page", () => {
       const errorMessage = "Username already taken";
       mockSignUp.mockRejectedValue(new Error(errorMessage));
 
-      renderWithQueryClient(<SignUpPage />);
+      render(<SignUpPage />);
 
       const usernameInput = screen.getByLabelText(/username/i);
       const emailInput = screen.getByLabelText(/e-mail/i);
@@ -187,7 +165,7 @@ describe("Sign Up Page", () => {
 
   describe("Navigation", () => {
     it("has correct link to sign-in page", () => {
-      renderWithQueryClient(<SignUpPage />);
+      render(<SignUpPage />);
 
       const signInLink = screen.getByRole("link", { name: /log in/i });
       expect(signInLink).toHaveAttribute("href", "/auth/sign-in");

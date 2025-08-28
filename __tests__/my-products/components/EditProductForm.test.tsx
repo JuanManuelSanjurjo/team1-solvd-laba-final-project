@@ -7,8 +7,8 @@
  */
 
 import React from "react";
-import { render, waitFor, fireEvent } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { waitFor, fireEvent } from "@testing-library/react";
+import { render } from "__tests__/utils/test-utils";
 
 // toast mock
 const toastShowMock = jest.fn();
@@ -18,16 +18,10 @@ jest.mock("@/store/toastStore", () => ({
   },
 }));
 
-// ---------------------------
-// IMPORTANT FIX: mock useProductForm to return a REAL react-hook-form instance
-// so `control` is valid for Controller usage.
-// ---------------------------
 jest.mock("@/app/(side-bar)/my-products/hooks/useProductForm", () => ({
   useProductForm: jest.fn(() => {
-    // require here so hooks are resolved at runtime when the mock is called during render
     const { useForm } = require("react-hook-form");
 
-    // provide default values similar to what the real hook would initialize
     const methods = useForm({
       defaultValues: {
         name: "Sneaker",
@@ -42,13 +36,11 @@ jest.mock("@/app/(side-bar)/my-products/hooks/useProductForm", () => ({
     });
 
     return {
-      // return the real methods so Controller and other form pieces work
       register: methods.register,
       control: methods.control,
       errors: {},
       selectedSizes: [],
       toggleSize: jest.fn(),
-      // keep handleSubmit behavior so form submit triggers the passed handler with current values
       handleSubmit: (fn: any) => (e: any) => {
         e?.preventDefault?.();
         return fn(methods.getValues());
@@ -61,7 +53,6 @@ jest.mock("@/app/(side-bar)/my-products/hooks/useProductForm", () => ({
   }),
 }));
 
-// mock previews
 const previewsMock = {
   getNewFiles: jest.fn(() => []),
   getRemainingUrls: jest.fn(() => ["https://img/1.jpg"]),
@@ -100,11 +91,6 @@ describe("EditProductForm", () => {
     jest.clearAllMocks();
   });
 
-  function renderWithProviders(ui: React.ReactElement) {
-    const qc = new QueryClient();
-    return render(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>);
-  }
-
   const session = { user: { id: "5", jwt: "token" } } as any;
 
   const sampleProduct = {
@@ -128,7 +114,7 @@ describe("EditProductForm", () => {
 
     const onSuccess = jest.fn();
 
-    renderWithProviders(
+    render(
       <EditProductForm
         session={session}
         brandOptions={[{ value: 2, label: "ACME" }]}
@@ -155,7 +141,7 @@ describe("EditProductForm", () => {
 
     const onSuccess = jest.fn();
 
-    renderWithProviders(
+    render(
       <EditProductForm
         session={session}
         brandOptions={[{ value: 2, label: "ACME" }]}
@@ -185,7 +171,7 @@ describe("EditProductForm", () => {
 
     const onSuccess = jest.fn();
 
-    renderWithProviders(
+    render(
       <EditProductForm
         session={session}
         brandOptions={[{ value: 2, label: "ACME" }]}

@@ -7,8 +7,7 @@
  */
 
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 
 // mocks
 const toastShowMock = jest.fn();
@@ -18,16 +17,10 @@ jest.mock("@/store/toastStore", () => ({
   },
 }));
 
-// ---------------------------
-// IMPORTANT FIX: mock useProductForm to return a REAL react-hook-form instance
-// so `control` is valid for Controller usage.
-// ---------------------------
 jest.mock("@/app/(side-bar)/my-products/hooks/useProductForm", () => ({
   useProductForm: jest.fn(() => {
-    // require here so hooks are resolved at runtime when the mock is called during render
     const { useForm } = require("react-hook-form");
 
-    // provide default values similar to what the real hook would initialize
     const methods = useForm({
       defaultValues: {
         name: "Sneaker",
@@ -42,13 +35,12 @@ jest.mock("@/app/(side-bar)/my-products/hooks/useProductForm", () => ({
     });
 
     return {
-      // return the real methods so Controller and other form pieces work
       register: methods.register,
       control: methods.control,
       errors: {},
       selectedSizes: [],
       toggleSize: jest.fn(),
-      // keep handleSubmit behavior so form submit triggers the passed handler with current values
+
       handleSubmit: (fn: any) => (e: any) => {
         e?.preventDefault?.();
         return fn(methods.getValues());
@@ -61,7 +53,6 @@ jest.mock("@/app/(side-bar)/my-products/hooks/useProductForm", () => ({
   }),
 }));
 
-// mock useImagePreviews
 const previewsMock = {
   getNewFiles: jest.fn(() => []),
   getRemainingUrls: jest.fn(() => []),
@@ -73,7 +64,6 @@ jest.mock("@/app/(side-bar)/my-products/hooks/useImagePreviews", () => ({
   useImagePreviews: jest.fn(() => previewsMock),
 }));
 
-// mock the create hook used inside component
 const mutateAsyncMock = jest.fn();
 jest.mock(
   "@/app/(side-bar)/my-products/add-product/hooks/useCreateProduct",
@@ -96,12 +86,6 @@ describe("AddProductForm", () => {
     jest.clearAllMocks();
   });
 
-  function renderWithProviders(ui: React.ReactElement) {
-    // wrap in QueryClientProvider because component may rely on react-query context elsewhere
-    const qc = new QueryClient();
-    return render(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>);
-  }
-
   const session = { user: { id: "123", jwt: "token-abc" } } as any;
   const defaultProps = {
     session,
@@ -114,7 +98,7 @@ describe("AddProductForm", () => {
   test("calls create mutation, resets and navigates on success", async () => {
     mutateAsyncMock.mockResolvedValueOnce(undefined);
 
-    renderWithProviders(<AddProductForm {...defaultProps} />);
+    render(<AddProductForm {...defaultProps} />);
 
     // form has id "add-product-form" in component
     const form = document.querySelector("#add-product-form")!;
@@ -132,7 +116,7 @@ describe("AddProductForm", () => {
   test("when create mutation fails, does not navigate", async () => {
     mutateAsyncMock.mockRejectedValueOnce(new Error("boom"));
 
-    renderWithProviders(<AddProductForm {...defaultProps} />);
+    render(<AddProductForm {...defaultProps} />);
 
     const form = document.querySelector("#add-product-form")!;
     fireEvent.submit(form!);
