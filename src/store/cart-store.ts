@@ -106,8 +106,6 @@ export const useCartStore = create<CartState>()(
           //If product doesn't match id, we return it as it is
           if (item.id !== id || item.size !== size) return item;
 
-          console.log(size);
-
           let newQuantity = item.quantity || 1;
 
           //If item matches id, we perform the correspondin action

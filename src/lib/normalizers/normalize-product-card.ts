@@ -19,7 +19,6 @@ import { MyProduct, Product } from "@/types/product";
  */
 
 export function normalizeProductCard(products: Product[]) {
-  console.log("-------->", products);
   return products.map((product) => ({
     id: product.id,
     image:
