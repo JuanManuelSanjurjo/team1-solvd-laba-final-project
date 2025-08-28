@@ -36,13 +36,8 @@ export default function NoSearchingStateHeader({
 }) {
   const { isMobile, isDesktop } = useMediaBreakpoints();
 
-  let userId: string;
-
-  if (session) {
-    userId = session.user.id;
-  }
-
-  const totalItems = useCartStore((state) => state.totalItems(userId || ""));
+  const userId = session?.user.id || "";
+  const totalItems = useCartStore((state) => state.totalItems(userId));
   const isAuthenticated = Boolean(session);
   const [hasMounted, setHasMounted] = useState(false);
 

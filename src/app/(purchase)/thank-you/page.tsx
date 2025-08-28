@@ -1,6 +1,9 @@
 import { Typography, Stack, Box } from "@mui/material";
 import Button from "@/components/Button";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import checkOrderAuthor from "@/lib/actions/check-order-author";
 
 export const metadata = {
   title: "Thank You",
@@ -9,9 +12,20 @@ export const metadata = {
 export default async function ThankYou({
   searchParams,
 }: {
-  searchParams: Promise<{ orderId: string }>;
+  searchParams: Promise<{ payment_intent: string }>;
 }) {
-  const { orderId } = await searchParams;
+  const session = await auth();
+  const { payment_intent: orderId } = await searchParams;
+
+  if (!orderId || !session) {
+    redirect("/checkout");
+  }
+
+  const isOrderValid = await checkOrderAuthor(orderId, session);
+
+  if (!isOrderValid) {
+    redirect("/checkout");
+  }
 
   return (
     <>
@@ -97,6 +111,10 @@ export default async function ThankYou({
                   fontSize: { xs: "28px", md: "36px", xl: "48px" },
                   fontWeight: "500",
                   color: "error.main",
+                  width: "200px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
                 }}
                 title={orderId}
               >

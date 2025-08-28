@@ -4,6 +4,11 @@ import Credentials from "next-auth/providers/credentials";
 const REMEMBER_ME_DURATION = 30 * 24 * 60 * 60; // 30 days in seconds
 const DEFAULT_SESSION_DURATION = 24 * 60 * 60; // 24 hours in seconds
 
+type StripeUser = {
+  id: string;
+  email: string;
+};
+
 interface SignInResponse {
   jwt: string;
   user: {
@@ -13,6 +18,7 @@ interface SignInResponse {
     firstName: string | null;
     lastName: string | null;
     phoneNumber: string | null;
+    customerId: StripeUser | null;
     avatar: {
       id: number;
       url: string;
@@ -102,6 +108,7 @@ export const authOptions = {
                 }
               : null,
             rememberMe: credentials.rememberMe === "true",
+            customerId: extraInfo.customerId || null,
           };
         } catch (err) {
           if (err instanceof CredentialsSignin) throw err;
@@ -125,6 +132,7 @@ export const authOptions = {
         token.maxAge = user.rememberMe
           ? REMEMBER_ME_DURATION
           : DEFAULT_SESSION_DURATION;
+        token.customerId = user.customerId || null;
       }
 
       if (trigger === "update" && token.jwt) {
@@ -142,6 +150,7 @@ export const authOptions = {
                 url: updatedUserInfo.avatar.url,
               }
             : null;
+          token.customerId = updatedUserInfo.customerId || null;
         } catch (error) {
           console.error("Failed to refresh user data:", error);
         }
@@ -159,6 +168,7 @@ export const authOptions = {
         session.user.lastName = token.lastName as string;
         session.user.phone = token.phone as string;
         session.user.avatar = token.avatar as { id: string; url: string };
+        session.user.customerId = token.customerId || null;
       }
 
       return session;

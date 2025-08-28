@@ -15,6 +15,7 @@ declare module "next-auth" {
     } | null;
     phone?: string | null;
     rememberMe?: boolean;
+    customerId: StripeUser | null;
   }
 
   interface Session {
@@ -30,6 +31,7 @@ declare module "next-auth" {
       firstName?: string | null;
       lastName?: string | null;
       phone?: string | null;
+      customerId: StripeUser | null;
     };
   }
 }
@@ -48,5 +50,6 @@ declare module "next-auth/jwt" {
       id: string;
       url: string;
     } | null;
+    customerId: StripeUser | null;
   }
 }

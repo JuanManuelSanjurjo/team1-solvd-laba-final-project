@@ -155,13 +155,7 @@ const defaultValues = {
   address: "123 Main Street, Apt 4B",
 };
 
-export default function CheckoutForm({
-  orderId,
-  userId,
-}: {
-  orderId: string;
-  userId: string;
-}) {
+export default function CheckoutForm({ userId }: { userId: string }) {
   const byUser = useCartStore((state) => state.byUser);
   const cartItems: CartItem[] = userId ? byUser[userId] ?? [] : [];
 
@@ -183,36 +177,40 @@ export default function CheckoutForm({
   } = methods;
 
   const onSubmit = async (data: CheckoutFormValues) => {
-    if (!stripe || !elements) return;
+    if (!stripe || !elements || loading) return;
 
     setLoading(true);
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/thank-you?orderId=${orderId}`,
-        payment_method_data: {
-          billing_details: {
-            email: data.email,
-            name: `${data.name} ${data.surname}`,
-            phone: data.phone,
-            address: {
-              country: data.country,
-              city: data.city,
-              state: data.state,
-              postal_code: data.zip,
-              line1: data.address,
+
+    try {
+      const stripeResponse = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/thank-you`,
+          payment_method_data: {
+            billing_details: {
+              email: data.email,
+              name: `${data.name} ${data.surname}`,
+              phone: data.phone,
+              address: {
+                country: data.country,
+                city: data.city,
+                state: data.state,
+                postal_code: data.zip,
+                line1: data.address,
+              },
             },
           },
         },
-      },
-    });
+      });
 
-    if (error) {
-      setMessage(error.message ?? "Unexpected error");
+      if (stripeResponse.error) {
+        setMessage(stripeResponse.error.message ?? "Unexpected error");
+        setLoading(false);
+      }
+    } catch {
+      setMessage("Payment confirmation failed. Please try again.");
+      setLoading(false);
     }
-
-    setLoading(false);
-    console.log("Form Submitted:", data);
   };
 
   const options: StripePaymentElementOptions = {
@@ -235,8 +233,6 @@ export default function CheckoutForm({
         justifyContent: "space-around",
       }}
     >
-      {message && <Typography color="error">{message}</Typography>}
-
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box
@@ -326,6 +322,7 @@ export default function CheckoutForm({
                 Payment info
               </Typography>
               <PaymentElement options={options} />
+              {message && <Typography color="error">{message}</Typography>}
             </Box>
           </Box>
         </form>
@@ -334,9 +331,10 @@ export default function CheckoutForm({
       {!cartIsEmpty && (
         <Box sx={{ marginTop: "80px" }}>
           <CheckoutSummary
-            buttonText={!loading ? "Confirm & Pay" : "Processing..."}
+            buttonText={loading ? "Processing..." : "Confirm & Pay"}
             buttonAction={handleSubmit(onSubmit)}
             userId={userId}
+            disabled={loading || !stripe || !elements}
           />
         </Box>
       )}

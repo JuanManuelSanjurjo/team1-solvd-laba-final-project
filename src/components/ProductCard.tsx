@@ -71,8 +71,14 @@ function ProductCard({
           sx={{
             fontWeight: 500,
             lineHeight: "24px",
-            fontSize: { xs: "16px", sm: "24px", md: "24px" },
+            fontSize: { xs: "16px", sm: "24px", md: "20px" },
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
           }}
+          title={name}
         >
           {name}
         </Typography>
@@ -92,10 +98,11 @@ function ProductCard({
           sx={{
             fontWeight: 700,
             lineHeight: "20px",
+            paddingTop: 1,
             fontSize: { xs: "12px", sm: "14px", md: "14px" },
           }}
         >
-          <strong>Size: {size}</strong>
+          Size: {size}
         </Typography>
       </CardContent>
     </Card>

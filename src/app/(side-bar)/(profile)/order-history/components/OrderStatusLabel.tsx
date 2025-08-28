@@ -18,15 +18,15 @@ const statusConfigMap: Record<
   OrderStatus,
   { color: string; icon: () => React.ReactNode }
 > = {
-  shipped: {
+  pending: {
     color: "#8C9196",
     icon: () => <TruckFast size="20" color="#8C9196" variant="Outline" />,
   },
-  cancelled: {
+  failed: {
     color: "#CD3C37",
     icon: () => <CloseCircle size="20" color="#CD3C37" variant="Outline" />,
   },
-  received: {
+  succeeded: {
     color: "#3D9D41",
     icon: () => <TickCircle size="20" color="#3D9D41" variant="Outline" />,
   },

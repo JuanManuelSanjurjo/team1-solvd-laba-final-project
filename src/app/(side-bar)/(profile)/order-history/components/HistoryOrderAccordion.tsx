@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import OrderHistoryItemRow from "./OrderHistoryItemRow";
 import ProductCard from "@/components/ProductCard";
-import IconWithDownloadLink from "@/components/IconWithDownloadLink";
 import { OrderProduct } from "@/app/(side-bar)/(profile)/order-history/types";
 import { OrderDetails } from "@/app/(side-bar)/(profile)/order-history/types";
 import { OrderInfo } from "@/app/(side-bar)/(profile)/order-history/types";
@@ -111,6 +110,7 @@ const HistoryOrderAccordion = ({
           sx={{
             display: "flex",
             flexWrap: "wrap",
+            flexDirection: { xs: "column", md: "row" },
             justifyContent: {
               xs: "flex-start",
               sm: "center",
@@ -204,7 +204,8 @@ const HistoryOrderAccordion = ({
                 variant="cartText"
                 sx={{ color: theme.palette.cartTextColor.primary }}
               >
-                {details.payment}
+                {details.payment.charAt(0).toUpperCase() +
+                  details.payment.slice(1)}
               </Typography>
             </Typography>
           </Box>
@@ -279,7 +280,7 @@ const HistoryOrderAccordion = ({
                 component="span"
                 sx={{ color: theme.palette.cartTextColor.primary }}
               >
-                {product.price}
+                {product.price}$
               </Typography>
             </Typography>
           </Box>
@@ -301,7 +302,7 @@ const HistoryOrderAccordion = ({
             },
           }}
         >
-          <IconWithDownloadLink></IconWithDownloadLink>
+          <Box />
           <Typography
             variant="cartText"
             sx={{ color: theme.palette.cartTextColor.secondary }}
@@ -312,7 +313,7 @@ const HistoryOrderAccordion = ({
               variant="cartText"
               sx={{ color: theme.palette.cartTextColor.primary }}
             >
-              18$
+              0$
             </Typography>
           </Typography>
         </Box>

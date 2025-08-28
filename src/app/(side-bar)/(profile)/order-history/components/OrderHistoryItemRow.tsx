@@ -79,9 +79,14 @@ function OrderHistoryItemRow({
         >
           <Typography
             variant="cartText"
+            title={orderNumber}
             sx={{
               color: theme.palette.cartTextColor.primary,
               wordBreak: "break-word",
+              maxWidth: "120px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
             }}
           >
             {orderNumber}
@@ -92,7 +97,7 @@ function OrderHistoryItemRow({
               color: theme.palette.cartTextColor.secondary,
             }}
           >
-            {orderDate}
+            {new Date(Number(orderDate) * 1000).toLocaleDateString()}
           </Typography>
         </Box>
 
@@ -148,7 +153,7 @@ function OrderHistoryItemRow({
                 color: theme.palette.cartTextColor.primary,
               }}
             >
-              {totalAmount}
+              {totalAmount}$
             </Typography>
           </Typography>
         </Box>
