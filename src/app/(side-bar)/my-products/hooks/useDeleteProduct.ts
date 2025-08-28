@@ -19,6 +19,17 @@ interface useDeleteProductProps {
   session: Session;
 }
 
+/**
+ * useDeleteProduct
+ *
+ * This hook handles the deletion of a product and its associated images.
+ * It invalidates the product cache and shows a success or error toast message.
+ *
+ * @component
+ *
+ * @param {useDeleteProductProps} props - The hook props
+ * @returns {Mutation} The mutation object
+ */
 export function useDeleteProduct({
   session,
   setPage,

@@ -33,6 +33,12 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * RootLayout component that wraps the entire application.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered root layout component
+ */
 export default async function RootLayout({
   children,
 }: Readonly<{

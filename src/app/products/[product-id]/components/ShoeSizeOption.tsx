@@ -48,6 +48,21 @@ const stateStyles = {
   },
 };
 
+/**
+ * ShoeSizeOption component that represents options of shoe sizes. It is built to be used as a checkbox, with the possibility of choosing more than one option at the same time.
+ *
+ * @component
+ * @param {ShoeSizeOptionProps} props - Props for the component
+ * @param {number} props.value - Value that represents the size.
+ * @param {number} props.size - String that represents the size.
+ * @param {boolean} props.disabled - Boolean that represents if the option is disabled.
+ * @param {boolean} props.checked - Boolean that represents if the option is checked.
+ * @param {function} props.onToggle - Function that is called when the option is toggled.
+ * @returns {JSX.Element} The styled checkbox component
+ *
+ * @example
+ * <ShoeSizeOption value={40} size={40} disabled={false} checked={false} onToggle={() => {}} />
+ */
 export default function ShoeSizeOption({
   value = 0,
   size,

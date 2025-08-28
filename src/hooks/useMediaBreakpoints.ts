@@ -6,7 +6,6 @@ import { useMediaQuery, useTheme } from "@mui/material";
  * This hook is used to determine the current screen size.
  * It returns an object with boolean values for isMobile, isTablet, and isDesktop.
  */
-
 export default function useMediaBreakpoints(): {
   isMobile: boolean;
   isTablet: boolean;

@@ -36,6 +36,14 @@ interface ProductFormFieldsProps {
 
 const CONFIDENCE_THRESHOLD = 0.6;
 
+/**
+ * ProductFormFields component that renders the product form fields.
+ * Includes input fields for product details, color, brand, size, category, and description.
+ *
+ * @component
+ * @param {ProductFormFieldsProps} props - The component props
+ * @returns {JSX.Element} The rendered product form fields
+ */
 export const ProductFormFields = ({
   register,
   control,

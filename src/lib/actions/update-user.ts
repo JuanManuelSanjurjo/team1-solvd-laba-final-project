@@ -7,6 +7,20 @@ import {
 } from "@/app/(side-bar)/(profile)/update-profile/types";
 import { handleApiError } from "@/lib/normalizers/handle-api-error";
 
+/**
+ * @action
+ * @param {UpdateProfileFormData} data - The form data for updating the user profile.
+ * @param {string} userId - The ID of the user to update.
+ * @returns {Promise<UpdateProfileResponse>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await updateUser({
+ *   username: "newUsername",
+ *   email: "newEmail@example.com",
+ *   password: "newPassword123",
+ *   passwordConfirmation: "newPassword123",
+ * }, "123");
+ */
 export const updateUser = async (
   data: UpdateProfileFormData,
   userId: string

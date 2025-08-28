@@ -7,6 +7,18 @@ function cleanUpError(error: string) {
   return error.replace(/Read more at.*/, "").trim();
 }
 
+/**
+ * @action
+ * @param {SignInFormData} data - The form data for sign-in.
+ * @returns {Promise<SignInResponse>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await signInAction({
+ *   email: "user@example.com",
+ *   password: "password123",
+ *   rememberMe: true,
+ * });
+ */
 export default async function signInAction(
   data: SignInFormData
 ): Promise<SignInResponse> {

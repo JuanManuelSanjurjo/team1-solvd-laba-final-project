@@ -1,3 +1,12 @@
+/**
+ * @action
+ * @param {number} imageId - The ID of the image to delete.
+ * @param {string} token - The authentication token.
+ * @returns {Promise<void>} - A promise that resolves when the image is deleted.
+ *
+ * @example
+ * await deleteImage(imageId, token);
+ */
 export async function deleteImage(
   imageId: number,
   token: string

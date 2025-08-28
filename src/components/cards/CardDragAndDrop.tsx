@@ -15,6 +15,14 @@ interface CardDragAndDropProps {
   onFileAdd: (file: File) => void;
 }
 
+/**
+ * CardDragAndDrop component that displays a drag and drop area for images.
+ *
+ * @component
+ * @param {CardDragAndDropProps} props - Props for the component
+ * @param {function} props.onFileAdd - Function to call when a file is added.
+ * @returns {JSX.Element} The rendered card drag and drop component
+ */
 export default function CardDragAndDrop({
   onFileAdd,
 }: CardDragAndDropProps): JSX.Element {

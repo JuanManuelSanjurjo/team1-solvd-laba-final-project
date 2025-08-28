@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   title: "Forgot Password",
 };
 
+/**
+ * ForgotPassword component that displays the forgot password page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered forgot password page component
+ */
 export default function ForgotPassword() {
   return (
     <MainContainer>

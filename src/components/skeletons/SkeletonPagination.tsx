@@ -1,4 +1,12 @@
 import { Skeleton, Box } from "@mui/material";
+
+/**
+ * @component
+ * @returns {JSX.Element} - The rendered skeleton pagination component.
+ *
+ * @example
+ * <SkeletonPagination />
+ */
 export default function SkeletonPagination() {
   return (
     <Box

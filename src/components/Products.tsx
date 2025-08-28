@@ -4,7 +4,7 @@ import { Box, Drawer, Typography } from "@mui/material";
 import { useState, useMemo, useEffect } from "react";
 import CardContainer from "@/components/cards/CardContainer";
 import PaginationComponent from "@/components/PaginationComponent";
-import SkeletonPagination from "@/components/SkeletonPagination";
+import SkeletonPagination from "@/components/skeletons/SkeletonPagination";
 import { Add, FilterRemove, FilterSearch } from "iconsax-react";
 import { useSearchParams } from "next/navigation";
 import { getFiltersFromSearchParams } from "@/lib/get-filters-from-search-params";
@@ -28,6 +28,24 @@ interface ProductsProps {
   categoryOptions: { value: number; label: string }[];
 }
 
+/**
+ * @component
+ * @param {ProductsProps} props - Props for the component
+ * @param {Session} props.session - Session object for the user.
+ * @param {Object[]} props.brandOptions - Array of brand options for the filter.
+ * @param {number} props.brandOptions.value - Value of the brand option.
+ * @param {string} props.brandOptions.label - Label of the brand option.
+ * @param {Object[]} props.colorOptions - Array of color options for the filter.
+ * @param {number} props.colorOptions.value - Value of the color option.
+ * @param {string} props.colorOptions.label - Label of the color option.
+ * @param {Object[]} props.sizeOptions - Array of size options for the filter.
+ * @param {number} props.sizeOptions.value - Value of the size option.
+ * @param {number} props.sizeOptions.label - Label of the size option.
+ * @param {Object[]} props.categoryOptions - Array of category options for the filter.
+ * @param {number} props.categoryOptions.value - Value of the category option.
+ * @param {string} props.categoryOptions.label - Label of the category option.
+ * @returns {JSX.Element} - The rendered products component.
+ */
 export default function Products({
   session,
   brandOptions,
@@ -44,11 +62,11 @@ export default function Products({
 
   const filters = useMemo(
     () => getFiltersFromSearchParams(searchParams),
-    [searchParams],
+    [searchParams]
   );
   const searchTerm = useMemo(
     () => searchParams.get("searchTerm"),
-    [searchParams],
+    [searchParams]
   );
 
   useEffect(() => {
@@ -389,7 +407,7 @@ export default function Products({
                           key={index}
                           overlay={true}
                         />
-                      ),
+                      )
                     )}
                   </CardContainer>
                   {pagination ? (

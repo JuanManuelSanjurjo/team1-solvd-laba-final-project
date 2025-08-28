@@ -12,6 +12,13 @@ type ToastState = {
   hide: () => void;
 };
 
+/**
+ * @function
+ * @returns {ToastState} - A toast state instance.
+ *
+ * @example
+ * const toastStore = useToastStore();
+ */
 export const useToastStore = create<ToastState>((set) => ({
   open: false,
   severity: "success",

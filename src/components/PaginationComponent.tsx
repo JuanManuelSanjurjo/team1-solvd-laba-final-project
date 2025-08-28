@@ -12,6 +12,15 @@ type PaginationProps = {
   setPage: (page: number) => void;
 };
 
+/**
+ * PaginationComponent component that represents the pagination of the products.
+ *
+ * @component
+ * @param {PaginationProps} props - Props for the component
+ * @param {Pagination} props.pagination - Pagination object that contains the page count, page, page size and total.
+ * @param {function} props.setPage - Function that is called when the page is changed.
+ * @returns {JSX.Element} The styled pagination component
+ */
 export default function PaginationComponent({
   pagination,
   setPage,

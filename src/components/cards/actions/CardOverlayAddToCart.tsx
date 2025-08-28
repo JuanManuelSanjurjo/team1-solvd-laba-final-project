@@ -8,20 +8,21 @@ import Select from "@/components/form-elements/Select";
 import { useCartStore } from "@/store/cart-store";
 import CardProduct from "./types";
 import { useToastStore } from "@/store/toastStore";
-/**
- * CardOverlayAddToCart
- *
- * This component is a button that, when clicked,
- * Is passed to the Card component to be rendered on top of the image.
- * Opens a confirmation modal with a message asking the user to confirm adding the item to the cart.
- *
- */
 
 type CardOverlayAddToCardProps = {
   product: CardProduct;
   session: Session | null;
 };
 
+/**
+ * CardOverlayAddToCart component that displays a button to add the product to the cart.
+ *
+ * @component
+ * @param {CardOverlayAddToCardProps} props - Props for the component
+ * @param {CardProduct} props.product - Product to add to the cart.
+ * @param {Session | null} props.session - Session of the user.
+ * @returns {JSX.Element} The rendered card overlay add to cart component
+ */
 export default function CardOverlayAddToCart({
   product,
   session,

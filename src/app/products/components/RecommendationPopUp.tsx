@@ -17,6 +17,14 @@ interface RecsApiResponse {
 
 const FIVE_MIN = 1000 * 60 * 5;
 
+/**
+ * RecommendationPopup component that displays a popup with product recommendations.
+ *
+ * @component
+ * @param {RecommendationPopupProps} props - Props for the component
+ * @param {string} props.userId - User ID for the recommendations.
+ * @returns {JSX.Element} The rendered recommendation popup component
+ */
 export default function RecommendationPopup({ userId }: { userId?: string }) {
   const router = useRouter();
   const [dismissed, setDismissed] = useState(false);

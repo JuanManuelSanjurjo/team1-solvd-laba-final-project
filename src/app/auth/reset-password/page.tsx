@@ -13,6 +13,12 @@ export const metadata: Metadata = {
   title: "Reset Password",
 };
 
+/**
+ * ResetPasswordWrapper component that wraps the reset password form.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered reset password wrapper component
+ */
 function ResetPasswordWrapper() {
   return (
     <Suspense fallback={<div>Loading...</div>}>

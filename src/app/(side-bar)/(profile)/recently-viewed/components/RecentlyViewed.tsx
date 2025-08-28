@@ -15,13 +15,22 @@ import {
 } from "../../hooks/useCleanupGhostProducts";
 import SkeletonCardContainer from "@/components/skeletons/products/SkeletonCardContainer";
 
+/**
+ * RecentlyViewed component that displays the user's recently viewed products.
+ * Includes options to view products, add to cart, and remove from wishlist.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {Session} props.session - The user session object containing user information
+ * @returns {JSX.Element} The rendered recently viewed page with the user's recently viewed products
+ */
 export default function RecentlyViewed({ session }: { session: Session }) {
   const router = useRouter();
   const userId = session.user.id;
   const byUser = useRecentlyViewedStore((state) => state.byUser);
   const isHydrated = useClientHydrated();
   const removeInactiveProducts = useRecentlyViewedStore(
-    (state) => state.removeInactiveProducts,
+    (state) => state.removeInactiveProducts
   );
 
   const recentlyViewed = byUser[userId] ?? [];
@@ -32,7 +41,7 @@ export default function RecentlyViewed({ session }: { session: Session }) {
 
   const loading = useCleanUpGhostProducts(
     isHydrated ? recentlyViewed.map((prod) => prod.id) : [],
-    (inactive) => removeInactiveProducts(userId, inactive),
+    (inactive) => removeInactiveProducts(userId, inactive)
   );
 
   if (!isHydrated || loading) {

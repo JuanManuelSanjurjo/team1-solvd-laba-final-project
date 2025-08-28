@@ -33,8 +33,6 @@
  * const file = await urlToFile("https://example.com/image.png");
  * // file.name -> "b3f1c9e0-... .png"
  *
-
-
  */
 export async function urlToFile(url: string): Promise<File> {
   const response = await fetch(url);

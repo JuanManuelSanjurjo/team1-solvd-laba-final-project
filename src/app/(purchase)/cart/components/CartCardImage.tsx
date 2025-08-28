@@ -6,16 +6,14 @@ type CartCardImageProps = {
 };
 
 /**
- * CardImage
+ * Image container component for displaying product images within cart cards.
+ * Handles image loading errors with fallback placeholder and maintains aspect ratio.
  *
- * This component is a container for an image and its children.
- * used in the Card component
- *
- * @param image - The URL of the image to display.
- * @param children - The JSX elements to be displayed inside the image container.
- * @returns {JSX.Element} with the card image component.
+ * @component
+ * @param {CartCardImageProps} props - The component props
+ * @param {string | undefined} props.image - The URL of the image to display
+ * @returns {JSX.Element} The rendered image container with responsive sizing
  */
-
 export default function CartCardImage({
   image,
 }: CartCardImageProps): JSX.Element {

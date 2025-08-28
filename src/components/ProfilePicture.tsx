@@ -1,6 +1,14 @@
 "use client";
 import { Avatar, Box, Tooltip } from "@mui/material";
 
+interface ProfilePictureProps {
+  border?: boolean;
+  src: string;
+  alt?: string;
+  width: number | object;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+}
+
 /**
  * ProfilePicture component renders a circular avatar using the given image source.
  *
@@ -24,14 +32,6 @@ import { Avatar, Box, Tooltip } from "@mui/material";
  *
  * @returns {JSX.Element} A circular avatar displaying the provided image.
  */
-
-interface ProfilePictureProps {
-  border?: boolean;
-  src: string;
-  alt?: string;
-  width: number | object;
-  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
-}
 
 export const ProfilePicture: React.FC<ProfilePictureProps> = ({
   border = false,

@@ -12,6 +12,24 @@ interface AiResponseParsed {
   explain_short: string;
 }
 
+/**
+ * @function
+ * @param {AiResponseParsed} ai - The parsed AI response object.
+ * @returns {ProductFilters} - The filters object based on the AI response.
+ *
+ * @example
+ * const filters = aiLabelsToFilters({
+ *   brands: ["Brand1", "Brand2"],
+ *   categories: ["Category1", "Category2"],
+ *   price_min: 100,
+ *   price_max: 200,
+ *   colors: ["Red", "Blue"],
+ *   genders: ["Men", "Women"],
+ *   sizes: [40, 42],
+ *   searchTerm: "Search Term",
+ *   explain_short: "Short explanation",
+ * });
+ */
 export function aiLabelsToFilters(ai: AiResponseParsed): ProductFilters {
   const filters: Partial<ProductFilters> = {};
 

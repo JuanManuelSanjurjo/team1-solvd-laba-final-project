@@ -17,6 +17,13 @@ interface FetchOrderResponse {
   message: string;
 }
 
+/**
+ * @action
+ * @returns {Promise<FetchOrderResponse>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await fetchOrders();
+ */
 export async function fetchOrders(): Promise<FetchOrderResponse> {
   const session = await auth();
   const stripe = getStripe();

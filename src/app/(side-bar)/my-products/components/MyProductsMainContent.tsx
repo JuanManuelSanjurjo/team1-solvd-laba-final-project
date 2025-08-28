@@ -29,6 +29,14 @@ interface MyProductsMainContentProps {
   categoryOptions: { value: number; label: string }[];
 }
 
+/**
+ * MyProductsMainContent component that renders the main content of the my products page.
+ * Includes options to view products, add to cart, and remove from wishlist.
+ *
+ * @component
+ * @param {MyProductsMainContentProps} props - The component props
+ * @returns {JSX.Element} The rendered my products main content
+ */
 export default function MyProductsMainContent({
   session,
   brandOptions,

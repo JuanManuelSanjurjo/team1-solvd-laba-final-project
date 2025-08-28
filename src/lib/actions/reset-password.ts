@@ -13,6 +13,18 @@ export interface ResetPasswordResponse {
   message: string;
 }
 
+/**
+ * @action
+ * @param {ResetPasswordPayload} body - The payload for resetting the password.
+ * @returns {Promise<ResetPasswordResponse>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await resetPassword({
+ *   password: "newPassword123",
+ *   passwordConfirmation: "newPassword123",
+ *   code: "resetCode123",
+ * });
+ */
 export default async function resetPassword(
   body: ResetPasswordPayload
 ): Promise<ResetPasswordResponse> {

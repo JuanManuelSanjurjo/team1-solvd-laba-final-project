@@ -18,6 +18,19 @@ interface FilterSideBarProps {
   categoryOptions: { value: number; label: string }[];
 }
 
+/**
+ * FilterSideBar component that displays a filter sidebar.
+ *
+ * @component
+ * @param {FilterSideBarProps} props - Props for the component
+ * @param {function} props.hideDrawer - Function that is called to hide the drawer.
+ * @param {number} props.paginationTotal - Total number of pages for pagination.
+ * @param {object[]} props.brandOptions - Options for the brand filter.
+ * @param {object[]} props.colorOptions - Options for the color filter.
+ * @param {object[]} props.sizeOptions - Options for the size filter.
+ * @param {object[]} props.categoryOptions - Options for the category filter.
+ * @returns {JSX.Element} The rendered filter sidebar component
+ */
 export const FilterSideBar: React.FC<FilterSideBarProps> = ({
   hideDrawer,
   paginationTotal,
@@ -64,7 +77,7 @@ export const FilterSideBar: React.FC<FilterSideBarProps> = ({
 
   const handlePriceCommit = (
     _: Event | React.SyntheticEvent,
-    newValue: number | number[],
+    newValue: number | number[]
   ) => {
     if (!Array.isArray(newValue)) return;
 

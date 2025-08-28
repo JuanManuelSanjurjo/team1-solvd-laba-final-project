@@ -22,7 +22,23 @@ interface FilterSectionWithSearchProps {
   onFilterChange: (filterType: string, value: string) => void;
 }
 
-export const FilterSectionWithSearch: React.FC<FilterSectionWithSearchProps> = ({
+/**
+ * FilterSectionWithSearch component that displays a filter section with a search bar.
+ *
+ * @component
+ * @param {FilterSectionWithSearchProps} props - Props for the component
+ * @param {string} props.label - Label for the filter section.
+ * @param {string} props.filterKey - Key for the filter.
+ * @param {FilterOption[]} props.options - Options for the filter.
+ * @param {string} props.placeholder - Placeholder for the search bar.
+ * @param {boolean} props.showSearch - Boolean that represents if the search bar is shown.
+ * @param {function} props.checked - Function that is called to check if an option is checked.
+ * @param {function} props.onFilterChange - Function that is called when the filter is changed.
+ * @returns {JSX.Element} The rendered filter section with search component
+ */
+export const FilterSectionWithSearch: React.FC<
+  FilterSectionWithSearchProps
+> = ({
   label,
   filterKey,
   options,

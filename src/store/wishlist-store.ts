@@ -10,11 +10,27 @@ type WishlistStore = {
   removeInactiveProducts: (userId: string, productsIds: number[]) => void;
 };
 
+/**
+ * @function
+ * @returns {WishlistStore} - A wishlist store instance.
+ *
+ * @example
+ * const wishlistStore = useWishlistStore();
+ */
 export const useWishlistStore = create<WishlistStore>()(
   persist(
     (set, get) => ({
       byUser: {},
 
+      /**
+       * @function
+       * @param {string} userId - The user id.
+       * @param {cardProduct} product - The product to add.
+       * @returns {void}
+       *
+       * @example
+       * useWishlistStore.getState().addToWishList("1", product);
+       */
       addToWishList: (userId, product) => {
         const { byUser } = get();
         const list = byUser[userId] ?? [];
@@ -23,6 +39,15 @@ export const useWishlistStore = create<WishlistStore>()(
         }
       },
 
+      /**
+       * @function
+       * @param {string} userId - The user id.
+       * @param {number} id - The product id.
+       * @returns {void}
+       *
+       * @example
+       * useWishlistStore.getState().removeFromWishList("1", 1);
+       */
       removeFromWishList: (userId, id) => {
         const { byUser } = get();
         const list = byUser[userId];
@@ -35,6 +60,14 @@ export const useWishlistStore = create<WishlistStore>()(
         });
       },
 
+      /**
+       * @function
+       * @param {string} userId - The user id.
+       * @returns {void}
+       *
+       * @example
+       * useWishlistStore.getState().clearWishList("1");
+       */
       clearWishList: (userId) => {
         const { byUser } = get();
         const list = byUser[userId];
@@ -42,6 +75,15 @@ export const useWishlistStore = create<WishlistStore>()(
         set({ byUser: { ...byUser, [userId]: [] } });
       },
 
+      /**
+       * @function
+       * @param {string} userId - The user id.
+       * @param {number[]} ids - The product ids.
+       * @returns {void}
+       *
+       * @example
+       * useWishlistStore.getState().removeInactiveProducts("1", [1, 2, 3]);
+       */
       removeInactiveProducts: (userId, ids) => {
         const { byUser } = get();
         const list = byUser[userId];

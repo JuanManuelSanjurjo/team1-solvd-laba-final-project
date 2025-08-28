@@ -20,15 +20,17 @@ type QuantityHandlerProps = {
 
 /**
  * Responsive quantity selector component.
- * Displays a pair of increment/decrement buttons and the current quantity value.
- *
- * On mobile screens, it renders as an expandable accordion.
- * On larger screens, it renders as an inline layout with label.
+ * Displays increment/decrement buttons and current quantity value.
+ * On mobile screens, renders as an expandable accordion.
+ * On larger screens, renders as an inline layout with label.
  *
  * @component
- * @param {number} quantity - Current quantity of the item.
- *
- * @returns {JSX.Element} A responsive UI for handling product quantity adjustments.
+ * @param {QuantityHandlerProps} props - The component props
+ * @param {number} props.quantity - Current quantity of the item
+ * @param {number} props.id - Unique identifier for the product
+ * @param {string} props.userId - The unique identifier for the user
+ * @param {number} props.size - Size of the product
+ * @returns {JSX.Element} A responsive UI for handling product quantity adjustments
  */
 
 const QuantityHandler = ({

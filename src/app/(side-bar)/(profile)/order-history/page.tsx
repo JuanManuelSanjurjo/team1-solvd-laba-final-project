@@ -18,6 +18,13 @@ type RetrievedItemsStripe = OrderProduct & {
   image: string;
 };
 
+/**
+ * OrderHistory page that displays the user's order history.
+ * Includes options to view order details, track order status, and refund orders.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered order history page with the user's order history
+ */
 export default async function OrderHistory() {
   const session = await auth();
 

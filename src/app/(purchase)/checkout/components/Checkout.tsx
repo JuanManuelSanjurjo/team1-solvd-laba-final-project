@@ -15,6 +15,16 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
+/**
+ * Checkout component that initializes Stripe payment processing.
+ * Handles customer creation, payment intent setup, and Stripe Elements configuration.
+ * Manages loading states and renders the checkout form when ready.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {Session} props.session - Next-auth session object containing user information
+ * @returns {JSX.Element} The rendered Stripe Elements wrapper with checkout form or loading state
+ */
 export default function Checkout({ session }: { session: Session }) {
   const userId = session.user.id;
   const [clientSecret, setClientSecret] = useState<string | undefined>(

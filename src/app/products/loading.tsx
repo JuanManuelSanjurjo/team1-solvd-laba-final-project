@@ -3,6 +3,12 @@ import { Box } from "@mui/material";
 import SkeletonCardContainer from "../../components/skeletons/products/SkeletonCardContainer";
 import SidebarSkeleton from "../../components/skeletons/SidebarSkeleton";
 
+/**
+ * Loading component that displays a loading skeleton.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered loading skeleton component
+ */
 export default function Loading(): JSX.Element {
   return (
     <Box

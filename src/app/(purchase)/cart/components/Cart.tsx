@@ -18,13 +18,15 @@ import { Link } from "@mui/material";
 import { useCallback } from "react";
 
 /**
- * Checkout page component that displays a list of products in the cart.
- * Each product can have its quantity increased or decreased using the provided handlers.
+ * Cart page component that displays a list of products in the user's shopping cart.
+ * Shows cart items with quantity controls and checkout summary, or an empty state if no items.
+ * Provides navigation back to products and checkout functionality.
  *
  * @component
- * @returns {JSX.Element} The rendered checkout page with cart items or an empty state.
+ * @param {CartProps} props - The component props
+ * @param {string} props.userId - The unique identifier for the user whose cart is being displayed
+ * @returns {JSX.Element} The rendered cart page with cart items and checkout summary, or an empty state
  */
-
 type CartProps = {
   userId: string;
 };

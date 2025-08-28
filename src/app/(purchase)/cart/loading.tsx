@@ -1,6 +1,14 @@
 "use client";
 import { Box, Typography, Divider, Skeleton } from "@mui/material";
 
+/**
+ * Loading skeleton component for the cart page.
+ * Displays placeholder content while the cart data is being fetched.
+ * Shows skeleton loaders for cart items and checkout summary in a responsive layout.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered loading skeleton with cart item placeholders and summary
+ */
 export default function Loading() {
   return (
     <Box

@@ -18,6 +18,8 @@ interface ImagePreviewUploaderProps {
   reset?: boolean;
 }
 
+type Preview = { url: string; file?: File };
+
 /**
  * A component that allows users to upload images via drag-and-drop,
  * generates image previews, and passes the selected files to a parent component.
@@ -26,8 +28,6 @@ interface ImagePreviewUploaderProps {
  * @param {ImagePreviewUploaderProps} props - The props object.
  * @returns {JSX.Element} The rendered component.
  */
-type Preview = { url: string; file?: File };
-
 export default function ImagePreviewerUploader({
   onFilesChange,
   initialPreviews = [],

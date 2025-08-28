@@ -2,6 +2,12 @@ import { Box } from "@mui/material";
 import CardSkeleton from "./CardSkeleton";
 import { PRODUCTS_PER_PAGE } from "@/lib/constants/globals";
 
+/**
+ * SkeletonCardContainer component that displays a container with skeleton cards.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered skeleton card container component
+ */
 export default function SkeletonCardContainer() {
   return (
     <Box

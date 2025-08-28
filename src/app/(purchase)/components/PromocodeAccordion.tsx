@@ -11,7 +11,6 @@ import Button from "@/components/Button";
  * @component
  * @returns {JSX.Element} A styled accordion section for promocode input.
  */
-
 const PromocodeAccordion = () => {
   return (
     <>

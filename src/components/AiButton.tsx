@@ -11,6 +11,16 @@ interface AiButtonProps extends MuiButtonProps {
   label: string;
 }
 
+/**
+ * AiButton component that displays a button with a loading state and an icon.
+ *
+ * @component
+ * @param {AiButtonProps} props - Props for the component
+ * @param {boolean} props.isLoading - Boolean that represents if the button is loading.
+ * @param {function} props.onGenerate - Function to call when the button is clicked.
+ * @param {string} props.label - Label for the button.
+ * @returns {JSX.Element} The rendered ai button component
+ */
 export default function AiButton({
   isLoading = false,
   onGenerate,

@@ -1,4 +1,115 @@
+import { InputProps } from "@/types/form";
 import * as z from "zod";
+
+/* Inputs */
+type CheckoutInputProps = Omit<InputProps, "name"> & {
+  name:
+    | "name"
+    | "surname"
+    | "email"
+    | "phone"
+    | "country"
+    | "state"
+    | "city"
+    | "email"
+    | "phone"
+    | "address"
+    | "zip";
+};
+
+export const personalInfoInputs: CheckoutInputProps[] = [
+  /* Name */
+  {
+    name: "name",
+    label: "Name",
+    placeholder: "Jane",
+    required: true,
+    errorMessage: "",
+    type: "text",
+  },
+
+  /* Surname */
+  {
+    name: "surname",
+    label: "Surname",
+    placeholder: "Meldrum",
+    required: true,
+    errorMessage: "",
+    type: "text",
+  },
+
+  /* Email */
+  {
+    name: "email",
+    label: "Email",
+    placeholder: "email@email.com",
+    required: true,
+    errorMessage: "",
+    type: "email",
+  },
+
+  /* Phone Number */
+  {
+    name: "phone",
+    label: "Phone number",
+    placeholder: "(949) 456-5644",
+    required: true,
+    errorMessage: "",
+    type: "tel",
+  },
+];
+
+export const shippingInfoInputs: CheckoutInputProps[] = [
+  /* Country */
+  {
+    name: "country",
+    label: "Country",
+    placeholder: "USA",
+    required: true,
+    errorMessage: "",
+    type: "text",
+  },
+
+  /* City */
+  {
+    name: "city",
+    label: "City",
+    placeholder: "New York",
+    required: true,
+    errorMessage: "",
+    type: "text",
+  },
+
+  /* State */
+  {
+    name: "state",
+    label: "State",
+    placeholder: "New York",
+    required: true,
+    errorMessage: "",
+    type: "text",
+  },
+
+  /* Zip */
+  {
+    name: "zip",
+    label: "Zip Code",
+    placeholder: "92000",
+    required: true,
+    errorMessage: "",
+    type: "text",
+  },
+
+  /* Address */
+  {
+    name: "address",
+    label: "Address",
+    placeholder: "Street, Apartment, Block",
+    required: true,
+    errorMessage: "",
+    type: "text",
+  },
+];
 
 export const personalInfoSchema = z.object({
   name: z

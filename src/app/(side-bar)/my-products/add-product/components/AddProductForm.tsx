@@ -19,6 +19,19 @@ interface AddProductFormProps {
   categoryOptions: { value: number; label: string }[];
 }
 
+/**
+ * AddProductForm component that allows users to add a new product.
+ * Includes options to upload product images, set product details, and submit the product.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {Session} props.session - The user session object containing user information
+ * @param {Object[]} props.brandOptions - The brand options for the product
+ * @param {Object[]} props.colorOptions - The color options for the product
+ * @param {Object[]} props.sizeOptions - The size options for the product
+ * @param {Object[]} props.categoryOptions - The category options for the product
+ * @returns {JSX.Element} The rendered add product form with the product details
+ */
 export const AddProductForm: React.FC<AddProductFormProps> = ({
   session,
   brandOptions,

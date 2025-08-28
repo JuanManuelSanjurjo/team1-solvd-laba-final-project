@@ -7,6 +7,17 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/style/theme";
 import { CssBaseline } from "@mui/material";
 
+/**
+ * @function
+ * @param {Object} props - The props for the component.
+ * @param {React.ReactNode} props.children - The children to render.
+ * @returns {JSX.Element} The providers factory component.
+ *
+ * @example
+ * const providersFactory = ProvidersFactory({
+ *   children: <App />,
+ * });
+ */
 export default function ProvidersFactory({
   children,
 }: {

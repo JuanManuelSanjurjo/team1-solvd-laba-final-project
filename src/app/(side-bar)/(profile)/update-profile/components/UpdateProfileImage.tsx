@@ -28,6 +28,15 @@ import {
   UpdateProfileImageProps,
 } from "../types";
 
+/**
+ * UpdateProfileImage component that allows users to update their profile image.
+ * Includes options to upload a new image, delete the current image, and preview the selected image.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {Session} props.session - The user session object containing user information
+ * @returns {JSX.Element} The rendered update profile image component with the user's profile image
+ */
 export default function UpdateProfileImage({
   session,
 }: UpdateProfileImageProps) {

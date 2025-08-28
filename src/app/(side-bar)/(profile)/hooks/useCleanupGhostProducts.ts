@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { fetchActiveProductsIds } from "@/lib/actions/fetch-active-products-ids";
+import { useCartStore } from "@/store/cart-store";
 
+/**
+ * Custom hook that checks if the client has hydrated.
+ *
+ * @returns {boolean} - Returns true if the client has hydrated, false otherwise.
+ */
 export function useClientHydrated() {
   const [isHydrated, setIsHydrated] = useState(false);
   useEffect(() => {
@@ -14,7 +20,13 @@ function idsSignature(ids: number[]) {
     .sort((a, b) => a - b)
     .join(",");
 }
-
+/**
+ * Custom hook that cleans up inactive products from the cart.
+ *
+ * @param {number[]} ids - The array of product IDs to check for inactivity.
+ * @param {function} removeInactive - The function to call to remove inactive products.
+ * @returns {boolean} - Returns true if the cleanup is loading, false otherwise.
+ */
 export function useCleanUpGhostProducts(
   ids: number[],
   removeInactive: (inactiveIds: number[]) => void

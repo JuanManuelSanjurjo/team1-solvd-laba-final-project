@@ -1,5 +1,14 @@
 import { GeneratedProductDescription } from "@/types/ai";
 
+interface GenerateDescriptionProps {
+  name: string;
+  brand: string;
+  category: string;
+  color: string;
+  gender: string;
+  description: string;
+}
+
 /**
  * Generates a structured product description using the AI endpoint.
  *
@@ -27,15 +36,6 @@ import { GeneratedProductDescription } from "@/types/ai";
  * //   confidence: 0.87
  * // }
  */
-
-interface GenerateDescriptionProps {
-  name: string;
-  brand: string;
-  category: string;
-  color: string;
-  gender: string;
-  description: string;
-}
 
 export async function generateDescription({
   name,

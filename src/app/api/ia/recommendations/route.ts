@@ -14,6 +14,17 @@ import { validateAIResponse } from "@/lib/ai/validate-ai-response";
 
 type ReqBody = { ids: number[] };
 
+/**
+ * POST /api/ia/recommendations
+ *
+ * This endpoint generates product recommendations based on a list of product IDs.
+ * It requires the user to be authenticated and the product IDs to be provided in the request body.
+ *
+ * @component
+ *
+ * @param {Request} req - The request object
+ * @returns {Promise<NextResponse>} The response object
+ */
 export async function POST(req: Request) {
   try {
     const body: ReqBody = await req.json();

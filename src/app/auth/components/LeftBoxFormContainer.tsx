@@ -1,6 +1,14 @@
 import { Box } from "@mui/material";
 import { ReactNode } from "react";
 
+/**
+ * LeftBoxFormContainer component that wraps the form container on the left side of the authentication page.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {ReactNode} props.children - The child elements to be rendered inside the container
+ * @returns {JSX.Element} The rendered left box form container component
+ */
 export default function LeftBoxFormContainer({
   children,
 }: {

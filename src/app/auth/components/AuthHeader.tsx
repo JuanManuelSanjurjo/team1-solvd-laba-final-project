@@ -1,5 +1,14 @@
 import { Typography } from "@mui/material";
 
+/**
+ * AuthHeader component that displays the authentication header with a title and subtitle.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {string} props.title - The title to be displayed in the header
+ * @param {string} props.subtitle - The subtitle to be displayed in the header
+ * @returns {JSX.Element} The rendered authentication header component
+ */
 export default function AuthHeader({
   title,
   subtitle,

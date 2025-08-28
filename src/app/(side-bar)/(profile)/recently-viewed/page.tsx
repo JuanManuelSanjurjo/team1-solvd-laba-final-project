@@ -6,6 +6,13 @@ export const metadata = {
   title: "Recently Viewed",
 };
 
+/**
+ * RecentlyViewedPage page that displays the user's recently viewed products.
+ * Includes options to view products, add to cart, and remove from wishlist.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered recently viewed page with the user's recently viewed products
+ */
 export default async function RecentlyViewedPage() {
   const session = await auth();
 
