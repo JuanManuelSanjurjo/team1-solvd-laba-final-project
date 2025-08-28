@@ -11,7 +11,6 @@ import { filtersToQueryString } from "@/lib/ai/filters-to-query-string";
 import { aiLabelsToFilters } from "@/lib/ai/ai-labels-to-filters";
 import { fetchGenders } from "@/lib/actions/fetch-genders";
 import { validateAIResponse } from "@/lib/ai/validate-ai-response";
-import { redirect } from "next/dist/server/api-utils";
 
 type ReqBody = { ids: number[] };
 
