@@ -84,7 +84,6 @@ export async function fetchProducts(
       filters.priceMax.toString()
     );
   }
-  console.log(baseUrl);
   baseUrl.searchParams.append(`filters[teamName][$in]`, "team-1");
 
   const headers: HeadersInit = {};
@@ -94,7 +93,6 @@ export async function fetchProducts(
       filters.user.userId
     );
     headers["Authorization"] = `Bearer ${filters.user.token}`;
-    console.log("--->", headers);
   }
 
   const response = await fetch(baseUrl.toString(), { headers });
