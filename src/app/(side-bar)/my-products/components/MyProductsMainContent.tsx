@@ -105,7 +105,7 @@ export default function MyProductsMainContent({
       <Box
         sx={{
           display: "flex",
-          justifyContent: { xs: "flex-start", lg: "space-between" },
+          justifyContent: { xs: "flex-start", lg: "flex-start" },
           gap: "30px",
           alignItems: "center",
           flexDirection: { xs: "column", lg: "row" },

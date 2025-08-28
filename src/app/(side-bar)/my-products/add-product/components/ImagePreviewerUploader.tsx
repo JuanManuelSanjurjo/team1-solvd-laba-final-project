@@ -35,7 +35,7 @@ export default function ImagePreviewerUploader({
   reset,
 }: ImagePreviewUploaderProps) {
   const [previews, setPreviews] = useState<Preview[]>(
-    initialPreviews.map((url) => ({ url })),
+    initialPreviews.map((url) => ({ url }))
   );
 
   const stableOnPreviewsChange = useMemo(() => {
