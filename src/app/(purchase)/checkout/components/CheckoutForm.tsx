@@ -142,19 +142,6 @@ const shippingInfoInputs: CheckoutInputProps[] = [
   },
 ];
 
-/* Default values */
-const defaultValues = {
-  name: "John",
-  surname: "Doe",
-  email: "john.doe@example.com",
-  phone: "(555) 123-4567",
-  country: "United States",
-  city: "New York",
-  state: "New York",
-  zip: "10001",
-  address: "123 Main Street, Apt 4B",
-};
-
 export default function CheckoutForm({ userId }: { userId: string }) {
   const byUser = useCartStore((state) => state.byUser);
   const cartItems: CartItem[] = userId ? byUser[userId] ?? [] : [];
@@ -168,7 +155,6 @@ export default function CheckoutForm({ userId }: { userId: string }) {
 
   const methods = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: defaultValues,
   });
 
   const {
