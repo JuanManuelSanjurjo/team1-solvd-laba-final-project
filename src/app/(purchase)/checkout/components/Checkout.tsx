@@ -20,7 +20,6 @@ export default function Checkout({ session }: { session: Session }) {
   const [clientSecret, setClientSecret] = useState<string | undefined>(
     undefined
   );
-  const [, setOrderId] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
   const { update } = useSession();
@@ -48,7 +47,7 @@ export default function Checkout({ session }: { session: Session }) {
           });
 
           if (customerResult?.customer) {
-            customerId = customerResult.customer;
+            customerId = customerResult.customer.id;
             update({ trigger: "update" });
           }
         }
@@ -71,7 +70,6 @@ export default function Checkout({ session }: { session: Session }) {
           await response.json();
 
         setClientSecret(data.clientSecret);
-        setOrderId(data.orderId);
       } catch (error) {
         console.error("Error initializing checkout:", error);
       } finally {
@@ -80,7 +78,7 @@ export default function Checkout({ session }: { session: Session }) {
     };
 
     initializeCheckout();
-  }, [items, total, session.user.email, session.user.customerId, update]);
+  }, [items, total, session.user.email]);
 
   const options: StripeElementsOptions = {
     clientSecret,
