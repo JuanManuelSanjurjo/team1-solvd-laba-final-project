@@ -39,6 +39,11 @@ const config: Config = {
     },
   },
   coverageReporters: ["text", "json-summary", "lcov"],
+  collectCoverageFrom: [
+    "src//*.{js,ts,jsx,tsx}",
+    "!src//*.d.ts",
+    "!src//index.ts",
+  ],
 };
 
 export default createJestConfig(config);
