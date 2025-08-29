@@ -19,6 +19,7 @@ export const LogoBlackSvg: React.FC<LogoBlackSvgProps> = ({
   return (
     <svg
       width={width}
+      data-testid="logo-svg"
       height={height}
       viewBox="0 0 41 31"
       fill="none"

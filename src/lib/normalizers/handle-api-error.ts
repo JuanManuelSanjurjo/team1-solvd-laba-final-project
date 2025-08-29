@@ -19,7 +19,7 @@ export interface ApiResponseError {
  */
 export const handleApiError = async (
   response: Response,
-  defaultMessage: string
+  defaultMessage: string,
 ) => {
   try {
     const json: ApiResponseError = await response.json();

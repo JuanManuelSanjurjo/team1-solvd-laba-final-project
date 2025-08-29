@@ -1,4 +1,6 @@
 import { NormalizedProduct } from "@/types/product-types";
+import { Product, MyProduct } from "@/types/product";
+
 export const product: NormalizedProduct = {
   id: 1,
   name: "Nike Air Max 97",
@@ -19,4 +21,117 @@ export const product: NormalizedProduct = {
   ],
   color: "Black",
   gender: "Men's shoes",
+};
+
+export const myProductMock: MyProduct = {
+  id: 1,
+  name: "Sneaker Air Max",
+  price: 120,
+  description: "Comfortable running sneakers with breathable mesh.",
+  categories: [
+    { id: 10, name: "Shoes" },
+    { id: 11, name: "Running" },
+  ],
+  gender: {
+    id: 2,
+    name: "Men",
+  },
+  images: [
+    { id: 101, url: "/images/products/airmax1.png" },
+    { id: 102, url: "/images/products/airmax2.png" },
+  ],
+  sizes: [{ id: 42 }, { id: 43 }, { id: 44 }],
+  brand: {
+    id: 5,
+  },
+  color: {
+    id: 7,
+  },
+};
+
+export const completeProductResponse: Product = {
+  id: 123,
+  attributes: {
+    name: "Classic Sneaker",
+    price: 7999,
+    description: "A comfortable, everyday sneaker with a timeless design.",
+    images: {
+      data: [
+        {
+          id: 11,
+          attributes: {
+            url: "https://example.com/images/product-123-1.jpg",
+          },
+        },
+        {
+          id: 12,
+          attributes: {
+            url: "https://example.com/images/product-123-2.jpg",
+          },
+        },
+      ],
+    },
+    gender: {
+      data: {
+        id: 1,
+        attributes: {
+          name: "Unisex",
+        },
+      },
+    },
+    brand: {
+      data: {
+        id: 2,
+        attributes: {
+          name: "Acme Shoes",
+        },
+      },
+    },
+    color: {
+      data: {
+        id: 3,
+        attributes: {
+          name: "Black",
+        },
+      },
+    },
+    categories: {
+      data: [
+        {
+          id: 21,
+          attributes: {
+            name: "Sneakers",
+          },
+        },
+        {
+          id: 22,
+          attributes: {
+            name: "Casual",
+          },
+        },
+      ],
+    },
+    sizes: {
+      data: [
+        {
+          id: 31,
+          attributes: {
+            value: 38,
+          },
+        },
+        {
+          id: 32,
+          attributes: {
+            value: 39,
+          },
+        },
+        {
+          id: 33,
+          attributes: {
+            value: 40,
+          },
+        },
+      ],
+    },
+  },
 };

@@ -10,6 +10,7 @@ import { Skeleton, Box } from "@mui/material";
 export default function SkeletonPagination() {
   return (
     <Box
+      data-testid="skeleton-pagination-container"
       sx={{
         display: "flex",
         justifyContent: "center",
