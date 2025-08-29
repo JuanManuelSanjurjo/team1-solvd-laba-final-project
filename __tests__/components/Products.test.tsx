@@ -91,7 +91,7 @@ jest.mock("@/components/PaginationComponent", () => ({
   ),
 }));
 
-jest.mock("@/components/SkeletonPagination", () => ({
+jest.mock("@/components/skeletons/SkeletonPagination", () => ({
   __esModule: true,
   default: () => <div data-testid="skeleton-pagination" />,
 }));
