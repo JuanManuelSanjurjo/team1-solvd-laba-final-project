@@ -36,11 +36,11 @@ import { tryParseAndValidate } from "@/lib/ai/ai-utils";
 
 export async function POST(req: Request) {
   try {
-    const { name, brand, category, description, genre } = await req.json();
-    if (!name || !brand || !category || !description || !genre) {
+    const { name, brand, category, description, gender } = await req.json();
+    if (!name || !brand || !category || !gender) {
       return NextResponse.json(
         { error: "Some required field is missing" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const basePrompt = `You are a strict JSON generator.  
@@ -74,7 +74,7 @@ Output example:
 }
 
 Input product:
-${JSON.stringify({ name, brand, category, description, genre })}
+${JSON.stringify({ name, brand, category, description, gender })}
 `;
 
     const { text } = await generateText({
@@ -95,22 +95,20 @@ ${JSON.stringify({ name, brand, category, description, genre })}
 
     const retryParsed = tryParseAndValidate(
       retryText,
-      GeneratedProductDescriptionSchema
+      GeneratedProductDescriptionSchema,
     );
     if (retryParsed.success) {
       return NextResponse.json(retryParsed.data);
     }
 
-    console.error("AI outputs not valid JSON:", { text, retryText });
     return NextResponse.json(
       { error: "Failed to generate structured JSON" },
-      { status: 500 }
+      { status: 500 },
     );
-  } catch (err) {
-    console.error(err);
+  } catch {
     return NextResponse.json(
       { error: "Error generating description" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

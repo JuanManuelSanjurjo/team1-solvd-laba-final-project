@@ -35,7 +35,7 @@ export default function useHeaderSearch() {
         ["name", "color.name", "gender.name"],
         ["color.name", "gender.name", "images.url"],
         1,
-        5
+        5,
       ),
     enabled: isSearching && debouncedSearchInput.length > 1,
     staleTime: 10 * 1000,
@@ -46,7 +46,7 @@ export default function useHeaderSearch() {
     onSuccess: (data) => {
       setIsSearching(false);
       setSearchInput("");
-      router.replace(`products${data.redirectUrl}`);
+      router.replace(`/products${data.redirectUrl}`);
     },
     onError: (err) => {
       console.error("Failed to generate filters:", err);

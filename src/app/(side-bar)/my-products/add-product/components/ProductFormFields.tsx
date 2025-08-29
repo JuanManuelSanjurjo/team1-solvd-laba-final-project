@@ -115,7 +115,7 @@ export const ProductFormFields = ({
         brand: getLabelFromOptions(brandOptions, values.brand),
         category: getLabelFromOptions(categoryOptions, values.categories),
         color: getLabelFromOptions(colorOptions, values.color),
-        gender: values.gender === 3 ? "women" : "man",
+        gender: values.gender === 3 ? "women" : "men",
         description: values.description,
       });
       if (aiResponse.isBranded === false) {
@@ -142,7 +142,17 @@ export const ProductFormFields = ({
         });
       }
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        useToastStore.getState().show({
+          severity: "error",
+          message: error.message,
+        });
+        return;
+      }
+      useToastStore.getState().show({
+        severity: "error",
+        message: "Unknown error",
+      });
     } finally {
       setLoading(false);
     }

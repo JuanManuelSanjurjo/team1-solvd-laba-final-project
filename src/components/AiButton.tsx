@@ -30,6 +30,8 @@ export default function AiButton({
   return (
     <Button
       onClick={onGenerate}
+      variant={props.variant ?? "contained"}
+      size={props.size ?? "small"}
       sx={{
         background: isLoading
           ? "#F7635E1A"
@@ -41,6 +43,7 @@ export default function AiButton({
         padding: "6px 12px",
         height: "45.25px",
         animation: isLoading ? "pulse 1s infinite alternate" : "none",
+        ...props.sx,
       }}
       endIcon={
         isLoading ? null : (
@@ -52,7 +55,6 @@ export default function AiButton({
           />
         )
       }
-      {...props}
     >
       {isLoading ? (
         <Image src="/assets/logo/logo.svg" alt="Logo" width={22} height={22} />

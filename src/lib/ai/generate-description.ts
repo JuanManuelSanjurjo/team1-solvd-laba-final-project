@@ -45,6 +45,14 @@ export async function generateDescription({
   gender,
   description,
 }: GenerateDescriptionProps): Promise<GeneratedProductDescription> {
+  console.log("generateDescription response:", {
+    name,
+    brand,
+    category,
+    color,
+    gender,
+    description,
+  });
   const res = await fetch("/api/ia/generate-description", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
