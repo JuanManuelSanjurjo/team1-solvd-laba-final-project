@@ -1,7 +1,7 @@
 import React from "react";
-import { waitFor, fireEvent } from "@testing-library/react";
-import { render } from "__tests__/utils/test-utils";
-
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+//
 const toastShowMock = jest.fn();
 jest.mock("@/store/toastStore", () => ({
   useToastStore: {
@@ -9,40 +9,19 @@ jest.mock("@/store/toastStore", () => ({
   },
 }));
 
-jest.mock("@/app/(side-bar)/my-products/hooks/useProductForm", () => ({
-  useProductForm: jest.fn(() => {
-    const { useForm } = require("react-hook-form");
-
-    const methods = useForm({
-      defaultValues: {
-        name: "Sneaker",
-        color: 1,
-        brand: 2,
-        categories: 3,
-        gender: 4,
-        price: 100,
-        description: "",
-        sizes: [],
-      },
-    });
-
-    return {
-      register: methods.register,
-      control: methods.control,
-      errors: {},
-      selectedSizes: [],
-      toggleSize: jest.fn(),
-      handleSubmit: (fn: any) => (e: any) => {
-        e?.preventDefault?.();
-        return fn(methods.getValues());
-      },
-      setValue: methods.setValue,
-      getValues: methods.getValues,
-      setError: methods.setError,
-      reset: methods.reset,
-    };
-  }),
-}));
+jest.mock(
+  "@/app/(side-bar)/my-products/add-product/components/ProductFormFields",
+  () => ({
+    ProductFormFields: () => null,
+  })
+);
+jest.mock(
+  "@/app/(side-bar)/my-products/add-product/components/ImagePreviewerUploader",
+  () => ({
+    __esModule: true,
+    default: () => null,
+  })
+);
 
 const previewsMock = {
   getNewFiles: jest.fn(() => [] as File[]),
@@ -111,11 +90,7 @@ jest.mock("@/app/(side-bar)/my-products/hooks/useProductForm", () => ({
 
 import { EditProductForm } from "@/app/(side-bar)/my-products/components/EditProductForm";
 
-describe("EditProductForm", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
+describe("EditProductForm (actual component)", () => {
   const session = { user: { id: "5", jwt: "token" } } as any;
 
   const sampleProduct = {
@@ -134,12 +109,50 @@ describe("EditProductForm", () => {
     sizes: [{ id: 8 }],
   } as any;
 
-  test("edit mode: calls update mutation and onSuccess", async () => {
-    updateMutateAsync.mockResolvedValueOnce(undefined);
+  const renderWithProviders = (ui: React.ReactElement) => {
+    const qc = new QueryClient();
+    return render(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>);
+  };
 
-    const onSuccess = jest.fn();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    previewsMock.getNewFiles.mockReturnValue([]);
+    previewsMock.getRemainingUrls.mockReturnValue(["https://img/1.jpg"]);
+  });
 
-    render(
+  test("duplicate mode: pre-fills (passes correct initial defaults to useProductForm)", () => {
+    renderWithProviders(
+      <EditProductForm
+        session={session}
+        brandOptions={[{ value: 2, label: "ACME" }]}
+        colorOptions={[{ value: 1, label: "Red" }]}
+        sizeOptions={[{ value: 8, label: 8 }]}
+        categoryOptions={[{ value: 3, label: "Shoes" }]}
+        product={sampleProduct}
+        mode="duplicate"
+        onSuccess={jest.fn()}
+      />
+    );
+
+    expect(useProductFormMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: "Shoe",
+        color: 1,
+        gender: 4,
+        brand: 2,
+        price: 50,
+        categories: 3,
+        description: "desc",
+        sizes: [8],
+        userID: 0,
+      })
+    );
+  });
+
+  test("duplicate mode: saves by duplicating kept URLs into Files and calling create mutation with correct payload", async () => {
+    createMutateAsync.mockResolvedValueOnce(undefined);
+
+    renderWithProviders(
       <EditProductForm
         session={session}
         brandOptions={[{ value: 2, label: "ACME" }]}
@@ -153,20 +166,37 @@ describe("EditProductForm", () => {
     );
 
     const form = document.querySelector("#edit-product-form")!;
-    fireEvent.submit(form!);
+    fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(updateMutateAsync).toHaveBeenCalled();
-      expect(onSuccess).toHaveBeenCalled();
+      expect(
+        (require("@/lib/url-utils").urlToFile as jest.Mock).mock.calls
+      ).toEqual([["https://img/1.jpg"]]);
+
+      expect(createMutateAsync).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            name: "Shoe",
+            color: 1,
+            gender: 4,
+            brand: 2,
+            categories: 3,
+            price: 50,
+            description: "desc",
+            sizes: [8],
+            userID: 5,
+          }),
+          imageFiles: expect.arrayContaining([fakeFile]),
+          remainingExistentImages: [],
+        })
+      );
     });
   });
 
-  test("duplicate mode: calls create mutation with duplicated files and onSuccess", async () => {
-    createMutateAsync.mockResolvedValueOnce(undefined);
+  test("edit mode: saves by calling update mutation with correct payload (existentImages & imagesToDelete)", async () => {
+    updateMutateAsync.mockResolvedValueOnce(undefined);
 
-    const onSuccess = jest.fn();
-
-    render(
+    renderWithProviders(
       <EditProductForm
         session={session}
         brandOptions={[{ value: 2, label: "ACME" }]}
@@ -174,8 +204,8 @@ describe("EditProductForm", () => {
         sizeOptions={[{ value: 8, label: 8 }]}
         categoryOptions={[{ value: 3, label: "Shoes" }]}
         product={sampleProduct}
-        mode="duplicate"
-        onSuccess={onSuccess}
+        mode="edit"
+        onSuccess={jest.fn()}
       />
     );
 
@@ -183,20 +213,32 @@ describe("EditProductForm", () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(
-        require("@/lib/url-utils").urlToFile as jest.Mock
-      ).toHaveBeenCalled();
-      expect(createMutateAsync).toHaveBeenCalled();
-      expect(onSuccess).toHaveBeenCalled();
+      expect(updateMutateAsync).toHaveBeenCalledWith(
+        expect.objectContaining({
+          productId: 99,
+          data: expect.objectContaining({
+            name: "Shoe",
+            color: 1,
+            gender: 4,
+            brand: 2,
+            categories: 3,
+            price: 50,
+            description: "desc",
+            sizes: [8],
+            userID: 5,
+          }),
+          imageFiles: [],
+          existentImages: [10],
+          imagesToDelete: [11],
+        })
+      );
     });
   });
 
   test("edit mode: shows toast on update failure", async () => {
     updateMutateAsync.mockRejectedValueOnce(new Error("fail update"));
 
-    const onSuccess = jest.fn();
-
-    render(
+    renderWithProviders(
       <EditProductForm
         session={session}
         brandOptions={[{ value: 2, label: "ACME" }]}
