@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import SkeletonPagination from "@/components/SkeletonPagination";
+import SkeletonPagination from "@/components/skeletons/SkeletonPagination";
 
 describe("SkeletonPagination", () => {
   it("renders 5 skeleton items", () => {

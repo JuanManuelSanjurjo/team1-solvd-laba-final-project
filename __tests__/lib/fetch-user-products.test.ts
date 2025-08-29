@@ -1,4 +1,4 @@
-import { fetchUserProducts } from "@/lib/fetch-user-products";
+import { fetchUserProducts } from "@/lib/actions/fetch-user-products";
 
 describe("fetchUserProducts", () => {
   const userId = 1;
