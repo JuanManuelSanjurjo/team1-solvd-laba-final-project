@@ -71,7 +71,6 @@ const HistoryOrderAccordion = ({
             minHeight: "unset",
           },
         },
-        // Styling when NOT expanded (collapsed)
         "&:not(.Mui-expanded)": {
           borderRadius: 0,
         },
@@ -106,7 +105,7 @@ const HistoryOrderAccordion = ({
           fontSize: { xs: "12px", sm: "14px" },
         }}
       >
-        <Box // box delivery contacts and payment
+        <Box
           sx={{
             display: "flex",
             flexWrap: "wrap",
@@ -130,7 +129,7 @@ const HistoryOrderAccordion = ({
             },
           }}
         >
-          <Box //delivery box
+          <Box
             sx={{
               flexShrink: 0,
               textAlign: {
@@ -154,7 +153,7 @@ const HistoryOrderAccordion = ({
             </Typography>
           </Box>
 
-          <Box //contacts box
+          <Box
             sx={{
               flexShrink: 0,
               minWidth: { xs: "100%", sm: "120px", md: "unset" },
@@ -211,7 +210,7 @@ const HistoryOrderAccordion = ({
           </Box>
         </Box>
         {products.map((product, index) => (
-          <Box //box productcard quantity an price row2
+          <Box
             key={index}
             sx={{
               display: "grid",
@@ -229,7 +228,7 @@ const HistoryOrderAccordion = ({
               },
             }}
           >
-            <Box // box product card
+            <Box
               sx={{
                 justifySelf: {
                   xs: "center",
@@ -244,7 +243,7 @@ const HistoryOrderAccordion = ({
               <ProductCard {...product} />
             </Box>
 
-            <Typography //quantity
+            <Typography
               variant="cartText"
               sx={{
                 color: theme.palette.cartTextColor.secondary,
@@ -266,7 +265,7 @@ const HistoryOrderAccordion = ({
               </Typography>
             </Typography>
 
-            <Typography //price
+            <Typography
               variant="cartText"
               sx={{
                 color: theme.palette.cartTextColor.secondary,
@@ -285,7 +284,7 @@ const HistoryOrderAccordion = ({
             </Typography>
           </Box>
         ))}
-        <Box // box pdf invoice discount
+        <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "column", sm: "row", md: "row" },

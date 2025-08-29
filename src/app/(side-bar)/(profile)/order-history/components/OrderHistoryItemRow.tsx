@@ -40,7 +40,7 @@ function OrderHistoryItemRow({
   const theme = useTheme();
 
   return (
-    <Box //main box
+    <Box
       sx={{
         display: "grid",
         width: "100%",
@@ -54,7 +54,7 @@ function OrderHistoryItemRow({
         alignItems: { xs: "flex-start", sm: "center" },
       }}
     >
-      <Box // OrderDate. Products and summary box
+      <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
@@ -67,7 +67,7 @@ function OrderHistoryItemRow({
           gap: { xs: 1, sm: 2 },
         }}
       >
-        <Box // box for order number-date
+        <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "column", sm: "row" },
@@ -101,7 +101,7 @@ function OrderHistoryItemRow({
           </Typography>
         </Box>
 
-        <Box //box product count
+        <Box
           sx={{
             display: { xs: "none", sm: "flex" },
             flexDirection: "column",
@@ -129,7 +129,7 @@ function OrderHistoryItemRow({
           </Typography>
         </Box>
 
-        <Box //box total
+        <Box
           sx={{
             display: { xs: "none", sm: "flex" },
             flexDirection: "column",
@@ -159,7 +159,7 @@ function OrderHistoryItemRow({
         </Box>
       </Box>
 
-      <Box //box order status
+      <Box
         sx={{
           display: "flex",
           flexDirection: "column",
