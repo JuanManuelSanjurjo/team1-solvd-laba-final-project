@@ -8,16 +8,15 @@ import { Session } from "next-auth";
 import { useToastStore } from "@/store/toastStore";
 
 /**
- * useUpdateProduct
+ * Hook: useUpdateProduct
  *
- * This hook handles the update of a product.
- * It allows users to update the product details, images, and delete existing images.
+ * Handles updating a product. Uploads newly added images, composes the final images array (uploaded IDs + existent IDs),
+ * calls the update API, and schedules deletion of any removed images.
  *
- * @component
- *
- * @param {Session} session - The user session object
- * @returns {Mutation} The mutation object
+ * @param {Session} session - Authentication session containing a JWT in `session.user.jwt`.
+ * @returns {Mutation} A React Query mutation (call `mutate` or `mutateAsync` to run it).
  */
+
 export function useUpdateProduct(session: Session) {
   const queryClient = getQueryClient();
   const token = session?.user.jwt;

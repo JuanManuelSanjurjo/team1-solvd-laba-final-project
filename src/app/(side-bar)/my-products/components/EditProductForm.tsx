@@ -25,13 +25,19 @@ interface EditProductFormProps {
 }
 
 /**
- * EditProductForm component that renders the edit product form.
- * Includes options to upload product images, set product details, and submit the product.
+ * EditProductForm
  *
- * @component
- * @param {EditProductFormProps} props - The component props
- * @returns {JSX.Element} The rendered edit product form
+ * A form component that can either edit an existing product or duplicate it into a new product.
+ * It wires together the product form fields, an image preview/upload widget, and React Query mutations to create or update products.
+ *
+ * @param {EditProductFormProps} props - Component props.
+ * @returns {JSX.Element} The editable product form UI.
+ *
+ * @remarks
+ * - When duplicating a product (`mode === 'duplicate'`) the component attempts to convert any kept existing image URLs into `File` objects via `urlToFile` so they can be uploaded for the new product.
+ * - When editing, it computes which existing images were removed and which remain and instructs the update mutation to delete removed images after successfully updating the product.
  */
+
 export const EditProductForm: React.FC<EditProductFormProps> = ({
   session,
   brandOptions,
@@ -70,6 +76,12 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
   const { mutateAsync: handleUpdateProduct } = useUpdateProduct(session);
 
+  /**
+   * Submit handler used for both edit and duplicate flows.
+   * It gathers the user ID, determines which existing images to keep/delete, and delegates to the appropriate mutation hook.
+   *
+   * @param {ProductFormData} data - The validated form payload from react-hook-form.
+   */
   const onSubmit = async (data: ProductFormData) => {
     const userID = parseInt(session?.user.id ?? "0", 10);
 

@@ -3,16 +3,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductFormData, productSchema } from "../add-product/types";
 
 /**
- * useProductForm
+ * Hook: useProductForm
  *
- * This hook handles the form state and validation for the product form.
- * It uses the react-hook-form library with zod resolver for schema validation.
+ * Wrapper around `react-hook-form` pre-configured for the product form.
+ * It wires Zod validation and provides convenience helpers for toggling sizes.
  *
- * @component
- *
- * @param {Partial<ProductFormData>} initialDefaults - The initial default values for the form fields
- * @returns {Object} The form state and functions
+ * @param {Partial<ProductFormData>} [initialDefaults] - Optional defaults applied to the form's initial values.
+ * @returns {object} An object with `react-hook-form` helpers and convenience helpers:
+ * - `register, handleSubmit, control, setValue, getValues, setError, reset, errors`
+ * - `selectedSizes` (watched `sizes` array)
+ * - `toggleSize(size: number)` toggles inclusion of a size id in the `sizes` array
  */
+
 export function useProductForm(initialDefaults?: Partial<ProductFormData>) {
   const {
     register,

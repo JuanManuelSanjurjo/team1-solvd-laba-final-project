@@ -46,7 +46,7 @@ export default function useHeaderSearch() {
     onSuccess: (data) => {
       setIsSearching(false);
       setSearchInput("");
-      router.push(`products${data.redirectUrl}`);
+      router.replace(`products${data.redirectUrl}`);
     },
     onError: (err) => {
       console.error("Failed to generate filters:", err);

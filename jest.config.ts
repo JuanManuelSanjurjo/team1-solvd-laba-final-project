@@ -13,6 +13,15 @@ const config: Config = {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
   collectCoverage: true,
+  collectCoverageFrom: [
+    "src/*/.{js,ts,jsx,tsx}",
+    "!src/*/.d.ts",
+    "!src/**/index.{ts,tsx}",
+    "!src/style/**",
+    "!src/mocks/**",
+    "!src/types/**",
+    "!src/*.ts",
+  ],
   testMatch: [
     "<rootDir>/__tests__/**/*.{test,spec}.{js,jsx,ts,tsx}",
     "<rootDir>/src/**/__tests__/**/*.{test,spec}.{js,jsx,ts,tsx}",

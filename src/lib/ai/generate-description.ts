@@ -22,7 +22,7 @@ interface GenerateDescriptionProps {
  *
  * @async
  * @function generateDescription
- * @param {string} name - The product name for which to generate the description.
+ * @param {Object} body `{ name: string, brand: string, category: string, description: string, genre:string }`
  * @returns {Promise<GeneratedProductDescription>} The structured product description returned by the AI.
  * @throws {Error} If the API response is not OK or the JSON cannot be parsed.
  *

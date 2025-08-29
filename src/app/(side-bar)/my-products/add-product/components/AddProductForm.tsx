@@ -62,6 +62,14 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
   const previews = useImagePreviews([]);
   const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
 
+  /**
+   * Handles form submission.
+   * It gathers the user ID, determines which existing images to keep/delete, and delegates to the appropriate mutation hook.
+   *
+   * @async
+   * @param {ProductFormData} data Form data collected from user inputs.
+   * @returns {Promise<void>} Resolves when product creation is complete.
+   */
   const onSubmit = async (data: ProductFormData) => {
     const userID = parseInt(session?.user.id ?? "0", 10);
     try {

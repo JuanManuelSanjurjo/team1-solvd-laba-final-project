@@ -33,13 +33,11 @@ describe("useQueryUserProductsPaged", () => {
       { wrapper: AllTheProviders }
     );
 
-    // Because no user/token, query is disabled and returns empty arrays
     expect(result.current.products).toEqual([]);
     expect(result.current.pagination).toBeUndefined();
   });
 
   test("maps fetchProducts response into MyProduct[]", async () => {
-    // Build a fake Product item consistent with types in your code
     const fakeProduct = {
       id: 5,
       attributes: {
@@ -81,7 +79,6 @@ describe("useQueryUserProductsPaged", () => {
       { wrapper: AllTheProviders }
     );
 
-    // wait for the query to settle
     await waitFor(() => {
       expect(fetchProducts).toHaveBeenCalled();
       expect(result.current.products.length).toBe(1);

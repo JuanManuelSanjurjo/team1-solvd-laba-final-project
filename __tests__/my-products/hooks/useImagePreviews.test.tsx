@@ -1,4 +1,3 @@
-// __tests__/hooks/useImagePreviews.test.tsx
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useImagePreviews } from "@/app/(side-bar)/my-products/hooks/useImagePreviews";

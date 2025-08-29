@@ -134,7 +134,7 @@ export default function RecommendationPopup({ userId }: { userId?: string }) {
                   query.data?.redirectUrl ?? ""
                 );
               } catch {}
-              router.push(
+              router.replace(
                 query.data?.redirectUrl
                   ? `/products${query.data?.redirectUrl}`
                   : "/"

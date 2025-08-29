@@ -19,6 +19,23 @@ import { generateDescription } from "@/lib/ai/generate-description";
 import { getLabelFromOptions } from "@/lib/ai/ai-utils";
 import { useToastStore } from "@/store/toastStore";
 
+/**
+ * Props for the ProductFormFields component.
+ *
+ * @property {UseFormRegister<ProductFormData>} register - `react-hook-form` register function for wiring inputs.
+ * @property {Control<ProductFormData>} control - `react-hook-form` control object used for Controller-wrapped components.
+ * @property {FieldErrors<ProductFormData>} errors - Validation errors object from `react-hook-form`.
+ * @property {{ value: number; label: string }[]} colorOptions - Options for the color select.
+ * @property {{ value: number; label: string }[]} brandOptions - Options for the brand select.
+ * @property {{ value: number; label: number }[]} sizeOptions - Options for shoe sizes (value is id, label is display size).
+ * @property {{ value: number; label: string }[]} categoryOptions - Options for category select.
+ * @property {number[]} selectedSizes - Currently selected size ids.
+ * @property {(size: number) => void} toggleSize - Callback to toggle a size id on/off in the form.
+ * @property {UseFormGetValues<ProductFormData>} getValues - `react-hook-form` getValues helper used by the AI generation flow.
+ * @property {UseFormSetValue<ProductFormData>} setValue - `react-hook-form` setValue helper used to programmatically set the description.
+ * @property {UseFormSetError<ProductFormData>} setError - `react-hook-form` setError helper (optional) for mapping backend errors to fields.
+ */
+
 interface ProductFormFieldsProps {
   register: UseFormRegister<ProductFormData>;
   control: Control<ProductFormData>;
@@ -44,6 +61,24 @@ const CONFIDENCE_THRESHOLD = 0.6;
  * @param {ProductFormFieldsProps} props - The component props
  * @returns {JSX.Element} The rendered product form fields
  */
+/**
+ * ProductFormFields
+ *
+ * Renders the input fields for the product form and wires them to `react-hook-form`.
+ * Includes an AI-powered "Generate description" button which calls `generateDescription` and
+ * writes the returned description back into the `description` form field.
+ *
+ * The component intentionally keeps presentation logic minimal and delegates form state
+ * to the parent via `register`, `control`, `getValues`, and `setValue`.
+ *
+ * @param {ProductFormFieldsProps} props - Props (see interface for details).
+ * @returns {JSX.Element} Rendered form fields.
+ *
+ * @remarks
+ * - The AI flow will display toasts using `useToastStore` for success, low-confidence, or branding errors.
+ * - `getLabelFromOptions` is used to convert numeric select values back into human-readable labels for the AI prompt.
+ */
+
 export const ProductFormFields = ({
   register,
   control,
@@ -59,6 +94,15 @@ export const ProductFormFields = ({
 }: ProductFormFieldsProps) => {
   const [loading, setLoading] = useState(false);
 
+  /**
+   * Trigger AI generation of the product description using current form values.
+   * The flow:
+   * 1. Read current form values via `getValues()`.
+   * 2. Reset the description field while generating.
+   * 3. Call `generateDescription` with mapped labels for brand/category/color.
+   * 4. Validate `aiResponse` for branding and confidence; show toasts for problems.
+   * 5. If OK, write `aiResponse.description` into the form via `setValue("description", ...)`.
+   */
   const handleGenerate = async () => {
     const values = getValues();
     if (!values) return;
@@ -103,6 +147,7 @@ export const ProductFormFields = ({
       setLoading(false);
     }
   };
+
   return (
     <>
       <Input

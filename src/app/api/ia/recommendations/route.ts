@@ -15,15 +15,48 @@ import { validateAIResponse } from "@/lib/ai/validate-ai-response";
 type ReqBody = { ids: number[] };
 
 /**
+ * POST /api/recommendations
+ *
+ * Generates AI-powered product recommendations based on a array of viewed product IDs.
+ *
+ * @param {Request} request - The HTTP request containing `{ ids: number[] }`.
+ * @returns {Promise<NextResponse>}
+ *
+ * @example
+ * // Request
  * POST /api/ia/recommendations
+ * { "ids": [101, 205, 305, 407, 409] }
  *
- * This endpoint generates product recommendations based on a list of product IDs.
- * It requires the user to be authenticated and the product IDs to be provided in the request body.
- *
- * @component
- *
- * @param {Request} req - The request object
- * @returns {Promise<NextResponse>} The response object
+ * // Success Response
+ * 200 OK
+ *{
+ *   "redirectUrl": "/?brand=Adidas&brand=Puma&categories=Casual&color=Black&color=White&size=42&size=43&gender=Men&priceMin=40&priceMax=190",
+ *   "ai": {
+ *       "brands": [
+ *           "Adidas",
+ *           "Puma"
+ *       ],
+ *       "colors": [
+ *           "Black",
+ *           "White"
+ *       ],
+ *       "categories": [
+ *           "Casual"
+ *       ],
+ *       "sizes": [
+ *           42,
+ *           43
+ *       ],
+ *       "genders": [
+ *           "Men"
+ *       ],
+ *       "price_min": 40,
+ *       "price_max": 190,
+ *       "explain_short": "Recommendations based on your recently viewed products, focusing on similar attributes and an expanded price range.",
+ *       "searchTerm": ""
+ *   }
+ *}
+ * }
  */
 export async function POST(req: Request) {
   try {

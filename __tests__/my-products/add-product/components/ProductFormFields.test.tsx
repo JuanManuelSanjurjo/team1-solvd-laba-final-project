@@ -1,19 +1,7 @@
-/**
- * __tests__/my-products/add-product/components/ProductFormFields.test.tsx
- *
- * Full Jest + React Testing Library test file for ProductFormFields.
- * - Uses a real react-hook-form `useForm()` instance so Controller has a valid `control`.
- * - Keeps your existing mocks for small UI components, ai helpers and toast store.
- */
-
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useForm } from "react-hook-form";
 
-/**
- * Mocks for small reusable components used by ProductFormFields.
- * Keep these at top (before importing the component under test).
- */
 jest.mock("@/components/form-elements/Input", () => ({
   __esModule: true,
   default: (props: any) => (
@@ -51,7 +39,6 @@ jest.mock("@/app/products/[product-id]/components/ShoeSizeOption", () => ({
   ),
 }));
 
-// AiButton mock: exposes onGenerate handler as clickable button
 jest.mock("@/components/AiButton", () => ({
   __esModule: true,
   default: ({ onGenerate, isLoading, label }: any) => (
@@ -61,7 +48,6 @@ jest.mock("@/components/AiButton", () => ({
   ),
 }));
 
-// Mock toast store: use a singleton mock so tests can assert calls
 const toastShowMock = jest.fn();
 jest.mock("@/store/toastStore", () => ({
   useToastStore: {
@@ -69,7 +55,6 @@ jest.mock("@/store/toastStore", () => ({
   },
 }));
 
-// Mock ai helpers
 const generateDescriptionMock = jest.fn();
 jest.mock("@/lib/ai/generate-description", () => ({
   generateDescription: (...args: any[]) => generateDescriptionMock(...args),
@@ -80,13 +65,8 @@ jest.mock("@/lib/ai/ai-utils", () => ({
     options?.find((o) => o.value === value)?.label ?? "",
 }));
 
-// Now import the component under test (after mocks)
 import { ProductFormFields } from "@/app/(side-bar)/my-products/add-product/components/ProductFormFields";
 
-/**
- * Helper that renders ProductFormFields with a real react-hook-form instance.
- * Accepts overrides to allow injecting jest.fn() spies (e.g. setValue) for assertions.
- */
 const defaultOptions = {
   colorOptions: [{ value: 1, label: "Red" }],
   brandOptions: [{ value: 2, label: "ACME" }],
@@ -109,7 +89,6 @@ function renderWithForm(overrides: Partial<any> = {}) {
       },
     });
 
-    // allow test to pass spies (e.g. setValue) in overrides
     const props = {
       register: methods.register,
       control: methods.control,
@@ -182,7 +161,6 @@ describe("ProductFormFields - handleGenerate", () => {
       description: "Great shoe description",
     });
 
-    // Pass a spy so we can assert setValue was called
     const setValueSpy = jest.fn();
     renderWithForm({ setValue: setValueSpy });
 
