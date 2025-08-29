@@ -1,6 +1,17 @@
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 
+type SearchResultItemProps = {
+  product: {
+    id: number;
+    name: string;
+    gender?: string;
+    price: number;
+    image: string;
+  };
+  setIsSearching: (value: boolean) => void;
+};
+
 /**
  * SearchResultItem
  *
@@ -14,16 +25,6 @@ import Link from "next/link";
  * @returns {JSX.Element} The search result item component.
  */
 
-type SearchResultItemProps = {
-  product: {
-    id: number;
-    name: string;
-    gender?: string;
-    price: number;
-    image: string;
-  };
-  setIsSearching: (value: boolean) => void;
-};
 export default function SearchResultItem({
   product,
   setIsSearching,

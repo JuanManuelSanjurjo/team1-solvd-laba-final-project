@@ -3,6 +3,13 @@
 import React from "react";
 import { Checkbox, Typography, Box, FormControlLabel } from "@mui/material";
 
+interface FilterCheckboxProps {
+  label: string;
+  checked: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  count?: number;
+}
+
 /**
  * FilterCheckbox component renders a checkbox with a label and an optional count.
  *
@@ -28,14 +35,6 @@ import { Checkbox, Typography, Box, FormControlLabel } from "@mui/material";
  *
  * @returns {JSX.Element} The rendered checkbox with label and optional count.
  */
-
-interface FilterCheckboxProps {
-  label: string;
-  checked: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  count?: number;
-}
-
 const FilterCheckbox: React.FC<FilterCheckboxProps> = ({
   label,
   checked,

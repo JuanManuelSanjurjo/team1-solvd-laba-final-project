@@ -7,7 +7,6 @@ import SkeletonProductPage from "../../../components/skeletons/single-product/Sk
  *
  * @returns {JSX.Element} The loading component.
  */
-
 export default function Loading() {
   return <SkeletonProductPage />;
 }

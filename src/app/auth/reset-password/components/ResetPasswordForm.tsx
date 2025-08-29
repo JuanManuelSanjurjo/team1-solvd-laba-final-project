@@ -15,6 +15,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { resetPasswordSchema, ResetPasswordFormData } from "../types";
 import Toast from "@/components/Toast";
 
+/**
+ * Transforms the reset password form data into the required payload format.
+ *
+ * @function
+ * @param {ResetPasswordFormData} formData - The form data containing the password, confirm password, and reset code
+ * @returns {ResetPasswordPayload} The transformed payload object with the password, confirm password, and reset code
+ */
 export function transformResetPasswordData(
   formData: ResetPasswordFormData
 ): ResetPasswordPayload {
@@ -25,6 +32,12 @@ export function transformResetPasswordData(
   };
 }
 
+/**
+ * ResetPasswordForm component that displays the reset password form.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered reset password form component
+ */
 export default function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();

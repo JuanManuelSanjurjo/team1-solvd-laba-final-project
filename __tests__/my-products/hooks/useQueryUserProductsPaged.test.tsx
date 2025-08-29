@@ -5,9 +5,8 @@
  * We mock fetchProducts to return a paginated response and assert the hook maps items to MyProduct.
  */
 
-import React from "react";
-import { renderHook, waitFor } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { waitFor } from "@testing-library/react";
+import { renderHook, AllTheProviders } from "__tests__/utils/test-utils";
 
 jest.mock("@/lib/actions/fetch-products", () => ({
   fetchProducts: jest.fn(),
@@ -15,11 +14,6 @@ jest.mock("@/lib/actions/fetch-products", () => ({
 const { fetchProducts } = require("@/lib/actions/fetch-products");
 
 import useQueryUserProductsPaged from "@/app/(side-bar)/my-products/hooks/useQueryUserProductsPaged";
-
-const wrapper = ({ children }: any) => {
-  const qc = new QueryClient();
-  return <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-};
 
 describe("useQueryUserProductsPaged", () => {
   beforeEach(() => {
@@ -36,7 +30,7 @@ describe("useQueryUserProductsPaged", () => {
           pageSize: 16,
           searchQuery: "",
         }),
-      { wrapper }
+      { wrapper: AllTheProviders }
     );
 
     // Because no user/token, query is disabled and returns empty arrays
@@ -84,7 +78,7 @@ describe("useQueryUserProductsPaged", () => {
           pageSize: 16,
           searchQuery: "",
         }),
-      { wrapper }
+      { wrapper: AllTheProviders }
     );
 
     // wait for the query to settle

@@ -2,11 +2,28 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useToastStore } from "./toastStore";
 import type { CartItem, CartState } from "@/app/(purchase)/cart/types";
+
+/**
+ * @function
+ * @returns {CartState} - A cart state instance.
+ *
+ * @example
+ * const cartStore = useCartStore();
+ */
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       byUser: {},
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @param {CartItem} item - The cart item.
+       * @returns {void}
+       *
+       * @example
+       * useCartStore.getState().addItem(1, { id: 1, size: 1 });
+       */
       addItem: (userId, item: CartItem) => {
         const { byUser } = get();
 
@@ -47,10 +64,6 @@ export const useCartStore = create<CartState>()(
             },
           });
 
-          console.log(
-            "Added item(s) to product existing in cart",
-            currentItems
-          );
           useToastStore.getState().show({
             severity: "success",
             message: "Added item(s) to product existing in cart",
@@ -68,11 +81,17 @@ export const useCartStore = create<CartState>()(
             severity: "success",
             message: "Added item to cart",
           });
-
-          console.log("Added item to cart", currentItems);
         }
       },
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @returns {number} - The total number of items in the cart.
+       *
+       * @example
+       * const totalItems = useCartStore.getState().totalItems(1);
+       */
       totalItems: (userId) => {
         return (get().byUser[userId] ?? []).reduce(
           (sum, item) => sum + (item.quantity || 1),
@@ -80,6 +99,16 @@ export const useCartStore = create<CartState>()(
         );
       },
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @param {number} id - The product id.
+       * @param {number} size - The product size.
+       * @returns {void}
+       *
+       * @example
+       * useCartStore.getState().removeItem(1, 1, 1);
+       */
       removeItem: (userId, id, size) => {
         const { byUser } = get();
 
@@ -93,11 +122,30 @@ export const useCartStore = create<CartState>()(
         });
       },
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @returns {void}
+       *
+       * @example
+       * useCartStore.getState().clearCart(1);
+       */
       clearCart: (userId) => {
         const { byUser } = get();
         set({ byUser: { ...byUser, [userId]: [] } });
       },
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @param {number} id - The product id.
+       * @param {string} action - The action to perform.
+       * @param {number} size - The product size.
+       * @returns {void}
+       *
+       * @example
+       * useCartStore.getState().updateQuantity(1, 1, "add", 1);
+       */
       updateQuantity: (userId, id, action, size) => {
         const { byUser } = get();
         const list = byUser[userId] ?? [];
@@ -105,8 +153,6 @@ export const useCartStore = create<CartState>()(
         const updatedItems = list.map((item) => {
           //If product doesn't match id, we return it as it is
           if (item.id !== id || item.size !== size) return item;
-
-          console.log(size);
 
           let newQuantity = item.quantity || 1;
 
@@ -125,6 +171,16 @@ export const useCartStore = create<CartState>()(
         set({ byUser: { ...byUser, [userId]: updatedItems } });
       },
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @param {number} id - The product id.
+       * @param {number} size - The product size.
+       * @returns {number} - The total price of the product in the cart.
+       *
+       * @example
+       * const totalPrice = useCartStore.getState().totalOfProduct(1, 1, 1);
+       */
       totalOfProduct: (userId, id, size) => {
         //Find the item that matches the id
         const { byUser } = get();
@@ -139,6 +195,14 @@ export const useCartStore = create<CartState>()(
         return item ? item.price * (item.quantity || 1) : 0;
       },
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @returns {number} - The total price of all items in the cart.
+       *
+       * @example
+       * const totalPrice = useCartStore.getState().subtotal(1);
+       */
       subtotal: (userId) => {
         // Use totalOfProduct for each item to calculate total
         return (get().byUser[userId] ?? []).reduce(
@@ -147,11 +211,27 @@ export const useCartStore = create<CartState>()(
         );
       },
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @returns {number} - The total price of all items in the cart.
+       *
+       * @example
+       * const totalPrice = useCartStore.getState().taxes(1);
+       */
       taxes: (userId) => {
         const taxRate = 0.1; //10%
         return Math.round(get().subtotal(userId) * taxRate);
       },
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @returns {number} - The total price of all items in the cart.
+       *
+       * @example
+       * const totalPrice = useCartStore.getState().shipping(1);
+       */
       shipping: (userId) => {
         const minimumFreeShipping = 100;
         const shippingCost = 10;
@@ -160,6 +240,14 @@ export const useCartStore = create<CartState>()(
         return subtotal > minimumFreeShipping ? 0 : shippingCost;
       },
 
+      /**
+       * @function
+       * @param {number} userId - The user id.
+       * @returns {number} - The total price of all items in the cart.
+       *
+       * @example
+       * const totalPrice = useCartStore.getState().total(1);
+       */
       total: (userId) => {
         const subtotal = get().subtotal(userId);
         const taxes = get().taxes(userId);

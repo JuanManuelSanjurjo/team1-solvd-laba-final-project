@@ -9,6 +9,15 @@ export const metadata = {
   title: "Thank You",
 };
 
+/**
+ * ThankYou component that displays a thank-you message after a successful order placement.
+ * Includes a link to return to the home page.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {Promise<{ payment_intent: string }>} props.searchParams - A promise that resolves to the search parameters, including the order ID
+ * @returns {JSX.Element} The rendered thank-you page with a thank-you message and a link to return to the home page
+ */
 export default async function ThankYou({
   searchParams,
 }: {
@@ -154,7 +163,7 @@ export default async function ThankYou({
             </Button>
             <Button
               component={Link}
-              href="/"
+              href="/products"
               variant="contained"
               sx={{
                 width: { xs: "100%", md: "281px" },

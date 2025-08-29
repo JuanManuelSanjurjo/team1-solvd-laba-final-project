@@ -1,3 +1,6 @@
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const MAX = 100;
+
 /**
  * Verifies a list of product IDs against Strapi and returns only those that exist.
  *
@@ -17,10 +20,6 @@
  * // => [1, 3]
  *
  */
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-const MAX = 100;
-
 export async function fetchActiveProductsIds(ids: number[]): Promise<number[]> {
   if (!ids.length) return [];
 

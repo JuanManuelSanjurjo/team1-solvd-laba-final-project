@@ -3,6 +3,15 @@ export type GenerateFiltersResponse = {
   explain_short?: string;
 };
 
+/**
+ * @function
+ * @param {string} query - The query string to generate filters from.
+ * @returns {Promise<GenerateFiltersResponse>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * const filters = await generateFiltersFromString("red shoes");
+ * console.log(filters); // Output: { redirectUrl: "/products?color=red&category=shoes" }
+ */
 export async function generateFiltersFromString(
   query: string
 ): Promise<GenerateFiltersResponse> {

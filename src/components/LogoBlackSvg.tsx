@@ -2,6 +2,16 @@ interface LogoBlackSvgProps {
   width?: number;
   height?: number;
 }
+
+/**
+ * LogoBlackSvg component that displays the black logo.
+ *
+ * @component
+ * @param {LogoBlackSvgProps} props - Props for the component
+ * @param {number} [props.width] - Width of the logo.
+ * @param {number} [props.height] - Height of the logo.
+ * @returns {JSX.Element} The rendered logo black svg component
+ */
 export const LogoBlackSvg: React.FC<LogoBlackSvgProps> = ({
   width = 41,
   height = 31,

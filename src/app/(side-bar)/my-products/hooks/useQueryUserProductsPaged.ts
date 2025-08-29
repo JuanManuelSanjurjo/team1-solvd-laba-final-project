@@ -16,6 +16,17 @@ interface UseQueryUserProductsPagedProps {
   pageSize: number;
 }
 
+/**
+ * useQueryUserProductsPaged
+ *
+ * This hook handles the query of user products paged.
+ * It uses the react-query library to fetch the products from the server.
+ *
+ * @component
+ *
+ * @param {UseQueryUserProductsPagedProps} props - The hook props
+ * @returns {Object} The query state and functions
+ */
 export default function useQueryUserProductsPaged({
   userId,
   token,

@@ -4,6 +4,17 @@ import { auth } from "@/auth";
 import Stripe from "stripe";
 import { handleApiError } from "../normalizers/handle-api-error";
 
+/**
+ * @action
+ * @param {Object} params - Parameters for the action.
+ * @param {Stripe.Customer} params.customerId - The Stripe customer ID to associate with the user.
+ * @returns {Promise<Object>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await associateStripeCustomerToStrapi({
+ *   customerId: stripeCustomerId,
+ * });
+ */
 export default async function associateStripeCustomerToStrapi({
   customerId,
 }: {

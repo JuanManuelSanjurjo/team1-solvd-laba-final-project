@@ -1,6 +1,12 @@
 import { Box, Skeleton } from "@mui/material";
 import { JSX } from "react";
 
+/**
+ * CardSkeleton component that displays a skeleton for a product card.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered card skeleton component
+ */
 export default function CardSkeleton(): JSX.Element {
   return (
     <Box

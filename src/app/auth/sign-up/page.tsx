@@ -13,6 +13,12 @@ export const metadata: Metadata = {
   title: "Register",
 };
 
+/**
+ * SignUp component that displays the sign-up page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered sign-up page component
+ */
 export default function SignUp() {
   return (
     <MainContainer>

@@ -16,6 +16,15 @@ import {
   useCleanUpGhostProducts,
 } from "../../hooks/useCleanupGhostProducts";
 
+/**
+ * Wishlist component that displays the user's wishlist of products.
+ * Includes options to view products, add to cart, and remove from wishlist.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {Session} props.session - The user session object containing user information
+ * @returns {JSX.Element} The rendered wishlist page with the user's wishlist of products
+ */
 export default function Wishlist({ session }: { session: Session }) {
   const router = useRouter();
   const userId = session.user.id;

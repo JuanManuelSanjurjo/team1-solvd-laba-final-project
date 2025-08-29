@@ -3,7 +3,7 @@ import { JSX } from "react";
 import Link from "next/link";
 
 /**
- * MyPorductsHeader
+ * MyProductsHeader
  *
  * This component renders the header section of the My Products page.
  * It includes a title and an optional add product button.

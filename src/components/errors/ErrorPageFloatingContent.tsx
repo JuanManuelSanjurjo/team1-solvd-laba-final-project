@@ -3,6 +3,16 @@ import { Box, Typography, Button } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+/**
+ * ErrorPageFloatingContent component that displays a floating content for error pages.
+ *
+ * @component
+ * @param {Object} props - Props for the component
+ * @param {string} props.text - Text to display.
+ * @param {string} props.title - Title to display.
+ * @param {"not-found" | "error"} props.type - Type of error.
+ * @returns {JSX.Element} The rendered error page floating content component
+ */
 export default function ErrorPageFloatingContent({
   text,
   title,

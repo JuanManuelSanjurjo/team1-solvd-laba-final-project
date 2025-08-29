@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   title: "Sign In",
 };
 
+/**
+ * SignIn component that displays the sign-in page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered sign-in page component
+ */
 export default function SignIn() {
   return (
     <MainContainer>

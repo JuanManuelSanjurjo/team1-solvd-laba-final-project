@@ -17,11 +17,20 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-start",
 }));
 
+/**
+ * MobileDrawer component that displays a mobile drawer for the authenticated sidebar.
+ *
+ * @component
+ * @param {AppBarProps} props - Props for the component
+ * @param {Session | null} props.session - Session of the user.
+ * @param {boolean} props.open - Boolean that represents if the drawer is open.
+ * @param {function} props.handleToggleDrawer - Function to call when the toggle drawer button is clicked.
+ * @returns {JSX.Element} The rendered mobile drawer component
+ */
 export default function MobileDrawer({
   session,
   open,

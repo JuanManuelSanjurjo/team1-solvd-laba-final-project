@@ -6,6 +6,14 @@ import { Session } from "next-auth";
 import { getQueryClient } from "@/lib/get-query-client";
 import { useToastStore } from "@/store/toastStore";
 
+/**
+ * useCreateProduct hook that handles the creation of a new product.
+ * Includes options to upload product images, set product details, and submit the product.
+ *
+ * @hook
+ * @param {Session} session - The user session object containing user information
+ * @returns {Object} The mutation object from React Query
+ */
 export function useCreateProduct(session: Session) {
   const token = session.user.jwt;
   const queryClient = getQueryClient();

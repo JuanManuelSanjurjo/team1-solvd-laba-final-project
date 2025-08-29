@@ -2,14 +2,18 @@
 
 import { Typography, Box, Grid, Divider } from "@mui/material";
 import Input from "@/components/form-elements/Input";
-import { InputProps } from "@/types/form";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCartStore } from "@/store/cart-store";
 import CheckoutSummary from "../../components/CheckoutSummary";
 import { CartItem } from "../../cart/types";
 
-import { checkoutSchema, type CheckoutFormValues } from "../types";
+import {
+  checkoutSchema,
+  personalInfoInputs,
+  shippingInfoInputs,
+  type CheckoutFormValues,
+} from "../types";
 import {
   PaymentElement,
   useStripe,
@@ -19,129 +23,17 @@ import { useState } from "react";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
 
 /**
- * CheckoutForm component used to handle the full checkout process including:
- * - Personal and shipping information inputs
- * - Stripe payment integration via `PaymentElement`
- * - Form validation using React Hook Form and Zod
- *
- * Submits payment data to Stripe and redirects to a thank-you page on success.
+ * CheckoutForm component that handles the complete checkout process including:
+ * - Personal and shipping information collection via form inputs
+ * - Stripe payment integration using PaymentElement
+ * - Form validation with React Hook Form and Zod schema
+ * - Payment confirmation and redirect to thank-you page on success
  *
  * @component
- * @param {{ orderId: string }} props - The ID of the current order, used for the return URL after successful payment.
- * @returns {JSX.Element} A complete checkout form with payment, personal, and shipping sections.
+ * @param {Object} props - The component props
+ * @param {string} props.userId - The unique identifier for the user making the purchase
+ * @returns {JSX.Element} A complete checkout form with payment, personal, and shipping sections
  */
-
-/* Inputs */
-
-type CheckoutInputProps = Omit<InputProps, "name"> & {
-  name:
-    | "name"
-    | "surname"
-    | "email"
-    | "phone"
-    | "country"
-    | "state"
-    | "city"
-    | "email"
-    | "phone"
-    | "address"
-    | "zip";
-};
-
-const personalInfoInputs: CheckoutInputProps[] = [
-  /* Name */
-  {
-    name: "name",
-    label: "Name",
-    placeholder: "Jane",
-    required: true,
-    errorMessage: "",
-    type: "text",
-  },
-
-  /* Surname */
-  {
-    name: "surname",
-    label: "Surname",
-    placeholder: "Meldrum",
-    required: true,
-    errorMessage: "",
-    type: "text",
-  },
-
-  /* Email */
-  {
-    name: "email",
-    label: "Email",
-    placeholder: "email@email.com",
-    required: true,
-    errorMessage: "",
-    type: "email",
-  },
-
-  /* Phone Number */
-  {
-    name: "phone",
-    label: "Phone number",
-    placeholder: "(949) 456-5644",
-    required: true,
-    errorMessage: "",
-    type: "tel",
-  },
-];
-
-const shippingInfoInputs: CheckoutInputProps[] = [
-  /* Country */
-  {
-    name: "country",
-    label: "Country",
-    placeholder: "USA",
-    required: true,
-    errorMessage: "",
-    type: "text",
-  },
-
-  /* City */
-  {
-    name: "city",
-    label: "City",
-    placeholder: "New York",
-    required: true,
-    errorMessage: "",
-    type: "text",
-  },
-
-  /* State */
-  {
-    name: "state",
-    label: "State",
-    placeholder: "New York",
-    required: true,
-    errorMessage: "",
-    type: "text",
-  },
-
-  /* Zip */
-  {
-    name: "zip",
-    label: "Zip Code",
-    placeholder: "92000",
-    required: true,
-    errorMessage: "",
-    type: "text",
-  },
-
-  /* Address */
-  {
-    name: "address",
-    label: "Address",
-    placeholder: "Street, Apartment, Block",
-    required: true,
-    errorMessage: "",
-    type: "text",
-  },
-];
-
 export default function CheckoutForm({ userId }: { userId: string }) {
   const byUser = useCartStore((state) => state.byUser);
   const cartItems: CartItem[] = userId ? byUser[userId] ?? [] : [];

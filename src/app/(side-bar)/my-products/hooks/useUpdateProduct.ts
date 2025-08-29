@@ -7,6 +7,17 @@ import { getQueryClient } from "@/lib/get-query-client";
 import { Session } from "next-auth";
 import { useToastStore } from "@/store/toastStore";
 
+/**
+ * useUpdateProduct
+ *
+ * This hook handles the update of a product.
+ * It allows users to update the product details, images, and delete existing images.
+ *
+ * @component
+ *
+ * @param {Session} session - The user session object
+ * @returns {Mutation} The mutation object
+ */
 export function useUpdateProduct(session: Session) {
   const queryClient = getQueryClient();
   const token = session?.user.jwt;

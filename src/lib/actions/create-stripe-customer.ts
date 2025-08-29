@@ -5,6 +5,17 @@ import { getStripe } from "../get-stripe";
 import associateStripeCustomerToStrapi from "./associate-stripe-customer-to-strapi";
 import Stripe from "stripe";
 
+/**
+ * @action
+ * @param {Object} params - Parameters for the action.
+ * @param {string} params.email - The email address of the user.
+ * @returns {Promise<Object>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await createStripeCustomer({
+ *   email: "user@example.com",
+ * });
+ */
 export default async function createStripeCustomer({
   email,
 }: {

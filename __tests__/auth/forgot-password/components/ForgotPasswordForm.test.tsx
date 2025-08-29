@@ -1,7 +1,5 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "../../../utils/test-utils";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import forgotPassword, {
   ForgotPasswordResponse,
 } from "@/lib/actions/forgot-password";
@@ -13,27 +11,13 @@ const mockforgotPassword = forgotPassword as jest.MockedFunction<
   typeof forgotPassword
 >;
 
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-};
-
 describe("ForgotPasswordForm Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it("renders form elements correctly", () => {
-    const Wrapper = createWrapper();
-    render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ForgotPasswordForm />);
 
     expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
     expect(
@@ -42,8 +26,7 @@ describe("ForgotPasswordForm Component", () => {
   });
 
   it("shows validation error for invalid email", async () => {
-    const Wrapper = createWrapper();
-    render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ForgotPasswordForm />);
 
     const emailInput = screen.getByLabelText(/e-mail/i);
     const submitButton = screen.getByRole("button", {
@@ -62,8 +45,7 @@ describe("ForgotPasswordForm Component", () => {
   it("submits form with valid email", async () => {
     mockforgotPassword.mockResolvedValueOnce(authMocks.success);
 
-    const Wrapper = createWrapper();
-    render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ForgotPasswordForm />);
 
     const emailInput = screen.getByLabelText(/e-mail/i);
     const submitButton = screen.getByRole("button", {
@@ -83,8 +65,7 @@ describe("ForgotPasswordForm Component", () => {
   it("shows success message on successful submission", async () => {
     mockforgotPassword.mockResolvedValueOnce(authMocks.success);
 
-    const Wrapper = createWrapper();
-    render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ForgotPasswordForm />);
 
     const emailInput = screen.getByLabelText(/e-mail/i);
     const submitButton = screen.getByRole("button", {
@@ -103,8 +84,7 @@ describe("ForgotPasswordForm Component", () => {
     const errorMessage = "Network error";
     mockforgotPassword.mockRejectedValueOnce(new Error(errorMessage));
 
-    const Wrapper = createWrapper();
-    render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ForgotPasswordForm />);
 
     const emailInput = screen.getByLabelText(/e-mail/i);
     const submitButton = screen.getByRole("button", {
@@ -130,8 +110,7 @@ describe("ForgotPasswordForm Component", () => {
 
     mockforgotPassword.mockReturnValueOnce(pendingPromise);
 
-    const Wrapper = createWrapper();
-    render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ForgotPasswordForm />);
 
     const emailInput = screen.getByLabelText(/e-mail/i);
     const submitButton = screen.getByRole("button", {
@@ -154,8 +133,7 @@ describe("ForgotPasswordForm Component", () => {
   it("closes snackbar when close button is clicked", async () => {
     mockforgotPassword.mockResolvedValueOnce(authMocks.success);
 
-    const Wrapper = createWrapper();
-    render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ForgotPasswordForm />);
 
     const emailInput = screen.getByLabelText(/e-mail/i);
     const submitButton = screen.getByRole("button", {
@@ -182,8 +160,7 @@ describe("ForgotPasswordForm Component", () => {
   it("properly handles clickaway events", async () => {
     mockforgotPassword.mockResolvedValueOnce(authMocks.success);
 
-    const Wrapper = createWrapper();
-    render(<ForgotPasswordForm />, { wrapper: Wrapper } as any);
+    render(<ForgotPasswordForm />);
 
     const emailInput = screen.getByLabelText(/e-mail/i);
     const submitButton = screen.getByRole("button", {

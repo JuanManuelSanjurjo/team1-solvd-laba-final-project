@@ -13,7 +13,6 @@ import { auth } from "@/auth";
  * @returns {JSX.Element} A banner with a profile picture and name.
  */
 export default async function BannerProfileCard() {
-  const profilePic = "www.coolavatarbystrapi.com/images/upload/1.jpg";
   const session = await auth();
 
   return (
@@ -29,7 +28,7 @@ export default async function BannerProfileCard() {
       }}
     >
       <ProfilePicture
-        src={session?.user.avatar?.url || profilePic}
+        src={session?.user.avatar?.url || ""}
         alt="User avatar"
         width={112}
         border={true}

@@ -10,6 +10,12 @@ export const metadata = {
   title: "Products",
 };
 
+/**
+ * ProductsPage component that displays the products page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered products page component
+ */
 export default async function ProductsPage() {
   const session = await auth();
 

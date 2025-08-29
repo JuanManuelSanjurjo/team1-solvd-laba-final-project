@@ -18,6 +18,15 @@ import {
 } from "../types";
 import { useRouter } from "next/navigation";
 
+/**
+ * UpdateProfileForm component that allows users to update their profile information.
+ * Includes options to update username, first name, last name, email, and phone number.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {Session} props.session - The user session object containing user information
+ * @returns {JSX.Element} The rendered update profile form with the user's profile information
+ */
 export default function UpdateProfileForm({
   session,
 }: {

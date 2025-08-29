@@ -3,6 +3,12 @@ import { JSX } from "react";
 import ErrorPageFloatingContent from "@/components/errors/ErrorPageFloatingContent";
 import { Box } from "@mui/material";
 
+/**
+ * Error component that displays the error page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered error page component
+ */
 export default function Error(): JSX.Element {
   const text =
     "We couldn't find the page you were looking for. Try going back or search for other products.";

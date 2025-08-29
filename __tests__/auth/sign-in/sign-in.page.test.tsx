@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "../../utils/test-utils";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignInPage from "@/app/auth/sign-in/page";
 
 jest.mock("@/app/auth/sign-in/components/SignInForm", () => {
@@ -78,19 +77,6 @@ jest.mock("@/app/auth/components/AuthLogo", () => {
   };
 });
 
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-};
-
 describe("Sign In Page", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -98,8 +84,7 @@ describe("Sign In Page", () => {
 
   describe("Page Structure", () => {
     it("renders all main page components", () => {
-      const Wrapper = createWrapper();
-      render(<SignInPage />, { wrapper: Wrapper } as any);
+      render(<SignInPage />);
 
       expect(screen.getByTestId("main-container")).toBeInTheDocument();
       expect(screen.getByTestId("auth-logo")).toBeInTheDocument();
@@ -110,16 +95,14 @@ describe("Sign In Page", () => {
     });
 
     it("displays sign up link with correct text", () => {
-      const Wrapper = createWrapper();
-      render(<SignInPage />, { wrapper: Wrapper } as any);
+      render(<SignInPage />);
 
       expect(screen.getByText(/Don.t have an account/)).toBeInTheDocument();
       expect(screen.getByText("Sign up")).toBeInTheDocument();
     });
 
     it("renders aside image with correct props", () => {
-      const Wrapper = createWrapper();
-      render(<SignInPage />, { wrapper: Wrapper } as any);
+      render(<SignInPage />);
 
       const asideImage = screen.getByTestId("aside-image");
       expect(asideImage).toHaveAttribute(
@@ -132,8 +115,7 @@ describe("Sign In Page", () => {
 
   describe("Navigation", () => {
     it("has correct link to sign up page", () => {
-      const Wrapper = createWrapper();
-      render(<SignInPage />, { wrapper: Wrapper } as any);
+      render(<SignInPage />);
 
       const signUpLink = screen.getByTestId("link");
       expect(signUpLink).toHaveAttribute("href", "/auth/sign-up");

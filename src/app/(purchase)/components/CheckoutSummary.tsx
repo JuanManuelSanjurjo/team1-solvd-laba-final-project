@@ -1,9 +1,15 @@
 "use client";
 import { Box, Typography } from "@mui/material";
 import PromocodeAccordion from "./PromocodeAccordion";
-// Update the import path if Button is located elsewhere, for example:
 import Button from "@/components/Button";
 import { useCartStore } from "@/store/cart-store";
+
+type checkoutSummary = {
+  buttonText: string;
+  buttonAction(): void;
+  userId: string;
+  disabled: boolean;
+};
 
 /**
  * A reusable summary component used in both the checkout and the cart pages.
@@ -22,13 +28,6 @@ import { useCartStore } from "@/store/cart-store";
  *   buttonAction={() => console.log("Order placed")}
  * />
  */
-
-type checkoutSummary = {
-  buttonText: string;
-  buttonAction(): void;
-  userId: string;
-  disabled: boolean;
-};
 
 const CheckoutSummary = ({
   buttonText,

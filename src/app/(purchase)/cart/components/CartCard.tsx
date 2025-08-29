@@ -25,14 +25,16 @@ type CartCardProps = {
  * Shows product image, title, gender, price, quantity controls, and a delete button.
  *
  * @component
- * @param {number} quantity - Current quantity of the product.
- * @param {string} productTitle - Title or name of the product.
- * @param {string} gender - Gender category of the product (e.g., "Men", "Women").
- * @param {string} image - URL of the product image.
- *
- * @returns {JSX.Element} The rendered cart item card.
+ * @param {CartCardProps} props - The component props
+ * @param {number} props.id - Unique identifier for the product
+ * @param {number} props.quantity - Current quantity of the product in cart
+ * @param {string} props.productTitle - Title or name of the product
+ * @param {string} props.gender - Gender category of the product (e.g., "Men", "Women")
+ * @param {string | undefined} props.image - URL of the product image
+ * @param {string} props.userId - The unique identifier for the user
+ * @param {number} props.size - Size of the product
+ * @returns {JSX.Element} The rendered cart item card
  */
-
 const CartCard = ({
   id,
   quantity,

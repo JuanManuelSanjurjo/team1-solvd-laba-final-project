@@ -11,6 +11,12 @@ import { useMutation } from "@tanstack/react-query";
 import { signUpSchema, SignUpFormData, SignUpResponse } from "../types";
 import Toast from "@/components/Toast";
 
+/**
+ * SignUpForm component that displays the sign-up form.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered sign-up form component
+ */
 export default function SignUpForm() {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastContent, setToastContent] = useState({

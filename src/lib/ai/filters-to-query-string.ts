@@ -1,5 +1,22 @@
 import { ProductFilters } from "../get-filters-from-search-params";
 
+/**
+ * @function
+ * @param {Partial<ProductFilters>} filters - The filters object.
+ * @returns {string} - The query string.
+ *
+ * @example
+ * const queryString = filtersToQueryString({
+ *   searchTerm: "Search Term",
+ *   brands: ["Brand1", "Brand2"],
+ *   categories: ["Category1", "Category2"],
+ *   colors: ["Red", "Blue"],
+ *   sizes: [40, 42],
+ *   genders: ["Men", "Women"],
+ *   priceMin: 100,
+ *   priceMax: 200,
+ * });
+ */
 export function filtersToQueryString(filters: Partial<ProductFilters>) {
   const params = new URLSearchParams();
 

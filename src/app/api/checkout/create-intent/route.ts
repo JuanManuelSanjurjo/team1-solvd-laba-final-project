@@ -13,6 +13,17 @@ interface CreatePaymentIntentRequest {
   }[];
 }
 
+/**
+ * POST /api/checkout/create-intent
+ *
+ * This endpoint creates a payment intent for the user.
+ * It requires the user to be authenticated and the amount, items, and customer to be provided in the request body.
+ *
+ * @component
+ *
+ * @param {Request} req - The request object
+ * @returns {Promise<NextResponse>} The response object
+ */
 export async function POST(req: Request) {
   const stripe = getStripe();
 

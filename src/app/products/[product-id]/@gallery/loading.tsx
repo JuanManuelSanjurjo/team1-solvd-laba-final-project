@@ -7,7 +7,6 @@ import SkeletonGallery from "../../../../components/skeletons/single-product/Ske
  *
  * @returns {JSX.Element} The loading component.
  */
-
 export default function Loading() {
   return <SkeletonGallery />;
 }

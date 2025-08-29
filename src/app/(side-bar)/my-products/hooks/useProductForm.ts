@@ -2,6 +2,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductFormData, productSchema } from "../add-product/types";
 
+/**
+ * useProductForm
+ *
+ * This hook handles the form state and validation for the product form.
+ * It uses the react-hook-form library with zod resolver for schema validation.
+ *
+ * @component
+ *
+ * @param {Partial<ProductFormData>} initialDefaults - The initial default values for the form fields
+ * @returns {Object} The form state and functions
+ */
 export function useProductForm(initialDefaults?: Partial<ProductFormData>) {
   const {
     register,

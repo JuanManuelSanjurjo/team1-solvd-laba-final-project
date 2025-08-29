@@ -13,6 +13,12 @@ import cardProduct from "@/components/cards/actions/types";
 import { useState } from "react";
 import { useCartStore } from "@/store/cart-store";
 
+/**
+ * ProductPageDetails component that displays the product details page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered product details page component
+ */
 export default function ProductPageDetails({
   product,
   session,
@@ -32,14 +38,14 @@ export default function ProductPageDetails({
       price: product.price,
       gender: product.gender,
     }),
-    [product.id, productImageUrl, product.name, product.price, product.gender],
+    [product.id, productImageUrl, product.name, product.price, product.gender]
   );
 
   const isLoggedIn = Boolean(session?.user?.email);
   const userId = session?.user?.id ? String(session.user.id) : undefined;
 
   const addToRecentlyViewed = useRecentlyViewedStore(
-    (state) => state.addToRecentlyViewed,
+    (state) => state.addToRecentlyViewed
   );
 
   useEffect(() => {
@@ -50,7 +56,7 @@ export default function ProductPageDetails({
 
   const toggleSize = (size: number) => {
     setSelectedSizes((prev) =>
-      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size],
+      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
     );
   };
   const addItem = useCartStore((state) => state.addItem);

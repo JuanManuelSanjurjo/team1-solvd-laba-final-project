@@ -1,5 +1,4 @@
 import "@testing-library/jest-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import signUp from "@/lib/actions/sign-up";
 import SignUpForm from "@/app/auth/sign-up/components/SignUpForm";
 import {
@@ -15,29 +14,10 @@ import authMocks from "__tests__/mocks/auth";
 jest.mock("@/lib/actions/sign-up");
 const mockSignUp = signUp as jest.MockedFunction<typeof signUp>;
 
-const MOCK_USER_RESPONSE = {
-  id: 1,
-  username: "testuser",
-  email: "test@example.com",
-};
-
 const VALID_FORM_DATA = {
   username: "testuser",
   email: "test@example.com",
   password: "password123",
-};
-
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
 };
 
 const fillValidFormData = async () => {
@@ -62,8 +42,7 @@ describe("SignUpForm Component", () => {
 
   describe("Render", () => {
     it("renders all form elements correctly", () => {
-      const Wrapper = createWrapper();
-      render(<SignUpForm />, { wrapper: Wrapper } as any);
+      render(<SignUpForm />);
 
       expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
@@ -73,8 +52,7 @@ describe("SignUpForm Component", () => {
     });
 
     it("renders submit button with correct text", () => {
-      const Wrapper = createWrapper();
-      render(<SignUpForm />, { wrapper: Wrapper } as any);
+      render(<SignUpForm />);
 
       const submitButton = screen.getByTestId("sign-up-button");
       expect(submitButton).toHaveTextContent("Sign Up");
@@ -84,8 +62,7 @@ describe("SignUpForm Component", () => {
 
   describe("Behavior", () => {
     it("shows validation errors for invalid inputs", async () => {
-      const Wrapper = createWrapper();
-      render(<SignUpForm />, { wrapper: Wrapper } as any);
+      render(<SignUpForm />);
 
       const submitButton = screen.getByTestId("sign-up-button");
 
@@ -122,8 +99,7 @@ describe("SignUpForm Component", () => {
     });
 
     it("shows validation error for username with spaces", async () => {
-      const Wrapper = createWrapper();
-      render(<SignUpForm />, { wrapper: Wrapper } as any);
+      render(<SignUpForm />);
 
       const submitButton = screen.getByTestId("sign-up-button");
 
@@ -145,8 +121,7 @@ describe("SignUpForm Component", () => {
     it("submits form with valid data", async () => {
       mockSignUp.mockResolvedValueOnce(authMocks.success);
 
-      const Wrapper = createWrapper();
-      render(<SignUpForm />, { wrapper: Wrapper } as any);
+      render(<SignUpForm />);
 
       const submitButton = screen.getByTestId("sign-up-button");
 
@@ -163,8 +138,7 @@ describe("SignUpForm Component", () => {
     it("shows success message on successful submission", async () => {
       mockSignUp.mockResolvedValueOnce(authMocks.success);
 
-      const Wrapper = createWrapper();
-      render(<SignUpForm />, { wrapper: Wrapper } as any);
+      render(<SignUpForm />);
 
       await act(async () => {
         await fillValidFormData();
@@ -180,8 +154,7 @@ describe("SignUpForm Component", () => {
       const errorMessage = "Email already exists";
       mockSignUp.mockRejectedValueOnce(new Error(errorMessage));
 
-      const Wrapper = createWrapper();
-      render(<SignUpForm />, { wrapper: Wrapper } as any);
+      render(<SignUpForm />);
 
       await act(async () => {
         await fillValidFormData();
@@ -204,8 +177,7 @@ describe("SignUpForm Component", () => {
 
       mockSignUp.mockReturnValueOnce(pendingPromise);
 
-      const Wrapper = createWrapper();
-      render(<SignUpForm />, { wrapper: Wrapper } as any);
+      render(<SignUpForm />);
 
       const submitButton = screen.getByTestId("sign-up-button");
 
@@ -230,8 +202,7 @@ describe("SignUpForm Component", () => {
     it("closes snackbar when close button is clicked", async () => {
       mockSignUp.mockResolvedValueOnce(authMocks.success);
 
-      const Wrapper = createWrapper();
-      render(<SignUpForm />, { wrapper: Wrapper } as any);
+      render(<SignUpForm />);
 
       await act(async () => {
         await fillValidFormData();

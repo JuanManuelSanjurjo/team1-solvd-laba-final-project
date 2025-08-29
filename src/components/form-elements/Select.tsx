@@ -26,6 +26,18 @@ type SelectProps = {
   options: Option[];
 } & MuiSelectProps;
 
+/**
+ * Select component that displays a select element.
+ *
+ * @component
+ * @param {SelectProps} props - Props for the component
+ * @param {string} props.name - Name of the select element.
+ * @param {string} props.label - Label of the select element.
+ * @param {boolean} props.required - Boolean that represents if the select element is required.
+ * @param {string} props.placeholder - Placeholder of the select element.
+ * @param {Option[]} props.options - Options of the select element.
+ * @returns {JSX.Element} The rendered select component
+ */
 export default function Select({
   options,
   label,

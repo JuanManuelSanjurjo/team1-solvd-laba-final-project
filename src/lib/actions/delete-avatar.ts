@@ -8,6 +8,14 @@ export interface DeleteAvatarResponse {
   message: string;
 }
 
+/**
+ * @action
+ * @param {string} avatarId - The ID of the avatar to delete.
+ * @returns {Promise<DeleteAvatarResponse | void>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await deleteAvatar(avatarId);
+ */
 export const deleteAvatar = async (
   avatarId: string | null
 ): Promise<DeleteAvatarResponse | void> => {

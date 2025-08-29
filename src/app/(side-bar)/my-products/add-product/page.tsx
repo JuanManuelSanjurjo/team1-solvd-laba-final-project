@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   title: "Add new product",
 };
 
+/**
+ * AddProduct component that renders the add product page.
+ * Includes options to upload product images, set product details, and submit the product.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered add product page
+ */
 export default async function AddProduct() {
   const session = await auth();
 

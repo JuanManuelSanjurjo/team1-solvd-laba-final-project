@@ -7,6 +7,19 @@ import {
 } from "@/app/auth/sign-up/types";
 import { handleApiError } from "@/lib/normalizers/handle-api-error";
 
+/**
+ * @action
+ * @param {SignUpPayload} body - The payload for sign-up.
+ * @returns {Promise<SignUpResponse>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await signUp({
+ *   username: "user123",
+ *   email: "user@example.com",
+ *   password: "password123",
+ *   passwordConfirmation: "password123",
+ * });
+ */
 export default async function signUp(
   body: SignUpPayload
 ): Promise<SignUpResponse> {

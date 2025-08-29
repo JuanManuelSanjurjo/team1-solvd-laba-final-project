@@ -13,6 +13,12 @@ import signInAction from "@/lib/actions/sign-in";
 import { signInSchema, SignInFormData, SignInResponse } from "../types";
 import Toast from "@/components/Toast";
 
+/**
+ * SignInForm component that displays the sign-in form.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered sign-in form component
+ */
 export default function SignInForm() {
   const router = useRouter();
   const [toastOpen, setToastOpen] = useState(false);

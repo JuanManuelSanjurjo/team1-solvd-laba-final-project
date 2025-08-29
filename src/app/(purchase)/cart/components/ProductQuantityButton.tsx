@@ -10,10 +10,9 @@ import { Add, Minus } from "iconsax-react";
  * Displays either an add or minus icon depending on the operation.
  *
  * @component
- * @param {"Add" | "Minus"} operation - Determines which icon and background color to use.
- * 
- * @param {IconButtonProps} props - Additional props passed to the MUI IconButton component.
- * @returns {JSX.Element} A styled icon button.
+ * @param {ProductQuantityButtonProps} props - The component props
+ * @param {"Add" | "Minus"} props.operation - Determines which icon and background color to use
+ * @returns {JSX.Element} A styled icon button for quantity adjustment
  */
 
 type ProductQuantityButtonProps = {

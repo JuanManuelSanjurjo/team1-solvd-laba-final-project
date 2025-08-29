@@ -24,6 +24,14 @@ interface EditProductFormProps {
   onSuccess: () => void;
 }
 
+/**
+ * EditProductForm component that renders the edit product form.
+ * Includes options to upload product images, set product details, and submit the product.
+ *
+ * @component
+ * @param {EditProductFormProps} props - The component props
+ * @returns {JSX.Element} The rendered edit product form
+ */
 export const EditProductForm: React.FC<EditProductFormProps> = ({
   session,
   brandOptions,

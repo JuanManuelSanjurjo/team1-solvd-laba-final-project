@@ -8,6 +8,16 @@ export interface ForgotPasswordResponse {
   message: string;
 }
 
+/**
+ * @action
+ * @param {ForgotPasswordFormData} body - The form data for password recovery.
+ * @returns {Promise<ForgotPasswordResponse>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await forgotPassword({
+ *   email: "user@example.com",
+ * });
+ */
 export default async function forgotPassword(
   body: ForgotPasswordFormData
 ): Promise<ForgotPasswordResponse> {

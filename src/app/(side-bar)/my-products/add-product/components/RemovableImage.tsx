@@ -22,7 +22,6 @@ type CardProps = {
  * @param overlayAction - Action to show in the center overlay .
  * @returns {JSX.Element}
  */
-
 export default function RemovableImage({
   product,
   image,

@@ -10,6 +10,17 @@ import { filtersToQueryString } from "@/lib/ai/filters-to-query-string";
 import { aiLabelsToFilters } from "@/lib/ai/ai-labels-to-filters";
 import { validateAIResponse } from "@/lib/ai/validate-ai-response";
 
+/**
+ * POST /api/ia/generate-filters-from-string
+ *
+ * This endpoint generates filters from a natural language string.
+ * It requires the user to be authenticated and the base prompt to be provided in the request body.
+ *
+ * @component
+ *
+ * @param {Request} req - The request object
+ * @returns {Promise<NextResponse>} The response object
+ */
 export async function POST(req: Request) {
   try {
     const basePrompt = await req.json();

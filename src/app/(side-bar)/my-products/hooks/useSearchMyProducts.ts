@@ -2,6 +2,16 @@
 import { useCallback, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+/**
+ * useSearchMyProducts
+ *
+ * This hook handles the search functionality for the My Products page.
+ * It allows users to search for products by name or description.
+ *
+ * @component
+ *
+ * @returns {Object} The search state and functions
+ */
 export default function useSearchMyProducts() {
   const router = useRouter();
   const searchParams = useSearchParams();

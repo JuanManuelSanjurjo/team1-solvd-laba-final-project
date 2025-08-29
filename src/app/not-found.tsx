@@ -3,6 +3,12 @@ import { Box } from "@mui/material";
 import { JSX } from "react";
 import ErrorPageFloatingContent from "@/components/errors/ErrorPageFloatingContent";
 
+/**
+ * NotFound component that displays the not found page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered not found page component
+ */
 export default function NotFound(): JSX.Element {
   const text =
     "The page you were looking for doesn't exist. Try going back or searching for other products.";

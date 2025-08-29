@@ -13,6 +13,12 @@ import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordSchema, ForgotPasswordFormData } from "../types";
 import Toast from "@/components/Toast";
 
+/**
+ * ForgotPasswordForm component that displays the forgot password form.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered forgot password form component
+ */
 export default function ForgotPasswordForm() {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastContent, setToastContent] = useState({

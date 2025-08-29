@@ -14,6 +14,14 @@ export interface AvatarUpdateResponse {
   data?: ProfilePictureApiResponse;
 }
 
+/**
+ * @action
+ * @param {FormData} formData - The form data containing the avatar file.
+ * @returns {Promise<AvatarUpdateResponse>} - A promise that resolves to an object containing the result of the operation.
+ *
+ * @example
+ * await updateAvatar(formData);
+ */
 export const updateAvatar = async (
   formData: FormData
 ): Promise<AvatarUpdateResponse> => {

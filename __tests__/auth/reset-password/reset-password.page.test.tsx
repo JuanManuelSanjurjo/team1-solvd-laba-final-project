@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "../../utils/test-utils";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import ResetPasswordPage from "@/app/auth/reset-password/page";
 import { useSearchParams } from "next/navigation";
 
@@ -41,17 +41,9 @@ describe("Reset Password Page", () => {
     } as any);
   });
 
-  const renderWithQueryClient = (component: React.ReactElement) => {
-    return render(
-      <QueryClientProvider client={queryClient}>
-        {component}
-      </QueryClientProvider>
-    );
-  };
-
   describe("Rendering", () => {
     it("renders all page elements correctly", () => {
-      renderWithQueryClient(<ResetPasswordPage />);
+      render(<ResetPasswordPage />);
 
       expect(screen.getByRole("main")).toBeInTheDocument();
 
@@ -75,7 +67,7 @@ describe("Reset Password Page", () => {
     });
 
     it("displays the logo", () => {
-      renderWithQueryClient(<ResetPasswordPage />);
+      render(<ResetPasswordPage />);
 
       expect(
         screen.getByRole("img", { name: /logo/i }) ||
@@ -88,7 +80,7 @@ describe("Reset Password Page", () => {
         get: jest.fn().mockReturnValue(null),
       } as any);
 
-      renderWithQueryClient(<ResetPasswordPage />);
+      render(<ResetPasswordPage />);
 
       expect(
         screen.getByText(
@@ -100,7 +92,7 @@ describe("Reset Password Page", () => {
 
   describe("Navigation", () => {
     it("has correct link to sign-in page", () => {
-      renderWithQueryClient(<ResetPasswordPage />);
+      render(<ResetPasswordPage />);
 
       const backToLoginLink = screen.getByRole("link", {
         name: /back to login/i,

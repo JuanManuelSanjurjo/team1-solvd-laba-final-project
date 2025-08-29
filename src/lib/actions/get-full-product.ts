@@ -1,3 +1,11 @@
+/**
+ * @action
+ * @param {string} id - The ID of the product to retrieve.
+ * @returns {Promise<Product>} - A promise that resolves to the product data.
+ *
+ * @example
+ * await getFullProduct("123");
+ */
 export async function getFullProduct(id: string) {
   try {
     const response = await fetch(
