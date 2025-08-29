@@ -12,6 +12,7 @@ import { Session } from "next-auth";
 import cardProduct from "@/components/cards/actions/types";
 import { useState } from "react";
 import { useCartStore } from "@/store/cart-store";
+import { useToastStore } from "@/store/toastStore";
 
 /**
  * ProductPageDetails component that displays the product details page.
@@ -27,6 +28,7 @@ export default function ProductPageDetails({
   session: Session | null;
 }): JSX.Element {
   const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
+  const { show } = useToastStore();
 
   const productImageUrl = product.images?.[0]?.url;
 
@@ -65,6 +67,13 @@ export default function ProductPageDetails({
     const userId = session?.user?.id ? String(session.user.id) : null;
 
     if (!userId) {
+      return;
+    }
+    if (selectedSizes.length === 0) {
+      show({
+        severity: "error",
+        message: "Please select a size before adding to cart",
+      });
       return;
     }
 
