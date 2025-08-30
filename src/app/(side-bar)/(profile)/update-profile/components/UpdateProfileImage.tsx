@@ -186,6 +186,7 @@ export default function UpdateProfileImage({
         <Box
           sx={{
             display: "flex",
+            paddingTop: { xs: "20px", md: "35px" },
             gap: {
               xs: "28px",
               md: "76px",

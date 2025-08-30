@@ -22,7 +22,7 @@ export default function ProfileHeaderTitle({
           xs: 30,
           md: 40,
         },
-        paddingBottom: "35px",
+        paddingBottom: { sx: "25px", md: "35px" },
       }}
     >
       {children}

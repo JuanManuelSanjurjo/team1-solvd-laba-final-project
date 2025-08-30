@@ -22,7 +22,7 @@ export default async function Layout({
       sx={{
         display: "flex",
         gap: 2,
-        marginBlock: { xs: 10, md: 18 },
+        marginBlock: { xs: 8, md: 18 },
         marginInline: { lg: "0 40px" },
       }}
     >
