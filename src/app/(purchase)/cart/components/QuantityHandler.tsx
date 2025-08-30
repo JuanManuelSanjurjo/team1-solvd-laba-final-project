@@ -57,6 +57,7 @@ const QuantityHandler = ({
           sx={{
             fontSize: "12px",
             display: "flex",
+            fontFamily: "--var(--font-worksans)",
             gap: "4px",
             padding: "0",
             color: "#494949",
@@ -119,9 +120,7 @@ const QuantityHandler = ({
         onClick={() => updateQuantity(userId, id, "add", size)}
         operation="Add"
       />
-      <Typography variant="h4" color="#494949">
-        Quantity
-      </Typography>
+      <Typography color="#494949">Quantity</Typography>
     </Box>
   );
 };

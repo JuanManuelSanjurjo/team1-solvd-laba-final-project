@@ -50,7 +50,7 @@ const CheckoutSummary = ({
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: { xs: "100%", lg: "400px" },
+        width: { xs: "100%", lg: "300px", xl: "400px" },
         paddingBottom: "4rem",
       }}
     >
@@ -60,10 +60,6 @@ const CheckoutSummary = ({
       >
         Summary
       </Typography>
-      {/* Promocode dropdown */}
-      <Box sx={{ marginBottom: "38px", width: { xs: "100%" } }}>
-        <PromocodeAccordion />
-      </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
