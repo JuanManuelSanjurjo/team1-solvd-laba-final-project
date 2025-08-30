@@ -129,7 +129,7 @@ const CartCard = ({
             justifyContent: "right",
           }}
         >
-          <Grid sx={{ display: "flex" }}>
+          <Grid sx={{ display: "flex", alignItems: "center" }}>
             <QuantityHandler
               quantity={quantity}
               id={id}

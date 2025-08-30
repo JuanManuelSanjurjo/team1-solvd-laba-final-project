@@ -50,7 +50,7 @@ const QuantityHandler = ({
           boxShadow: "none",
           background: "none",
           width: "fit-content",
-          marginBottom: "1rem",
+          marginBottom: "0",
         }}
       >
         <AccordionSummary
@@ -62,8 +62,16 @@ const QuantityHandler = ({
             padding: "0",
             color: "#494949",
             minHeight: "unset",
+            margin: "0 !important",
             "&.Mui-expanded": {
               minHeight: "0px",
+              margin: "0 !important",
+            },
+            "& .MuiAccordionSummary-content": {
+              margin: "0 !important",
+              "&.Mui-expanded": {
+                margin: "0 !important",
+              },
             },
           }}
           expandIcon={<ArrowDown2 size="12" color="black" />}
