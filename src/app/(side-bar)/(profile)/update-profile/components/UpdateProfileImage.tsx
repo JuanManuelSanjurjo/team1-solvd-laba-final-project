@@ -2,11 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { AlertProps, Box, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Button from "@/components/Button";
 import { useState, useRef, useEffect } from "react";
 import { ProfilePicture } from "@/components/ProfilePicture";
-import Toast from "@/components/Toast";
 import { useMutation } from "@tanstack/react-query";
 import { redirect, useRouter } from "next/navigation";
 import {
@@ -27,6 +26,7 @@ import {
   SelectedImageUrl,
   UpdateProfileImageProps,
 } from "../types";
+import { useToastStore } from "@/store/toastStore";
 
 /**
  * UpdateProfileImage component that allows users to update their profile image.
@@ -51,6 +51,28 @@ export default function UpdateProfileImage({
   const hiddenFileInputRef = useRef<HTMLInputElement>(null);
   const { update } = useSession();
 
+  const onSuccessAction = async ({
+    message,
+    refresh = true,
+  }: {
+    message: string;
+    refresh?: boolean;
+  }) => {
+    useToastStore.getState().show({
+      severity: "success",
+      message,
+    });
+
+    await update({ trigger: "update" });
+    reset();
+
+    if (refresh) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  };
+
   const {
     register,
     formState: { errors },
@@ -60,18 +82,7 @@ export default function UpdateProfileImage({
   } = useForm<AvatarFormData>({
     resolver: zodResolver(avatarSchema),
   });
-  const router = useRouter();
   const avatarFiles = watch("avatar");
-
-  const [open, setOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "" as AlertProps["severity"],
-    message: "",
-  });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const { mutate: updateAvatarMutation, isPending: isUpdating } = useMutation({
     mutationFn: async (formData: FormData) => {
@@ -85,26 +96,17 @@ export default function UpdateProfileImage({
     },
     mutationKey: ["updateAvatar"],
     onSuccess: ({ data, message }: AvatarUpdateResponse) => {
-      setToastContent({
-        severity: "success",
-        message: message,
-      });
-      setOpen(true);
-      update({ trigger: "update" });
-
       if (data) {
         setSelectedImageUrl({ id: data.id, url: data.url });
       }
 
-      reset();
-      router.refresh();
+      onSuccessAction({ message });
     },
     onError: (error: Error) => {
-      setToastContent({
+      useToastStore.getState().show({
         severity: "error",
         message: error.message || "Failed to update avatar",
       });
-      setOpen(true);
     },
   });
 
@@ -124,23 +126,14 @@ export default function UpdateProfileImage({
       if (!data) {
         return;
       }
-
-      setToastContent({
-        severity: "success",
-        message: data.message,
-      });
-
-      setOpen(true);
-      update({ trigger: "update" });
-      reset();
       setSelectedImageUrl({ id: "", url: "" });
+      onSuccessAction({ message: data.message });
     },
     onError: (error: Error) => {
-      setToastContent({
+      useToastStore.getState().show({
         severity: "error",
         message: error.message || "Failed to delete avatar",
       });
-      setOpen(true);
     },
   });
 
@@ -171,11 +164,10 @@ export default function UpdateProfileImage({
       formData.append("refId", session.user.id);
       updateAvatarMutation(formData);
     } else {
-      setToastContent({
+      useToastStore.getState().show({
         severity: "warning",
         message: "Please select an image to upload",
       });
-      setOpen(true);
     }
   };
 
@@ -184,23 +176,12 @@ export default function UpdateProfileImage({
       deleteAvatarMutation(selectedImageUrl.id);
     } else {
       setSelectedImageUrl({ id: "", url: "" });
-      reset();
-      setToastContent({
-        severity: "info",
-        message: "No avatar to delete",
-      });
-      setOpen(true);
+      onSuccessAction({ message: "No avatar to delete", refresh: false });
     }
   };
 
   return (
     <>
-      <Toast
-        open={open}
-        onClose={handleClose}
-        severity={toastContent.severity}
-        message={toastContent.message}
-      />
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <Box
           sx={{
