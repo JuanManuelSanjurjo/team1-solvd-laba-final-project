@@ -123,7 +123,6 @@ describe("CardButtonMenu Component", () => {
       ).toBeInTheDocument();
     });
 
-    // Find and click the backdrop to simulate outside click
     const backdrop = document.querySelector(".MuiBackdrop-root");
     if (backdrop) {
       fireEvent.click(backdrop);
@@ -317,7 +316,6 @@ describe("CardButtonMenu Component", () => {
     const iconButton = screen.getByRole("button");
     await user.click(iconButton);
 
-    // Test one menu item, e.g., Edit
     const editItem = await screen.findByRole("menuitem", { name: "Edit" });
     await user.click(editItem);
 

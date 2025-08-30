@@ -4,7 +4,6 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-// Create a mock Home component for testing
 const MockHome = () => {
   const [filtersOpen, setFiltersOpen] = React.useState(true);
 
@@ -26,7 +25,6 @@ const MockHome = () => {
   );
 };
 
-// Mock React
 const React = require("react");
 
 const theme = createTheme();
@@ -36,7 +34,7 @@ describe("Home Component", () => {
     render(
       <ThemeProvider theme={theme}>
         <MockHome />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(screen.getByTestId("header")).toBeInTheDocument();
@@ -49,19 +47,16 @@ describe("Home Component", () => {
     render(
       <ThemeProvider theme={theme}>
         <MockHome />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     const toggleButton = screen.getByTestId("filter-toggle");
 
-    // Initial state
     expect(toggleButton).toHaveTextContent("Hide Filters");
 
-    // Click to toggle
     fireEvent.click(toggleButton);
     expect(toggleButton).toHaveTextContent("Filters");
 
-    // Click again to toggle back
     fireEvent.click(toggleButton);
     expect(toggleButton).toHaveTextContent("Hide Filters");
   });
@@ -70,7 +65,7 @@ describe("Home Component", () => {
     render(
       <ThemeProvider theme={theme}>
         <MockHome />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(screen.getByTestId("card-container")).toBeInTheDocument();

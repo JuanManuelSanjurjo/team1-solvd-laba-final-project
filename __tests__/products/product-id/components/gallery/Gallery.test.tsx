@@ -87,7 +87,7 @@ describe("Gallery Component", () => {
     fireEvent.click(screen.getByTestId("thumbnail-1"));
 
     expect(screen.getByAltText("Image 2")).toBeInTheDocument();
-    expect(screen.queryByAltText("Image 1")).toBeInTheDocument(); // Still in DOM but hidden
+    expect(screen.queryByAltText("Image 1")).toBeInTheDocument();
   });
 
   it("cycles to the next image when next button is clicked", () => {

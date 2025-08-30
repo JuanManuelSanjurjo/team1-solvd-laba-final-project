@@ -54,7 +54,7 @@ describe("GalleryImageStack Component", () => {
     render(
       <GalleryImageStack
         images={mockImages}
-        current={1} // Second image is current
+        current={1}
         setCurrent={mockSetCurrent}
         containerRef={mockContainerRef}
         thumbnailRefs={mockThumbnailRefs}
