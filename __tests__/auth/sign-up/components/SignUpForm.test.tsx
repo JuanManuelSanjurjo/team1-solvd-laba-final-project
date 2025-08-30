@@ -7,6 +7,7 @@ import {
   screen,
   waitFor,
   act,
+  cleanup,
 } from "__tests__/utils/test-utils";
 import { SignUpResponse } from "@/app/auth/sign-up/types";
 import authMocks from "__tests__/mocks/auth";
@@ -38,12 +39,11 @@ const fillValidFormData = async () => {
 describe("SignUpForm Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    render(<SignUpForm />);
   });
 
   describe("Render", () => {
     it("renders all form elements correctly", () => {
-      render(<SignUpForm />);
-
       expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/^Password\s*\*?$/i)).toBeInTheDocument();
@@ -52,8 +52,6 @@ describe("SignUpForm Component", () => {
     });
 
     it("renders submit button with correct text", () => {
-      render(<SignUpForm />);
-
       const submitButton = screen.getByTestId("sign-up-button");
       expect(submitButton).toHaveTextContent("Sign Up");
       expect(submitButton).not.toBeDisabled();
@@ -62,8 +60,6 @@ describe("SignUpForm Component", () => {
 
   describe("Behavior", () => {
     it("shows validation errors for invalid inputs", async () => {
-      render(<SignUpForm />);
-
       const submitButton = screen.getByTestId("sign-up-button");
 
       await act(async () => {
@@ -99,8 +95,6 @@ describe("SignUpForm Component", () => {
     });
 
     it("shows validation error for username with spaces", async () => {
-      render(<SignUpForm />);
-
       const submitButton = screen.getByTestId("sign-up-button");
 
       await act(async () => {
@@ -119,6 +113,7 @@ describe("SignUpForm Component", () => {
     });
 
     it("submits form with valid data", async () => {
+      cleanup();
       mockSignUp.mockResolvedValueOnce(authMocks.success);
 
       render(<SignUpForm />);
@@ -134,12 +129,11 @@ describe("SignUpForm Component", () => {
         expect(mockSignUp).toHaveBeenCalledWith(VALID_FORM_DATA);
       });
     });
-
     it("shows success message on successful submission", async () => {
+      cleanup();
       mockSignUp.mockResolvedValueOnce(authMocks.success);
 
       render(<SignUpForm />);
-
       await act(async () => {
         await fillValidFormData();
         fireEvent.click(screen.getByTestId("sign-up-button"));
@@ -151,11 +145,11 @@ describe("SignUpForm Component", () => {
     });
 
     it("shows error message on failed submission", async () => {
+      cleanup();
       const errorMessage = "Email already exists";
       mockSignUp.mockRejectedValueOnce(new Error(errorMessage));
 
       render(<SignUpForm />);
-
       await act(async () => {
         await fillValidFormData();
         fireEvent.click(screen.getByTestId("sign-up-button"));
@@ -174,6 +168,8 @@ describe("SignUpForm Component", () => {
           return true;
         };
       });
+
+      cleanup();
 
       mockSignUp.mockReturnValueOnce(pendingPromise);
 
@@ -200,6 +196,8 @@ describe("SignUpForm Component", () => {
     });
 
     it("closes snackbar when close button is clicked", async () => {
+      cleanup();
+
       mockSignUp.mockResolvedValueOnce(authMocks.success);
 
       render(<SignUpForm />);

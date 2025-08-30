@@ -2,6 +2,7 @@ import { render, RenderOptions } from "@testing-library/react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactElement } from "react";
+import ToastHost from "@/components/ToastHost";
 
 const theme = createTheme();
 
@@ -24,6 +25,7 @@ export const AllTheProviders = ({
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <ToastHost />
     </QueryClientProvider>
   );
 };

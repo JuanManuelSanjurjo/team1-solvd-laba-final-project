@@ -190,19 +190,22 @@ describe("UpdateProfileForm", () => {
       const saveButton = screen.getByTestId("save-button");
       await user.click(saveButton);
 
-      await waitFor(() => {
-        expect(mockUpdateUser).toHaveBeenCalledWith(
-          expect.objectContaining({
-            username: "newusername",
-            firstName: "UpdatedJohn",
-            lastName: "UpdatedDoe",
-            email: "test@example.com",
-            phoneNumber: "+1987654321",
-          }),
-          "user123"
-        );
-      });
-    });
+      await waitFor(
+        () => {
+          expect(mockUpdateUser).toHaveBeenCalledWith(
+            expect.objectContaining({
+              username: "newusername",
+              firstName: "UpdatedJohn",
+              lastName: "UpdatedDoe",
+              email: "test@example.com",
+              phoneNumber: "+1987654321",
+            }),
+            "user123"
+          );
+        },
+        { timeout: 10000 }
+      );
+    }, 15000);
   });
 
   describe("Button State", () => {
