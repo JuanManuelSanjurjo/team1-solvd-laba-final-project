@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { resetPasswordSchema, ResetPasswordFormData } from "../types";
 import Toast from "@/components/Toast";
+import { useToastStore } from "@/store/toastStore";
 
 /**
  * Transforms the reset password form data into the required payload format.
@@ -86,19 +87,17 @@ export default function ResetPasswordForm() {
       return response;
     },
     onSuccess: (res: ResetPasswordResponse) => {
-      setToastContent({
+      useToastStore.getState().show({
         severity: "success",
         message: res.message,
       });
-      setToastOpen(true);
 
       setTimeout(() => {
         router.push("/auth/sign-in");
       }, 2000);
     },
     onError: (error: Error) => {
-      setToastOpen(true);
-      setToastContent({
+      useToastStore.getState().show({
         severity: "error",
         message: error.message,
       });
@@ -120,13 +119,6 @@ export default function ResetPasswordForm() {
 
   return (
     <>
-      <Toast
-        open={toastOpen}
-        onClose={handleCloseToast}
-        severity={toastContent.severity}
-        message={toastContent.message}
-        autoHideDuration={5000}
-      />
       <Box
         component="form"
         role="form"

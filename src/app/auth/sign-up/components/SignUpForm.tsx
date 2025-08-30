@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { signUpSchema, SignUpFormData, SignUpResponse } from "../types";
 import Toast from "@/components/Toast";
+import { useToastStore } from "@/store/toastStore";
 
 /**
  * SignUpForm component that displays the sign-up form.
@@ -18,16 +19,6 @@ import Toast from "@/components/Toast";
  * @returns {JSX.Element} The rendered sign-up form component
  */
 export default function SignUpForm() {
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "success" as "success" | "error",
-    message: "",
-  });
-
-  const handleCloseToast = () => {
-    setToastOpen(false);
-  };
-
   const {
     register,
     handleSubmit,
@@ -54,15 +45,13 @@ export default function SignUpForm() {
       return response;
     },
     onSuccess: (data: SignUpResponse) => {
-      setToastContent({
+      useToastStore.getState().show({
         severity: "success",
         message: data.message,
       });
-      setToastOpen(true);
     },
     onError: (error: Error) => {
-      setToastOpen(true);
-      setToastContent({
+      useToastStore.getState().show({
         severity: "error",
         message: error.message,
       });
@@ -75,13 +64,6 @@ export default function SignUpForm() {
 
   return (
     <>
-      <Toast
-        open={toastOpen}
-        onClose={handleCloseToast}
-        severity={toastContent.severity}
-        message={toastContent.message}
-        autoHideDuration={5000}
-      />
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}

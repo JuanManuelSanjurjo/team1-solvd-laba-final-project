@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import Input from "@/components/form-elements/Input";
 import Button from "@/components/Button";
@@ -11,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import signInAction from "@/lib/actions/sign-in";
 import { signInSchema, SignInFormData, SignInResponse } from "../types";
-import Toast from "@/components/Toast";
+import { useToastStore } from "@/store/toastStore";
 
 /**
  * SignInForm component that displays the sign-in form.
@@ -21,11 +20,6 @@ import Toast from "@/components/Toast";
  */
 export default function SignInForm() {
   const router = useRouter();
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "success" as "success" | "error",
-    message: "",
-  });
 
   const {
     register,
@@ -50,8 +44,7 @@ export default function SignInForm() {
       return response;
     },
     onSuccess: ({ message }: SignInResponse) => {
-      setToastOpen(true);
-      setToastContent({
+      useToastStore.getState().show({
         severity: "success",
         message: message,
       });
@@ -60,17 +53,12 @@ export default function SignInForm() {
       router.refresh();
     },
     onError: (error: Error) => {
-      setToastOpen(true);
-      setToastContent({
+      useToastStore.getState().show({
         severity: "error",
         message: error.message,
       });
     },
   });
-
-  const handleCloseToast = () => {
-    setToastOpen(false);
-  };
 
   const onSubmit = (data: SignInFormData) => {
     mutate(data);
@@ -78,13 +66,6 @@ export default function SignInForm() {
 
   return (
     <>
-      <Toast
-        open={toastOpen}
-        onClose={handleCloseToast}
-        severity={toastContent.severity}
-        message={toastContent.message}
-        autoHideDuration={5000}
-      />
       <Box
         component="form"
         role="form"

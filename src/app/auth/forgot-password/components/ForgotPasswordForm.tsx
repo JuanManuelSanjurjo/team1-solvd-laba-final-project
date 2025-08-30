@@ -8,10 +8,9 @@ import Button from "@/components/Button";
 import forgotPassword, {
   ForgotPasswordResponse,
 } from "@/lib/actions/forgot-password";
-import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordSchema, ForgotPasswordFormData } from "../types";
-import Toast from "@/components/Toast";
+import { useToastStore } from "@/store/toastStore";
 
 /**
  * ForgotPasswordForm component that displays the forgot password form.
@@ -20,16 +19,6 @@ import Toast from "@/components/Toast";
  * @returns {JSX.Element} The rendered forgot password form component
  */
 export default function ForgotPasswordForm() {
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "success" as "success" | "error",
-    message: "",
-  });
-
-  const handleCloseToast = () => {
-    setToastOpen(false);
-  };
-
   const {
     register,
     handleSubmit,
@@ -50,15 +39,13 @@ export default function ForgotPasswordForm() {
       return response;
     },
     onSuccess: ({ message }: ForgotPasswordResponse) => {
-      setToastContent({
+      useToastStore.getState().show({
         severity: "success",
         message: message,
       });
-      setToastOpen(true);
     },
     onError: (error: Error) => {
-      setToastOpen(true);
-      setToastContent({
+      useToastStore.getState().show({
         severity: "error",
         message: error.message,
       });
@@ -71,13 +58,6 @@ export default function ForgotPasswordForm() {
 
   return (
     <>
-      <Toast
-        open={toastOpen}
-        onClose={handleCloseToast}
-        severity={toastContent.severity}
-        message={toastContent.message}
-        autoHideDuration={5000}
-      />
       <Box
         component="form"
         role="form"
