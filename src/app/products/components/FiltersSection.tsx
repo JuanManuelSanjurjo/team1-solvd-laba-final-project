@@ -40,7 +40,6 @@ export const FiltersSection: React.FC<FilterSectionProps> = ({
       }}
     >
       <Accordion
-        // disable elevation + styling defaults
         TransitionProps={{ timeout: EXPAND_DELAY_MS }}
         sx={{
           boxShadow: "none",
@@ -49,33 +48,23 @@ export const FiltersSection: React.FC<FilterSectionProps> = ({
           border: "none",
           backgroundColor: "transparent",
 
-          // allow icons to render fully while height animates (prevent clipping)
           "& .MuiCollapse-root, & .MuiCollapse-wrapper, & .MuiCollapse-wrapperInner":
             {
               overflowInline: "visible",
             },
 
-          // styles for our inner content container using a class name
-          // When accordion is expanded, the selector `.Mui-expanded & .filtersInner` applies
-          // NOTE: the `.MuiAccordion-root.Mui-expanded` structure means we target the inner
-          // container via a nested selector below.
           "& .filtersInner": {
             opacity: 0,
             transform: "translateY(-6px)",
             pointerEvents: "none",
             transition: "opacity 160ms ease, transform 160ms ease",
-            // no transition-delay by default (so it hides immediately on collapse)
             transitionDelay: "0ms",
           },
 
-          // when accordion has the expanded class, we want the inner to appear,
-          // but only AFTER the Collapse (height) animation completes — so we add a delay.
-          // `.Mui-expanded` applies to the root Accordion, we then find the inner container.
           "&.Mui-expanded .filtersInner": {
             opacity: 1,
             transform: "translateY(0)",
             pointerEvents: "auto",
-            // delay must be >= Collapse timeout to avoid the inner being visible while height animates
             transitionDelay: `${EXPAND_DELAY_MS}ms`,
           },
         }}
@@ -100,11 +89,9 @@ export const FiltersSection: React.FC<FilterSectionProps> = ({
             padding: 0,
             margin: 0,
             paddingBottom: "28px",
-            // keep AccordionDetails itself visible so it doesn't clip children
             overflow: "visible",
           }}
         >
-          {/* Inner wrapper that we animate/hide via CSS above */}
           <Box className="filtersInner">{children}</Box>
         </AccordionDetails>
       </Accordion>

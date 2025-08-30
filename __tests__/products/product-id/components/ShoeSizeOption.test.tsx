@@ -59,7 +59,7 @@ describe("ShoeSizeOption", () => {
         {...defaultProps}
         disabled={true}
         onToggle={onToggleMock}
-      />
+      />,
     );
 
     const boxElement = screen.getByTestId("shoe-size-option");
@@ -71,7 +71,7 @@ describe("ShoeSizeOption", () => {
   it("uses default value of 0 when value prop is not provided", () => {
     const onToggleMock = jest.fn();
     render(
-      <ShoeSizeOption size={40} disabled={false} onToggle={onToggleMock} />
+      <ShoeSizeOption size={40} disabled={false} onToggle={onToggleMock} />,
     );
 
     const boxElement = screen.getByTestId("shoe-size-option");
@@ -81,7 +81,6 @@ describe("ShoeSizeOption", () => {
   });
 
   it("uses default onToggle function when not provided", () => {
-    // This test ensures the default function doesn't throw errors
     render(<ShoeSizeOption size={40} disabled={false} />);
 
     const boxElement = screen.getByTestId("shoe-size-option");
@@ -117,7 +116,7 @@ describe("ShoeSizeOption", () => {
   it("handles different value prop correctly", () => {
     const onToggleMock = jest.fn();
     render(
-      <ShoeSizeOption {...defaultProps} value={99} onToggle={onToggleMock} />
+      <ShoeSizeOption {...defaultProps} value={99} onToggle={onToggleMock} />,
     );
 
     const boxElement = screen.getByTestId("shoe-size-option");

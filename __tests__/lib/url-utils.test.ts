@@ -78,7 +78,7 @@ describe("url-utils", () => {
 
       await expect(urlToFile("https://example.com/img.jpg")).rejects.toThrow();
 
-      global.File = originalFile; // restore
+      global.File = originalFile;
     });
   });
 });

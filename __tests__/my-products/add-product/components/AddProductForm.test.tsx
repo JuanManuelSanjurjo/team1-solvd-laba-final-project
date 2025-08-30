@@ -1,15 +1,6 @@
-/**
- * __tests__/AddProductForm.test.tsx
- *
- * Tests AddProductForm success / failure flows.
- *
- * NOTE: adjust import paths if your files live elsewhere.
- */
-
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 
-// mocks
 const toastShowMock = jest.fn();
 jest.mock("@/store/toastStore", () => ({
   useToastStore: {
@@ -69,16 +60,14 @@ jest.mock(
   "@/app/(side-bar)/my-products/add-product/hooks/useCreateProduct",
   () => ({
     useCreateProduct: jest.fn(() => ({ mutateAsync: mutateAsyncMock })),
-  })
+  }),
 );
 
-// mock next router
 const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
 }));
 
-// import the component under test (adjust path if needed)
 import { AddProductForm } from "@/app/(side-bar)/my-products/add-product/components/AddProductForm";
 
 describe("AddProductForm", () => {
@@ -100,7 +89,6 @@ describe("AddProductForm", () => {
 
     render(<AddProductForm {...defaultProps} />);
 
-    // form has id "add-product-form" in component
     const form = document.querySelector("#add-product-form")!;
     expect(form).toBeTruthy();
 
@@ -123,7 +111,6 @@ describe("AddProductForm", () => {
 
     await waitFor(() => {
       expect(mutateAsyncMock).toHaveBeenCalled();
-      // because mutation failed we should not have navigated
       expect(pushMock).not.toHaveBeenCalled();
     });
   });
