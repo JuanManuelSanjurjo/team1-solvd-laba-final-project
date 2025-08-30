@@ -10,6 +10,9 @@ import createStripeCustomer from "@/lib/actions/create-stripe-customer";
 import { CartItem } from "../../cart/types";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
+import { IMAGE_BUCKET_URL } from "@/lib/constants/globals";
+import { useRouter } from "next/navigation";
+import { useToastStore } from "@/store/toastStore";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -27,6 +30,7 @@ const stripePromise = loadStripe(
  */
 export default function Checkout({ session }: { session: Session }) {
   const userId = session.user.id;
+  const router = useRouter();
   const [clientSecret, setClientSecret] = useState<string | undefined>(
     undefined
   );
@@ -39,6 +43,16 @@ export default function Checkout({ session }: { session: Session }) {
   const items: CartItem[] = useMemo(() => {
     return userId ? byUser[userId] ?? [] : [];
   }, [userId, byUser]);
+
+  useEffect(() => {
+    if (items.length === 0) {
+      useToastStore.getState().show({
+        severity: "warning",
+        message: "Please add items to your cart before checking out.",
+      });
+      router.push("/products");
+    }
+  }, [items.length]);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -66,9 +80,21 @@ export default function Checkout({ session }: { session: Session }) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            items,
+            itemsLength: items.length,
             amount: total,
             customer: customerId,
+            ...items.reduce((acc, item) => {
+              acc[`item-${item.id}-${item.size}`] = {
+                id: item.id,
+                image: item.image?.replace(IMAGE_BUCKET_URL, "") || "",
+                name: item.name,
+                price: item.price,
+                size: item.size,
+                gender: item.gender,
+                quantity: item.quantity,
+              };
+              return acc;
+            }, {} as Record<string, CartItem>),
           }),
         });
 

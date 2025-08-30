@@ -16,6 +16,7 @@ export function normalizeStripeStatusToOrderStatus(
     case "succeeded":
       return "succeeded";
     case "canceled":
+    case "failed":
     case "requires_payment_method":
     case "requires_confirmation":
     case "requires_action":

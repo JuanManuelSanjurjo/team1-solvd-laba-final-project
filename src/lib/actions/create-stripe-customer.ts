@@ -46,7 +46,12 @@ export default async function createStripeCustomer({
 
       return {
         error: false,
-        customer: existingCustomer,
+        customer: {
+          id: existingCustomer.id,
+          email: existingCustomer.email,
+          created: existingCustomer.created,
+          metadata: existingCustomer.metadata,
+        },
       };
     }
 
@@ -70,7 +75,12 @@ export default async function createStripeCustomer({
 
     return {
       error: false,
-      customer: customer,
+      customer: {
+        id: customer.id,
+        email: customer.email,
+        created: customer.created,
+        metadata: customer.metadata,
+      },
       isExisting: false,
     };
   } catch (error) {
