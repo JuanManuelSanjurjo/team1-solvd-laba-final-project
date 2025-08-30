@@ -7,7 +7,7 @@ import Button from "@/components/Button";
 import { useState, useRef, useEffect } from "react";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import { useMutation } from "@tanstack/react-query";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import {
   AvatarUpdateResponse,
   updateAvatar,

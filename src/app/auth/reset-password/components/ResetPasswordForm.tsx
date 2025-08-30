@@ -9,11 +9,10 @@ import resetPassword, {
   ResetPasswordPayload,
   ResetPasswordResponse,
 } from "@/lib/actions/reset-password";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { resetPasswordSchema, ResetPasswordFormData } from "../types";
-import Toast from "@/components/Toast";
 import { useToastStore } from "@/store/toastStore";
 
 /**
@@ -43,16 +42,6 @@ export default function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
-
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "success" as "success" | "error",
-    message: "",
-  });
-
-  const handleCloseToast = () => {
-    setToastOpen(false);
-  };
 
   const {
     register,

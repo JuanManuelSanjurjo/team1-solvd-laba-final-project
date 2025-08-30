@@ -6,10 +6,8 @@ import { Box } from "@mui/material";
 import Input from "@/components/form-elements/Input";
 import Button from "@/components/Button";
 import signUp from "@/lib/actions/sign-up";
-import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { signUpSchema, SignUpFormData, SignUpResponse } from "../types";
-import Toast from "@/components/Toast";
 import { useToastStore } from "@/store/toastStore";
 
 /**

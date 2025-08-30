@@ -1,6 +1,5 @@
 "use client";
 import { Box, Typography } from "@mui/material";
-import PromocodeAccordion from "./PromocodeAccordion";
 import Button from "@/components/Button";
 import { useCartStore } from "@/store/cart-store";
 
