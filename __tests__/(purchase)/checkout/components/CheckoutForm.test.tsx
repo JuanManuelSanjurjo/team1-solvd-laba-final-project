@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import CheckoutForm from "@/app/(purchase)/checkout/components/CheckoutForm";
 import { CartState } from "@/app/(purchase)/cart/types";
 import { createMockCartState } from "__tests__/(purchase)/test-utils/cartState";
@@ -9,18 +9,21 @@ import { useCartStore } from "@/store/cart-store";
 jest.mock("@/store/cart-store", () => ({
   useCartStore: jest.fn(),
 }));
+
 const mockUseCartStore = useCartStore as unknown as jest.Mock;
 
 jest.mock("@/app/(purchase)/components/CheckoutSummary", () => {
   return function MockCheckoutSummary({ buttonText }: { buttonText: string }) {
-    return <div data-testid="checkout-summary">{buttonText}</div>;
+    return (
+      <button type="submit" data-testid="checkout-button">
+        {buttonText}
+      </button>
+    );
   };
 });
 
 jest.mock("@stripe/react-stripe-js", () => ({
-  PaymentElement: ({ options }: any) => (
-    <div data-testid="payment-element">{JSON.stringify(options)}</div>
-  ),
+  PaymentElement: () => <div data-testid="payment-element">PaymentElement</div>,
   useStripe: () => null,
   useElements: () => null,
 }));
@@ -48,7 +51,7 @@ describe("CheckoutForm - render: basic and conditional", () => {
 
   it("not render CheckoutSummary if empty cart", () => {
     const mockedState: Partial<CartState> = { byUser: { user123: [] } };
-    useCartStore.mockImplementation((selector: any) =>
+    mockUseCartStore.mockImplementation((selector: any) =>
       selector(mockedState as CartState)
     );
 
@@ -73,13 +76,13 @@ describe("CheckoutForm - render: basic and conditional", () => {
         ],
       },
     };
-    useCartStore.mockImplementation((selector: any) =>
+    mockUseCartStore.mockImplementation((selector: any) =>
       selector(mockedState as CartState)
     );
 
     render(<CheckoutForm userId="user123" />);
 
-    expect(screen.getByTestId("checkout-summary")).toBeInTheDocument();
+    expect(screen.getByTestId("checkout-button")).toBeInTheDocument();
     expect(screen.getByText("Confirm & Pay")).toBeInTheDocument();
   });
 });
