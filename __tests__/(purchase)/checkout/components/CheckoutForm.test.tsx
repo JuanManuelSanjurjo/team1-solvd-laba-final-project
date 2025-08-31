@@ -2,11 +2,14 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import CheckoutForm from "@/app/(purchase)/checkout/components/CheckoutForm";
 import { CartState } from "@/app/(purchase)/cart/types";
+import { createMockCartState } from "__tests__/(purchase)/test-utils/cartState";
+import { useCartStore } from "@/store/cart-store";
 
 // Mocks
 jest.mock("@/store/cart-store", () => ({
   useCartStore: jest.fn(),
 }));
+const mockUseCartStore = useCartStore as unknown as jest.Mock;
 
 jest.mock("@/app/(purchase)/components/CheckoutSummary", () => {
   return function MockCheckoutSummary({ buttonText }: { buttonText: string }) {
@@ -22,10 +25,6 @@ jest.mock("@stripe/react-stripe-js", () => ({
   useElements: () => null,
 }));
 
-const { useCartStore } = jest.requireMock("@/store/cart-store") as {
-  useCartStore: jest.Mock;
-};
-
 //Render tests
 describe("CheckoutForm - render: basic and conditional", () => {
   beforeEach(() => {
@@ -33,9 +32,8 @@ describe("CheckoutForm - render: basic and conditional", () => {
   });
 
   it("renders titles and inputs", () => {
-    const mockedState: Partial<CartState> = { byUser: { user123: [] } };
-    useCartStore.mockImplementation((selector: any) =>
-      selector(mockedState as CartState)
+    mockUseCartStore.mockImplementation((selector: any) =>
+      selector(createMockCartState([]))
     );
 
     render(<CheckoutForm userId="user123" />);

@@ -2,6 +2,7 @@ import { render, RenderOptions } from "@testing-library/react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactElement } from "react";
+import type { Session } from "next-auth";
 
 const theme = createTheme();
 
