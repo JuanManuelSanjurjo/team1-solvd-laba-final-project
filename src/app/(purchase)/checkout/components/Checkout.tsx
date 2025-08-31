@@ -52,7 +52,7 @@ export default function Checkout({ session }: { session: Session }) {
       });
       router.push("/products");
     }
-  }, [items.length]);
+  }, [items.length, router]);
 
   useEffect(() => {
     if (items.length === 0) {
