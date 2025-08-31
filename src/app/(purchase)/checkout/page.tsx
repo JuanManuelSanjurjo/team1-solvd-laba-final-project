@@ -15,9 +15,7 @@ import { redirect } from "next/navigation";
 export default async function CheckoutPage() {
   const session = await auth();
 
-  const userId = session?.user?.id;
-
-  if (!userId) {
+  if (!session || !session.user?.id) {
     redirect("/auth/sign-in");
   }
 
