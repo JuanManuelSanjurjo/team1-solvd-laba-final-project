@@ -1,4 +1,3 @@
-"use client";
 import { Box, Typography, Divider, Skeleton } from "@mui/material";
 
 /**

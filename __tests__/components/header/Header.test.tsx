@@ -30,8 +30,17 @@ jest.mock("@mui/material", () => {
 
   const Toolbar = ({ children, ...props }: any) => {
     const { rest, resolvedSx } = pickSafeProps(props);
-    const heightValue =
+    let heightValue =
       resolvedSx.height ?? (rest && rest.sx && rest.sx.height) ?? "";
+
+    if (typeof heightValue === "object" && heightValue !== null) {
+      heightValue = heightValue.xs || "";
+    }
+
+    if (typeof heightValue === "string" && heightValue.endsWith("px")) {
+      heightValue = heightValue.replace("px", "");
+    }
+
     return (
       <div data-testid="toolbar" data-height={String(heightValue)}>
         {children}
@@ -194,11 +203,11 @@ describe("Header", () => {
     expect(screen.getByTestId("search-results")).toBeInTheDocument();
     expect(screen.getByTestId("search-results")).toHaveAttribute(
       "data-products",
-      "2",
+      "2"
     );
     expect(screen.getByTestId("search-results")).toHaveAttribute(
       "data-aiLoading",
-      "true",
+      "true"
     );
   });
 
