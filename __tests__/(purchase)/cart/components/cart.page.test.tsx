@@ -16,7 +16,11 @@ jest.mock("@/auth", () => ({
 
 jest.mock("@/app/(purchase)/cart/components/Cart", () => {
   return function MockCart({ userId }: { userId: string }) {
-    return <div data-testid="cart" data-user-id={userId}>Cart Component</div>;
+    return (
+      <div data-testid="cart" data-user-id={userId}>
+        Cart Component
+      </div>
+    );
   };
 });
 
@@ -24,7 +28,6 @@ const mockRedirect = redirect as jest.MockedFunction<typeof redirect>;
 const mockAuth = auth as unknown as jest.MockedFunction<
   () => Promise<Session | null>
 >;
-
 
 const mockSession: Session = {
   expires: new Date().toISOString(),
@@ -37,7 +40,7 @@ const mockSession: Session = {
     firstName: "Test",
     lastName: "User",
     phone: null,
-    customerId: null 
+    customerId: null,
   },
 };
 
@@ -48,7 +51,7 @@ describe("CartPage", () => {
   });
 
   it("redirects to login if no session", async () => {
-       mockAuth.mockResolvedValue(null);
+    mockAuth.mockResolvedValue(null);
 
     await CartPage();
 
@@ -56,7 +59,7 @@ describe("CartPage", () => {
   });
 
   it("redirects to login if session has no userId", async () => {
-     mockAuth.mockResolvedValue({ user: {} } as Session);
+    mockAuth.mockResolvedValue({ user: {} } as Session);
 
     await CartPage();
 
@@ -71,5 +74,6 @@ describe("CartPage", () => {
 
     const cart = screen.getByTestId("cart");
     expect(cart).toBeInTheDocument();
-    expect(cart).toHaveAttribute("data-user-id", "user123");  });
+    expect(cart).toHaveAttribute("data-user-id", "user123");
+  });
 });

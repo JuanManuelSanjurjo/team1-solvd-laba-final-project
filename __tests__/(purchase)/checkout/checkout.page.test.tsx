@@ -44,6 +44,7 @@ const mockSession: Session = {
   },
 };
 
+// Testing
 describe("CheckoutPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -74,5 +75,7 @@ describe("CheckoutPage", () => {
     const checkout = screen.getByTestId("checkout");
     expect(checkout).toBeInTheDocument();
     expect(checkout).toHaveAttribute("data-user-id", "user123");
+
+    expect(mockRedirect).not.toHaveBeenCalled();
   });
 });
