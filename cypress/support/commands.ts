@@ -43,7 +43,7 @@ Cypress.Commands.add("login", (email?: string, password?: string) => {
   cy.session(
     "user-session",
     () => {
-      cy.visit("/auth/log-in");
+      cy.visit("/auth/sign-in");
       cy.get("input[name=email]").type(userEmail);
       cy.get("input[name=password]").type(userPassword);
       cy.get("button").click();
@@ -59,21 +59,5 @@ Cypress.Commands.add("login", (email?: string, password?: string) => {
 
 Cypress.Commands.add("logout", () => {
   cy.clearCookie("authjs.session-token");
-});
-
-Cypress.Commands.add("getStripeElement", (fieldName) => {
-  if (Cypress.config("chromeWebSecurity")) {
-    throw new Error(
-      "To get stripe element `chromeWebSecurity` must be disabled",
-    );
-  }
-
-  const selector = `input[data-elements-stable-field-name="${fieldName}"]`;
-
-  return cy
-    .get("iframe")
-    .its("0.contentDocument.body")
-    .should("not.be.empty")
-    .then(cy.wrap)
-    .find(selector);
+  cy.reload();
 });

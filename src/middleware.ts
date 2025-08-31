@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 const publicRoutes = [
   "/auth/sign-up",
   "/auth/sign-in",
+  "/not-allowed",
   "/auth/reset-password",
   "/auth/forgot-password",
   "/products",
@@ -21,7 +22,7 @@ export default auth((req) => {
   }
 
   if (!token && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/auth/sign-in", origin));
+    return NextResponse.redirect(new URL("/not-allowed", origin));
   }
 
   if (token && isAuthRoute) {

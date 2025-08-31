@@ -1,4 +1,4 @@
-describe("Logged-in flow", () => {
+describe("Logged-in flow and logout", () => {
   beforeEach(() => {
     cy.login();
   });
@@ -11,6 +11,14 @@ describe("Logged-in flow", () => {
       cy.visit("/products");
       cy.url().should("include", "/products");
     });
+    it("should access recently-viewed page", () => {
+      cy.visit("/recently-viewed");
+      cy.url().should("include", "/recently-viewed");
+    });
+    it("should access wishlist page", () => {
+      cy.visit("/my-wishlist");
+      cy.url().should("include", "/my-wishlist");
+    });
     it("should access order history page", () => {
       cy.visit("/order-history");
       cy.url().should("include", "/order-history");
@@ -22,6 +30,11 @@ describe("Logged-in flow", () => {
     it("should access cart page", () => {
       cy.visit("/cart");
       cy.url().should("include", "/cart");
+    });
+    it("should log out erasing cookies and redirecting to the not-allowed page", () => {
+      cy.visit("/my-products");
+      cy.logout();
+      cy.url().should("include", "/not-allowed");
     });
   });
 });
