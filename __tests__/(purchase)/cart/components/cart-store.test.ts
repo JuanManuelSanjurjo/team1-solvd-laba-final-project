@@ -1,3 +1,5 @@
+
+// Mocks
 const showMock = jest.fn();
 jest.mock("@/store/toastStore", () => ({
   useToastStore: {
@@ -7,9 +9,12 @@ jest.mock("@/store/toastStore", () => ({
   },
 }));
 
+// Imports
+
 import { act } from "@testing-library/react";
 import { useCartStore } from "@/store/cart-store";
 
+// Items
 const baseItem = {
   id: 456,
   name: "Shoe",
@@ -139,6 +144,7 @@ describe("useCartStore - removeItem", () => {
   });
 });
 
+/* Clear cart */
 describe("useCartStore - clearCart", () => {
   const userId = "user123";
 
@@ -173,6 +179,7 @@ describe("useCartStore - clearCart", () => {
   });
 });
 
+/* Update quantity */
 describe("useCartStore - updateQuantity", () => {
   const userId = "user123";
 
@@ -244,6 +251,7 @@ describe("useCartStore - updateQuantity", () => {
   });
 });
 
+/* Calculate total of product */
 describe("useCartStore - totalOfProduct", () => {
   const userId = "user123";
 
@@ -278,6 +286,7 @@ describe("useCartStore - totalOfProduct", () => {
   });
 });
 
+/* Calculate subtotal of whole cart */
 describe("useCartStore - subtotal", () => {
   const userId = "user123";
 
@@ -315,6 +324,7 @@ describe("useCartStore - subtotal", () => {
   });
 });
 
+/* Calculate taxes */
 describe("useCartStore - taxes", () => {
   const userId = "user123";
 
@@ -355,6 +365,7 @@ describe("useCartStore - taxes", () => {
   });
 });
 
+/* Calculate shipping */
 describe("useCartStore - shipping", () => {
   const userId = "user123";
 
@@ -400,6 +411,7 @@ describe("useCartStore - shipping", () => {
   });
 });
 
+/* Calculate total to pay */
 describe("useCartStore - total", () => {
   const userId = "user123";
 
