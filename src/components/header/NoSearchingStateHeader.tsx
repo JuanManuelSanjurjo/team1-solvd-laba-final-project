@@ -34,7 +34,7 @@ export default function NoSearchingStateHeader({
   toggleSearch: () => void;
   handleToggleDrawer: () => void;
 }) {
-  const { isMobile, isDesktop } = useMediaBreakpoints();
+  const { isDesktop } = useMediaBreakpoints();
 
   const userId = session?.user.id || "";
   const totalItems = useCartStore((state) => state.totalItems(userId));
@@ -45,8 +45,7 @@ export default function NoSearchingStateHeader({
     setHasMounted(true);
   }, []);
 
-  const itemGap = isMobile || !session ? 2 : 5;
-  const bagIconSize = isMobile ? 20 : 24;
+  const itemsGap = { xs: 2, md: session?.user.email ? 5 : 2 };
 
   return (
     <>
@@ -54,7 +53,7 @@ export default function NoSearchingStateHeader({
         sx={{
           display: "flex",
           alignItems: "center",
-          gap: itemGap,
+          gap: itemsGap,
           position: "relative",
         }}
       >
@@ -67,7 +66,7 @@ export default function NoSearchingStateHeader({
         sx={{
           display: "flex",
           alignItems: "center",
-          gap: itemGap,
+          gap: itemsGap,
         }}
       >
         <Box
@@ -89,17 +88,21 @@ export default function NoSearchingStateHeader({
             <Tooltip title={"Cart"}>
               <Link href="/cart" style={{ display: "flex" }}>
                 {!hasMounted ? (
-                  <>
-                    <Bag style={{ width: bagIconSize }} color="#292d32" />
-                  </>
+                  <Box sx={{ width: { xs: 20, md: 24 } }}>
+                    <Bag color="#292d32" />
+                  </Box>
                 ) : (
                   <Badge
                     badgeContent={totalItems}
                     color="primary"
                     overlap="circular"
                     invisible={totalItems === 0}
+                    sx={{
+                      width: { xs: 20, md: 24 },
+                      height: { xs: 20, md: 24 },
+                    }}
                   >
-                    <Bag style={{ width: bagIconSize }} color="#292d32" />
+                    <Bag color="#292d32" />
                   </Badge>
                 )}
               </Link>

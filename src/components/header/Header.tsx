@@ -58,9 +58,6 @@ export const Header = ({
     aiLoading,
   } = useHeaderSearch();
   const pathname = usePathname();
-  const { isMobile, isTablet } = useMediaBreakpoints();
-
-  const toolbarHeight = isMobile ? 60 : isTablet ? 90 : 120;
 
   const isExcluded = excludedPaths.includes(pathname);
   if (isExcluded) return null;
@@ -77,11 +74,11 @@ export const Header = ({
         disableGutters
         sx={{
           justifyContent: isSearching ? "center" : "space-between",
-          pl: isMobile ? "24px" : "40px",
-          pr: isMobile ? "24px" : "60px",
-          height: toolbarHeight,
+          pl: { xs: "24px", md: "40px" },
+          pr: { xs: "24px", md: "60px" },
           backgroundColor: "white",
           borderBottom: "1px solid #eaecf0",
+          height: { xs: "60px", sm: "90px", md: "120px" },
         }}
       >
         {isSearching ? (
