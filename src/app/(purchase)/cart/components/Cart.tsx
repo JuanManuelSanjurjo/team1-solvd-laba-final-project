@@ -112,9 +112,12 @@ export default function Cart({ userId }: CartProps) {
               size={item.size || 0}
               userId={userId}
             />
-            {!isMobile && (
-              <Divider sx={{ marginTop: { xs: "30px", md: "60px" } }} />
-            )}
+            <Divider
+              sx={{
+                display: { xs: "none", lg: "block" },
+                marginTop: { xs: "30px", md: "60px" },
+              }}
+            />
           </Box>
         ))}{" "}
       </Box>

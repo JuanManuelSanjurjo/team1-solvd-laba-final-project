@@ -51,9 +51,9 @@ export default function SearchingStateHeader({
       />
       <Box
         data-testid="close-icon"
-        position={isMobile ? "relative" : "absolute"}
-        right={isMobile ? 0 : 40}
         sx={{
+          position: { xs: "relative", md: "absolute" },
+          right: { xs: 0, sm: 40 },
           display: "flex",
           alignItems: "center",
         }}
