@@ -1,7 +1,6 @@
 "use client";
 
 import { AppBar, Toolbar } from "@mui/material";
-import useMediaBreakpoints from "../../hooks/useMediaBreakpoints";
 import useHeaderSearch from "../../hooks/useHeaderSearch";
 import { JSX } from "react";
 import MobileDrawer from "./MobileDrawer";

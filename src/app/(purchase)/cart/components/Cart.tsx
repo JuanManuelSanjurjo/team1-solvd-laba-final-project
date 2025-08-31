@@ -1,13 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Divider,
-  useMediaQuery,
-  useTheme,
-  Typography,
-  Box,
-} from "@mui/material";
+import { Divider, Typography, Box } from "@mui/material";
 import CartCard from "./CartCard";
 import { useCartStore } from "@/store/cart-store";
 import { CartItem } from "../types";
@@ -33,12 +27,8 @@ type CartProps = {
 
 export default function Cart({ userId }: CartProps) {
   const byUser = useCartStore((state) => state.byUser);
-
   const cartItems: CartItem[] = userId ? byUser[userId] ?? [] : [];
-
-  const theme = useTheme();
   const router = useRouter();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const cartIsEmpty = cartItems.length === 0;
 
