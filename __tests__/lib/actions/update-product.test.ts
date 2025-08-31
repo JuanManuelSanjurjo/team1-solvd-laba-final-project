@@ -47,4 +47,15 @@ describe("updateProduct", () => {
       "oops"
     );
   });
+
+  it("throws 'Failed to update product' when the error response does not contain a message", async () => {
+    (global as any).fetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({}),
+    });
+
+    await expect(updateProduct(1, { data: {} } as any, "t")).rejects.toThrow(
+      "Failed to update product"
+    );
+  });
 });
