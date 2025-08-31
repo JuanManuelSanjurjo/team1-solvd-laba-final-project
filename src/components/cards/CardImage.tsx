@@ -25,10 +25,6 @@ export default function CardImage({
     <Box
       position="relative"
       sx={{
-        // width: {
-        //   xs: 152,
-        //   md: 320,
-        // },
         width: "100%",
         height: {
           xs: 170,

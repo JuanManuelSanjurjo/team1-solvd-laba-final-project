@@ -2,11 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { AlertProps, Box, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Input from "@/components/form-elements/Input";
 import Button from "@/components/Button";
-import Toast from "@/components/Toast";
-import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Session } from "next-auth";
 import { updateUser } from "@/lib/actions/update-user";
@@ -17,16 +15,8 @@ import {
   UpdateProfileResponse,
 } from "../types";
 import { useRouter } from "next/navigation";
+import { useToastStore } from "@/store/toastStore";
 
-/**
- * UpdateProfileForm component that allows users to update their profile information.
- * Includes options to update username, first name, last name, email, and phone number.
- *
- * @component
- * @param {Object} props - The component props
- * @param {Session} props.session - The user session object containing user information
- * @returns {JSX.Element} The rendered update profile form with the user's profile information
- */
 export default function UpdateProfileForm({
   session,
 }: {
@@ -34,16 +24,6 @@ export default function UpdateProfileForm({
 }) {
   const router = useRouter();
   const { update } = useSession();
-
-  const [open, setOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({
-    severity: "" as AlertProps["severity"],
-    message: "",
-  });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const defaultValues = {
     username: session?.user?.username,
@@ -77,17 +57,15 @@ export default function UpdateProfileForm({
       return response;
     },
     onSuccess: ({ message }: UpdateProfileResponse) => {
-      setToastContent({
+      useToastStore.getState().show({
         severity: "success",
-        message: message,
+        message,
       });
-      setOpen(true);
       update({ trigger: "update" });
       router.refresh();
     },
     onError: (error: Error) => {
-      setOpen(true);
-      setToastContent({
+      useToastStore.getState().show({
         severity: "error",
         message: error.message,
       });
@@ -100,13 +78,6 @@ export default function UpdateProfileForm({
 
   return (
     <>
-      <Toast
-        open={open}
-        onClose={handleClose}
-        severity={toastContent.severity}
-        message={toastContent.message}
-      />
-
       <Typography variant="body2" paddingBlock="26px">
         Welcome back! Please enter your details to log into your account.
       </Typography>
@@ -123,6 +94,7 @@ export default function UpdateProfileForm({
           {...register("username")}
           label="Username"
           name="username"
+          data-testid="username-input"
           placeholder="Enter your unique username (min. 8 characters)"
           errorMessage={errors.username?.message ?? ""}
         />
@@ -145,6 +117,7 @@ export default function UpdateProfileForm({
           value={session?.user?.email}
           label="E-mail"
           name="email"
+          data-testid="email-input"
           disabled
           placeholder="Enter your email address (e.g., john@example.com)"
           errorMessage={errors.email?.message ?? ""}
@@ -153,12 +126,15 @@ export default function UpdateProfileForm({
           {...register("phoneNumber")}
           label="Phone number"
           name="phoneNumber"
+          data-testid="phoneNumber-input"
           placeholder="Enter your phone number (e.g., +1 234 567 8900)"
           errorMessage={errors.phoneNumber?.message ?? ""}
         />
         <Button
           type="submit"
           variant="contained"
+          data-testid="save-button"
+          name="save-button"
           disabled={isPending || !isChanged}
           sx={{ width: "max-content", alignSelf: "flex-end" }}
         >

@@ -55,19 +55,28 @@ const CartCard = ({
       {...moreProps}
       sx={{
         display: "flex",
-        paddingBlock: { xs: "15px", sm: "60px" },
         justifyContent: "space-around",
-        maxWidth: "963px",
-        width: { lg: "65vw", md: "100%" },
-        paddingRight: "2rem",
-        gap: "5%",
+        gap: { xs: "15px", sm: "30px" },
       }}
     >
       <CartCardImage image={image} />
 
-      <Grid container spacing={2} sx={{ width: "694px" }}>
+      <Grid
+        container
+        spacing={2}
+        sx={{ width: { xs: "100%", lg: "500px", xl: "694px" } }}
+      >
         <Grid size={10}>
-          <Typography variant="h3" sx={{ fontSize: { xs: 12, sm: 30 } }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontSize: { xs: "14px", sm: "30px" },
+              fontWeight: 500,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
             {productTitle}
           </Typography>
           <Typography
@@ -75,6 +84,7 @@ const CartCard = ({
             sx={(theme) => ({
               color: theme.palette.text.secondary,
               marginTop: "4px",
+              fontSize: { xs: "12px", sm: "22px" },
             })}
           >
             {gender}&apos;s Shoes
@@ -84,6 +94,7 @@ const CartCard = ({
             sx={(theme) => ({
               color: theme.palette.text.secondary,
               marginTop: "4px",
+              fontSize: { xs: "10px", sm: "20px" },
             })}
           >
             EU{size}
@@ -118,7 +129,7 @@ const CartCard = ({
             justifyContent: "right",
           }}
         >
-          <Grid sx={{ display: "flex" }}>
+          <Grid sx={{ display: "flex", alignItems: "center" }}>
             <QuantityHandler
               quantity={quantity}
               id={id}

@@ -87,7 +87,7 @@ export default function Cart({ userId }: CartProps) {
           lg: "row",
         },
         paddingInline: "20px",
-        marginTop: "80px",
+        marginTop: { xs: "25px", md: "80px" },
         justifyContent: "space-around",
       }}
     >
@@ -99,7 +99,10 @@ export default function Cart({ userId }: CartProps) {
           Cart
         </Typography>
         {cartItems.map((item) => (
-          <React.Fragment key={item.id + item.size}>
+          <Box
+            sx={{ marginY: { xs: "30px", md: "60px" } }}
+            key={item.id + item.size}
+          >
             <CartCard
               id={item?.id}
               gender={item?.gender || ""}
@@ -109,8 +112,10 @@ export default function Cart({ userId }: CartProps) {
               size={item.size || 0}
               userId={userId}
             />
-            {!isMobile && <Divider />}
-          </React.Fragment>
+            {!isMobile && (
+              <Divider sx={{ marginTop: { xs: "30px", md: "60px" } }} />
+            )}
+          </Box>
         ))}{" "}
       </Box>
 

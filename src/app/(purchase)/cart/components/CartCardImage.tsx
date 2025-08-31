@@ -22,8 +22,7 @@ export default function CartCardImage({
       position="relative"
       sx={{
         width: { xs: "100%", sm: 223 },
-        height: { xs: "auto", sm: 223 },
-        overflow: "hidden",
+        height: { xs: "100%", sm: 223 },
         aspectRatio: "1/1",
       }}
     >

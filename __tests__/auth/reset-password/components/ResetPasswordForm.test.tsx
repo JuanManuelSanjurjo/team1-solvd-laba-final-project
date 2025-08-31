@@ -1,5 +1,11 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent, waitFor } from "../../../utils/test-utils";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  cleanup,
+} from "../../../utils/test-utils";
 import resetPassword from "@/lib/actions/reset-password";
 import ResetPasswordForm from "@/app/auth/reset-password/components/ResetPasswordForm";
 import { useSearchParams } from "next/navigation";
@@ -27,11 +33,11 @@ describe("ResetPasswordForm Component", () => {
     mockUseSearchParams.mockReturnValue({
       get: jest.fn().mockReturnValue("test-code-123"),
     } as any);
+
+    render(<ResetPasswordForm />);
   });
 
   it("renders password input with correct attributes", () => {
-    render(<ResetPasswordForm />);
-
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     expect(passwordInput).toHaveAttribute("type", "password");
     expect(passwordInput).toHaveAttribute("required");
@@ -39,8 +45,6 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("renders confirm password input with correct attributes", () => {
-    render(<ResetPasswordForm />);
-
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
     expect(confirmPasswordInput).toHaveAttribute("type", "password");
     expect(confirmPasswordInput).toHaveAttribute("required");
@@ -48,8 +52,6 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("renders submit button with correct text and type", () => {
-    render(<ResetPasswordForm />);
-
     const submitButton = screen.getByRole("button", {
       name: /reset password/i,
     });
@@ -59,8 +61,6 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("renders form with proper structure", () => {
-    render(<ResetPasswordForm />);
-
     const form = screen.getByRole("form") || document.querySelector("form");
     expect(form).toBeInTheDocument();
 
@@ -71,8 +71,6 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("has proper accessibility labels and structure", () => {
-    render(<ResetPasswordForm />);
-
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
     const submitButton = screen.getByRole("button", {
@@ -88,8 +86,6 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("renders all form elements in correct order", () => {
-    render(<ResetPasswordForm />);
-
     const formElements = [
       screen.getByLabelText(/^Password\s*\*?$/i),
       screen.getByLabelText(/confirm password/i),
@@ -110,6 +106,8 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("shows error message when code is missing", () => {
+    cleanup();
+
     mockUseSearchParams.mockReturnValue({
       get: jest.fn().mockReturnValue(null),
     } as any);
@@ -117,15 +115,11 @@ describe("ResetPasswordForm Component", () => {
     render(<ResetPasswordForm />);
 
     expect(
-      screen.getByText(
-        "Invalid or missing reset code. Please check your email link and try again."
-      )
+      screen.getByText(/invalid or missing reset code/i)
     ).toBeInTheDocument();
   });
 
   it("shows validation error for short password", async () => {
-    render(<ResetPasswordForm />);
-
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const submitButton = screen.getByRole("button", {
       name: /reset password/i,
@@ -143,8 +137,6 @@ describe("ResetPasswordForm Component", () => {
   });
 
   it("shows validation error when passwords do not match", async () => {
-    render(<ResetPasswordForm />);
-
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
     const submitButton = screen.getByRole("button", {
@@ -165,8 +157,6 @@ describe("ResetPasswordForm Component", () => {
 
   it("submits form with valid data", async () => {
     mockResetPassword.mockResolvedValueOnce(authMocks.success);
-
-    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
@@ -192,8 +182,6 @@ describe("ResetPasswordForm Component", () => {
   it("shows success message on successful submission", async () => {
     mockResetPassword.mockResolvedValueOnce(authMocks.success);
 
-    render(<ResetPasswordForm />);
-
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
     const submitButton = screen.getByRole("button", {
@@ -215,8 +203,6 @@ describe("ResetPasswordForm Component", () => {
     const errorMessage = "Invalid reset code";
     mockResetPassword.mockRejectedValueOnce(new Error(errorMessage));
 
-    render(<ResetPasswordForm />);
-
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
     const submitButton = screen.getByRole("button", {
@@ -236,8 +222,6 @@ describe("ResetPasswordForm Component", () => {
 
   it("closes snackbar when close button is clicked", async () => {
     mockResetPassword.mockResolvedValueOnce(authMocks.success);
-
-    render(<ResetPasswordForm />);
 
     const passwordInput = screen.getByLabelText(/^Password\s*\*?$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);

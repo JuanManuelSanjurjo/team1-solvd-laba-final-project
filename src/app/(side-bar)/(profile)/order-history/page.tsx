@@ -9,6 +9,8 @@ import { fetchOrders } from "@/lib/actions/fetch-orders";
 import HistoryOrderAccordion from "./components/HistoryOrderAccordion";
 import { normalizeStripeStatusToOrderStatus } from "@/lib/normalizers/normalize-stripe-status-order";
 import { OrderProduct } from "./types";
+import { IMAGE_BUCKET_URL } from "@/lib/constants/globals";
+import { CartItem } from "@/app/(purchase)/cart/types";
 
 export const metadata: Metadata = {
   title: "Order History",
@@ -25,6 +27,7 @@ type RetrievedItemsStripe = OrderProduct & {
  * @component
  * @returns {JSX.Element} The rendered order history page with the user's order history
  */
+
 export default async function OrderHistory() {
   const session = await auth();
 
@@ -38,7 +41,9 @@ export default async function OrderHistory() {
     orderInfo: {
       orderNumber: item.id,
       orderDate: String(item.created),
-      productCount: JSON.parse(item.metadata.items).length,
+      productCount: item.metadata.items
+        ? JSON.parse(item.metadata.items).length
+        : item.metadata.itemsLength,
       totalAmount: String(item.amount / 100),
       status: normalizeStripeStatusToOrderStatus(item.status),
     },
@@ -50,16 +55,27 @@ export default async function OrderHistory() {
       payment: item.payment_method_details?.type || "",
       discount: "0$",
     },
-    products: JSON.parse(item.metadata.items).map(
-      (item: RetrievedItemsStripe) => ({
-        imageUrl: item.image,
-        name: item.name,
-        description: item.description,
-        size: item.size,
-        quantity: item.quantity,
-        price: item.price,
-      })
-    ),
+    products: item.metadata.items
+      ? JSON.parse(item.metadata.items).map((item: RetrievedItemsStripe) => ({
+          imageUrl: item.image,
+          name: item.name,
+          size: item.size,
+          quantity: item.quantity,
+          price: item.price,
+        }))
+      : Object.entries(item.metadata).map(([key, value]) => {
+          if (key.includes("item-")) {
+            const item = JSON.parse(value) as CartItem;
+
+            return {
+              imageUrl: `${IMAGE_BUCKET_URL}${item.image}`,
+              name: item.name,
+              size: item.size,
+              quantity: item.quantity,
+              price: item.price,
+            };
+          }
+        }),
   }));
 
   return (

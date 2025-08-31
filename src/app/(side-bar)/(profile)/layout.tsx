@@ -25,8 +25,7 @@ export default async function Layout({
         sx={{
           display: "flex",
           flexDirection: "column",
-          marginBlock: 4,
-          marginInline: "40px",
+          margin: { xs: "40px 20px" },
           gap: "24px",
           width: "100%",
         }}

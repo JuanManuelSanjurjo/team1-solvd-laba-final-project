@@ -3,15 +3,22 @@ import { getStripe } from "@/lib/get-stripe";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-interface CreatePaymentIntentRequest {
+type CreatePaymentIntentRequest = {
   amount: number;
   customer: string;
-  items: {
+  itemsLength: number;
+} & Record<
+  string,
+  {
     id: number;
-    quantity: number;
+    image: string;
+    name: string;
     price: number;
-  }[];
-}
+    size: number;
+    gender: string;
+    quantity: number;
+  }
+>;
 
 /**
  * POST /api/checkout/create-intent
@@ -35,7 +42,7 @@ export async function POST(req: Request) {
 
   try {
     const body: CreatePaymentIntentRequest = await req.json();
-    const { amount, items, customer } = body;
+    const { amount, customer, itemsLength, ...items } = body;
 
     if (typeof amount !== "number" || !isFinite(amount) || amount <= 0) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
@@ -48,7 +55,13 @@ export async function POST(req: Request) {
       automatic_payment_methods: { enabled: true },
       metadata: {
         strapi_user_id: session?.user?.id,
-        items: JSON.stringify(items),
+        itemsLength,
+        ...Object.fromEntries(
+          Object.entries(items).map(([key, value]) => [
+            key,
+            JSON.stringify(value),
+          ])
+        ),
       },
     });
 

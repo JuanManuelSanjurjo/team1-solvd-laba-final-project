@@ -94,7 +94,6 @@ describe("CartCardImage", () => {
       const imageContainer = container.firstChild as HTMLElement;
       expect(imageContainer).toHaveStyle({
         position: "relative",
-        overflow: "hidden",
         aspectRatio: "1/1",
       });
     });
