@@ -59,7 +59,7 @@ describe("associateStripeCustomerToStrapi", () => {
           Authorization: "Bearer token-abc",
         }),
         body: JSON.stringify({ customerId: "cus_123" }),
-      }),
+      })
     );
     expect(result).toEqual({
       error: false,
@@ -91,7 +91,7 @@ describe("associateStripeCustomerToStrapi", () => {
 
     expect(handleApiError).toHaveBeenCalledWith(
       fakeResponse,
-      "Failed to update user",
+      "Failed to update user"
     );
     expect(result).toEqual({
       error: true,

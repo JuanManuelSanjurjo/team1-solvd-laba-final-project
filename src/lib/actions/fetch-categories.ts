@@ -25,12 +25,9 @@ interface Category {
  */
 
 export async function fetchCategories() {
-  const res = await fetch(
-    "https://shoes-shop-strapi.herokuapp.com/api/categories",
-    {
-      next: { revalidate: 3600 },
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
+    next: { revalidate: 3600 },
+  });
 
   if (!res.ok) throw new Error("Failed to fetch categories");
 

@@ -82,3 +82,9 @@ export const ERROR_NAMES = {
   VALIDATION_ERROR: "ValidationError",
   INTERNAL_SERVER_ERROR: "InternalServerError",
 } as const;
+
+export const MOCK_CUSTOMER_ID = {
+  id: "cus_123",
+} as const;
+
+export const MOCK_USER_ID = "user_123";
