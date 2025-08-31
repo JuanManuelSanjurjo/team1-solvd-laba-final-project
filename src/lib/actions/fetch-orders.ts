@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { getStripe } from "@/lib/get-stripe";
 import Stripe from "stripe";
 
-type RetrievedOrder = Stripe.Charge & {
+export type RetrievedOrder = Stripe.Charge & {
   metadata: {
     strapi_user_id: string;
     items: string;

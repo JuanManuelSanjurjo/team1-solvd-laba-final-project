@@ -1,10 +1,9 @@
 import { render, RenderOptions } from "@testing-library/react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactElement } from "react";
 import ToastHost from "@/components/ToastHost";
-
-const theme = createTheme();
+import theme from "@/style/theme";
 
 const createTestQueryClient = () => {
   return new QueryClient({

@@ -226,6 +226,7 @@ export default function UpdateProfileImage({
             </Button>
             <Button
               variant="contained"
+              data-testid="delete-avatar-button"
               onClick={handleDeleteAvatar}
               disabled={!selectedImageUrl.id || isDeleting || isUpdating}
             >
