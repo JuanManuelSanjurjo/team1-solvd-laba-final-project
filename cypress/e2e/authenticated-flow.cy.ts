@@ -1,5 +1,7 @@
+/// <reference types="cypress" />
 describe("Crud / wishlist / recently viewed flow", () => {
   beforeEach(() => {
+    // @ts-ignore
     cy.login();
   });
   it("goes to my products and add a product", () => {

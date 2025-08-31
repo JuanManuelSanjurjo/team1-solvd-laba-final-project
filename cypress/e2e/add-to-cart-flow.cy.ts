@@ -1,5 +1,7 @@
+/// <reference types="cypress" />
 describe("Add prodcuts to cart product flow", () => {
   beforeEach(() => {
+    // @ts-ignore
     cy.login();
   });
   it("should allow to add product to cart from the card", () => {

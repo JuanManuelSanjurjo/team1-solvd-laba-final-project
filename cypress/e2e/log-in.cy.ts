@@ -1,5 +1,7 @@
+/// <reference types="cypress" />
 describe("Logged-in flow and logout", () => {
   beforeEach(() => {
+    // @ts-ignore
     cy.login();
   });
   describe("will access all basic authenticated routes", () => {
@@ -33,6 +35,7 @@ describe("Logged-in flow and logout", () => {
     });
     it("should log out erasing cookies and redirecting to the not-allowed page", () => {
       cy.visit("/my-products");
+      // @ts-ignore
       cy.logout();
       cy.url().should("include", "/not-allowed");
     });

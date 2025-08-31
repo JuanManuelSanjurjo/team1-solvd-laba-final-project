@@ -36,7 +36,7 @@
 //   }
 // }
 
-Cypress.Commands.add("login", (email?: string, password?: string) => {
+Cypress.Commands.add("login" as any, (email?: string, password?: string) => {
   const userEmail = email || Cypress.env("USER_EMAIL");
   const userPassword = password || Cypress.env("USER_PASSWORD");
 
@@ -57,7 +57,7 @@ Cypress.Commands.add("login", (email?: string, password?: string) => {
   );
 });
 
-Cypress.Commands.add("logout", () => {
+Cypress.Commands.add("logout" as any, () => {
   cy.clearCookie("authjs.session-token");
   cy.reload();
 });
