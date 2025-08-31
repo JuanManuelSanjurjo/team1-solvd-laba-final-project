@@ -2,21 +2,23 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { useCartStore } from "@/store/cart-store";
 import { useSession } from "next-auth/react";
 import createStripeCustomer from "@/lib/actions/create-stripe-customer";
-import Checkout from "@/app/(purchase)/checkout/components/Checkout";
-
+import { CartState } from "@/app/(purchase)/cart/types";
 // Mocks
 jest.mock("@/store/cart-store", () => ({ useCartStore: jest.fn() }));
 jest.mock("next-auth/react", () => ({
-  ...jest.requireActual("next-auth/react"),
   useSession: jest.fn(),
 }));
+
+jest.mock("@/auth", () => ({
+  auth: jest.fn(),
+}));
+
 jest.mock("@/lib/actions/create-stripe-customer");
 
 jest.mock("@stripe/react-stripe-js", () => ({
   Elements: ({ children }: any) => <div data-testid="elements">{children}</div>,
 }));
 jest.mock("@stripe/stripe-js", () => ({ loadStripe: jest.fn() }));
-
 jest.mock("@/app/loading", () => {
   function MockLoading() {
     return <div data-testid="loading">Loading...</div>;
@@ -24,58 +26,98 @@ jest.mock("@/app/loading", () => {
   return MockLoading;
 });
 
+jest.mock("@/app/(purchase)/checkout/components/CheckoutForm", () => {
+  function MockCheckoutForm() {
+    return <div>CheckoutForm</div>;
+  }
+  return MockCheckoutForm;
+});
+
 const mockUseCartStore = jest.mocked(useCartStore);
 const mockUseSession = useSession as jest.Mock;
 const mockCreateCustomer = createStripeCustomer as jest.Mock;
 
-const baseSession = {
+import Checkout from "@/app/(purchase)/checkout/components/Checkout";
+
+const mockSession = {
   user: { id: "user123", email: "test@test.com", customerId: null },
 };
 
-const baseCart = {
-  total: () => 100,
+const mockedState: CartState = {
   byUser: {
-    user123: [{ id: 1, price: 100, size: 42, quantity: 1 }],
+    user123: [
+      {
+        id: 1,
+        name: "Test",
+        price: 100,
+        image: "",
+        size: 42,
+        gender: "Men",
+        quantity: 1,
+      },
+    ],
   },
+  addItem: jest.fn(),
+  removeItem: jest.fn(),
+  totalItems: jest.fn(),
+  clearCart: jest.fn(),
+  updateQuantity: jest.fn(),
+  totalOfProduct: jest.fn(),
+  subtotal: jest.fn(),
+  taxes: jest.fn(),
+  shipping: jest.fn(),
+  total: () => 100,
 };
 
-beforeEach(() => {
-  jest.clearAllMocks();
-  global.fetch = jest.fn();
-});
+mockUseCartStore.mockImplementation((selector: (s: CartState) => any) =>
+  selector(mockedState)
+);
 
-// ==== Tests ====
+//Testing
 describe("Checkout (Stripe)", () => {
-  it("muestra loading mientras inicializa checkout", async () => {
-    mockUseCartStore.mockReturnValue(baseCart);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.fetch = jest.fn();
+    mockUseCartStore.mockImplementation((selector: any) =>
+      selector(mockedState)
+    );
+  });
+
+  it("shows loading while checkout is initializing", async () => {
+    mockUseCartStore.mockImplementation((selector: any) =>
+      selector(mockedState)
+    );
+
     mockUseSession.mockReturnValue({
-      data: baseSession,
+      data: mockSession,
       update: jest.fn(),
       status: "authenticated",
     });
 
-    // If fetch doesn't resolve it loads
     (global.fetch as jest.Mock).mockImplementation(() => new Promise(() => {}));
 
-    render(<Checkout session={baseSession as any} />);
+    render(<Checkout session={mockSession as any} />);
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
   });
 
-  it("reders Checkout when the clientSecret is obtained", async () => {
-    mockUseCartStore.mockReturnValue(baseCart);
+  it("renders CheckoutForm when clientSecret is obtained", async () => {
+    mockUseCartStore.mockImplementation((selector: any) =>
+      selector(mockedState)
+    );
+
     mockUseSession.mockReturnValue({
-      data: baseSession,
+      data: mockSession,
       update: jest.fn(),
       status: "authenticated",
     });
 
-    mockCreateCustomer.mockResolvedValue({ customer: { id: "customer123" } });
+    mockCreateCustomer.mockResolvedValue({ customer: { id: "cus_abc" } });
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
       json: async () => ({ clientSecret: "secret123", orderId: "order1" }),
     });
 
-    render(<Checkout session={baseSession as any} />);
+    render(<Checkout session={mockSession as any} />);
 
     await waitFor(() => {
       expect(screen.getByTestId("elements")).toBeInTheDocument();
@@ -83,17 +125,20 @@ describe("Checkout (Stripe)", () => {
     });
   });
 
-  it("not render Checkout if fetch fails", async () => {
-    mockUseCartStore.mockReturnValue(baseCart);
+  it("not render CheckoutForm if fetch fails", async () => {
+    mockUseCartStore.mockImplementation((selector: any) =>
+      selector(mockedState)
+    );
+
     mockUseSession.mockReturnValue({
-      data: baseSession,
+      data: mockSession,
       update: jest.fn(),
       status: "authenticated",
     });
 
     (global.fetch as jest.Mock).mockResolvedValue({ ok: false, status: 500 });
 
-    render(<Checkout session={baseSession as any} />);
+    render(<Checkout session={mockSession as any} />);
 
     await waitFor(() => {
       expect(screen.queryByTestId("elements")).not.toBeInTheDocument();
