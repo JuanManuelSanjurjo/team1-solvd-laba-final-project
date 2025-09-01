@@ -8,11 +8,13 @@ on:
   pull_request:
     branches:
       - "**"
-  
+
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
+      USER_EMAIL: ${{ secrets.USER_EMAIL }}
+      USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
 
@@ -31,7 +33,6 @@ jobs:
       - name: Run ESLint
         run: npm run lint -- --max-warnings=0
 
-
       - name: Build app
         run: npm run build
 
@@ -43,3 +44,12 @@ jobs:
         with:
           name: coverage-report
           path: coverage/
+
+      - name: Start application in background
+        run: npm run start &
+
+      - name: Wait until app is ready
+        run: npx wait-on http://localhost:3000
+
+      - name: Run Cypress E2E tests
+        run: npx cypress run
