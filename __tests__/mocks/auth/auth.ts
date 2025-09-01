@@ -7,6 +7,7 @@ const NAMock = {
       secret: process.env.AUTH_SECRET,
     },
   },
+  authFn: jest.fn(),
   signIn: jest.fn(),
   signOut: jest.fn(),
   handlers: {
@@ -16,6 +17,7 @@ const NAMock = {
 };
 
 export const {
+  authFn,
   auth,
   signIn,
   signOut,

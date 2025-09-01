@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, BoxProps } from "@mui/material";
 import Image from "next/image";
 import { JSX } from "react";
 
@@ -6,7 +6,9 @@ import { JSX } from "react";
  * Basic Loading component
  * @returns {JSX.Element}
  */
-export default function Loading(): JSX.Element {
+export default function Loading({
+  sx,
+}: { sx?: BoxProps["sx"] } = {}): JSX.Element {
   return (
     <Box
       sx={{
@@ -15,6 +17,7 @@ export default function Loading(): JSX.Element {
         alignItems: "center",
         height: "100vh",
         width: "100vw",
+        ...sx,
       }}
     >
       <Box

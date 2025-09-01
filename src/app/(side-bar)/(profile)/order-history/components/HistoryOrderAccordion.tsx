@@ -62,6 +62,7 @@ const HistoryOrderAccordion = ({
         boxShadow: "none",
         margin: 0,
         fontSize: { xs: "12px", sm: "14px" },
+        "&:before": { display: "none" },
         "&.Mui-expanded": {
           minHeight: "unset",
           margin: "0",
@@ -73,6 +74,9 @@ const HistoryOrderAccordion = ({
         },
         "&:not(.Mui-expanded)": {
           borderRadius: 0,
+          "& .MuiAccordionSummary-root": {
+            borderBottom: "none",
+          },
         },
       }}
     >
@@ -117,9 +121,9 @@ const HistoryOrderAccordion = ({
             },
             alignItems: "center",
             borderBottom: `1px solid ${theme.palette.divider}`,
-            p: `${sectionVerticalPadding} ${sectionHorizontalPadding.xs}`,
-            [theme.breakpoints.up("sm")]: {
-              p: `${sectionVerticalPadding} ${sectionHorizontalPadding.sm}`,
+            p: {
+              xs: `${sectionVerticalPadding} ${sectionHorizontalPadding.xs}`,
+              sm: `${sectionVerticalPadding} ${sectionHorizontalPadding.sm}`,
             },
             gap: "8px",
             width: "100%",
@@ -140,13 +144,13 @@ const HistoryOrderAccordion = ({
           >
             <Typography
               variant="cartText"
-              sx={{ color: theme.palette.cartTextColor.secondary }}
+              sx={{ color: "cartTextColor.secondary" }}
             >
               Delivery:{" "}
               <Typography
                 component="span"
                 variant="cartText"
-                sx={{ color: theme.palette.cartTextColor.primary }}
+                sx={{ color: "cartTextColor.primary" }}
               >
                 {details.delivery}
               </Typography>{" "}
@@ -166,7 +170,7 @@ const HistoryOrderAccordion = ({
             <Typography
               variant="cartText"
               sx={{
-                color: theme.palette.cartTextColor.secondary,
+                color: "cartTextColor.secondary",
                 whiteSpace: {
                   xs: "normal",
                   sm: "normal",
@@ -177,7 +181,7 @@ const HistoryOrderAccordion = ({
               Contacts:{" "}
               <Typography
                 variant="cartText"
-                sx={{ color: theme.palette.cartTextColor.primary }}
+                sx={{ color: "cartTextColor.primary" }}
               >
                 {details.contacts}
               </Typography>
@@ -196,12 +200,12 @@ const HistoryOrderAccordion = ({
           >
             <Typography
               variant="cartText"
-              sx={{ color: theme.palette.cartTextColor.secondary }}
+              sx={{ color: "cartTextColor.secondary" }}
             >
               Payment:{" "}
               <Typography
                 variant="cartText"
-                sx={{ color: theme.palette.cartTextColor.primary }}
+                sx={{ color: "cartTextColor.primary" }}
               >
                 {details.payment.charAt(0).toUpperCase() +
                   details.payment.slice(1)}
@@ -222,9 +226,9 @@ const HistoryOrderAccordion = ({
               gap: { xs: 1, sm: 2 },
               alignItems: "center",
               borderBottom: `1px solid ${theme.palette.divider}`,
-              p: `${sectionVerticalPadding} ${sectionHorizontalPadding.xs}`,
-              [theme.breakpoints.up("sm")]: {
-                p: `${sectionVerticalPadding} ${sectionHorizontalPadding.sm}`,
+              p: {
+                xs: `${sectionVerticalPadding} ${sectionHorizontalPadding.xs}`,
+                sm: `${sectionVerticalPadding} ${sectionHorizontalPadding.sm}`,
               },
             }}
           >
@@ -246,7 +250,7 @@ const HistoryOrderAccordion = ({
             <Typography
               variant="cartText"
               sx={{
-                color: theme.palette.cartTextColor.secondary,
+                color: "cartTextColor.secondary",
                 justifySelf: { xs: "center", sm: "flex-end", md: "flex-end" },
                 mt: { xs: 1, sm: 0 },
                 textAlign: {
@@ -259,7 +263,7 @@ const HistoryOrderAccordion = ({
               <Typography
                 variant="cartText"
                 component="span"
-                sx={{ color: theme.palette.cartTextColor.primary }}
+                sx={{ color: "cartTextColor.primary" }}
               >
                 {product.quantity}
               </Typography>
@@ -268,7 +272,7 @@ const HistoryOrderAccordion = ({
             <Typography
               variant="cartText"
               sx={{
-                color: theme.palette.cartTextColor.secondary,
+                color: "cartTextColor.secondary",
                 justifySelf: { xs: "center", sm: "flex-end", md: "flex-end" },
                 mt: { xs: 0.5, sm: 0 },
               }}
@@ -277,7 +281,7 @@ const HistoryOrderAccordion = ({
               <Typography
                 variant="cartText"
                 component="span"
-                sx={{ color: theme.palette.cartTextColor.primary }}
+                sx={{ color: "cartTextColor.primary" }}
               >
                 {product.price}$
               </Typography>
@@ -295,22 +299,22 @@ const HistoryOrderAccordion = ({
               md: "space-between",
             },
             borderBottom: `1px solid ${theme.palette.divider}`,
-            p: `${sectionVerticalPadding} ${sectionHorizontalPadding.xs}`,
-            [theme.breakpoints.up("sm")]: {
-              p: `${sectionVerticalPadding} ${sectionHorizontalPadding.sm}`,
+            p: {
+              xs: `${sectionVerticalPadding} ${sectionHorizontalPadding.xs}`,
+              sm: `${sectionVerticalPadding} ${sectionHorizontalPadding.sm}`,
             },
           }}
         >
           <Box />
           <Typography
             variant="cartText"
-            sx={{ color: theme.palette.cartTextColor.secondary }}
+            sx={{ color: "cartTextColor.secondary" }}
           >
             Discount:{" "}
             <Typography
               component="span"
               variant="cartText"
-              sx={{ color: theme.palette.cartTextColor.primary }}
+              sx={{ color: "cartTextColor.primary" }}
             >
               0$
             </Typography>

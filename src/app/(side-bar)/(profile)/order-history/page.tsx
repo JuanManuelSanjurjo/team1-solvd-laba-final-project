@@ -63,25 +63,27 @@ export default async function OrderHistory() {
           quantity: item.quantity,
           price: item.price,
         }))
-      : Object.entries(item.metadata).map(([key, value]) => {
-          if (key.includes("item-")) {
-            const item = JSON.parse(value) as CartItem;
-
-            return {
-              imageUrl: `${IMAGE_BUCKET_URL}${item.image}`,
-              name: item.name,
-              size: item.size,
-              quantity: item.quantity,
-              price: item.price,
-            };
-          }
-        }),
+      : Object.entries(item.metadata)
+          .map(([key, value]) => {
+            if (key.includes("item-")) {
+              const item = JSON.parse(value) as CartItem;
+              return {
+                imageUrl: `${IMAGE_BUCKET_URL}${item.image}`,
+                name: item.name,
+                size: item.size,
+                quantity: item.quantity,
+                price: item.price,
+              };
+            }
+            return null;
+          })
+          .filter(Boolean),
   }));
 
   return (
     <>
       <ProfileHeaderTitle>Order History</ProfileHeaderTitle>
-      {orders.length === 0 ? (
+      {orderInfo.length === 0 ? (
         <Box
           sx={{
             display: "flex",

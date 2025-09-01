@@ -314,20 +314,12 @@ describe("Cart Component", () => {
       );
     });
 
-    it("renders dividers on desktop (non-mobile)", () => {
+    it("renders dividers", () => {
       useMediaQuery.mockReturnValue(false);
       render(<Cart userId="user-123" />);
 
       const dividers = screen.getAllByRole("separator");
       expect(dividers).toHaveLength(mockCartItems.length);
-    });
-
-    it("does not render dividers on mobile", () => {
-      useMediaQuery.mockReturnValue(true);
-      render(<Cart userId="user-123" />);
-
-      const dividers = screen.queryAllByRole("separator");
-      expect(dividers).toHaveLength(0);
     });
   });
 

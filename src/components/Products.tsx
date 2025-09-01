@@ -273,7 +273,7 @@ export default function Products({
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: isMobile ? "space-between" : "flex-end",
+              justifyContent: { xs: "space-between", md: "flex-end" },
               padding: {
                 xs: "0 20px",
                 sm: "0 30px",

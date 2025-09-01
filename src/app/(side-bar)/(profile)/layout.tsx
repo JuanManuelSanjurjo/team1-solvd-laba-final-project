@@ -9,11 +9,7 @@ import { Box } from "@mui/material";
  * @param {React.ReactNode} props.children - The child components to be rendered within the layout
  * @returns {JSX.Element} The rendered layout component with the profile content
  */
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Box
       width={"100%"}
