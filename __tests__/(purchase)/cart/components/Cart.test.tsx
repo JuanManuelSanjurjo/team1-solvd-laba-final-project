@@ -13,8 +13,8 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 jest.mock("@/store/cart-store", () => ({ useCartStore: jest.fn() }));
-jest.mock("next-auth/react", () => ({
-  useSession: jest.fn(),
+jest.mock("@/auth", () => ({
+  auth: jest.fn(),
 }));
 jest.mock("@/lib/actions/create-stripe-customer");
 
