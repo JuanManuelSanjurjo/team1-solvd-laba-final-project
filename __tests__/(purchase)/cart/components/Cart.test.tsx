@@ -1,11 +1,3 @@
-jest.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-    replace: jest.fn(),
-    prefetch: jest.fn(),
-  }),
-}));
-
 import { render, screen, waitFor } from "@testing-library/react";
 import { useCartStore } from "@/store/cart-store";
 import { useSession } from "next-auth/react";
@@ -13,6 +5,13 @@ import createStripeCustomer from "@/lib/actions/create-stripe-customer";
 import Checkout from "@/app/(purchase)/checkout/components/Checkout";
 
 // Mocks
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+}));
 jest.mock("@/store/cart-store", () => ({ useCartStore: jest.fn() }));
 jest.mock("next-auth/react", () => ({
   useSession: jest.fn(),
@@ -68,7 +67,7 @@ describe("Checkout (Stripe)", () => {
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
   });
 
-  it("reders Checkout when the clientSecret is obtained", async () => {
+  it("renders Checkout when the clientSecret is obtained", async () => {
     mockUseCartStore.mockReturnValue(baseCart);
     mockUseSession.mockReturnValue({
       data: baseSession,
