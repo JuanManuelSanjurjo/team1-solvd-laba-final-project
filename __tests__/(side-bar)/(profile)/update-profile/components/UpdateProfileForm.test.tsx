@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen, waitFor } from "../../../../utils/test-utils";
+import { render, screen, waitFor, act } from "../../../../utils/test-utils";
 
 import NextAuth, { AuthError } from "__tests__/mocks/auth/next-auth";
 import { auth, signIn, signOut } from "__tests__/mocks/auth/auth";
@@ -222,7 +222,11 @@ describe("UpdateProfileForm", () => {
     });
 
     it("disables save button during submission", async () => {
-      const user = userEvent.setup();
+      jest.useFakeTimers();
+
+      const user = userEvent.setup({
+        advanceTimers: jest.advanceTimersByTime,
+      });
 
       mockUpdateUser.mockImplementation(
         () =>
@@ -231,29 +235,42 @@ describe("UpdateProfileForm", () => {
           )
       );
 
-      render(<UpdateProfileForm session={mockSession} />);
+      try {
+        render(<UpdateProfileForm session={mockSession} />);
 
-      const usernameInput = screen.getByRole("textbox", { name: /username/i });
-      await user.clear(usernameInput);
-      await user.type(usernameInput, "newusername");
+        const usernameInput = screen.getByRole("textbox", {
+          name: /username/i,
+        });
+        await user.clear(usernameInput);
+        await user.type(usernameInput, "newusername");
 
-      const firstNameInput = screen.getByRole("textbox", {
-        name: /first name/i,
-      });
-      await user.clear(firstNameInput);
-      await user.type(firstNameInput, "UpdatedJohn");
+        const firstNameInput = screen.getByRole("textbox", {
+          name: /first name/i,
+        });
+        await user.clear(firstNameInput);
+        await user.type(firstNameInput, "UpdatedJohn");
 
-      const lastNameInput = screen.getByRole("textbox", { name: /last name/i });
-      await user.clear(lastNameInput);
-      await user.type(lastNameInput, "UpdatedDoe");
+        const lastNameInput = screen.getByRole("textbox", {
+          name: /last name/i,
+        });
+        await user.clear(lastNameInput);
+        await user.type(lastNameInput, "UpdatedDoe");
 
-      const saveButton = screen.getByTestId("save-button");
+        const saveButton = screen.getByTestId("save-button");
+        await user.click(saveButton);
 
-      await user.click(saveButton);
-
-      await waitFor(() => {
         expect(saveButton).toBeDisabled();
-      });
-    });
+
+        act(() => {
+          jest.advanceTimersByTime(110);
+        });
+
+        await waitFor(() => {
+          expect(mockUpdateUser).toHaveBeenCalled();
+        });
+      } finally {
+        jest.useRealTimers();
+      }
+    }, 10000);
   });
 });
