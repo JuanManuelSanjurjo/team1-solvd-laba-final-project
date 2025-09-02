@@ -1,3 +1,11 @@
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+}));
+
 import { render, screen, waitFor } from "@testing-library/react";
 import { useCartStore } from "@/store/cart-store";
 import { useSession } from "next-auth/react";
@@ -7,7 +15,6 @@ import Checkout from "@/app/(purchase)/checkout/components/Checkout";
 // Mocks
 jest.mock("@/store/cart-store", () => ({ useCartStore: jest.fn() }));
 jest.mock("next-auth/react", () => ({
-  ...jest.requireActual("next-auth/react"),
   useSession: jest.fn(),
 }));
 jest.mock("@/lib/actions/create-stripe-customer");

@@ -1,3 +1,11 @@
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+}));
+
 import { render, screen, waitFor } from "@testing-library/react";
 import { useCartStore } from "@/store/cart-store";
 import createStripeCustomer from "@/lib/actions/create-stripe-customer";
