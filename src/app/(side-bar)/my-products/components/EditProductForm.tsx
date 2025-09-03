@@ -12,6 +12,8 @@ import { useUpdateProduct } from "../hooks/useUpdateProduct";
 import { ProductFormData } from "../add-product/types";
 import { MyProduct } from "@/types/product";
 import { useToastStore } from "@/store/toastStore";
+import Loading from "@/app/loading";
+import { createPortal } from "react-dom";
 
 interface EditProductFormProps {
   session: Session;
@@ -73,8 +75,10 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
   const initialUrls = product.images ? product.images.map((i) => i.url) : [];
   const previews = useImagePreviews(initialUrls);
 
-  const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
-  const { mutateAsync: handleUpdateProduct } = useUpdateProduct(session);
+  const { mutateAsync: handleCreateProduct, isPending: isCreating } =
+    useCreateProduct(session);
+  const { mutateAsync: handleUpdateProduct, isPending: isEditing } =
+    useUpdateProduct(session);
 
   /**
    * Submit handler used for both edit and duplicate flows.
@@ -154,6 +158,21 @@ export const EditProductForm: React.FC<EditProductFormProps> = ({
         flexDirection: { xs: "column", sm: "column", md: "row" },
       }}
     >
+      {(isCreating || isEditing) &&
+        createPortal(
+          <Loading
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "fixed",
+              inset: 0,
+              backgroundColor: "rgba(255,255,255,0.6)",
+              zIndex: 1300,
+            }}
+          />,
+          document.body
+        )}
       <Box
         component="form"
         id="edit-product-form"
