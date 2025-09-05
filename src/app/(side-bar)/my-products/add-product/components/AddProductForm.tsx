@@ -10,6 +10,8 @@ import { useProductForm } from "../../hooks/useProductForm";
 import { useImagePreviews } from "../../hooks/useImagePreviews";
 import { useCreateProduct } from "../hooks/useCreateProduct";
 import { ProductFormData } from "../types";
+import { createPortal } from "react-dom";
+import Loading from "@/app/loading";
 
 interface AddProductFormProps {
   session: Session;
@@ -60,7 +62,8 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
   });
 
   const previews = useImagePreviews([]);
-  const { mutateAsync: handleCreateProduct } = useCreateProduct(session);
+  const { mutateAsync: handleCreateProduct, isPending: isCreating } =
+    useCreateProduct(session);
 
   /**
    * Handles form submission.
@@ -103,6 +106,21 @@ export const AddProductForm: React.FC<AddProductFormProps> = ({
         flexDirection: { xs: "column", sm: "column", md: "row" },
       }}
     >
+      {isCreating &&
+        createPortal(
+          <Loading
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "fixed",
+              inset: 0,
+              backgroundColor: "rgba(255,255,255,0.6)",
+              zIndex: 1300,
+            }}
+          />,
+          document.body
+        )}
       <Box
         component="form"
         id="add-product-form"

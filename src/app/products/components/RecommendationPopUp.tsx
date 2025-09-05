@@ -139,6 +139,7 @@ export default function RecommendationPopup({ userId }: { userId?: string }) {
                   ? `/products${query.data?.redirectUrl}`
                   : "/"
               );
+              setDismissed(true);
             }}
             sx={{ ml: 1 }}
           >
