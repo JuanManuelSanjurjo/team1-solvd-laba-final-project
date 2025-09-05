@@ -9,7 +9,6 @@ import { fetchOrders } from "@/lib/actions/fetch-orders";
 import HistoryOrderAccordion from "./components/HistoryOrderAccordion";
 import { normalizeStripeStatusToOrderStatus } from "@/lib/normalizers/normalize-stripe-status-order";
 import { OrderProduct } from "./types";
-import { IMAGE_BUCKET_URL } from "@/lib/constants/globals";
 import { CartItem } from "@/app/(purchase)/cart/types";
 
 export const metadata: Metadata = {
@@ -68,7 +67,7 @@ export default async function OrderHistory() {
             if (key.includes("item-")) {
               const item = JSON.parse(value) as CartItem;
               return {
-                imageUrl: `${IMAGE_BUCKET_URL}${item.image}`,
+                imageUrl: item.image,
                 name: item.name,
                 size: item.size,
                 quantity: item.quantity,
