@@ -10,7 +10,6 @@ import createStripeCustomer from "@/lib/actions/create-stripe-customer";
 import { CartItem } from "../../cart/types";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
-import { IMAGE_BUCKET_URL } from "@/lib/constants/globals";
 import { useRouter } from "next/navigation";
 import { useToastStore } from "@/store/toastStore";
 
@@ -86,7 +85,7 @@ export default function Checkout({ session }: { session: Session }) {
             ...items.reduce((acc, item) => {
               acc[`item-${item.id}-${item.size}`] = {
                 id: item.id,
-                image: item.image?.replace(IMAGE_BUCKET_URL, "") || "",
+                image: item.image || "",
                 name: item.name,
                 price: item.price,
                 size: item.size,
