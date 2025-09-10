@@ -30,7 +30,7 @@ export default function DesktopProfileMenu({
       severity: "success",
       message: "Logging out...",
     });
-    signOut();
+    signOut({ redirectTo: "/auth/sign-in" });
   };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

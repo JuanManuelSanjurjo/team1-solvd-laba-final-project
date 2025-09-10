@@ -120,7 +120,7 @@ const AuthenticatedSidebar = ({
       severity: "success",
       message: "Logging out...",
     });
-    signOut();
+    signOut({ redirectTo: "/auth/sign-in" });
   };
   return (
     <Box width={sidebarWidth}>
