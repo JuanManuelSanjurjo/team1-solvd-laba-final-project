@@ -15,7 +15,7 @@ interface RecsApiResponse {
   } | null;
 }
 
-const FIVE_MIN = 1000 * 60 * 5;
+const FIVE_MIN = 1000 * 60 * 60;
 
 /**
  * RecommendationPopup component that displays a popup with product recommendations.
